@@ -4,11 +4,10 @@ import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import CloudServices from './pages/CloudServices';
-import Consulting from './pages/Consulting';
-import CyberSecurity from './pages/CyberSecurity';
-import AIServices from './pages/AIServices';
-import DataAnalytics from './pages/DataAnalytics';
+import WebDevelopment from './pages/WebDevelopment';
+import GameDevelopment from './pages/AIServices';
+import LogoDesign from './pages/LogoDesign';
+import VideoEditing from './pages/VideoEditing';
 
 function AppContent() {
   const location = useLocation();
@@ -32,11 +31,10 @@ function AppContent() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
-          <Route path="/cloud-services" element={<CloudServices />} />
-          <Route path="/consulting" element={<Consulting />} />
-          <Route path="/cyber-security" element={<CyberSecurity />} />
-          <Route path="/ai-services" element={<AIServices />} />
-          <Route path="/data-analytics" element={<DataAnalytics />} />
+          <Route path="/web-development" element={<WebDevelopment />} />
+          <Route path="/game-development" element={<GameDevelopment />} />
+          <Route path="/logo-design" element={<LogoDesign />} />
+          <Route path="/video-editing" element={<VideoEditing />} />
         </Routes>
       </AnimatePresence>
       <Footer />

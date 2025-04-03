@@ -1,14 +1,20 @@
 import { motion } from "framer-motion";
 import { Meteors } from "../components/ui/meteor-effect";
 import PageTransition from '../components/PageTransition';
+import Newsletter from '../components/Newsletter';
+import Globe from '../components/Globe';
+import { ShootingStars } from '../components/ShootingStars';
+import { AuroraBackground } from '../components/AuroraBackground';
 import { 
   ArrowRight, Cloud, Shield, Brain, Code, 
-  Users, Award, Globe, BarChart, Building2, 
+  Users, Award, BarChart, Building2, 
   BadgeCheck, Lock, Server, Network, Sparkles, 
-  Zap, CheckCircle2, LineChart
+  Zap, CheckCircle2, LineChart, Gamepad2, Palette, 
+  VideoIcon, Blocks, Laptop, MonitorPlay, Brush, 
+  Pencil, Layout, Tv, Film, Book, Star, Lightbulb
 } from "lucide-react";
 
-// Add trusted company logos
+// Enhanced constants with more visually rich content
 const COMPANY_LOGOS = [
   '/logos/microsoft.svg',
   '/logos/amazon.svg',
@@ -18,7 +24,6 @@ const COMPANY_LOGOS = [
   '/logos/salesforce.svg'
 ];
 
-// Add certifications and awards
 const CERTIFICATIONS = [
   { name: 'ISO 27001', icon: <Shield className="w-6 h-6" /> },
   { name: 'SOC 2 Type II', icon: <Lock className="w-6 h-6" /> },
@@ -26,7 +31,6 @@ const CERTIFICATIONS = [
   { name: 'Microsoft Gold', icon: <BadgeCheck className="w-6 h-6" /> }
 ];
 
-// Add features data
 const ENTERPRISE_FEATURES = [
   {
     icon: <Sparkles className="w-6 h-6" />,
@@ -50,87 +54,240 @@ const ENTERPRISE_FEATURES = [
   }
 ];
 
-// Update the Newsletter section with enhanced design
-const NewsletterSection = () => (
-  <section className="py-20 px-4 bg-gradient-to-b from-secondary/5 to-background relative overflow-hidden">
-    <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(white,transparent_85%)]" />
-    
-    <div className="max-w-4xl mx-auto relative">
-      <div className="flex flex-col md:flex-row items-center gap-12 backdrop-blur-sm bg-background/30 rounded-2xl p-8 border border-primary/10">
-        <div className="flex-1 space-y-4">
-          <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-            Enterprise Newsletter
-          </span>
-          <h3 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-            Stay Ahead of Innovation
-          </h3>
-          <p className="text-foreground/70 text-lg">
-            Get exclusive insights on enterprise technology trends and digital transformation
-          </p>
-          
-          <div className="flex flex-wrap gap-3 mt-4">
-            {ENTERPRISE_FEATURES.map((feature, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm text-foreground/60">
-                <div className="text-primary">{feature.icon}</div>
-                <span>{feature.title}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+// Enhanced service cards with more visual elements and better organization
+const SERVICES = [
+  {
+    title: "Web Development",
+    description: "Custom websites and web applications built with modern technologies and best practices for optimal performance",
+    icon: <Code className="w-10 h-10 text-primary" />,
+    image: "/images/web-dev.jpg",
+    features: [
+      "Responsive Design",
+      "SEO Optimization",
+      "Performance Tuning",
+      "Custom Solutions"
+    ],
+    delay: 0
+  },
+  {
+    title: "Game Development",
+    description: "Engaging and immersive gaming experiences across multiple platforms using cutting-edge game engines",
+    icon: <Gamepad2 className="w-10 h-10 text-primary" />,
+    image: "/images/game-dev.jpg",
+    features: [
+      "Unity & Unreal Engine",
+      "Mobile Games",
+      "Cross-platform",
+      "3D/2D Games"
+    ],
+    delay: 0.2
+  },
+  {
+    title: "Logo Design",
+    description: "Professional branding solutions with unique and memorable logo designs that capture your brand essence",
+    icon: <Palette className="w-10 h-10 text-primary" />,
+    image: "/images/logo-design.jpg",
+    features: [
+      "Brand Identity",
+      "Vector Graphics",
+      "Color Theory",
+      "Scalable Designs"
+    ],
+    delay: 0.4
+  },
+  {
+    title: "Video Editing",
+    description: "Professional video editing services that transform raw footage into compelling visual stories",
+    icon: <VideoIcon className="w-10 h-10 text-primary" />,
+    image: "/images/video-editing.jpg",
+    features: [
+      "Color Grading",
+      "Motion Graphics",
+      "Audio Mixing",
+      "Post-Production"
+    ],
+    delay: 0.6
+  }
+];
 
-        <div className="flex-1 w-full space-y-4">
-          <div className="flex flex-col gap-4">
-            <input
-              type="email"
-              placeholder="Your business email"
-              className="w-full px-4 py-3 rounded-xl border border-primary/20 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-            />
-            <button className="w-full bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group">
-              Subscribe to Updates
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-          
-          <div className="flex items-center justify-between text-xs text-foreground/50">
-            <span>Enterprise solutions</span>
-            <span>•</span>
-            <span>Weekly insights</span>
-            <span>•</span>
-            <span>No spam policy</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+const STATS = [
+  { number: "500+", label: "Clients Worldwide", icon: <Users className="w-6 h-6" /> },
+  { number: "1000+", label: "Projects Delivered", icon: <Code className="w-6 h-6" /> },
+  { number: "50+", label: "Countries Served", icon: <Globe className="w-6 h-6" /> },
+  { number: "99%", label: "Client Satisfaction", icon: <Award className="w-6 h-6" /> }
+];
+
+// Enhanced testimonials with ratings and visual elements
+const TESTIMONIALS = [
+  {
+    quote: "Jason Tech Solutions transformed our operations with their cloud migration strategy. Our infrastructure costs decreased by 40% while performance improved significantly.",
+    author: "Sarah Johnson",
+    position: "CTO, Global Retail Inc.",
+    rating: 5,
+    image: "/api/placeholder/64/64",
+    delay: 0
+  },
+  {
+    quote: "The AI solution implemented by the team has revolutionized how we analyze customer data. We're now able to predict trends and make proactive decisions.",
+    author: "Michael Chen",
+    position: "Data Director, FinTech Solutions",
+    rating: 5,
+    image: "/api/placeholder/64/64",
+    delay: 0.2
+  },
+  {
+    quote: "After experiencing a security breach, we hired Jason Tech to overhaul our cybersecurity. Their comprehensive approach has given us peace of mind and protected our reputation.",
+    author: "Emma Rodriguez",
+    position: "CISO, Healthcare Systems",
+    rating: 5,
+    image: "/api/placeholder/64/64",
+    delay: 0.4
+  }
+];
+
+const WHY_CHOOSE_US = [
+  {
+    title: "Expert Team",
+    description: "Senior engineers and consultants with 10+ years of industry experience",
+    icon: <Users className="w-6 h-6 text-primary" />
+  },
+  {
+    title: "Proven Results",
+    description: "Track record of delivering projects on time and exceeding expectations",
+    icon: <Award className="w-6 h-6 text-primary" />
+  },
+  {
+    title: "Future-Proof Solutions",
+    description: "Technology that scales with your business and adapts to changing needs",
+    icon: <Lightbulb className="w-6 h-6 text-primary" />
+  }
+];
+
+const INFRASTRUCTURE_FEATURES = [
+  {
+    icon: <Network className="w-8 h-8" />,
+    title: "Global Infrastructure",
+    description: "High-performance infrastructure across 6 continents"
+  },
+  {
+    icon: <Server className="w-8 h-8" />,
+    title: "99.999% Uptime",
+    description: "Enterprise-grade reliability and redundancy"
+  },
+  {
+    icon: <Building2 className="w-8 h-8" />,
+    title: "Enterprise Support",
+    description: "24/7 dedicated technical support team"
+  },
+  {
+    icon: <BarChart className="w-8 h-8" />,
+    title: "ROI Focused",
+    description: "Proven track record of delivering business value"
+  }
+];
+
+// Reusable components with enhanced visual elements
+const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
+  <div className={`mb-16 ${center ? 'text-center' : ''}`}>
+    <motion.span
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
+    >
+      {eyebrow}
+    </motion.span>
+    <motion.h2 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+      className="text-4xl md:text-5xl font-bold mt-4 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
+    >
+      {title}
+    </motion.h2>
+    {description && (
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className={`text-lg text-foreground/70 max-w-2xl ${center ? 'mx-auto' : ''}`}
+      >
+        {description}
+      </motion.p>
+    )}
+    {center && (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="h-1 w-20 bg-primary mx-auto rounded-full mt-6"
+      />
+    )}
+  </div>
 );
+
+const CTAButton = ({ primary = true, children, className = "" }) => (
+  <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary/30'} px-8 py-4 text-lg font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`}>
+    <span className="relative z-10 transition-colors text-primary group-hover:text-background flex items-center justify-center gap-2">
+      {children}
+    </span>
+    <div className="absolute inset-0 z-0 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0" />
+  </button>
+);
+
+// Rating stars component for testimonials
+const RatingStars = ({ rating }) => {
+  return (
+    <div className="flex space-x-1 my-3">
+      {[...Array(5)].map((_, i) => (
+        <Star
+          key={i}
+          size={16}
+          className={i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}
+        />
+      ))}
+    </div>
+  );
+};
 
 function Home() {
   return (
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
-        {/* Hero Section - Enhanced with gradient overlay and 3D effect */}
-        <div className="relative h-screen flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 w-full h-full bg-background">
-            <Meteors number={30} />
+        {/* Enhanced Hero Section with Aurora Background */}
+        <section className="relative h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 w-full h-full">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
           </div>
           
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10"></div>
+          {/* Aurora Background */}
+          <AuroraBackground className="absolute inset-0" showRadialGradient={true} />
           
+          {/* Content */}
           <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
               className="mb-6 font-bold flex items-center justify-center space-x-2"
             >
-              <span className="bg-primary/20 text-primary px-4 py-1 rounded-full text-sm">Innovative Solutions</span>
+              <span className="bg-primary/20 text-primary px-6 py-2 rounded-full text-sm flex items-center gap-2">
+                <span className="h-2 w-2 bg-primary rounded-full animate-pulse"></span>
+                Global Technology Solutions
+              </span>
             </motion.div>
             
             <motion.h1 
+              id="hero-heading"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-6xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
+              transition={{ duration: 0.6 }}
+              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-blue-500"
             >
               Jason Tech Solutions
             </motion.h1>
@@ -138,7 +295,7 @@ function Home() {
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl md:text-2xl text-foreground/80 max-w-2xl mx-auto mb-8"
             >
               Empowering enterprises with cutting-edge technology solutions for the digital era
@@ -147,114 +304,50 @@ function Home() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <button className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center gap-2 w-full sm:w-auto">
+              <CTAButton primary>
                 Get Started
-                <ArrowRight size={18} />
-              </button>
-              <button className="border border-primary/30 text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary/10 transition-all w-full sm:w-auto">
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </CTAButton>
+              
+              <CTAButton primary={false}>
                 Book a Demo
-              </button>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.5, delay: 1 }}
-              className="mt-12 flex justify-center gap-6 flex-wrap"
-            >
-              <img src="/api/placeholder/120/40" alt="Tech Partner 1" className="h-8 opacity-50 hover:opacity-100 transition-opacity" />
-              <img src="/api/placeholder/120/40" alt="Tech Partner 2" className="h-8 opacity-50 hover:opacity-100 transition-opacity" />
-              <img src="/api/placeholder/120/40" alt="Tech Partner 3" className="h-8 opacity-50 hover:opacity-100 transition-opacity" />
-              <img src="/api/placeholder/120/40" alt="Tech Partner 4" className="h-8 opacity-50 hover:opacity-100 transition-opacity" />
+              </CTAButton>
             </motion.div>
           </div>
-        </div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
+        </section>
 
-        {/* Services Section - Enhanced with icons and better spacing */}
-        <section className="py-24 px-4">
+        {/* Enhanced Partnerships Section with hover effects */}
+        <section className="py-16 px-4 bg-secondary/20" aria-labelledby="partnerships-heading">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <motion.span
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="text-primary text-sm font-medium uppercase tracking-wider"
-              >
-                What We Do
-              </motion.span>
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-4xl font-bold mt-2 mb-4"
-              >
-                Our Services
-              </motion.h2>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="h-1 w-20 bg-primary mx-auto rounded-full"
-              ></motion.div>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 id="partnerships-heading" className="text-primary/80 text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">TRUSTED BY INDUSTRY LEADERS</h2>
+            </motion.div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Cloud Solutions",
-                  description: "Scalable and secure cloud infrastructure designed to optimize performance and reduce operational costs",
-                  icon: <Cloud className="w-10 h-10 text-primary" />,
-                  delay: 0
-                },
-                {
-                  title: "AI & Machine Learning",
-                  description: "Custom AI solutions that automate processes, analyze data, and provide actionable business insights",
-                  icon: <Brain className="w-10 h-10 text-primary" />,
-                  delay: 0.2
-                },
-                {
-                  title: "Cyber Security",
-                  description: "Comprehensive security frameworks that protect your digital assets from evolving cyber threats",
-                  icon: <Shield className="w-10 h-10 text-primary" />,
-                  delay: 0.4
-                },
-                {
-                  title: "Custom Software",
-                  description: "Tailored software solutions built to address your specific business challenges and goals",
-                  icon: <Code className="w-10 h-10 text-primary" />,
-                  delay: 0.6
-                },
-                {
-                  title: "Digital Transformation",
-                  description: "Strategic roadmaps to guide your organization's technological evolution and innovation",
-                  icon: <Globe className="w-10 h-10 text-primary" />,
-                  delay: 0.8
-                },
-                {
-                  title: "IT Consulting",
-                  description: "Expert guidance to align technology investments with your business objectives and industry trends",
-                  icon: <Users className="w-10 h-10 text-primary" />,
-                  delay: 1.0
-                }
-              ].map((service, index) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
+              {COMPANY_LOGOS.map((logo, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: service.delay }}
-                  className="p-8 rounded-2xl bg-secondary/50 backdrop-blur border border-secondary hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/5 group"
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.4 }}
+                  className="flex items-center justify-center"
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                 >
-                  <div className="mb-6 p-4 bg-primary/10 inline-block rounded-xl group-hover:bg-primary/20 transition-all">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                  <p className="text-foreground/70">{service.description}</p>
-                  <div className="mt-6 flex items-center text-primary font-medium">
-                    <span>Learn more</span>
-                    <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  <div className="p-4 bg-secondary/50 backdrop-blur rounded-xl hover:shadow-md transition-all duration-300 w-full flex justify-center">
+                    <img src={logo} alt={`Partner company ${index + 1}`} className="h-12 opacity-50 hover:opacity-100 transition-opacity" />
                   </div>
                 </motion.div>
               ))}
@@ -262,67 +355,157 @@ function Home() {
           </div>
         </section>
 
-        {/* Why Choose Us Section - New section */}
-        <section className="py-24 px-4 bg-muted/30">
+        {/* Enhanced Services Section with visual cards */}
+        <section className="py-24 px-4" aria-labelledby="services-heading">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeading 
+              eyebrow="What We Do" 
+              title="Our Services" 
+              description="We deliver cutting-edge solutions tailored to your specific business needs, leveraging the latest technologies and industry best practices."
+              center={true} 
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {SERVICES.map((service, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: service.delay * 0.5 }}
+                  className="rounded-2xl overflow-hidden group border border-secondary hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/5"
+                >
+                  {/* Added image headers to service cards */}
+                  <div className="h-48 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 z-10"></div>
+                    <img 
+                      src={service.image || "/api/placeholder/400/200"} 
+                      alt={service.title}
+                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute bottom-4 left-4 z-20 bg-background/80 backdrop-blur-sm p-3 rounded-xl">
+                      {service.icon}
+                    </div>
+                  </div>
+                  
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                    <p className="text-foreground/70 mb-4">{service.description}</p>
+                    
+                    <div className="space-y-2 mb-4">
+                      {service.features.map((feature, i) => (
+                        <div key={i} className="flex items-center gap-2">
+                          <CheckCircle2 size={16} className="text-primary" />
+                          <span className="text-sm">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-4 flex items-center text-primary font-medium">
+                      <span>Learn more</span>
+                      <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+
+        {/* Enhanced Why Choose Us Section with better visuals */}
+        <section className="py-24 px-4 bg-muted/30" aria-labelledby="why-choose-us-heading">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <span className="text-primary text-sm font-medium uppercase tracking-wider">Why Choose Us</span>
-                <h2 className="text-4xl font-bold mt-2 mb-6">Technology expertise that drives business growth</h2>
+                <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">Why Choose Us</span>
+                <h2 id="why-choose-us-heading" className="text-4xl font-bold mt-6 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">Technology expertise that drives business growth</h2>
                 <p className="text-foreground/70 mb-8">
                   At Jason Tech Solutions, we combine technical excellence with strategic thinking to deliver solutions 
                   that not only solve today's challenges but position your business for future success.
                 </p>
                 
-                <div className="space-y-6">
-                  {[
-                    {
-                      title: "Expert Team",
-                      description: "Senior engineers and consultants with 10+ years of industry experience"
-                    },
-                    {
-                      title: "Proven Results",
-                      description: "Track record of delivering projects on time and exceeding expectations"
-                    },
-                    {
-                      title: "Future-Proof Solutions",
-                      description: "Technology that scales with your business and adapts to changing needs"
-                    }
-                  ].map((item, index) => (
+                <div className="space-y-8">
+                  {WHY_CHOOSE_US.map((item, index) => (
                     <motion.div 
                       key={index}
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
-                      className="flex gap-4"
+                      className="flex gap-6"
                     >
-                      <div className="mt-1 bg-primary/20 h-6 w-6 rounded-full flex items-center justify-center shrink-0">
-                        <div className="h-3 w-3 bg-primary rounded-full"></div>
+                      <div className="mt-1 bg-primary/20 h-12 w-12 rounded-xl flex items-center justify-center shrink-0" aria-hidden="true">
+                        {item.icon}
                       </div>
                       <div>
-                        <h3 className="font-semibold mb-1">{item.title}</h3>
-                        <p className="text-foreground/70 text-sm">{item.description}</p>
+                        <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                        <p className="text-foreground/70">{item.description}</p>
                       </div>
                     </motion.div>
                   ))}
                 </div>
+                
+                {/* Added call-to-action */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                  className="mt-10"
+                >
+                  <CTAButton primary>
+                    Our Approach
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </CTAButton>
+                </motion.div>
               </motion.div>
               
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
                 className="relative"
               >
-                <div className="relative h-96 w-full rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-1">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img src="/api/placeholder/600/400" alt="Technology Illustration" className="rounded-xl" />
-                  </div>
-                  <div className="absolute -bottom-6 -right-6 bg-primary p-4 rounded-2xl shadow-lg">
+                {/* Enhanced visual display with floating elements */}
+                <div className="relative h-96 w-full rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-1 perspective">
+                  <motion.div 
+                    initial={{ rotateY: 0 }}
+                    whileHover={{ rotateY: 10 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-blue-500/20 shadow-xl"
+                  >
+                    <img src="/api/placeholder/600/400" alt="Technology visual representation" className="w-full h-full object-cover rounded-xl" />
+                  </motion.div>
+                  
+                  {/* Floating certification badges */}
+                  {CERTIFICATIONS.map((cert, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.5 + (i * 0.1), duration: 0.4 }}
+                      className="absolute bg-background/90 backdrop-blur-md p-3 rounded-xl shadow-lg flex items-center gap-2 border border-secondary"
+                      style={{
+                        top: `${20 + i * 20}%`,
+                        right: i % 2 === 0 ? '-10%' : 'auto',
+                        left: i % 2 === 0 ? 'auto' : '-10%',
+                      }}
+                    >
+                      <div className="text-primary">{cert.icon}</div>
+                      <span className="font-medium text-sm">{cert.name}</span>
+                    </motion.div>
+                  ))}
+                  
+                  <div className="absolute -bottom-6 -right-6 bg-primary p-6 rounded-2xl shadow-lg">
                     <div className="text-4xl font-bold text-white">15+</div>
                     <div className="text-white/90 text-sm">Years Experience</div>
                   </div>
@@ -332,110 +515,37 @@ function Home() {
           </div>
         </section>
 
-        {/* Stats Section - Enhanced with better styling */}
-        <section className="py-24 bg-gradient-to-r from-primary/5 to-blue-500/5 border-y border-primary/10">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center mb-16">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-3xl font-bold"
-              >
-                Our Impact in Numbers
-              </motion.h2>
-            </div>
+        {/* Enhanced Testimonials Section with better cards */}
+        <section className="py-24 px-4" aria-labelledby="testimonials-heading">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeading 
+              eyebrow="Testimonials" 
+              title="What Our Clients Say" 
+              description="Don't just take our word for it. Here's what our clients have to say about their experience working with us."
+              center={true} 
+            />
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              {[
-                { number: "500+", label: "Clients Worldwide", icon: <Users className="w-6 h-6" /> },
-                { number: "1000+", label: "Projects Delivered", icon: <Code className="w-6 h-6" /> },
-                { number: "50+", label: "Countries Served", icon: <Globe className="w-6 h-6" /> },
-                { number: "99%", label: "Client Satisfaction", icon: <Award className="w-6 h-6" /> }
-              ].map((stat, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {TESTIMONIALS.map((testimonial, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="p-6 rounded-xl bg-background/50 backdrop-blur border border-primary/10"
+                  transition={{ duration: 0.5, delay: testimonial.delay * 0.5 }}
+                  className="p-8 rounded-2xl bg-secondary/30 backdrop-blur border border-secondary relative group hover:border-primary/30 transition-all hover:shadow-lg"
                 >
-                  <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-primary/10 rounded-full text-primary">
-                      {stat.icon}
-                    </div>
-                  </div>
-                  <div className="text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-                    {stat.number}
-                  </div>
-                  <div className="text-foreground/70">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section - New section */}
-        <section className="py-24 px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <motion.span
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="text-primary text-sm font-medium uppercase tracking-wider"
-              >
-                Testimonials
-              </motion.span>
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-4xl font-bold mt-2 mb-4"
-              >
-                What Our Clients Say
-              </motion.h2>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="h-1 w-20 bg-primary mx-auto rounded-full"
-              ></motion.div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  quote: "Jason Tech Solutions transformed our operations with their cloud migration strategy. Our infrastructure costs decreased by 40% while performance improved significantly.",
-                  author: "Sarah Johnson",
-                  position: "CTO, Global Retail Inc.",
-                  delay: 0
-                },
-                {
-                  quote: "The AI solution implemented by the team has revolutionized how we analyze customer data. We're now able to predict trends and make proactive decisions.",
-                  author: "Michael Chen",
-                  position: "Data Director, FinTech Solutions",
-                  delay: 0.2
-                },
-                {
-                  quote: "After experiencing a security breach, we hired Jason Tech to overhaul our cybersecurity. Their comprehensive approach has given us peace of mind and protected our reputation.",
-                  author: "Emma Rodriguez",
-                  position: "CISO, Healthcare Systems",
-                  delay: 0.4
-                }
-              ].map((testimonial, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: testimonial.delay }}
-                  className="p-8 rounded-2xl bg-secondary/30 backdrop-blur border border-secondary relative"
-                >
-                  <div className="absolute -top-5 left-8 text-5xl text-primary/20">"</div>
+                  <div className="absolute -top-5 left-8 text-5xl text-primary/20" aria-hidden="true">"</div>
+                  <RatingStars rating={testimonial.rating} />
                   <p className="text-foreground/80 mb-6 relative z-10">{testimonial.quote}</p>
                   <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full bg-primary/20 mr-4"></div>
+                    <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                      <img 
+                        src={testimonial.image} 
+                        alt={testimonial.author}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                     <div>
                       <h4 className="font-semibold">{testimonial.author}</h4>
                       <p className="text-sm text-foreground/60">{testimonial.position}</p>
@@ -444,159 +554,68 @@ function Home() {
                 </motion.div>
               ))}
             </div>
+            
+            {/* Added visual call-to-action for more testimonials */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mt-12 text-center"
+            >
+              <a href="#" className="inline-flex items-center text-primary font-medium hover:underline">
+                View all client success stories
+                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </motion.div>
           </div>
         </section>
 
-        {/* CTA Section - Enhanced with better visuals */}
-        <section className="py-24 px-4 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-blue-500/10"></div>
-          <Meteors number={10} />
-          
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <motion.span
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-block bg-primary/20 text-primary px-4 py-1 rounded-full text-sm mb-4"
-            >
-              Get Started Today
-            </motion.span>
-            
-            <motion.h2 
+
+
+        {/* Newsletter Section */}
+        <Newsletter />
+
+        {/* Footer CTA Section */}
+        <section className="py-24 px-4 bg-gradient-to-b from-background to-secondary/20">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl md:text-5xl font-bold mb-6"
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
             >
               Ready to Transform Your Business?
             </motion.h2>
             
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl text-foreground/70 mb-8"
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-xl text-foreground/70 mb-12 max-w-2xl mx-auto"
             >
-              Let's work together to build the future of your business with technology solutions that drive growth and innovation
+              Let's discuss how our solutions can help you achieve your business goals
             </motion.p>
             
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <button className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center gap-2 w-full sm:w-auto">
-                Contact Us
-                <ArrowRight size={18} />
-              </button>
-              <button className="border border-primary/30 text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary/10 transition-all w-full sm:w-auto">
-                Schedule a Call
-              </button>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="mt-12 text-foreground/50 text-sm"
-            >
-              No obligation consultation • Enterprise-grade solutions • Customized approach
+              <CTAButton primary>
+                Schedule Consultation
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </CTAButton>
+              
+              <CTAButton primary={false}>
+                View Case Studies
+              </CTAButton>
             </motion.div>
           </div>
         </section>
-
-        {/* Add Enterprise Partnerships Section */}
-        <section className="py-16 px-4 bg-secondary/20">
-          <div className="max-w-7xl mx-auto">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="text-center mb-12"
-            >
-              <span className="text-primary/80 text-sm font-medium">TRUSTED BY INDUSTRY LEADERS</span>
-            </motion.div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-8 items-center">
-              {COMPANY_LOGOS.map((logo, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-center justify-center"
-                >
-                  <img src={logo} alt="Partner Logo" className="h-12 opacity-50 hover:opacity-100 transition-opacity" />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Add Enterprise Features Section */}
-        <section className="py-24 px-4 bg-background">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                {
-                  icon: <Network className="w-8 h-8" />,
-                  title: "Global Infrastructure",
-                  description: "High-performance infrastructure across 6 continents"
-                },
-                {
-                  icon: <Server className="w-8 h-8" />,
-                  title: "99.999% Uptime",
-                  description: "Enterprise-grade reliability and redundancy"
-                },
-                {
-                  icon: <Building2 className="w-8 h-8" />,
-                  title: "Enterprise Support",
-                  description: "24/7 dedicated technical support team"
-                },
-                {
-                  icon: <BarChart className="w-8 h-8" />,
-                  title: "ROI Focused",
-                  description: "Proven track record of delivering business value"
-                }
-              ].map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="p-6 rounded-xl bg-secondary/20 border border-secondary hover:border-primary/30 transition-all group"
-                >
-                  <div className="text-primary mb-4">{feature.icon}</div>
-                  <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-foreground/70 text-sm">{feature.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Add Certifications Section */}
-        <section className="py-16 px-4 bg-secondary/10">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-wrap justify-center gap-8">
-              {CERTIFICATIONS.map((cert, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-center gap-2 text-primary"
-                >
-                  {cert.icon}
-                  <span className="font-medium">{cert.name}</span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Enhanced Newsletter Section */}
-        <NewsletterSection />
       </div>
     </PageTransition>
   );
