@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
-import { Meteors } from "../components/ui/meteor-effect";
 import PageTransition from '../components/PageTransition';
 import Newsletter from '../components/Newsletter';
 import Globe from '../components/Globe';
-import { ShootingStars } from '../components/ShootingStars';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { 
   ArrowRight, Cloud, Shield, Brain, Code, 
@@ -186,6 +184,23 @@ const INFRASTRUCTURE_FEATURES = [
   }
 ];
 
+// Add this constant near the top of your file with other constants
+const HERO_SERVICES = [
+  { title: "Web Development", icon: <Code className="w-4 h-4" /> },
+  { title: "Game Development", icon: <Gamepad2 className="w-4 h-4" /> },
+  { title: "Logo Design", icon: <Palette className="w-4 h-4" /> },
+  { title: "Video Editing", icon: <VideoIcon className="w-4 h-4" /> },
+];
+
+// Add these constants at the top of your file with other constants
+const FONT_SEQUENCE = [
+  "'Playfair Display', serif",
+  "'Courier New', monospace",
+  "'Roboto', sans-serif",
+  "'Impact', sans-serif",
+  "'Inter', sans-serif" // Your final font
+];
+
 // Reusable components with enhanced visual elements
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
   <div className={`mb-16 ${center ? 'text-center' : ''}`}>
@@ -231,11 +246,11 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
 );
 
 const CTAButton = ({ primary = true, children, className = "" }) => (
-  <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary/30'} px-8 py-4 text-lg font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`}>
-    <span className="relative z-10 transition-colors text-primary group-hover:text-background flex items-center justify-center gap-2">
+  <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary'} ${primary ? 'bg-primary' : 'bg-transparent'} px-8 py-4 text-lg font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`}>
+    <span className={`relative z-10 transition-colors ${primary ? 'text-background group-hover:text-primary' : 'text-primary group-hover:text-background'} flex items-center justify-center gap-2`}>
       {children}
     </span>
-    <div className="absolute inset-0 z-0 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0" />
+    <div className={`absolute inset-0 z-0 ${primary ? 'bg-background' : 'bg-primary'} translate-y-full transition-transform duration-300 group-hover:translate-y-0`} />
   </button>
 );
 
@@ -284,12 +299,33 @@ function Home() {
             
             <motion.h1 
               id="hero-heading"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-blue-500"
+              initial={{ 
+                opacity: 0, 
+                y: 20,
+              }}
+              animate={{ 
+                opacity: 1, 
+                y: 0,
+              }}
+              transition={{
+                duration: 0.6,
+                ease: "easeOut"
+              }}
             >
-              Jason Tech Solutions
+              <motion.span
+                initial={{ fontFamily: FONT_SEQUENCE[0] }}
+                animate={{ 
+                  fontFamily: FONT_SEQUENCE,
+                }}
+                transition={{
+                  duration: 2,
+                  times: [0, 0.2, 0.4, 0.6, 0.8, 1],
+                  ease: "easeInOut"
+                }}
+                className="inline-block text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-blue-500"
+              >
+                Jason Tech Solutions
+              </motion.span>
             </motion.h1>
             
             <motion.p 
@@ -307,14 +343,35 @@ function Home() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <CTAButton primary>
+              <CTAButton primary={false}>
                 Get Started
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </CTAButton>
               
-              <CTAButton primary={false}>
+              <CTAButton primary>
                 Book a Demo
               </CTAButton>
+            </motion.div>
+
+            {/* Add the services chips here */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mt-12 flex flex-wrap justify-center gap-3 max-w-2xl mx-auto"
+            >
+              {HERO_SERVICES.map((service, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                  className="bg-background/50 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-2 flex items-center gap-2 text-sm hover:border-primary/50 transition-colors cursor-pointer"
+                >
+                  <span className="text-primary">{service.icon}</span>
+                  <span className="text-foreground/80">{service.title}</span>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
           

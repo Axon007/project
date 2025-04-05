@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const Globe = () => {
   const containerRef = useRef(null);
@@ -9,34 +10,43 @@ const Globe = () => {
 
     // Scene setup
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000); // Use 1 for aspect ratio initially
     const renderer = new THREE.WebGLRenderer({ 
       alpha: true,
       antialias: true 
     });
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    // Set size based on container
+    const updateSize = () => {
+      const container = containerRef.current;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    };
+
+    updateSize();
     renderer.setClearColor(0x000000, 0);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Create two spheres for layered effect
-    const radius = 12; // Increased size
+    // Create spheres
+    const radius = 10;
     const segments = 64;
     const geometry = new THREE.SphereGeometry(radius, segments, segments);
 
-    // Outer wireframe sphere
-    const wireframeMaterial = new THREE.MeshBasicMaterial({
+    // Create globe materials
+    const wireframeMaterial = new THREE.MeshPhongMaterial({
       color: 0x2563eb,
       wireframe: true,
       transparent: true,
       opacity: 0.3
     });
 
-    // Inner solid sphere
-    const innerMaterial = new THREE.MeshBasicMaterial({
+    const innerMaterial = new THREE.MeshPhongMaterial({
       color: 0x2563eb,
       transparent: true,
-      opacity: 0.05
+      opacity: 0.1
     });
 
     const outerSphere = new THREE.Mesh(geometry, wireframeMaterial);
@@ -45,36 +55,36 @@ const Globe = () => {
     scene.add(outerSphere);
     scene.add(innerSphere);
 
-    // Position camera
-    camera.position.z = 35;
-
-    // Add ambient light
+    // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    // Add point light
-    const pointLight = new THREE.PointLight(0x2563eb, 1);
-    pointLight.position.set(10, 10, 10);
+    const pointLight = new THREE.PointLight(0x2563eb, 2);
+    pointLight.position.set(15, 15, 15);
     scene.add(pointLight);
 
-    // Animation
+    // Camera position
+    camera.position.z = 25;
+
+    // Add OrbitControls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 1;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+
+    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
-      
-      outerSphere.rotation.y += 0.001;
-      innerSphere.rotation.y -= 0.001;
-      
+      controls.update();
       renderer.render(scene, camera);
     };
 
-    // Handle window resize
+    // Handle resize
     const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      updateSize();
     };
 
     window.addEventListener('resize', handleResize);
@@ -84,7 +94,6 @@ const Globe = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
       
-      // Cleanup resources
       geometry.dispose();
       wireframeMaterial.dispose();
       innerMaterial.dispose();
@@ -99,9 +108,9 @@ const Globe = () => {
   return (
     <div 
       ref={containerRef} 
-      className="absolute inset-0 z-0"
+      className="w-full h-full relative"
       style={{
-        background: 'radial-gradient(circle at center, transparent 10%, var(--background) 90%)'
+        background: 'radial-gradient(circle at center, transparent 20%, var(--background) 80%)'
       }}
     />
   );
