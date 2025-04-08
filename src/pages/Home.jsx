@@ -4,15 +4,246 @@ import Newsletter from '../components/Newsletter';
 import Globe from '../components/Globe';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { 
-  ArrowRight, Cloud, Shield, Brain, Code, 
-  Users, Award, BarChart, Building2, 
-  BadgeCheck, Lock, Server, Network, Sparkles, 
-  Zap, CheckCircle2, LineChart, Gamepad2, Palette, 
-  VideoIcon, Blocks, Laptop, MonitorPlay, Brush, 
-  Pencil, Layout, Tv, Film, Book, Lightbulb
+  ArrowRight, Code, Users, Award, BarChart, 
+  BadgeCheck, LineChart, Gamepad2, Palette, 
+  VideoIcon, Brush, Lightbulb
 } from "lucide-react";
+import { Smartphone } from "lucide-react";
 
-// Enhanced constants with more visually rich content
+// Core theme with only what's used
+const THEME = {
+  primary: {
+    DEFAULT: "#0070F3",
+    light: "#3291FF",
+  },
+  secondary: {
+    DEFAULT: "#7928CA",
+  },
+  background: {
+    DEFAULT: "#FCFCFC",
+    muted: "#F5F5F5",
+  },
+  foreground: {
+    DEFAULT: "#18181B",
+  },
+  accent: {
+    blue: "#2563EB",
+    cyan: "#06B6D4",
+    green: "#10B981", 
+    yellow: "#FBBF24",
+    orange: "#F97316",
+  }
+};
+
+// Simplified UI object with only what's used
+const UI = {
+  card: {
+    base: "rounded-2xl overflow-hidden border border-secondary/20 hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/10 bg-background/50 backdrop-blur-sm",
+    padding: "p-6",
+    iconContainer: "mb-6 bg-primary/10 w-16 h-16 rounded-xl flex items-center justify-center"
+  },
+  text: {
+    heading: "font-bold text-foreground",
+    body: "text-foreground/70",
+    accent: "text-primary"
+  },
+  gradients: {
+    primary: "bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary",
+    hover: "bg-gradient-to-r from-primary/20 to-blue-500/20"
+  },
+  button: {
+    base: "flex items-center gap-1 font-medium",
+    pill: "rounded-full",
+    primary: "bg-primary/10 hover:bg-primary/20 text-primary"
+  }
+};
+
+// Simplified animations
+const animations = {
+  fadeIn: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5 }
+  },
+  fadeInUp: {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 }
+  }
+};
+
+// Animation helper
+const createMotionProps = (type, delay = 0) => {
+  const base = animations[type];
+  return {
+    ...base,
+    viewport: { once: true },
+    transition: { 
+      ...base.transition, 
+      delay: delay 
+    }
+  };
+};
+
+// Section component
+const Section = ({ children, dark = false, pattern = false, className = "", id = null }) => (
+  <section 
+    id={id}
+    className={`py-24 px-4 ${
+      dark ? 'bg-secondary/20' : 
+      pattern ? 'bg-gradient-to-b from-background/90 to-muted/20 relative' : 
+      'bg-background'
+    } ${className}`}
+    aria-labelledby={id}
+  >
+    {pattern && (
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+    )}
+    <div className="max-w-7xl mx-auto relative z-10">
+      {children}
+    </div>
+  </section>
+);
+
+// Service card component
+const ServiceCard = ({ service, index }) => (
+  <motion.div
+    key={index}
+    {...createMotionProps('fadeInUp', service.delay * 0.3)}
+    className={`${UI.card.base} w-80 flex-shrink-0`}
+  >
+    <div className={UI.card.padding}>
+      <div className={UI.card.iconContainer}>
+        {service.icon}
+      </div>
+      <h3 className={`text-xl ${UI.text.heading} mb-3`}>{service.title}</h3>
+      <p className={`${UI.text.body} mb-6 text-sm`}>{service.description}</p>
+      <div className="space-y-3">
+        {service.features.map((feature, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <BadgeCheck size={16} className={UI.text.accent} />
+            <span className="text-sm text-foreground/80">{feature}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 pt-4 border-t border-secondary/20 flex items-center text-primary font-medium">
+        <span>Learn more</span>
+        <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+      </div>
+    </div>
+  </motion.div>
+);
+
+// Project card component
+const ProjectCard = ({ project, index }) => (
+  <motion.div
+    key={index}
+    {...createMotionProps('fadeInUp', index * 0.1)}
+    className={`group relative flex flex-col overflow-hidden ${UI.card.base}`}
+  >
+    <div className="relative h-56 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+      <img 
+        src={project.image}
+        alt={project.title}
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+      />
+      <div className="absolute top-4 left-4 z-20">
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/30 text-white backdrop-blur-sm">
+          {project.category}
+        </span>
+      </div>
+      {project.featured && (
+        <div className="absolute top-4 right-4 z-20">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/30 text-white backdrop-blur-sm">
+            <BadgeCheck className="w-3 h-3 mr-1" />
+            Featured
+          </span>
+        </div>
+      )}
+      <div className="absolute bottom-0 left-0 right-0 z-20 p-4">
+        <h3 className="text-xl font-bold text-white mb-1 line-clamp-1">
+          {project.title}
+        </h3>
+        <p className="text-white/80 text-sm line-clamp-1">
+          {project.description}
+        </p>
+      </div>
+    </div>
+    <div className="flex flex-col p-5 flex-grow bg-secondary/20 backdrop-blur-sm">
+      <div className="mb-auto">
+        <p className={`${UI.text.body} text-sm mb-4 line-clamp-2`}>
+          {project.description}
+        </p>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {[...Array(3)].map((_, i) => (
+            <span key={i} className="px-2 py-1 bg-primary/10 rounded-md text-xs text-primary/80">
+              {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'][Math.floor(Math.random() * 5)]}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="flex items-center justify-between mt-4 border-t border-secondary/30 pt-4">
+        {project.stats && (
+          <div className="flex items-center text-primary/80 text-xs">
+            <LineChart className="w-3 h-3 mr-1" />
+            {project.stats}
+          </div>
+        )}
+        <button className={`ml-auto ${UI.button.base} ${UI.button.pill} ${UI.button.primary} px-4 py-1.5`}>
+          View Project
+          <ArrowRight className="w-3 h-3 transform group-hover:translate-x-1 transition-transform" />
+        </button>
+      </div>
+    </div>
+    <div className={`absolute -inset-px ${UI.gradients.hover} opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300 pointer-events-none`}></div>
+  </motion.div>
+);
+
+// Section heading component
+const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
+  <div className={`mb-16 ${center ? 'text-center' : ''}`}>
+    <motion.span
+      {...createMotionProps('fadeIn')}
+      className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
+    >
+      {eyebrow}
+    </motion.span>
+    <motion.h2 
+      {...createMotionProps('fadeInUp', 0.1)}
+      className="text-4xl md:text-5xl font-bold mt-4 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
+    >
+      {title}
+    </motion.h2>
+    {description && (
+      <motion.p
+        {...createMotionProps('fadeInUp', 0.2)}
+        className={`text-lg text-foreground/70 max-w-2xl ${center ? 'mx-auto' : ''}`}
+      >
+        {description}
+      </motion.p>
+    )}
+    {center && (
+      <motion.div
+        {...createMotionProps('fadeInUp', 0.2)}
+        className="h-1 w-20 bg-primary mx-auto rounded-full mt-6"
+      />
+    )}
+  </div>
+);
+
+// CTA button component
+const CTAButton = ({ primary = true, children, className = "", small = false }) => (
+  <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary/70'} ${primary ? 'bg-primary' : 'bg-transparent'} 
+    ${small ? 'px-4 py-2 text-sm' : 'px-8 py-4 text-lg'} font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`}>
+    <span className={`relative z-10 transition-colors ${primary ? 'text-background group-hover:text-primary' : 'text-primary group-hover:text-background'} flex items-center justify-center gap-2`}>
+      {children}
+    </span>
+    <div className={`absolute inset-0 z-0 ${primary ? 'bg-background' : 'bg-primary'} translate-y-full transition-transform duration-300 group-hover:translate-y-0`} />
+  </button>
+);
+
+// Constants
 const COMPANY_LOGOS = [
   'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
   'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
@@ -22,133 +253,94 @@ const COMPANY_LOGOS = [
   'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg'
 ];
 
-// Enhanced service cards with more visual elements and better organization
 const SERVICES = [
   {
     title: "Web Development",
     description: "Custom websites and web applications built with modern technologies and best practices for optimal performance",
     icon: <Code className="w-10 h-10 text-primary" />,
-    image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    features: [
-      "Responsive Design",
-      "SEO Optimization",
-      "Performance Tuning",
-      "Custom Solutions"
-    ],
+    features: ["Responsive Design", "SEO Optimization", "Performance Tuning", "Custom Solutions"],
     delay: 0
   },
   {
     title: "Game Development",
     description: "Engaging and immersive gaming experiences across multiple platforms using cutting-edge game engines",
     icon: <Gamepad2 className="w-10 h-10 text-primary" />,
-    image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    features: [
-      "Unity & Unreal Engine",
-      "Mobile Games",
-      "Cross-platform",
-      "3D/2D Games"
-    ],
+    features: ["Unity & Unreal Engine", "Mobile Games", "Cross-platform", "3D/2D Games"],
     delay: 0.2
   },
   {
     title: "Logo Design",
     description: "Professional branding solutions with unique and memorable logo designs that capture your brand essence",
     icon: <Palette className="w-10 h-10 text-primary" />,
-    image: "https://images.unsplash.com/photo-1632882765546-0cd8827d6ae6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    features: [
-      "Brand Identity",
-      "Vector Graphics",
-      "Color Theory",
-      "Scalable Designs"
-    ],
+    features: ["Brand Identity", "Vector Graphics", "Color Theory", "Scalable Designs"],
     delay: 0.4
   },
   {
     title: "Video Editing",
     description: "Professional video editing services that transform raw footage into compelling visual stories",
     icon: <VideoIcon className="w-10 h-10 text-primary" />,
-    image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    features: [
-      "Color Grading",
-      "Motion Graphics",
-      "Audio Mixing",
-      "Post-Production"
-    ],
+    features: ["Color Grading", "Motion Graphics", "Audio Mixing", "Post-Production"],
     delay: 0.6
   },
   {
     title: "UI/UX Design",
     description: "User-centered design solutions that create intuitive, engaging, and effective digital experiences",
     icon: <Brush className="w-10 h-10 text-primary" />,
-    image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    features: [
-      "User Research",
-      "Wireframing",
-      "Prototype Testing",
-      "Interaction Design"
-    ],
+    features: ["User Research", "Wireframing", "Prototype Testing", "Interaction Design"],
     delay: 0.8
   },
   {
     title: "Mobile App Development",
     description: "Native and cross-platform mobile applications that deliver seamless user experiences across devices",
     icon: <Smartphone className="w-10 h-10 text-primary" />,
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    features: [
-      "iOS & Android",
-      "React Native",
-      "Flutter",
-      "App Store Optimization"
-    ],
+    features: ["iOS & Android", "React Native", "Flutter", "App Store Optimization"],
     delay: 1.0
   }
 ];
 
-// Projects for Bento Grid
 const PROJECTS = [
   {
     title: "E-commerce Platform",
     description: "A full-featured online shopping platform with advanced product filtering and secure checkout",
     category: "Web Development",
     image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    size: "large",
-    featured: true
+    featured: true,
+    color: THEME.accent.blue
   },
   {
     title: "Corporate Rebrand",
     description: "Complete visual identity overhaul for a Fortune 500 financial services company",
     category: "Logo Design",
     image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    size: "small",
-    stats: "40% increase in brand recognition"
+    stats: "40% increase in brand recognition",
+    color: THEME.accent.orange
   },
   {
     title: "Mobile RPG Game",
     description: "Fantasy role-playing game with immersive 3D environments and strategic combat",
     category: "Game Development",
     image: "https://images.unsplash.com/photo-1614294148960-9aa740632a87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    size: "tall",
-    featured: true
+    featured: true,
+    color: THEME.accent.green
   },
   {
     title: "Promotional Video Series",
     description: "Award-winning product launch videos featuring cinematic visuals and compelling storytelling",
     category: "Video Editing",
     image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    size: "small",
-    stats: "2M+ views"
+    stats: "2M+ views",
+    color: THEME.accent.cyan
   },
   {
     title: "Banking App Redesign",
     description: "User experience transformation resulting in 40% increase in mobile transactions",
     category: "UI/UX Design",
     image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    size: "wide",
-    stats: "85% user satisfaction"
+    stats: "85% user satisfaction",
+    color: THEME.secondary.DEFAULT
   }
 ];
 
-// Enhanced testimonials with ratings and visual elements
 const TESTIMONIALS = [
   {
     quote: "Jason Tech Solutions transformed our operations with their cloud migration strategy. Our infrastructure costs decreased by 40% while performance improved significantly.",
@@ -191,8 +383,6 @@ const WHY_CHOOSE_US = [
   }
 ];
 
-
-// Add this constant near the top of your file with other constants
 const HERO_SERVICES = [
   { title: "Web Development", icon: <Code className="w-4 h-4" /> },
   { title: "Game Development", icon: <Gamepad2 className="w-4 h-4" /> },
@@ -201,62 +391,6 @@ const HERO_SERVICES = [
   { title: "UI/UX Design", icon: <Brush className="w-4 h-4" /> },
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
-
-// Import Smartphone icon
-import { Smartphone } from "lucide-react";
-
-// Reusable components with enhanced visual elements
-const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
-  <div className={`mb-16 ${center ? 'text-center' : ''}`}>
-    <motion.span
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
-    >
-      {eyebrow}
-    </motion.span>
-    <motion.h2 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: 0.1 }}
-      className="text-4xl md:text-5xl font-bold mt-4 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
-    >
-      {title}
-    </motion.h2>
-    {description && (
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className={`text-lg text-foreground/70 max-w-2xl ${center ? 'mx-auto' : ''}`}
-      >
-        {description}
-      </motion.p>
-    )}
-    {center && (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="h-1 w-20 bg-primary mx-auto rounded-full mt-6"
-      />
-    )}
-  </div>
-);
-
-const CTAButton = ({ primary = true, children, className = "" }) => (
-  <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary'} ${primary ? 'bg-primary' : 'bg-transparent'} px-8 py-4 text-lg font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`}>
-    <span className={`relative z-10 transition-colors ${primary ? 'text-background group-hover:text-primary' : 'text-primary group-hover:text-background'} flex items-center justify-center gap-2`}>
-      {children}
-    </span>
-    <div className={`absolute inset-0 z-0 ${primary ? 'bg-background' : 'bg-primary'} translate-y-full transition-transform duration-300 group-hover:translate-y-0`} />
-  </button>
-);
 
 function Home() {
   return (
@@ -323,7 +457,7 @@ function Home() {
                 </CTAButton>
               </motion.div>
 
-              {/* Add the services chips here */}
+              {/* Service chips */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -351,7 +485,7 @@ function Home() {
           </section>
 
           {/* Partnerships Section */}
-          <section className="relative py-16 px-4" aria-labelledby="partnerships-heading">
+          <section className="relative py-16 px-4">
             <div className="relative z-10 max-w-7xl mx-auto bg-secondary/20 rounded-2xl backdrop-blur-sm">
               <motion.div 
                 initial={{ opacity: 0 }}
@@ -383,298 +517,215 @@ function Home() {
           </section>
         </div>
 
-        {/* Services Section (outside the background effects) */}
-        <section className="py-24 px-4" aria-labelledby="services-heading">
-          <div className="max-w-7xl mx-auto">
-            <SectionHeading 
-              eyebrow="What We Do" 
-              title="Our Services" 
-              description="We deliver cutting-edge solutions tailored to your specific business needs, leveraging the latest technologies and industry best practices."
-              center={true} 
-            />
-            
-            {/* Horizontal scrolling container */}
-            <div className="relative">
-              <div className="overflow-x-auto pb-8 hide-scrollbar">
-                <div className="flex space-x-6 px-4 w-max">
-                  {SERVICES.map((service, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: service.delay * 0.3 }}
-                      className="rounded-2xl overflow-hidden group border border-secondary hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/5 w-80 flex-shrink-0 bg-secondary/10 backdrop-blur-sm"
-                    >
-                      <div className="p-6">
-                        {/* Icon Header */}
-                        <div className="mb-6 bg-primary/10 w-16 h-16 rounded-xl flex items-center justify-center">
-                          {service.icon}
-                        </div>
-                        
-                        {/* Content */}
-                        <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                        <p className="text-foreground/70 mb-6">{service.description}</p>
-                        
-                        {/* Features */}
-                        <div className="space-y-3">
-                          {service.features.map((feature, i) => (
-                            <div key={i} className="flex items-center gap-2">
-                              <CheckCircle2 size={16} className="text-primary" />
-                              <span className="text-sm text-foreground/80">{feature}</span>
-                            </div>
-                          ))}
-                        </div>
-                        
-                        {/* CTA */}
-                        <div className="mt-6 flex items-center text-primary font-medium">
-                          <span>Learn more</span>
-                          <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                        </div>
+        {/* Services Section */}
+        <Section pattern>
+          <SectionHeading 
+            eyebrow="What We Do" 
+            title="Our Services" 
+            description="We deliver cutting-edge solutions tailored to your specific business needs, leveraging the latest technologies and industry best practices."
+            center={true} 
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {SERVICES.map((service, index) => (
+              <motion.div
+                key={index}
+                {...createMotionProps('fadeInUp', index * 0.1)}
+                className={`${UI.card.base}`}
+              >
+                <div className={UI.card.padding}>
+                  <div className={UI.card.iconContainer}>
+                    {service.icon}
+                  </div>
+                  <h3 className={`text-xl ${UI.text.heading} mb-3`}>{service.title}</h3>
+                  <p className={`${UI.text.body} mb-6 text-sm`}>{service.description}</p>
+                  <div className="space-y-3">
+                    {service.features.map((feature, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <BadgeCheck size={16} className={UI.text.accent} />
+                        <span className="text-sm text-foreground/80">{feature}</span>
                       </div>
-                    </motion.div>
-                  ))}
+                    ))}
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-secondary/20 flex items-center text-primary font-medium">
+                    <span>Learn more</span>
+                    <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </div>
                 </div>
-              </div>
-              
-              {/* Gradient indicators for horizontal scroll */}
-              <div className="absolute top-0 bottom-0 left-0 w-12 bg-gradient-to-r from-background to-transparent pointer-events-none" />
-              <div className="absolute top-0 bottom-0 right-0 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none" />
-            </div>
+              </motion.div>
+            ))}
           </div>
-        </section>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-12 flex justify-center"
+          >
+            <CTAButton primary={false}>
+              View All Services
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </CTAButton>
+          </motion.div>
+        </Section>
 
-        {/* Projects Section with Bento Grid */}
-        <section className="py-24 px-4 bg-muted/10" aria-labelledby="projects-heading">
-          <div className="max-w-7xl mx-auto">
-            <SectionHeading 
-              eyebrow="Our Work" 
-              title="Featured Projects" 
-              description="Explore our portfolio of successful projects across various industries and technologies."
-              center={true} 
-            />
-            
-            {/* Enhanced Projects Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-6 auto-rows-[300px]">
-              {PROJECTS.map((project, index) => {
-                // Dynamic grid sizing
-                const gridSpans = {
-                  small: "md:col-span-3 lg:col-span-4",
-                  medium: "md:col-span-3 lg:col-span-4",
-                  wide: "md:col-span-6 lg:col-span-8",
-                  large: "md:col-span-6 lg:col-span-8",
-                  tall: "md:col-span-3 lg:col-span-4 md:row-span-2"
-                };
+        {/* Projects Section */}
+        <Section pattern>
+          <SectionHeading 
+            eyebrow="Our Portfolio" 
+            title="Featured Projects" 
+            description="Explore our award-winning work delivered for clients across industries"
+            center={true} 
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {PROJECTS.map((project, index) => (
+              <ProjectCard key={index} project={project} index={index} />
+            ))}
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-12 flex justify-center"
+          >
+            <CTAButton>
+              See All Projects
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </CTAButton>
+          </motion.div>
+        </Section>
 
-                return (
-                  <motion.div
+        {/* Why Choose Us Section */}
+        <Section dark>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">Why Choose Us</span>
+              <h2 className="text-4xl font-bold mt-6 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">Technology expertise that drives business growth</h2>
+              <p className="text-foreground/70 mb-8">
+                At Jason Tech Solutions, we combine technical excellence with strategic thinking to deliver solutions 
+                that not only solve today's challenges but position your business for future success.
+              </p>
+              
+              <div className="space-y-8">
+                {WHY_CHOOSE_US.map((item, index) => (
+                  <motion.div 
                     key={index}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className={`group relative overflow-hidden rounded-2xl ${gridSpans[project.size]}`}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="flex gap-6"
                   >
-                    {/* Background Image with Overlay */}
-                    <div className="absolute inset-0">
-                      <img 
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-60 group-hover:opacity-70 transition-opacity" />
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="absolute inset-0 p-6 flex flex-col justify-end transform transition-transform duration-300">
-                      <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform">
-                        {/* Category Badge */}
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/20 text-primary backdrop-blur-sm mb-3">
-                          {project.category}
-                          {project.featured && (
-                            <span className="ml-2 px-1.5 py-0.5 rounded-md text-xs bg-primary/30">
-                              Featured
-                            </span>
-                          )}
-                        </span>
-                        
-                        {/* Title and Description */}
-                        <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
-                          {project.title}
-                        </h3>
-                        <p className="text-white/80 text-sm mb-4 line-clamp-2 group-hover:line-clamp-none transition-all">
-                          {project.description}
-                        </p>
-                        
-                        {/* Stats or Additional Info */}
-                        {project.stats && (
-                          <div className="flex items-center text-primary/90 text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <BarChart className="w-4 h-4 mr-2" />
-                            {project.stats}
-                          </div>
-                        )}
-                        
-                        {/* CTA Link */}
-                        <div className="flex items-center text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                          <span>View Project</span>
-                          <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-            
-            {/* View All Projects Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-12 flex justify-center"
-            >
-              <CTAButton primary={false}>
-                View All Projects
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </CTAButton>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Enhanced Why Choose Us Section with better visuals */}
-        <section className="py-24 px-4 bg-muted/30" aria-labelledby="why-choose-us-heading">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">Why Choose Us</span>
-                <h2 id="why-choose-us-heading" className="text-4xl font-bold mt-6 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">Technology expertise that drives business growth</h2>
-                <p className="text-foreground/70 mb-8">
-                  At Jason Tech Solutions, we combine technical excellence with strategic thinking to deliver solutions 
-                  that not only solve today's challenges but position your business for future success.
-                </p>
-                
-                <div className="space-y-8">
-                  {WHY_CHOOSE_US.map((item, index) => (
-                    <motion.div 
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.1 }}
-                      className="flex gap-6"
-                    >
-                      <div className="mt-1 bg-primary/20 h-12 w-12 rounded-xl flex items-center justify-center shrink-0" aria-hidden="true">
-                        {item.icon}
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                        <p className="text-foreground/70">{item.description}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-                
-                {/* Added call-to-action */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                  className="mt-10"
-                >
-                  <CTAButton primary>
-                    Our Approach
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </CTAButton>
-                </motion.div>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="relative"
-              >
-                <div className="relative h-96 w-full rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-1">
-                  <motion.div 
-                    className="absolute inset-0 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-blue-500/20 shadow-xl"
-                  >
-                    <img 
-                      src="/api/placeholder/600/400" 
-                      alt="Technology visual representation" 
-                      className="w-full h-full object-cover rounded-xl"
-                    />
-                  </motion.div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Enhanced Testimonials Section with better cards */}
-        <section className="py-24 px-4" aria-labelledby="testimonials-heading">
-          <div className="max-w-7xl mx-auto">
-            <SectionHeading 
-              eyebrow="Testimonials" 
-              title="What Our Clients Say" 
-              description="Don't just take our word for it. Here's what our clients have to say about their experience working with us."
-              center={true} 
-            />
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {TESTIMONIALS.map((testimonial, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: testimonial.delay * 0.5 }}
-                  className="p-8 rounded-2xl bg-secondary/30 backdrop-blur border border-secondary relative group hover:border-primary/30 transition-all hover:shadow-lg"
-                >
-                  <div className="absolute -top-5 left-8 text-5xl text-primary/20" aria-hidden="true">"</div>
-                  <p className="text-foreground/80 mb-6 relative z-10">{testimonial.quote}</p>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                      <img 
-                        src={testimonial.image} 
-                        alt={testimonial.author}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="mt-1 bg-primary/20 h-12 w-12 rounded-xl flex items-center justify-center shrink-0" aria-hidden="true">
+                      {item.icon}
                     </div>
                     <div>
-                      <h4 className="font-semibold">{testimonial.author}</h4>
-                      <p className="text-sm text-foreground/60">{testimonial.position}</p>
+                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                      <p className="text-foreground/70">{item.description}</p>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.4 }}
+                className="mt-10"
+              >
+                <CTAButton primary>
+                  Our Approach
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </CTAButton>
+              </motion.div>
+            </motion.div>
             
-            {/* Added visual call-to-action for more testimonials */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-12 text-center"
+              transition={{ duration: 0.6 }}
+              className="relative"
             >
-              <a href="#" className="inline-flex items-center text-primary font-medium hover:underline">
-                Read more testimonials
-                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </a>
+              <div className="relative h-96 w-full rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-1">
+                <motion.div 
+                  className="absolute inset-0 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-blue-500/20 shadow-xl"
+                >
+                  <img 
+                    src="/api/placeholder/600/400" 
+                    alt="Technology visual representation" 
+                    className="w-full h-full object-cover rounded-xl"
+                  />
+                </motion.div>
+              </div>
             </motion.div>
           </div>
-        </section>
+        </Section>
+
+        {/* Testimonials Section */}
+        <Section>
+          <SectionHeading 
+            eyebrow="Testimonials" 
+            title="What Our Clients Say" 
+            description="Don't just take our word for it. Here's what our clients have to say about their experience working with us."
+            center={true} 
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {TESTIMONIALS.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: testimonial.delay * 0.5 }}
+                className="p-8 rounded-2xl bg-background/50 backdrop-blur border border-secondary/20 relative group hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/10"
+              >
+                <div className="absolute -top-5 left-8 text-5xl text-primary/20" aria-hidden="true">"</div>
+                <p className="text-foreground/80 mb-6 relative z-10">{testimonial.quote}</p>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                    <img 
+                      src={testimonial.image} 
+                      alt={testimonial.author}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold">{testimonial.author}</h4>
+                    <p className="text-sm text-foreground/60">{testimonial.position}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-12 text-center"
+          >
+            <a href="#" className="inline-flex items-center text-primary font-medium hover:underline">
+              Read more testimonials
+              <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </motion.div>
+        </Section>
 
         {/* Contact CTA Section */}
-        <section className="py-24 px-4 bg-secondary/20">
+        <Section dark>
           <div className="max-w-7xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -701,7 +752,7 @@ function Home() {
               </div>
             </motion.div>
           </div>
-        </section>
+        </Section>
 
         {/* Newsletter Section */}
         <Newsletter />
