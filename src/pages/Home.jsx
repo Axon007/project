@@ -1,12 +1,12 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import PageTransition from '../components/PageTransition';
 import Newsletter from '../components/Newsletter';
-import Globe from '../components/Globe';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
-  VideoIcon, Brush, Lightbulb
+  VideoIcon, Brush, Lightbulb, ArrowLeft
 } from "lucide-react";
 import { Smartphone } from "lucide-react";
 
@@ -85,13 +85,12 @@ const createMotionProps = (type, delay = 0) => {
   };
 };
 
-// Section component
+// Section component with cleaner backgrounds but retaining pattern option
 const Section = ({ children, dark = false, pattern = false, className = "", id = null }) => (
   <section 
     id={id}
     className={`py-24 px-4 ${
-      dark ? 'bg-secondary/20' : 
-      pattern ? 'bg-gradient-to-b from-background/90 to-muted/20 relative' : 
+      dark ? 'bg-background' : // Changed from bg-secondary/20
       'bg-background'
     } ${className}`}
     aria-labelledby={id}
@@ -105,12 +104,12 @@ const Section = ({ children, dark = false, pattern = false, className = "", id =
   </section>
 );
 
-// Service card component
+// Service card component with hover-only action and streamlined features
 const ServiceCard = ({ service, index }) => (
   <motion.div
     key={index}
-    {...createMotionProps('fadeInUp', service.delay * 0.3)}
-    className={`${UI.card.base} w-80 flex-shrink-0`}
+    {...createMotionProps('fadeInUp', index * 0.1)}
+    className={`${UI.card.base} group relative`}
   >
     <div className={UI.card.padding}>
       <div className={UI.card.iconContainer}>
@@ -118,17 +117,18 @@ const ServiceCard = ({ service, index }) => (
       </div>
       <h3 className={`text-xl ${UI.text.heading} mb-3`}>{service.title}</h3>
       <p className={`${UI.text.body} mb-6 text-sm`}>{service.description}</p>
-      <div className="space-y-3">
-        {service.features.map((feature, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <BadgeCheck size={16} className={UI.text.accent} />
-            <span className="text-sm text-foreground/80">{feature}</span>
-          </div>
-        ))}
-      </div>
-      <div className="mt-6 pt-4 border-t border-secondary/20 flex items-center text-primary font-medium">
-        <span>Learn more</span>
-        <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+      
+      {/* Features as paragraph instead of list */}
+      <p className={`${UI.text.body} text-sm mb-6`}>
+        Offering {service.features.join(", ")}.
+      </p>
+      
+      {/* Hidden learn more that appears on hover */}
+      <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center text-primary font-medium">
+          <span>Learn more</span>
+          <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+        </div>
       </div>
     </div>
   </motion.div>
@@ -199,6 +199,185 @@ const ProjectCard = ({ project, index }) => (
     <div className={`absolute -inset-px ${UI.gradients.hover} opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300 pointer-events-none`}></div>
   </motion.div>
 );
+
+// Enhanced Interactive Projects List Component
+const ProjectsList = ({ projects }) => {
+  const [activeProject, setActiveProject] = useState(0);
+  
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* Projects List - Left Side */}
+      <div className="lg:col-span-4 lg:border-r border-secondary/10 lg:pr-8">
+        <nav className="space-y-1" aria-label="Project Navigation">
+          {projects.map((project, index) => (
+            <motion.button
+              key={index}
+              onClick={() => setActiveProject(index)}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05, duration: 0.4 }}
+              className={`w-full text-left py-4 px-4 rounded-xl flex items-center justify-between group transition-all ${
+                activeProject === index 
+                  ? 'bg-primary/10 text-primary shadow-sm' 
+                  : 'hover:bg-secondary/5'
+              }`}
+            >
+              <div className="flex items-center">
+                <span className={`h-2 w-2 rounded-full mr-3 ${
+                  activeProject === index ? 'bg-primary' : 'bg-secondary/30 group-hover:bg-primary/50'
+                } transition-colors`}></span>
+                <div>
+                  <h3 className={`font-medium ${
+                    activeProject === index ? 'text-primary' : 'text-foreground/80 group-hover:text-primary/80'
+                  } transition-colors`}>
+                    {project.title}
+                  </h3>
+                  <p className="text-xs text-foreground/50 mt-1">{project.category}</p>
+                </div>
+              </div>
+              <ArrowRight
+                className={`w-4 h-4 transform transition-all ${
+                  activeProject === index ? 'text-primary translate-x-0' : 'opacity-0 -translate-x-4 group-hover:opacity-40 group-hover:translate-x-0'
+                }`}
+              />
+            </motion.button>
+          ))}
+        </nav>
+        
+        <div className="hidden lg:block mt-8 pt-8 border-t border-secondary/10">
+          <div className="flex items-center justify-between">
+            <button 
+              onClick={() => setActiveProject(prev => (prev === 0 ? projects.length - 1 : prev - 1))}
+              className="p-2 rounded-full hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+              aria-label="Previous project"
+            >
+              <ArrowLeft size={20} />
+            </button>
+            <p className="text-sm text-foreground/60">
+              {activeProject + 1} of {projects.length}
+            </p>
+            <button 
+              onClick={() => setActiveProject(prev => (prev === projects.length - 1 ? 0 : prev + 1))}
+              className="p-2 rounded-full hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+              aria-label="Next project"
+            >
+              <ArrowRight size={20} />
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Project Details - Right Side with immersive design */}
+      <div className="lg:col-span-8">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeProject}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="rounded-2xl overflow-hidden shadow-xl group relative"
+          >
+            {/* Full-height image with text overlay */}
+            <div className="relative h-[600px] overflow-hidden">
+              {/* Image with subtle zoom effect on hover */}
+              <div className="absolute inset-0 w-full h-full">
+                <img 
+                  src={projects[activeProject].image}
+                  alt={projects[activeProject].title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+              
+              {/* Gradient overlays for better text visibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
+              
+              {/* Category badge */}
+              <div className="absolute top-6 left-6 z-20">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/40 text-white backdrop-blur-sm border border-primary/20">
+                  {projects[activeProject].category}
+                </span>
+              </div>
+              
+              {/* Featured badge */}
+              {projects[activeProject].featured && (
+                <div className="absolute top-6 right-6 z-20">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/40 text-white backdrop-blur-sm border border-yellow-500/20">
+                    <BadgeCheck className="w-3 h-3 mr-1" />
+                    Featured
+                  </span>
+                </div>
+              )}
+              
+              {/* Content overlay - positioned at the bottom */}
+              <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
+                {/* Project title with animated underline */}
+                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-primary/90 transition-colors">
+                  <span className="relative">
+                    {projects[activeProject].title}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </h3>
+                
+                {/* Project description */}
+                <p className="text-white/90 mb-6 max-w-lg text-lg">
+                  {projects[activeProject].description}
+                </p>
+                
+                {/* Technologies used */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'].slice(0, 3 + Math.floor(Math.random() * 2)).map((tech, i) => (
+                    <span key={i} className="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-md text-sm text-white">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                
+                {/* Stats and CTA button in a row */}
+                <div className="flex items-center justify-between">
+                  {projects[activeProject].stats && (
+                    <div className="flex items-center text-primary/90 text-sm bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm">
+                      <BarChart className="w-4 h-4 mr-2" />
+                      {projects[activeProject].stats}
+                    </div>
+                  )}
+                  
+                  <button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center group/btn">
+                    View Project
+                    <ArrowRight size={16} className="ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Mobile Navigation Controls */}
+        <div className="flex items-center justify-between mt-6 lg:hidden">
+          <button 
+            onClick={() => setActiveProject(prev => (prev === 0 ? projects.length - 1 : prev - 1))}
+            className="p-2 rounded-full hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+            aria-label="Previous project"
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <p className="text-sm text-foreground/60">
+            {activeProject + 1} of {projects.length}
+          </p>
+          <button 
+            onClick={() => setActiveProject(prev => (prev === projects.length - 1 ? 0 : prev + 1))}
+            className="p-2 rounded-full hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
+            aria-label="Next project"
+          >
+            <ArrowRight size={20} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Section heading component
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
@@ -484,16 +663,18 @@ function Home() {
             <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
           </section>
 
-          {/* Partnerships Section */}
-          <section className="relative py-16 px-4">
-            <div className="relative z-10 max-w-7xl mx-auto bg-secondary/20 rounded-2xl backdrop-blur-sm">
+          {/* Partnerships Section - Background overlay removed */}
+          <section className="relative py-12 px-4">
+            <div className="relative z-10 max-w-7xl mx-auto">
               <motion.div 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                className="text-center mb-12"
+                className="text-center mb-8"
               >
-                <h2 id="partnerships-heading" className="text-primary/80 text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">TRUSTED BY INDUSTRY LEADERS</h2>
+                <h2 id="partnerships-heading" className="text-primary/80 text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
+                  TRUSTED BY INDUSTRY LEADERS
+                </h2>
               </motion.div>
               
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
@@ -505,10 +686,13 @@ function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1, duration: 0.4 }}
                     className="flex items-center justify-center"
-                    whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                   >
-                    <div className="p-4 bg-secondary/50 backdrop-blur rounded-xl hover:shadow-md transition-all duration-300 w-full flex justify-center">
-                      <img src={logo} alt={`Partner company ${index + 1}`} className="h-12 opacity-50 hover:opacity-100 transition-opacity" />
+                    <div className="p-4 w-full flex justify-center">
+                      <img 
+                        src={logo} 
+                        alt={`Partner company ${index + 1}`} 
+                        className="h-12 opacity-80" 
+                      />
                     </div>
                   </motion.div>
                 ))}
@@ -528,49 +712,14 @@ function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SERVICES.map((service, index) => (
-              <motion.div
-                key={index}
-                {...createMotionProps('fadeInUp', index * 0.1)}
-                className={`${UI.card.base}`}
-              >
-                <div className={UI.card.padding}>
-                  <div className={UI.card.iconContainer}>
-                    {service.icon}
-                  </div>
-                  <h3 className={`text-xl ${UI.text.heading} mb-3`}>{service.title}</h3>
-                  <p className={`${UI.text.body} mb-6 text-sm`}>{service.description}</p>
-                  <div className="space-y-3">
-                    {service.features.map((feature, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <BadgeCheck size={16} className={UI.text.accent} />
-                        <span className="text-sm text-foreground/80">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-secondary/20 flex items-center text-primary font-medium">
-                    <span>Learn more</span>
-                    <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </motion.div>
+              <ServiceCard key={index} service={service} index={index} />
             ))}
           </div>
           
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-12 flex justify-center"
-          >
-            <CTAButton primary={false}>
-              View All Services
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </CTAButton>
-          </motion.div>
+ 
         </Section>
 
-        {/* Projects Section */}
+        {/* Projects Section Redesign with Interactive List */}
         <Section pattern>
           <SectionHeading 
             eyebrow="Our Portfolio" 
@@ -579,34 +728,43 @@ function Home() {
             center={true} 
           />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PROJECTS.map((project, index) => (
-              <ProjectCard key={index} project={project} index={index} />
-            ))}
+          <div className="mt-12">
+            {/* Interactive Projects Component */}
+            <ProjectsList projects={PROJECTS} />
           </div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-12 flex justify-center"
-          >
-            <CTAButton>
-              See All Projects
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </CTAButton>
-          </motion.div>
         </Section>
 
-        {/* Why Choose Us Section */}
+        {/* Why Choose Us Section with image on the left side */}
         <Section dark>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Image now positioned on the left side */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              className="relative order-2 lg:order-1"
+            >
+              <div className="relative h-96 w-full rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-1">
+                <motion.div 
+                  className="absolute inset-0 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-blue-500/20 shadow-xl"
+                >
+                  <img 
+                    src="/api/placeholder/600/400" 
+                    alt="Technology visual representation" 
+                    className="w-full h-full object-cover rounded-xl"
+                  />
+                </motion.div>
+              </div>
+            </motion.div>
+            
+            {/* Text content now positioned on the right side */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="order-1 lg:order-2"
             >
               <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">Why Choose Us</span>
               <h2 className="text-4xl font-bold mt-6 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">Technology expertise that drives business growth</h2>
@@ -634,39 +792,6 @@ function Home() {
                     </div>
                   </motion.div>
                 ))}
-              </div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.4 }}
-                className="mt-10"
-              >
-                <CTAButton primary>
-                  Our Approach
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </CTAButton>
-              </motion.div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative"
-            >
-              <div className="relative h-96 w-full rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-1">
-                <motion.div 
-                  className="absolute inset-0 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-blue-500/20 shadow-xl"
-                >
-                  <img 
-                    src="/api/placeholder/600/400" 
-                    alt="Technology visual representation" 
-                    className="w-full h-full object-cover rounded-xl"
-                  />
-                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -715,7 +840,7 @@ function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-12 text-center"
+            className="mt-8 text-center"
           >
             <a href="#" className="inline-flex items-center text-primary font-medium hover:underline">
               Read more testimonials
@@ -724,38 +849,7 @@ function Home() {
           </motion.div>
         </Section>
 
-        {/* Contact CTA Section */}
-        <Section dark>
-          <div className="max-w-7xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="max-w-2xl mx-auto"
-            >
-              <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-                Ready to transform your business?
-              </h2>
-              <p className="text-foreground/70 mb-8">
-                Let's discuss how our technology solutions can help you achieve your business goals.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <CTAButton primary>
-                  Schedule a Call
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </CTAButton>
-                <CTAButton primary={false}>
-                  View Services
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </CTAButton>
-              </div>
-            </motion.div>
-          </div>
-        </Section>
 
-        {/* Newsletter Section */}
-        <Newsletter />
       </div>
     </PageTransition>
   );
