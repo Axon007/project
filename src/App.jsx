@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import WebDevelopment from './pages/WebDevelopment';
-import GameDevelopment from './pages/AIServices';
+import GamingDevServices from './pages/AIServices';
 import LogoDesign from './pages/LogoDesign';
 import VideoEditing from './pages/VideoEditing';
 
@@ -49,9 +49,9 @@ function AppContent() {
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home theme={theme} toggleTheme={toggleTheme} />} />
           <Route path="/web-development" element={<WebDevelopment />} />
-          <Route path="/game-development" element={<GameDevelopment />} />
+          <Route path="/game-development" element={<GamingDevServices theme={theme} toggleTheme={toggleTheme} />} />
           <Route path="/logo-design" element={<LogoDesign />} />
           <Route path="/video-editing" element={<VideoEditing />} />
         </Routes>

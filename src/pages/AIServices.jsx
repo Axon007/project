@@ -211,10 +211,9 @@ const KEY_FEATURES = [
   }
 ];
 
-const GamingDevServices = () => {
+const GamingDevServices = ({ theme, toggleTheme }) => {
   const [scrollY, setScrollY] = useState(0);
   const [activeProject, setActiveProject] = useState(null);
-  const [darkMode, setDarkMode] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   // For parallax effects
@@ -226,10 +225,8 @@ const GamingDevServices = () => {
   const servicesRef = useRef(null);
   const projectsRef = useRef(null);
   
-  // Toggle color mode
-  const toggleColorMode = () => {
-    setDarkMode(!darkMode);
-  };
+  // Derive darkMode from theme prop
+  const darkMode = theme === 'dark';
   
   // Memoized scroll handler for better performance
   const handleScroll = useCallback(() => {
@@ -300,150 +297,106 @@ const GamingDevServices = () => {
           />
         ))}
       </div>
-      
-      {/* Header with navigation and theme toggle */}
-      <header className={`fixed top-0 left-0 w-full z-50 ${darkMode ? 'bg-gray-950/80' : 'bg-white/80'} backdrop-blur-lg transition-colors duration-500 border-b ${colorMode.border}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <div className="flex items-center space-x-2">
-              <Gamepad className={`w-6 h-6 ${darkMode ? 'text-blue-400' : 'text-blue-600'} transition-colors duration-500`} />
-              <span className={`text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${colorMode.primary}`}>
-                GameCraft Studio
-              </span>
-            </div>
-            
-            {/* Desktop navigation */}
-            <nav className="hidden md:block">
-              <ul className="flex space-x-8">
-                {[
-                  { name: "Home", action: () => window.scrollTo(0, 0) },
-                  { name: "Services", action: () => scrollToSection(servicesRef) },
-                  { name: "Portfolio", action: () => scrollToSection(projectsRef) },
-                  { name: "Process", action: null },
-                  { name: "Contact", action: null }
-                ].map((item, idx) => (
-                  <li key={idx}>
-                    <button 
-                      onClick={item.action}
-                      className={`${colorMode.textMuted} hover:${colorMode.accent} px-3 py-2 rounded-lg transition-colors duration-300 ${colorMode.hover}`}
-                    >
-                      {item.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            
-            {/* Right side actions */}
-            <div className="flex items-center space-x-4">
-              {/* Theme toggle */}
-              <button 
-                onClick={toggleColorMode}
-                className={`p-2 rounded-full ${darkMode ? 'bg-gray-800 text-yellow-300' : 'bg-gray-100 text-blue-900'} transition-colors duration-300`}
-                aria-label="Toggle color mode"
-              >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </button>
-              
-              {/* CTA Button */}
-              <button className={`hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r ${colorMode.primary} text-white font-medium hover:shadow-lg transition-shadow duration-300`}>
-                Get Started
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              
-              {/* Mobile menu button */}
-              <button 
-                className="md:hidden p-2 rounded-lg focus:outline-none"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              >
-                <div className="w-6 h-0.5 bg-current mb-1.5 transition-transform duration-300 transform-gpu" 
-                     style={{ transform: isMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none' }} />
-                <div className="w-6 h-0.5 bg-current mb-1.5 transition-opacity duration-300"
-                     style={{ opacity: isMenuOpen ? 0 : 1 }} />
-                <div className="w-6 h-0.5 bg-current transition-transform duration-300 transform-gpu"
-                     style={{ transform: isMenuOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none' }} />
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className={`md:hidden ${darkMode ? 'bg-gray-900' : 'bg-white'} border-b ${colorMode.border}`}
-            >
-              <div className="px-4 py-3 space-y-1">
-                {[
-                  { name: "Home", action: () => window.scrollTo(0, 0) },
-                  { name: "Services", action: () => scrollToSection(servicesRef) },
-                  { name: "Portfolio", action: () => scrollToSection(projectsRef) },
-                  { name: "Process", action: null },
-                  { name: "Contact", action: null }
-                ].map((item, idx) => (
-                  <button 
-                    key={idx}
-                    onClick={item.action}
-                    className={`block w-full text-left px-3 py-2 rounded-lg ${colorMode.textMuted} hover:${colorMode.accent} transition-colors duration-300 ${colorMode.hover}`}
-                  >
-                    {item.name}
-                  </button>
-                ))}
-                <button className={`w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r ${colorMode.primary} text-white font-medium`}>
-                  Get Started
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+
 
       {/* Content Container */}
-      <div className="relative z-10 pt-16">
-        {/* Hero Section with parallax game visual */}
+      <div className="relative z-10">
+        {/* Hero Section with improved animations */}
         <motion.section 
           style={{ y: heroY, opacity: heroOpacity }}
           className="min-h-screen flex flex-col justify-center items-center text-center px-4 md:px-8 py-20 relative overflow-hidden"
         >
-          {/* 3D Game controller animation */}
+          {/* 3D Game controller animation - IMPROVED with floating particles */}
           <div className="absolute top-32 right-10 w-96 h-96 hidden lg:block">
             <motion.div
-              initial={{ rotateY: -30, rotateZ: 5 }}
-              animate={{ rotateY: 30, rotateZ: -5 }}
+              initial={{ rotateY: -30, rotateZ: 5, scale: 1 }}
+              animate={{ 
+                rotateY: 30, 
+                rotateZ: -5,
+                scale: [1, 1.05, 1],
+                filter: [
+                  "drop-shadow(0 0 15px rgba(59,130,246,0.4))",
+                  "drop-shadow(0 0 25px rgba(99,102,241,0.6))",
+                  "drop-shadow(0 0 15px rgba(59,130,246,0.4))"
+                ]
+              }}
               transition={{ 
                 repeat: Infinity, 
                 repeatType: "reverse", 
                 duration: 8,
-                ease: "easeInOut"
+                ease: "easeInOut",
+                times: [0, 0.5, 1]
               }}
+              className="relative"
             >
+              {/* Enhanced glow effect */}
+              <motion.div 
+                className="absolute inset-0 blur-2xl opacity-30 rounded-full -z-10"
+                animate={{
+                  background: [
+                    "radial-gradient(circle, rgba(59,130,246,0.5) 0%, rgba(59,130,246,0) 70%)",
+                    "radial-gradient(circle, rgba(99,102,241,0.5) 0%, rgba(99,102,241,0) 70%)",
+                    "radial-gradient(circle, rgba(59,130,246,0.5) 0%, rgba(59,130,246,0) 70%)"
+                  ]
+                }}
+                transition={{
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  duration: 12,
+                  ease: "easeInOut"
+                }}
+              />
+              
+              {/* Floating particles around controller */}
+              {[...Array(8)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className={`absolute rounded-full ${darkMode ? 'bg-blue-400' : 'bg-blue-500'} z-20`}
+                  style={{
+                    width: Math.random() * 6 + 3,
+                    height: Math.random() * 6 + 3,
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                  }}
+                  animate={{
+                    x: [0, Math.random() * 30 - 15],
+                    y: [0, Math.random() * 30 - 15],
+                    opacity: [0.4, 0.8, 0.4],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: Math.random() * 3 + 2,
+                    ease: "easeInOut"
+                  }}
+                />
+              ))}
+              
               <img 
                 src={darkMode 
-                  ? "https://www.pngmart.com/files/22/PS5-Controller-PNG-Image.png" 
-                  : "https://www.pngmart.com/files/22/PS5-Controller-White-Background-PNG.png"}
+                  ? "https://cdn.pixabay.com/photo/2012/04/13/14/52/game-controller-32587_1280.png" 
+                  : "https://cdn.pixabay.com/photo/2012/04/13/14/52/game-controller-32587_1280.png"
+                }
                 alt="Game controller" 
                 className="w-full h-full object-contain drop-shadow-xl" 
                 style={{
                   filter: darkMode 
-                    ? "drop-shadow(0 0 25px rgba(59,130,246,0.5))" 
-                    : "drop-shadow(0 0 15px rgba(37,99,235,0.3))"
+                    ? "drop-shadow(0 0 25px rgba(59,130,246,0.5)) brightness(0.9)" 
+                    : "drop-shadow(0 0 15px rgba(37,99,235,0.3))",
                 }}
               />
             </motion.div>
           </div>
 
-          {/* Abstract gaming graphic elements */}
+          {/* Abstract gaming graphic elements - IMPROVED with better animation */}
           <div className="absolute left-10 bottom-32 w-64 h-64 hidden lg:block pointer-events-none">
             <motion.div
               animate={{ 
                 rotateZ: [0, 10, -10, 0], 
-                y: [0, -10, 10, 0] 
+                y: [0, -10, 10, 0],
+                filter: darkMode 
+                  ? ["brightness(1)", "brightness(1.2)", "brightness(1)"] 
+                  : ["brightness(1)", "brightness(1.1)", "brightness(1)"]
               }}
               transition={{ 
                 repeat: Infinity, 
@@ -453,8 +406,29 @@ const GamingDevServices = () => {
               }}
             >
               <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                <path fill={darkMode ? "rgba(59, 130, 246, 0.15)" : "rgba(37, 99, 235, 0.1)"}
-                  d="M40.9,-68.5C52.9,-62.2,62.6,-51.1,69.7,-38.3C76.8,-25.5,81.3,-11,78.9,2.1C76.6,15.3,67.4,27.2,58.1,38.6C48.9,50,39.6,61,27.7,68.4C15.9,75.8,1.5,79.5,-13.6,78.6C-28.8,77.7,-44.5,72.2,-57.8,63.3C-71.1,54.4,-82,42.2,-87.5,27.9C-93,13.5,-93.1,-3,-88.4,-17.3C-83.7,-31.6,-74.1,-43.7,-62.2,-50.7C-50.3,-57.8,-36,-60,-24,-63.8C-12.1,-67.7,-2.1,-73.2,8.2,-77.4C18.6,-81.6,29.9,-74.7,40.9,-68.5Z" transform="translate(100 100)" />
+                <defs>
+                  <linearGradient id="blob-gradient" gradientTransform="rotate(90)">
+                    <stop offset="0%" stopColor={darkMode ? "#3b82f6" : "#2563eb"} stopOpacity="0.2" />
+                    <stop offset="100%" stopColor={darkMode ? "#6366f1" : "#4f46e5"} stopOpacity="0.1" />
+                  </linearGradient>
+                </defs>
+                <motion.path 
+                  fill="url(#blob-gradient)"
+                  animate={{
+                    d: [
+                      "M40.9,-68.5C52.9,-62.2,62.6,-51.1,69.7,-38.3C76.8,-25.5,81.3,-11,78.9,2.1C76.6,15.3,67.4,27.2,58.1,38.6C48.9,50,39.6,61,27.7,68.4C15.9,75.8,1.5,79.5,-13.6,78.6C-28.8,77.7,-44.5,72.2,-57.8,63.3C-71.1,54.4,-82,42.2,-87.5,27.9C-93,13.5,-93.1,-3,-88.4,-17.3C-83.7,-31.6,-74.1,-43.7,-62.2,-50.7C-50.3,-57.8,-36,-60,-24,-63.8C-12.1,-67.7,-2.1,-73.2,8.2,-77.4C18.6,-81.6,29.9,-74.7,40.9,-68.5Z",
+                      "M46.7,-79.8C59.8,-72.1,69,-58.1,75.6,-43.7C82.2,-29.4,86.2,-14.7,85.6,-0.3C85.1,14,80,28.1,72.4,40.9C64.8,53.8,54.5,65.6,41.6,71.9C28.6,78.1,14.3,79,0.2,78.6C-13.9,78.3,-27.8,76.8,-40.3,70.5C-52.8,64.2,-63.9,53.2,-71.4,40.4C-79,27.5,-83,13.8,-83.9,-0.5C-84.7,-14.7,-82.5,-29.5,-75.3,-42C-68.1,-54.5,-56,-64.7,-42,-73.8C-29.2,-82.7,-14.6,-88.8,0.8,-90.1C16.1,-91.4,32.2,-87.8,46.7,-79.8Z"
+                    ],
+                    rotateZ: [0, 10, 0]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: "mirror",
+                    duration: 20,
+                    ease: "easeInOut"
+                  }}
+                  transform="translate(100 100)" 
+                />
               </svg>
             </motion.div>
           </div>
@@ -462,44 +436,105 @@ const GamingDevServices = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="max-w-4xl mx-auto relative z-10"
           >
-            <div className={`inline-block mb-4 px-4 py-1.5 rounded-full border backdrop-blur-md
-              ${darkMode 
-                ? "bg-gradient-to-r from-blue-600/30 to-indigo-600/30 border-blue-500/20" 
-                : "bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-200"}`
-            }>
-              <p className={`text-sm font-medium flex items-center gap-2 ${darkMode ? 'text-blue-300' : 'text-blue-700'}`}>
+            {/* Improved floating badge with animation */}
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              className={`inline-block mb-6 px-4 py-1.5 rounded-full border backdrop-blur-md
+                ${darkMode 
+                  ? "bg-gradient-to-r from-blue-600/30 to-indigo-600/30 border-blue-500/20" 
+                  : "bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-200"}`
+              }
+            >
+              <motion.p 
+                animate={{ 
+                  color: darkMode 
+                    ? ['#93c5fd', '#818cf8', '#93c5fd'] 
+                    : ['#1d4ed8', '#4f46e5', '#1d4ed8']
+                }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="text-sm font-medium flex items-center gap-2"
+              >
                 <span className={`w-2 h-2 rounded-full animate-pulse ${darkMode ? 'bg-blue-400' : 'bg-blue-600'}`}></span>
                 Professional Game Development
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
             
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className={`block bg-clip-text text-transparent bg-gradient-to-r 
-                ${darkMode 
-                  ? "from-blue-300 via-indigo-400 to-purple-500" 
-                  : "from-blue-600 via-indigo-600 to-purple-700"}`
-              }>
-                Crafting Immersive
-              </span>
-              <span className="block mt-2">Gaming Experiences</span>
-            </h1>
-            
-            <p className={`mb-10 max-w-2xl mx-auto text-xl leading-relaxed ${colorMode.textMuted}`}>
-              From concept to launch, bringing your gaming vision to life with cutting-edge technology and creative excellence.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center gap-6 items-center">
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className={`group relative px-8 py-4 bg-gradient-to-r ${colorMode.primary} rounded-full font-medium text-lg shadow-lg shadow-blue-900/30 text-white flex items-center gap-3`}
+            {/* Enhanced title with staggered animation */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              <motion.h1 
+                className="text-6xl md:text-7xl font-bold mb-6 leading-tight"
               >
-                Start Your Project
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                <span className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <motion.span 
+                  initial={{ y: 40, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.8 }}
+                  className={`block bg-clip-text text-transparent bg-gradient-to-r 
+                    ${darkMode 
+                      ? "from-blue-300 via-indigo-400 to-purple-500" 
+                      : "from-blue-600 via-indigo-600 to-purple-700"}`
+                  }
+                >
+                  Crafting Immersive
+                </motion.span>
+                <motion.span 
+                  initial={{ y: 40, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="block mt-2 relative"
+                >
+                  Gaming Experiences
+                  {/* Underline animation */}
+                  <motion.span
+                    initial={{ width: "0%" }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 1, delay: 1.2 }}
+                    className={`absolute -bottom-2 left-0 h-1 rounded-full ${
+                      darkMode ? "bg-blue-500/30" : "bg-blue-600/20"
+                    }`}
+                  />
+                </motion.span>
+              </motion.h1>
+            </motion.div>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className={`mb-10 max-w-2xl mx-auto text-xl leading-relaxed ${colorMode.textMuted}`}
+            >
+              From concept to launch, bringing your gaming vision to life with cutting-edge technology and creative excellence.
+            </motion.p>
+            
+            {/* Improved button animations */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="flex flex-col sm:flex-row justify-center gap-6 items-center"
+            >
+              <motion.button 
+                whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(37, 99, 235, 0.3)" }}
+                whileTap={{ scale: 0.98 }}
+                className={`group relative px-8 py-4 bg-gradient-to-r ${colorMode.primary} rounded-full font-medium text-lg shadow-lg shadow-blue-900/30 text-white flex items-center gap-3 overflow-hidden`}
+              >
+                <motion.span 
+                  className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                />
+                <span className="relative z-10">Start Your Project</span>
+                <motion.span
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="relative z-10"
+                >
+                  <ArrowRight className="w-5 h-5" />
+                </motion.span>
               </motion.button>
               
               <motion.button 
@@ -511,36 +546,71 @@ const GamingDevServices = () => {
                     : "border-blue-300 hover:bg-blue-50"}`
                 }
               >
-                <Gamepad className="w-5 h-5" />
+                <motion.div
+                  animate={{ rotate: [0, 20, 0, -20, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+                >
+                  <Gamepad className="w-5 h-5" />
+                </motion.div>
                 View Game Portfolio
               </motion.button>
-            </div>
+            </motion.div>
 
-            {/* Gaming platforms */}
-            <div className="mt-16 flex flex-wrap justify-center items-center gap-5">
-              {[
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/PlayStation_logo.svg/1280px-PlayStation_logo.svg.png",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/1280px-Xbox_one_logo.svg.png",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Nintendo_Switch_logo%2C_square.png/768px-Nintendo_Switch_logo%2C_square.png",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Apple_logo_white.svg/505px-Apple_logo_white.svg.png",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Android_logo_2019.png/800px-Android_logo_2019.png"
-              ].map((logo, index) => (
-                <img 
-                  key={index} 
-                  src={logo} 
-                  alt={`Gaming platform ${index}`} 
-                  className={`h-6 md:h-8 transition-opacity
-                    ${darkMode ? "opacity-50 hover:opacity-100" : "opacity-40 hover:opacity-80"}`
+            {/* Gaming platforms with stagger animation */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="mt-16"
+            >
+              <motion.p 
+                className={`text-sm mb-4 ${colorMode.textMuted}`}
+              >
+                Available Across Popular Platforms
+              </motion.p>
+              <motion.div 
+                className="flex flex-wrap justify-center items-center gap-5"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.1
+                    }
                   }
-                  style={{
-                    filter: !darkMode && index !== 4 && index !== 5 ? "invert(0.7)" : "none"
-                  }}
-                />
-              ))}
-            </div>
+                }}
+                initial="hidden"
+                animate="show"
+              >
+                {[
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/PlayStation_logo.svg/1280px-PlayStation_logo.svg.png",
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Xbox_one_logo.svg/1280px-Xbox_one_logo.svg.png",
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Nintendo_Switch_logo%2C_square.png/768px-Nintendo_Switch_logo%2C_square.png",
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png",
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Apple_logo_white.svg/505px-Apple_logo_white.svg.png",
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Android_logo_2019.png/800px-Android_logo_2019.png"
+                ].map((logo, index) => (
+                  <motion.img 
+                    key={index} 
+                    variants={{
+                      hidden: { y: 20, opacity: 0 },
+                      show: { y: 0, opacity: 1 }
+                    }}
+                    whileHover={{ scale: 1.2, rotate: 5 }}
+                    src={logo} 
+                    alt={`Gaming platform ${index}`} 
+                    className={`h-6 md:h-8 transition-all duration-300
+                      ${darkMode ? "opacity-50 hover:opacity-100" : "opacity-40 hover:opacity-80"}`
+                    }
+                    style={{
+                      filter: !darkMode && index !== 4 && index !== 5 ? "invert(0.7)" : "none"
+                    }}
+                  />
+                ))}
+              </motion.div>
+            </motion.div>
 
-            {/* Animated mouse scroll */}
+            {/* Enhanced scroll indicator with pulse effect */}
             <motion.div 
               animate={{ 
                 y: [0, 10, 0],
@@ -554,6 +624,16 @@ const GamingDevServices = () => {
             >
               <motion.div 
                 className={`w-6 h-10 border-2 rounded-full flex justify-center p-1 ${darkMode ? 'border-gray-400' : 'border-gray-600'}`}
+                animate={{
+                  boxShadow: darkMode
+                    ? ['0 0 0px rgba(255,255,255,0)', '0 0 10px rgba(255,255,255,0.3)', '0 0 0px rgba(255,255,255,0)']
+                    : ['0 0 0px rgba(0,0,0,0)', '0 0 10px rgba(0,0,0,0.2)', '0 0 0px rgba(0,0,0,0)']
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatType: "loop"
+                }}
               >
                 <motion.div 
                   animate={{ y: [0, 12, 0] }}
@@ -564,7 +644,7 @@ const GamingDevServices = () => {
                     ease: "easeInOut"
                   }}
                   className={`w-1.5 h-1.5 rounded-full ${darkMode ? 'bg-white' : 'bg-gray-800'}`}
-                ></motion.div>
+                />
               </motion.div>
               <p className={`text-xs mt-2 text-center ${colorMode.textMuted}`}>Scroll to explore</p>
             </motion.div>
@@ -1097,7 +1177,7 @@ const GamingDevServices = () => {
             <div className="text-center">
               <motion.button 
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 98 }}
                 className={`group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-medium rounded-lg shadow-lg
                   ${darkMode
                     ? 'bg-gradient-to-r from-blue-600/80 to-indigo-600/80 shadow-blue-900/20 text-white'
@@ -1248,73 +1328,7 @@ const GamingDevServices = () => {
           </motion.div>
         </section>
 
-        {/* Footer with gaming theme */}
-        <footer className={`py-16 px-4 md:px-8 border-t relative
-          ${darkMode ? 'border-gray-800/50' : 'border-gray-200'}`
-        }>
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-              <div>
-                <div className={`text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${colorMode.primary} mb-4 flex items-center gap-2`}>
-                  <Gamepad className="w-6 h-6" />
-                  GameCraft Studio
-                </div>
-                <p className={`mb-6 ${colorMode.textMuted}`}>Creating immersive gaming experiences that players love</p>
-                <div className="flex space-x-4">
-                  {[
-                    <LucideGithub className="w-5 h-5" />,
-                    <Globe className="w-5 h-5" />,
-                    <Briefcase className="w-5 h-5" />
-                  ].map((icon, idx) => (
-                    <a 
-                      key={idx}
-                      href="#" 
-                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors
-                        ${darkMode 
-                          ? 'bg-gray-800/60 hover:bg-blue-900/40'
-                          : 'bg-gray-100 hover:bg-blue-50'
-                        }`
-                      }
-                    >
-                      {icon}
-                    </a>
-                  ))}
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-bold mb-4">Services</h3>
-                <ul className="space-y-2">
-                  {["Game Development", "Game Design", "Unity Development", "Unreal Development", "Mobile Games", "VR/AR Experiences"].map((item, i) => (
-                    <li key={i}>
-                      <a href="#" className={`transition-colors ${colorMode.textMuted} hover:${colorMode.accent}`}>{item}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-bold mb-4">Get in Touch</h3>
-                <p className={`mb-4 ${colorMode.textMuted}`}>Interested in working together? Schedule a discovery call to discuss your game project.</p>
-                <button className={`px-5 py-2 rounded-lg transition-colors
-                  ${darkMode 
-                    ? 'bg-blue-600/20 text-blue-400 hover:bg-blue-600/30'
-                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`
-                }>
-                  Contact Us
-                </button>
-              </div>
-            </div>
-            
-            <div className={`border-t pt-8 text-center text-sm
-              ${darkMode 
-                ? 'border-gray-800/50 text-gray-500'
-                : 'border-gray-200 text-gray-600'}`
-            }>
-              <p>© {new Date().getFullYear()} GameCraft Studio. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
+
       </div>
     </div>
   );
