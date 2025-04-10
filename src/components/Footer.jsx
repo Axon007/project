@@ -68,13 +68,17 @@ const FooterWithNewsletter = ({
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-12">
           {/* Company Info - full width on smallest screens */}
           <div className="col-span-2 md:col-span-2 space-y-5 md:space-y-6">
-            <div className="flex items-center">
-              <div className="h-8 w-8 md:h-10 md:w-10 rounded-xl bg-primary/20 flex items-center justify-center mr-2 md:mr-3">
-                <span className="text-primary font-bold text-lg md:text-xl">J</span>
+            <div>
+              {/* Larger logo display without navigation */}
+              <div className="inline-block">
+                <span
+                  className="relative px-4 py-2 font-bold text-xl md:text-2xl lg:text-3xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500 transition-all duration-300
+                    before:absolute before:inset-0 before:border-2 before:border-primary/30 before:rounded-lg
+                    before:transform before:transition-transform before:duration-300 hover:before:scale-105"
+                >
+                  JASON
+                </span>
               </div>
-              <span className="font-bold text-lg md:text-xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-                Jason Tech Solutions
-              </span>
             </div>
             <p className="text-foreground/70 text-xs md:text-sm leading-relaxed max-w-md">
               Empowering enterprises with cutting-edge technology solutions for the digital era. 
