@@ -329,7 +329,7 @@ function Navbar({ theme, toggleTheme }) {
                   JASON
                 </motion.span>
               </Link>
-            </div>
+            </div> 
 
             {/* Desktop Navigation */}
             <motion.div 

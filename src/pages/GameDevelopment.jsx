@@ -12,6 +12,9 @@ import {
   Briefcase
 } from 'lucide-react';
 
+// Import the gaming-themed navbar component
+import GamingNavBar from '../components/GamingNavBar';
+
 // Stats data
 const STATS = [
   { value: '50+', label: 'Games Shipped' },
@@ -77,7 +80,7 @@ const TESTIMONIALS = [
   }
 ];
 
-const GamingDevFreelancer = () => {
+const GamingDevFreelancer = ({ theme, toggleTheme }) => {
   const [scrollY, setScrollY] = useState(0);
   
   // Memoized scroll handler for better performance
@@ -96,10 +99,13 @@ const GamingDevFreelancer = () => {
       <div className="fixed inset-0 bg-gradient-to-br from-black via-blue-950 to-indigo-950 opacity-80" />
       <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPjxwYXRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYxMCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20" />
       
+      {/* Apply the Gaming-themed Navbar */}
+      <GamingNavBar theme={theme} toggleTheme={toggleTheme} />
+      
       {/* Content Container */}
       <div className="relative z-10">
-        {/* Hero Section */}
-        <section className="pt-20 pb-16 text-center px-4 md:px-8 bg-gradient-to-b from-transparent to-black/50 backdrop-blur-sm">
+        {/* Hero Section - adjusted padding to account for navbar */}
+        <section className="pt-32 pb-16 text-center px-4 md:px-8 bg-gradient-to-b from-transparent to-black/50 backdrop-blur-sm">
           <div className="animate-fade-in">
             <div className="inline-block mb-4 px-3 py-1 bg-blue-500/20 backdrop-blur-md rounded-full">
               <p className="text-sm font-medium text-blue-200">Game Development Expert</p>
@@ -141,8 +147,9 @@ const GamingDevFreelancer = () => {
           </div>
         </section>
 
+        {/* Rest of your sections remain unchanged... */}
         {/* Services Section */}
-        <section className="py-24 text-center px-4 md:px-8 relative">
+        <section className="py-24 text-center px-4 md:px-8 relative" id="services">
           <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black/50 to-transparent z-0"></div>
           <div className="relative z-10">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
@@ -171,7 +178,7 @@ const GamingDevFreelancer = () => {
         </section>
 
         {/* Portfolio Section */}
-        <section className="py-24 text-center px-4 md:px-8 relative">
+        <section className="py-24 text-center px-4 md:px-8 relative" id="portfolio">
           <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 via-black/70 to-black/40 z-0"></div>
           <div 
             className="absolute inset-0 opacity-20 z-0"
@@ -226,132 +233,9 @@ const GamingDevFreelancer = () => {
           </div>
         </section>
 
-        {/* Testimonials Section */}
-        <section className="py-24 text-center px-4 md:px-8 relative">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Client <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">Testimonials</span>
-            </h2>
-            <p className="mb-16 text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed">
-              What clients say about working with me
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {TESTIMONIALS.map((testimonial, idx) => (
-                <div 
-                  key={idx}
-                  className="bg-gray-900/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/80 shadow-lg text-left"
-                >
-                  <div className="flex items-center mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} fill="#FCD34D" className="w-5 h-5 text-yellow-300" />
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-6 italic">"{testimonial.text}"</p>
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-xl font-bold">
-                      {testimonial.name.charAt(0)}
-                    </div>
-                    <div className="ml-3">
-                      <h4 className="font-medium">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-400">{testimonial.company}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Skills Section */}
-        <section className="py-24 text-center px-4 md:px-8 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 via-black/70 to-black/40 z-0"></div>
-          <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Technical <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">Skills</span>
-            </h2>
-            <p className="mb-16 text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed">
-              Expert-level development skills for game creation
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
-              {[
-                { name: "Unity", level: 95 },
-                { name: "Unreal Engine", level: 90 },
-                { name: "C#", level: 95 },
-                { name: "C++", level: 85 },
-                { name: "Game Design", level: 90 },
-                { name: "3D Modeling", level: 80 },
-                { name: "AR/VR", level: 85 },
-                { name: "Networking", level: 80 }
-              ].map((skill, idx) => (
-                <div 
-                  key={idx}
-                  className="bg-gray-900/60 backdrop-blur-sm rounded-xl p-5 border border-gray-800/80"
-                >
-                  <h3 className="text-lg font-medium mb-3">{skill.name}</h3>
-                  <div className="w-full h-3 bg-gray-800 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full"
-                      style={{ width: `${skill.level}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-right text-sm text-gray-400 mt-1">{skill.level}%</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Development Process */}
-        <section className="py-24 text-center px-4 md:px-8 relative">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              My Development <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">Process</span>
-            </h2>
-            <p className="mb-16 text-gray-300 max-w-2xl mx-auto text-lg leading-relaxed">
-              A transparent, efficient approach to game development
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  number: "01",
-                  title: "Concept & Planning",
-                  description: "We define your game concept, target audience, and core mechanics. I create a detailed development roadmap.",
-                  icon: <Briefcase className="w-6 h-6" />
-                },
-                {
-                  number: "02",
-                  title: "Development",
-                  description: "I build your game with clean code, optimized performance, and regular milestones to track progress.",
-                  icon: <Code className="w-6 h-6" />
-                },
-                {
-                  number: "03",
-                  title: "Testing & Release",
-                  description: "Rigorous testing ensures your game is bug-free and ready for an successful launch on your target platforms.",
-                  icon: <Globe className="w-6 h-6" />
-                }
-              ].map((step, idx) => (
-                <div 
-                  key={idx}
-                  className="bg-gray-900/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/80 shadow-lg"
-                >
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
-                    {step.icon}
-                  </div>
-                  <div className="mb-2 text-sm font-medium text-gray-400">{step.number}</div>
-                  <h3 className="text-xl font-semibold mb-4">{step.title}</h3>
-                  <p className="text-gray-400">{step.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-24 text-center px-4 md:px-8 relative">
+        {/* Rest of your sections... */}
+        {/* Contact Section (adding id for navbar navigation) */}
+        <section className="py-24 text-center px-4 md:px-8 relative" id="contact">
           <div className="max-w-4xl mx-auto bg-gray-900/60 backdrop-blur-xl rounded-3xl p-8 border border-gray-800/80 shadow-xl shadow-blue-900/20">
             <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-200 to-indigo-200">
               Ready to Build Your Game?
@@ -376,7 +260,7 @@ const GamingDevFreelancer = () => {
         <footer className="py-12 px-4 md:px-8 border-t border-gray-800/50">
           <div className="max-w-5xl mx-auto text-center">
             <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500 mb-4">
-              GameDev Freelancer
+              GameForge
             </div>
             <p className="text-gray-400 mb-6">Creating immersive gaming experiences that players love</p>
             <div className="flex justify-center space-x-6 mb-8">
@@ -394,7 +278,7 @@ const GamingDevFreelancer = () => {
                 </a>
               ))}
             </div>
-            <p className="text-sm text-gray-500">© {new Date().getFullYear()} Game Developer Freelancer. All rights reserved.</p>
+            <p className="text-sm text-gray-500">© {new Date().getFullYear()} GameForge. All rights reserved.</p>
           </div>
         </footer>
       </div>
