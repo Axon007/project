@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import * as THREE from "three";
 import PageTransition from '../components/PageTransition';
-import Newsletter from '../components/Newsletter';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
@@ -571,6 +571,321 @@ const HERO_SERVICES = [
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
+// Create a new custom Globe component
+const GlobeVisualization = () => {
+  const containerRef = useRef(null);
+  const globeRef = useRef(null);
+  
+  useEffect(() => {
+    if (!containerRef.current || globeRef.current) return;
+    
+    // Scene setup
+    const scene = new THREE.Scene();
+    
+    // Camera
+    const camera = new THREE.PerspectiveCamera(
+      45, 
+      1, // We'll update this immediately in the renderer
+      0.1, 
+      1000
+    );
+    camera.position.z = 4;
+    
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true,
+      alpha: true 
+    });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    
+    // Add to DOM
+    containerRef.current.appendChild(renderer.domElement);
+    
+    // Handle resize
+    const handleResize = () => {
+      const width = containerRef.current.clientWidth;
+      const height = containerRef.current.clientHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    };
+    
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    
+    // Create globe
+    const globeGeometry = new THREE.SphereGeometry(1.5, 64, 64);
+    
+    // Create material with gradient
+    const globeMaterial = new THREE.ShaderMaterial({
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vPosition = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        
+        void main() {
+          vec3 primaryColor = vec3(0.0, 0.44, 0.95); // #0070F3 primary 
+          vec3 secondaryColor = vec3(0.47, 0.16, 0.79); // #7928CA secondary
+          vec3 accentBlue = vec3(0.15, 0.39, 0.92); // #2563EB accent.blue
+          
+          float intensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 2.0);
+          vec3 baseColor = mix(primaryColor, secondaryColor, intensity);
+          
+          // Add grid pattern
+          float gridPattern = 0.0;
+          
+          // Latitude lines
+          float latLines = abs(sin(15.0 * acos(vNormal.y)));
+          if (latLines > 0.96) gridPattern = 0.3;
+          
+          // Longitude lines
+          float lonLines = abs(sin(15.0 * atan(vNormal.z, vNormal.x)));
+          if (lonLines > 0.96) gridPattern = 0.3;
+          
+          // Add atmosphere glow
+          float atmosphereIntensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 1.5);
+          
+          // Final color with grid
+          vec3 finalColor = mix(baseColor, accentBlue, gridPattern);
+          finalColor = mix(finalColor, vec3(1.0), atmosphereIntensity * 0.3);
+          
+          gl_FragColor = vec4(finalColor, 0.9);
+        }
+      `,
+      transparent: true
+    });
+    
+    const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+    scene.add(globe);
+    
+    // Add atmosphere glow
+    const atmosphereGeometry = new THREE.SphereGeometry(1.52, 64, 64);
+    const atmosphereMaterial = new THREE.ShaderMaterial({
+      vertexShader: `
+        varying vec3 vNormal;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        void main() {
+          float intensity = pow(0.8 - dot(vNormal, vec3(0, 0, 1.0)), 12.0);
+          gl_FragColor = vec4(0.0, 0.44, 0.95, 0.5) * intensity;
+        }
+      `,
+      blending: THREE.AdditiveBlending,
+      side: THREE.BackSide,
+      transparent: true
+    });
+    
+    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+    scene.add(atmosphere);
+    
+    // Simple animation
+    const animate = () => {
+      requestAnimationFrame(animate);
+      globe.rotation.y += 0.001;
+      renderer.render(scene, camera);
+    };
+    
+    animate();
+    globeRef.current = { scene, globe, renderer, camera };
+    
+    // Cleanup
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.removeChild(renderer.domElement);
+      }
+      window.removeEventListener('resize', handleResize);
+      globeRef.current = null;
+    };
+  }, []);
+  
+  return (
+    <div 
+      ref={containerRef} 
+      className="w-full h-full absolute inset-0"
+      style={{ 
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    />
+  );
+};
+
+// Hero Section
+const HeroSection = () => {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
+      {/* Background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Glowing orbs */}
+        <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow animation-delay-2000"></div>
+        <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-accent-blue/10 rounded-full blur-xl animate-pulse-slow animation-delay-1000"></div>
+        
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        
+      </div>
+      
+      {/* Hero content container */}
+      <div className="relative z-20 container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-12">
+        {/* Left side content */}
+        <div className="w-full md:w-1/2 space-y-8 text-center md:text-left">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm"
+          >
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span className="text-sm font-medium text-primary">Enterprise Technology Solutions</span>
+          </motion.div>
+          
+          {/* Main heading with animated gradient */}
+          <motion.h1 
+            id="hero-heading"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
+          >
+            <span className="block">Jason</span>
+            <span className="bg-gradient-to-r from-primary via-blue-500 to-secondary bg-clip-text text-transparent animate-gradient-x">Business With Tech</span>
+          </motion.h1>
+          
+          {/* Subheading */}
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="text-lg md:text-xl text-foreground/70 max-w-lg"
+          >
+            We empower enterprises with cutting-edge solutions that drive innovation, efficiency, and growth in the digital landscape.
+          </motion.p>
+          
+          {/* CTA buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center md:justify-start"
+          >
+            <CTAButton 
+              primary
+              className="group shadow-lg shadow-primary/20 hover:shadow-primary/30"
+            >
+              Get Started
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+            </CTAButton>
+            
+            <CTAButton 
+              primary={false}
+              className="group"
+            >
+              Watch Demo
+              <VideoIcon className="ml-1 group-hover:scale-110 transition-transform" size={18} />
+            </CTAButton>
+          </motion.div>
+          
+          {/* Stats row */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.8 }}
+            className="flex flex-wrap gap-8 justify-center md:justify-start pt-4 border-t border-secondary/10"
+          >
+            {[
+              { label: "Projects Delivered", value: "500+" },
+              { label: "Client Satisfaction", value: "99%" },
+              { label: "Team Experts", value: "50+" }
+            ].map((stat, i) => (
+              <div key={i} className="text-center">
+                <div className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
+                <div className="text-sm text-foreground/60">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+        
+        {/* Right side - Hero image or illustration */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="w-full md:w-1/2 relative"
+        >
+          <div className="relative aspect-square max-w-lg mx-auto">
+            {/* Decorative ring */}
+            <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 animate-spin-slow"></div>
+            
+            {/* Floating elements */}
+            {['Code', 'Smartphone', 'BarChart', 'Shield', 'Cloud'].map((icon, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + (i * 0.2) }}
+                className={`absolute w-12 h-12 rounded-2xl bg-background shadow-lg flex items-center justify-center
+                  ${i === 0 ? 'top-10 left-10' : ''}
+                  ${i === 1 ? 'top-28 right-10' : ''}
+                  ${i === 2 ? 'bottom-28 left-10' : ''}
+                  ${i === 3 ? 'bottom-10 right-28' : ''}
+                  ${i === 4 ? 'top-1/2 right-1/4' : ''}
+                  animate-float-${i + 1}`}
+              >
+                <span className="text-primary">
+                  {icon === 'Code' && <Code size={24} />}
+                  {icon === 'Smartphone' && <Smartphone size={24} />}
+                  {icon === 'BarChart' && <BarChart size={24} />}
+                  {icon === 'Shield' && <Award size={24} />}
+                  {icon === 'Cloud' && <Brush size={24} />}
+                </span>
+              </motion.div>
+            ))}
+            
+            {/* Central image */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/5 aspect-square">
+              <div className="relative w-full h-full">
+                <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 animate-spin-slow"></div>
+                <GlobeVisualization />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      
+
+    </section>
+  );
+};
+
+// Add these animations to your CSS file or use tailwind.config.js
+// The necessary animation classes:
+// animate-pulse-slow: a slower pulse animation
+// animate-gradient-x: moving gradient animation
+// animate-spin-slow: slow rotation
+// animation-delay-1000, animation-delay-2000: animation delays
+// animate-float-1 through animate-float-5: floating animations with different timing
+
 function Home() {
   return (
     <PageTransition>
@@ -585,83 +900,10 @@ function Home() {
           {/* Aurora Background */}
           <AuroraBackground className="absolute inset-0" showRadialGradient={true} />
 
-          {/* Hero Section */}
-          <section className="relative h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
-            {/* Enhanced Hero Section with Aurora Background */}
-            <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6 }}
-                className="mb-6 font-bold flex items-center justify-center space-x-2"
-              >
-                <span className="bg-primary/20 text-primary px-6 py-2 rounded-full text-sm flex items-center gap-2">
-                  <span className="h-2 w-2 bg-primary rounded-full animate-pulse"></span>
-                  Global Technology Solutions
-                </span>
-              </motion.div>
-              
-              <motion.h1 
-                id="hero-heading"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-blue-500"
-              >
-                Jason Tech Solutions
-              </motion.h1>
-              
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-xl md:text-2xl text-foreground/80 max-w-2xl mx-auto mb-8"
-              >
-                Empowering enterprises with cutting-edge technology solutions for the digital era
-              </motion.p>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="flex flex-col sm:flex-row items-center justify-center gap-4"
-              >
-                <CTAButton primary={false}>
-                  Get Started
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </CTAButton>
-                
-                <CTAButton primary>
-                  Book a Demo
-                </CTAButton>
-              </motion.div>
+          {/* Replace the existing hero section with the new one */}
+          <HeroSection />
 
-              {/* Service chips */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="mt-12 flex flex-wrap justify-center gap-3 max-w-2xl mx-auto"
-              >
-                {HERO_SERVICES.map((service, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    className="bg-background/50 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-2 flex items-center gap-2 text-sm hover:border-primary/50 transition-colors cursor-pointer"
-                  >
-                    <span className="text-primary">{service.icon}</span>
-                    <span className="text-foreground/80">{service.title}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-            
-            {/* Decorative Elements */}
-            <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-          </section>
+          {/* Rest of the page content remains the same */}
 
           {/* Partnerships Section - Background overlay removed */}
           <section className="relative py-12 px-4">
