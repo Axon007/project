@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import * as THREE from "three";
 import PageTransition from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
-import { Globe } from "@/components/magicui/globe"; // Import the Globe component
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
@@ -571,6 +571,161 @@ const HERO_SERVICES = [
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
+// Create a new custom Globe component
+const GlobeVisualization = () => {
+  const containerRef = useRef(null);
+  const globeRef = useRef(null);
+  
+  useEffect(() => {
+    if (!containerRef.current || globeRef.current) return;
+    
+    // Scene setup
+    const scene = new THREE.Scene();
+    
+    // Camera
+    const camera = new THREE.PerspectiveCamera(
+      45, 
+      1, // We'll update this immediately in the renderer
+      0.1, 
+      1000
+    );
+    camera.position.z = 4;
+    
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true,
+      alpha: true 
+    });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    
+    // Add to DOM
+    containerRef.current.appendChild(renderer.domElement);
+    
+    // Handle resize
+    const handleResize = () => {
+      const width = containerRef.current.clientWidth;
+      const height = containerRef.current.clientHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    };
+    
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    
+    // Create globe
+    const globeGeometry = new THREE.SphereGeometry(1.5, 64, 64);
+    
+    // Create material with gradient
+    const globeMaterial = new THREE.ShaderMaterial({
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vPosition = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        
+        void main() {
+          vec3 primaryColor = vec3(0.0, 0.44, 0.95); // #0070F3 primary 
+          vec3 secondaryColor = vec3(0.47, 0.16, 0.79); // #7928CA secondary
+          vec3 accentBlue = vec3(0.15, 0.39, 0.92); // #2563EB accent.blue
+          
+          float intensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 2.0);
+          vec3 baseColor = mix(primaryColor, secondaryColor, intensity);
+          
+          // Add grid pattern
+          float gridPattern = 0.0;
+          
+          // Latitude lines
+          float latLines = abs(sin(15.0 * acos(vNormal.y)));
+          if (latLines > 0.96) gridPattern = 0.3;
+          
+          // Longitude lines
+          float lonLines = abs(sin(15.0 * atan(vNormal.z, vNormal.x)));
+          if (lonLines > 0.96) gridPattern = 0.3;
+          
+          // Add atmosphere glow
+          float atmosphereIntensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 1.5);
+          
+          // Final color with grid
+          vec3 finalColor = mix(baseColor, accentBlue, gridPattern);
+          finalColor = mix(finalColor, vec3(1.0), atmosphereIntensity * 0.3);
+          
+          gl_FragColor = vec4(finalColor, 0.9);
+        }
+      `,
+      transparent: true
+    });
+    
+    const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+    scene.add(globe);
+    
+    // Add atmosphere glow
+    const atmosphereGeometry = new THREE.SphereGeometry(1.52, 64, 64);
+    const atmosphereMaterial = new THREE.ShaderMaterial({
+      vertexShader: `
+        varying vec3 vNormal;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        void main() {
+          float intensity = pow(0.8 - dot(vNormal, vec3(0, 0, 1.0)), 12.0);
+          gl_FragColor = vec4(0.0, 0.44, 0.95, 0.5) * intensity;
+        }
+      `,
+      blending: THREE.AdditiveBlending,
+      side: THREE.BackSide,
+      transparent: true
+    });
+    
+    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+    scene.add(atmosphere);
+    
+    // Simple animation
+    const animate = () => {
+      requestAnimationFrame(animate);
+      globe.rotation.y += 0.001;
+      renderer.render(scene, camera);
+    };
+    
+    animate();
+    globeRef.current = { scene, globe, renderer, camera };
+    
+    // Cleanup
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.removeChild(renderer.domElement);
+      }
+      window.removeEventListener('resize', handleResize);
+      globeRef.current = null;
+    };
+  }, []);
+  
+  return (
+    <div 
+      ref={containerRef} 
+      className="w-full h-full absolute inset-0"
+      style={{ 
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    />
+  );
+};
+
 <<<<<<< HEAD
 // Create a new custom Globe component with centered positioning and static orbit
 const GlobeVisualization = () => {
@@ -1004,7 +1159,6 @@ const HeroSection = () => {
 =======
                 <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 animate-spin-slow"></div>
                 <Globe />
->>>>>>> 851bd6422ed1a5164d8e5ecb0a225ad9fab30500
               </div>
             </div>
           </div>
