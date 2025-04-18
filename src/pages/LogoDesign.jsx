@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import PageTransition from '../components/PageTransition';
+import { Cover } from "../components/ui/cover";
 import { 
   Palette, Figma, PenTool, LayoutGrid, 
   MessageCircle, Download, Award, CheckCircle2,
@@ -968,7 +969,7 @@ function LogoDesign() {
                     ✨
                   </motion.span>
                 </span>
-                <span className="block mt-2">Our Design <span className="bg-clip-text text-transparent bg-gradient-to-r from-secondary to-orange-500">Magic</span></span>
+                <span className="block mt-2">Our Design <Cover className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-secondary to-orange-500">Magic</Cover></span>
               </motion.h1>
               
               <motion.p 
@@ -1334,13 +1335,15 @@ function LogoDesign() {
                 />
               </motion.button>
               
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group relative overflow-hidden rounded-full bg-gradient-to-r from-background to-secondary/10 border-2 border-primary/30 px-8 py-4 text-lg font-bold text-primary hover:text-secondary transition-colors hover:border-secondary/50"
-              >
-                View Portfolio
-              </motion.button>
+              <Cover className="dark:text-white text-black">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 text-lg font-bold hover:text-white transition-colors"
+                >
+                  View Portfolio
+                </motion.button>
+              </Cover>
             </div>
             
             <div className="mt-12 flex flex-wrap items-center justify-center gap-8">
