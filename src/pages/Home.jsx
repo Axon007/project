@@ -571,187 +571,276 @@ const HERO_SERVICES = [
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
-// Create a new custom Globe component
+// Create a new custom Globe component with centered positioning and static orbit
 const GlobeVisualization = () => {
   const containerRef = useRef(null);
-  const globeRef = useRef(null);
+  const [globeError, setGlobeError] = useState(false);
   
   useEffect(() => {
-    if (!containerRef.current || globeRef.current) return;
+    if (!containerRef.current) return;
     
-    // Scene setup
-    const scene = new THREE.Scene();
+    // Clear any previous content
+    while (containerRef.current.firstChild) {
+      containerRef.current.removeChild(containerRef.current.firstChild);
+    }
     
-    // Camera
-    const camera = new THREE.PerspectiveCamera(
-      45, 
-      1, // We'll update this immediately in the renderer
-      0.1, 
-      1000
-    );
-    camera.position.z = 4;
+    let renderer, scene, camera, globe;
     
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ 
-      antialias: true,
-      alpha: true 
-    });
-    renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    
-    // Add to DOM
-    containerRef.current.appendChild(renderer.domElement);
-    
-    // Handle resize
-    const handleResize = () => {
-      const width = containerRef.current.clientWidth;
-      const height = containerRef.current.clientHeight;
-      renderer.setSize(width, height);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    };
-    
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    
-    // Create globe
-    const globeGeometry = new THREE.SphereGeometry(1.5, 64, 64);
-    
-    // Create material with gradient
-    const globeMaterial = new THREE.ShaderMaterial({
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vPosition;
+    try {
+      // Scene setup
+      scene = new THREE.Scene();
+      
+      // Camera positioned to look directly at the center
+      camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+      camera.position.z = 4; // Keep camera at fixed distance
+      
+      // Renderer with explicit context attributes for compatibility
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: 'default', 
+        failIfMajorPerformanceCaveat: false
+      });
+      renderer.setClearColor(0x000000, 0);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
+      
+      // Add to DOM with centered positioning
+      containerRef.current.appendChild(renderer.domElement);
+      renderer.domElement.style.position = 'absolute';
+      renderer.domElement.style.left = '50%';
+      renderer.domElement.style.top = '50%';
+      renderer.domElement.style.transform = 'translate(-50%, -50%)';
+      
+      // Handle resize to maintain aspect ratio and centering
+      const handleResize = () => {
+        if (!containerRef.current) return;
         
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vPosition = position;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vNormal;
-        varying vec3 vPosition;
+        const width = containerRef.current.clientWidth;
+        const height = containerRef.current.clientHeight;
         
-        void main() {
-          vec3 primaryColor = vec3(0.0, 0.44, 0.95); // #0070F3 primary 
-          vec3 secondaryColor = vec3(0.47, 0.16, 0.79); // #7928CA secondary
-          vec3 accentBlue = vec3(0.15, 0.39, 0.92); // #2563EB accent.blue
+        if (width === 0 || height === 0) return;
+        
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      };
+      
+      window.addEventListener("resize", handleResize);
+      handleResize();
+      
+      // Create globe with enhanced shaders for better appearance
+      const globeGeometry = new THREE.SphereGeometry(1.8, 48, 48); // Larger size, more segments
+      
+      // Enhanced material with better gradient
+      const globeMaterial = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
           
-          float intensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 2.0);
-          vec3 baseColor = mix(primaryColor, secondaryColor, intensity);
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
           
-          // Add grid pattern
-          float gridPattern = 0.0;
-          
-          // Latitude lines
-          float latLines = abs(sin(15.0 * acos(vNormal.y)));
-          if (latLines > 0.96) gridPattern = 0.3;
-          
-          // Longitude lines
-          float lonLines = abs(sin(15.0 * atan(vNormal.z, vNormal.x)));
-          if (lonLines > 0.96) gridPattern = 0.3;
-          
-          // Add atmosphere glow
-          float atmosphereIntensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 1.5);
-          
-          // Final color with grid
-          vec3 finalColor = mix(baseColor, accentBlue, gridPattern);
-          finalColor = mix(finalColor, vec3(1.0), atmosphereIntensity * 0.3);
-          
-          gl_FragColor = vec4(finalColor, 0.9);
+          void main() {
+            vec3 primaryColor = vec3(0.0, 0.44, 0.95); // #0070F3 primary 
+            vec3 secondaryColor = vec3(0.47, 0.16, 0.79); // #7928CA secondary
+            vec3 highlightColor = vec3(0.2, 0.6, 1.0); // Bright blue highlight
+            
+            // Create more dramatic lighting effect
+            float intensity = pow(0.8 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 1.5);
+            vec3 color = mix(primaryColor, secondaryColor, intensity);
+            
+            // Add highlight to the edges
+            float rim = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 4.0);
+            color = mix(color, highlightColor, rim * 0.4);
+            
+            gl_FragColor = vec4(color, 0.92);
+          }
+        `,
+        transparent: true
+      });
+      
+      globe = new THREE.Mesh(globeGeometry, globeMaterial);
+      
+      // Center the globe in the scene
+      globe.position.set(0, 0, 0);
+      scene.add(globe);
+      
+      // Add improved atmosphere glow
+      const atmosphereGeometry = new THREE.SphereGeometry(1.9, 48, 48);
+      const atmosphereMaterial = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float intensity = pow(0.6 - dot(vNormal, vec3(0, 0, 1.0)), 4.0);
+            gl_FragColor = vec4(0.3, 0.6, 1.0, intensity * 0.5);
+          }
+        `,
+        blending: THREE.AdditiveBlending,
+        side: THREE.BackSide,
+        transparent: true
+      });
+      
+      const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+      scene.add(atmosphere);
+      
+      // Static rendering (no animation)
+      let frameId;
+      
+      const render = () => {
+        frameId = requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      };
+      
+      render();
+      
+      // Cleanup function
+      return () => {
+        cancelAnimationFrame(frameId);
+        window.removeEventListener('resize', handleResize);
+        
+        // Dispose resources
+        globeGeometry.dispose();
+        globeMaterial.dispose();
+        atmosphereGeometry.dispose();
+        atmosphereMaterial.dispose();
+        
+        if (renderer) {
+          renderer.dispose();
         }
-      `,
-      transparent: true
-    });
-    
-    const globe = new THREE.Mesh(globeGeometry, globeMaterial);
-    scene.add(globe);
-    
-    // Add atmosphere glow
-    const atmosphereGeometry = new THREE.SphereGeometry(1.52, 64, 64);
-    const atmosphereMaterial = new THREE.ShaderMaterial({
-      vertexShader: `
-        varying vec3 vNormal;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        
+        // Remove from DOM
+        if (containerRef.current && renderer.domElement) {
+          containerRef.current.removeChild(renderer.domElement);
         }
-      `,
-      fragmentShader: `
-        varying vec3 vNormal;
-        void main() {
-          float intensity = pow(0.8 - dot(vNormal, vec3(0, 0, 1.0)), 12.0);
-          gl_FragColor = vec4(0.0, 0.44, 0.95, 0.5) * intensity;
-        }
-      `,
-      blending: THREE.AdditiveBlending,
-      side: THREE.BackSide,
-      transparent: true
-    });
-    
-    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-    scene.add(atmosphere);
-    
-    // Simple animation
-    const animate = () => {
-      requestAnimationFrame(animate);
-      globe.rotation.y += 0.001;
-      renderer.render(scene, camera);
-    };
-    
-    animate();
-    globeRef.current = { scene, globe, renderer, camera };
-    
-    // Cleanup
-    return () => {
-      if (containerRef.current) {
-        containerRef.current.removeChild(renderer.domElement);
-      }
-      window.removeEventListener('resize', handleResize);
-      globeRef.current = null;
-    };
+      };
+    } catch (error) {
+      console.error("Error initializing globe:", error);
+      setGlobeError(true);
+      return () => {}; // Empty cleanup function for error case
+    }
   }, []);
+  
+  // Render fallback if there's an error
+  if (globeError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-primary/10 rounded-full">
+        <div className="text-center">
+          <div className="text-4xl mb-2 text-primary">🌐</div>
+          <p className="text-sm text-primary/80">Interactive Globe</p>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div 
       ref={containerRef} 
-      className="w-full h-full absolute inset-0"
-      style={{ 
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
+      className="w-full h-full absolute inset-0 flex items-center justify-center"
     />
   );
 };
 
-// Hero Section
+// Enhanced floating icon component for reusability
+const FloatingIcon = ({ icon, size = 24, className }) => (
+  <div className={`absolute w-12 h-12 rounded-2xl bg-background shadow-lg flex items-center justify-center ${className}`}>
+    <span className="text-primary">
+      {icon === 'Code' && <Code size={size} />}
+      {icon === 'Smartphone' && <Smartphone size={size} />}
+      {icon === 'BarChart' && <BarChart size={size} />}
+      {icon === 'Shield' && <Award size={size} />}
+      {icon === 'Cloud' && <Brush size={size} />}
+    </span>
+  </div>
+);
+
+// Animated highlight text component
+const HighlightText = ({ children, delay = 0 }) => (
+  <motion.span
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay }}
+    className="bg-gradient-to-r from-primary via-blue-500 to-secondary bg-clip-text text-transparent inline-block"
+  >
+    {children}
+  </motion.span>
+);
+
+// Hero Section - Enhanced
 const HeroSection = () => {
+  // State for animated count-up statistics
+  const [animatedStats, setAnimatedStats] = useState({
+    projects: 0,
+    satisfaction: 0,
+    experts: 0
+  });
+
+  // Animate stats when in view
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const interval = setInterval(() => {
+        setAnimatedStats(prev => {
+          const newProjects = Math.min(prev.projects + 5, 500);
+          const newSatisfaction = Math.min(prev.satisfaction + 1, 99);
+          const newExperts = Math.min(prev.experts + 1, 50);
+          
+          if (newProjects === 500 && newSatisfaction === 99 && newExperts === 50) {
+            clearInterval(interval);
+          }
+          
+          return {
+            projects: newProjects,
+            satisfaction: newSatisfaction,
+            experts: newExperts
+          };
+        });
+      }, 20);
+      
+      return () => clearInterval(interval);
+    }, 1000); // Start after hero has appeared
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
-      {/* Background elements */}
+    <section 
+      className="relative min-h-[90vh] lg:min-h-screen flex items-center justify-center overflow-hidden py-16 lg:py-0" 
+      aria-labelledby="hero-heading"
+    >
+      {/* Enhanced Background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Glowing orbs */}
-        <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow animation-delay-2000"></div>
-        <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-accent-blue/10 rounded-full blur-xl animate-pulse-slow animation-delay-1000"></div>
+        {/* Glowing orbs with improved positioning and animation */}
+        <div className="absolute top-1/4 -left-20 w-[20rem] h-[20rem] bg-primary/20 rounded-full blur-3xl opacity-70 animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 -right-20 w-[25rem] h-[25rem] bg-secondary/20 rounded-full blur-3xl opacity-70 animate-pulse-slow animation-delay-2000"></div>
+        <div className="absolute top-1/3 right-1/4 w-[15rem] h-[15rem] bg-accent-blue/10 rounded-full blur-2xl opacity-70 animate-pulse-slow animation-delay-1000"></div>
         
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        {/* Enhanced grid pattern overlay - larger cells and more distinct */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] opacity-80"></div>
         
+        {/* Subtle radial gradient for depth */}
+        <div className="absolute inset-0 bg-radial-gradient from-background via-background to-background/90 opacity-90"></div>
       </div>
       
-      {/* Hero content container */}
-      <div className="relative z-20 container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-12">
-        {/* Left side content */}
-        <div className="w-full md:w-1/2 space-y-8 text-center md:text-left">
-          {/* Badge */}
+      {/* Hero content container with improved spacing and animations */}
+      <div className="relative z-20 container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16">
+        {/* Left side content with enhanced animations */}
+        <div className="w-full md:w-1/2 space-y-8 lg:space-y-10 text-center md:text-left">
+          {/* Badge with enhanced animation */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm shadow-sm"
           >
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -760,38 +849,53 @@ const HeroSection = () => {
             <span className="text-sm font-medium text-primary">Enterprise Technology Solutions</span>
           </motion.div>
           
-          {/* Main heading with animated gradient */}
-          <motion.h1 
-            id="hero-heading"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
-          >
-            <span className="block">Jason</span>
-            <span className="bg-gradient-to-r from-primary via-blue-500 to-secondary bg-clip-text text-transparent animate-gradient-x">Business With Tech</span>
-          </motion.h1>
+          {/* Enhanced heading with staggered animation */}
+          <div>
+            <motion.h1 
+              id="hero-heading"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight"
+            >
+              <span className="block mb-2">
+                <HighlightText delay={0.3}>Innovate.</HighlightText>
+              </span>
+              <span className="block mb-2">
+                <HighlightText delay={0.4}>Transform.</HighlightText>
+              </span>
+              <span className="block text-foreground">
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.5 }}
+                >
+                  With Jason Tech.
+                </motion.span>
+              </span>
+            </motion.h1>
+          </div>
           
-          {/* Subheading */}
+          {/* Enhanced subheading with improved typography */}
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="text-lg md:text-xl text-foreground/70 max-w-lg"
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="text-lg md:text-xl text-foreground/80 max-w-lg leading-relaxed"
           >
-            We empower enterprises with cutting-edge solutions that drive innovation, efficiency, and growth in the digital landscape.
+            We empower enterprises with cutting-edge solutions that drive innovation, efficiency, and growth in today's rapidly evolving digital landscape.
           </motion.p>
           
-          {/* CTA buttons */}
+          {/* Enhanced CTA buttons with improved hover effects */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center md:justify-start"
+            transition={{ duration: 0.7, delay: 0.7 }}
+            className="flex flex-col sm:flex-row gap-5 sm:gap-7 justify-center md:justify-start"
           >
             <CTAButton 
               primary
-              className="group shadow-lg shadow-primary/20 hover:shadow-primary/30"
+              className="group shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5"
             >
               Get Started
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
@@ -799,34 +903,36 @@ const HeroSection = () => {
             
             <CTAButton 
               primary={false}
-              className="group"
+              className="group hover:-translate-y-0.5"
             >
               Watch Demo
               <VideoIcon className="ml-1 group-hover:scale-110 transition-transform" size={18} />
             </CTAButton>
           </motion.div>
           
-          {/* Stats row */}
+          {/* Enhanced stats row with animated counters */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.8 }}
-            className="flex flex-wrap gap-8 justify-center md:justify-start pt-4 border-t border-secondary/10"
+            className="flex flex-wrap gap-8 justify-center md:justify-start pt-6 border-t border-secondary/20"
           >
             {[
-              { label: "Projects Delivered", value: "500+" },
-              { label: "Client Satisfaction", value: "99%" },
-              { label: "Team Experts", value: "50+" }
+              { label: "Projects Delivered", value: animatedStats.projects, suffix: "+" },
+              { label: "Client Satisfaction", value: animatedStats.satisfaction, suffix: "%" },
+              { label: "Team Experts", value: animatedStats.experts, suffix: "+" }
             ].map((stat, i) => (
               <div key={i} className="text-center">
-                <div className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
-                <div className="text-sm text-foreground/60">{stat.label}</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
+                  {stat.value}{stat.suffix}
+                </div>
+                <div className="text-sm text-foreground/60 mt-1">{stat.label}</div>
               </div>
             ))}
           </motion.div>
         </div>
         
-        {/* Right side - Hero image or illustration */}
+        {/* Right side - Enhanced Hero visualization with static rings */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -834,46 +940,84 @@ const HeroSection = () => {
           className="w-full md:w-1/2 relative"
         >
           <div className="relative aspect-square max-w-lg mx-auto">
-            {/* Decorative ring */}
-            <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 animate-spin-slow"></div>
+            {/* Static decorative rings */}
+            <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30"></div>
+            <div className="absolute inset-[10%] rounded-full border-2 border-dashed border-secondary/20"></div>
             
-            {/* Floating elements */}
-            {['Code', 'Smartphone', 'BarChart', 'Shield', 'Cloud'].map((icon, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + (i * 0.2) }}
-                className={`absolute w-12 h-12 rounded-2xl bg-background shadow-lg flex items-center justify-center
-                  ${i === 0 ? 'top-10 left-10' : ''}
-                  ${i === 1 ? 'top-28 right-10' : ''}
-                  ${i === 2 ? 'bottom-28 left-10' : ''}
-                  ${i === 3 ? 'bottom-10 right-28' : ''}
-                  ${i === 4 ? 'top-1/2 right-1/4' : ''}
-                  animate-float-${i + 1}`}
-              >
-                <span className="text-primary">
-                  {icon === 'Code' && <Code size={24} />}
-                  {icon === 'Smartphone' && <Smartphone size={24} />}
-                  {icon === 'BarChart' && <BarChart size={24} />}
-                  {icon === 'Shield' && <Award size={24} />}
-                  {icon === 'Cloud' && <Brush size={24} />}
-                </span>
-              </motion.div>
-            ))}
+            {/* Enhanced floating elements with improved positioning and animations */}
+            <FloatingIcon 
+              icon="Code" 
+              className="top-10 left-10 animate-float-1 shadow-xl shadow-primary/5" 
+            />
+            <FloatingIcon 
+              icon="Smartphone" 
+              className="top-28 right-10 animate-float-2 shadow-xl shadow-primary/5" 
+            />
+            <FloatingIcon 
+              icon="BarChart" 
+              className="bottom-28 left-10 animate-float-3 shadow-xl shadow-primary/5" 
+            />
+            <FloatingIcon 
+              icon="Shield" 
+              className="bottom-10 right-28 animate-float-4 shadow-xl shadow-primary/5" 
+            />
+            <FloatingIcon 
+              icon="Cloud" 
+              className="top-1/2 right-1/4 animate-float-5 shadow-xl shadow-primary/5" 
+            />
             
-            {/* Central image */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/5 aspect-square">
+            {/* Central image - Centered Globe Container */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full aspect-square">
               <div className="relative w-full h-full">
-                <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 animate-spin-slow"></div>
-                <GlobeVisualization />
+                {/* Static pulse ring */}
+                <div className="absolute inset-[15%] rounded-full border border-primary/40"></div>
+                
+                {/* Globe with improved error handling */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className="h-full w-full"
+                >
+                  <GlobeVisualization />
+                </motion.div>
+                
+                {/* Decorative connection points */}
+                {[0, 1, 2, 3].map(i => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: 0.8 + (i * 0.15) }}
+                    className={`absolute w-3 h-3 rounded-full bg-primary/70 shadow-glow-md`}
+                    style={{
+                      top: `${15 + (i * 20)}%`,
+                      left: `${75 - (i % 2 * 50)}%`,
+                    }}
+                  />
+                ))}
               </div>
             </div>
           </div>
         </motion.div>
       </div>
       
-
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2, duration: 0.6 }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
+      >
+        <span className="text-xs text-foreground/40 mb-2">Scroll to explore</span>
+        <div className="w-5 h-9 border-2 border-foreground/20 rounded-full flex justify-center p-1">
+          <motion.div 
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5 }}
+            className="w-1.5 h-1.5 bg-primary rounded-full"
+          />
+        </div>
+      </motion.div>
     </section>
   );
 };
