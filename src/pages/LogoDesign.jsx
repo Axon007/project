@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import PageTransition from '../components/PageTransition';
+import { Cover } from "../components/ui/cover"; // Import the Cover component
 import { 
   Palette, Figma, PenTool, LayoutGrid, 
   MessageCircle, Download, Award, CheckCircle2,
@@ -950,26 +951,27 @@ function LogoDesign() {
           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between px-4 md:px-8 max-w-7xl mx-auto w-full gap-8 lg:gap-12 py-16">
             {/* Left side text content */}
             <div className="w-full lg:w-6/12 text-left space-y-6 mb-12 lg:mb-0">
-
-              <motion.h1 
-                id="hero-heading"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] relative"
-              >
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-primary relative inline-block">
-                  Your Vision,
-                  <motion.span 
-                    className="absolute -top-6 -right-4 text-2xl text-yellow-400"
-                    animate={{ rotate: [0, 15, 0], scale: [1, 1.2, 1] }}
-                    transition={{ repeat: Infinity, duration: 3, repeatType: "reverse" }}
-                  >
-                    ✨
-                  </motion.span>
-                </span>
-                <span className="block mt-2">Our Design <span className="bg-clip-text text-transparent bg-gradient-to-r from-secondary to-orange-500">Magic</span></span>
-              </motion.h1>
+              <Cover> {/* Add Cover component */}
+                <motion.h1 
+                  id="hero-heading"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] relative"
+                >
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-primary relative inline-block">
+                    Your Vision,
+                    <motion.span 
+                      className="absolute -top-6 -right-4 text-2xl text-yellow-400"
+                      animate={{ rotate: [0, 15, 0], scale: [1, 1.2, 1] }}
+                      transition={{ repeat: Infinity, duration: 3, repeatType: "reverse" }}
+                    >
+                      ✨
+                    </motion.span>
+                  </span>
+                  <span className="block mt-2">Our Design <span className="bg-clip-text text-transparent bg-gradient-to-r from-secondary to-orange-500">Magic</span></span>
+                </motion.h1>
+              </Cover> {/* Close Cover component */}
               
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}

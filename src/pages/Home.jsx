@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import * as THREE from "three";
 import PageTransition from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
+import { Globe } from "@/components/magicui/globe"; // Import the Globe component
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
@@ -571,6 +571,7 @@ const HERO_SERVICES = [
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
+<<<<<<< HEAD
 // Create a new custom Globe component with centered positioning and static orbit
 const GlobeVisualization = () => {
   const containerRef = useRef(null);
@@ -777,6 +778,9 @@ const HighlightText = ({ children, delay = 0 }) => (
 );
 
 // Hero Section - Enhanced
+=======
+// Hero Section
+>>>>>>> 851bd6422ed1a5164d8e5ecb0a225ad9fab30500
 const HeroSection = () => {
   // State for animated count-up statistics
   const [animatedStats, setAnimatedStats] = useState({
@@ -969,6 +973,7 @@ const HeroSection = () => {
             {/* Central image - Centered Globe Container */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full aspect-square">
               <div className="relative w-full h-full">
+<<<<<<< HEAD
                 {/* Static pulse ring */}
                 <div className="absolute inset-[15%] rounded-full border border-primary/40"></div>
                 
@@ -996,6 +1001,10 @@ const HeroSection = () => {
                     }}
                   />
                 ))}
+=======
+                <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 animate-spin-slow"></div>
+                <Globe />
+>>>>>>> 851bd6422ed1a5164d8e5ecb0a225ad9fab30500
               </div>
             </div>
           </div>
