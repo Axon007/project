@@ -19,6 +19,12 @@ const SERVICES = [
     icon: <Code className="w-5 h-5 text-primary" />
   },
   {
+    title: "App Development",
+    href: "/app-development",
+    description: "Native and cross-platform mobile applications for iOS and Android.",
+    icon: <Cloud className="w-5 h-5 text-primary" />
+  },
+  {
     title: "Game Development",
     href: "/game-development",
     description: "Immersive gaming experiences across multiple platforms and engines.",
