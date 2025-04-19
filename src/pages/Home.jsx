@@ -584,13 +584,23 @@ const HeroSection = () => {
         
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-        
       </div>
       
-      {/* Hero content container */}
-      <div className="relative z-20 container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-12">
-        {/* Left side content */}
-        <div className="w-full md:w-1/2 space-y-8 text-center md:text-left">
+      {/* Globe background */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.8, scale: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="w-[700px] h-[700px]"
+        >
+          <Globe />
+        </motion.div>
+      </div>
+      
+      {/* Hero content container with centered text */}
+      <div className="relative z-20 container mx-auto px-4 md:px-6">
+        <div className="max-w-3xl mx-auto text-center space-y-8">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -611,7 +621,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
+            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight backdrop-blur-sm"
           >
             <span className="block">Jason</span>
             <span className="bg-gradient-to-r from-primary via-blue-500 to-secondary bg-clip-text text-transparent animate-gradient-x">Business With Tech</span>
@@ -622,7 +632,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="text-lg md:text-xl text-foreground/70 max-w-lg"
+            className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto backdrop-blur-sm"
           >
             We empower enterprises with cutting-edge solutions that drive innovation, efficiency, and growth in the digital landscape.
           </motion.p>
@@ -632,7 +642,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center md:justify-start"
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center"
           >
             <CTAButton 
               primary
@@ -656,7 +666,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.8 }}
-            className="flex flex-wrap gap-8 justify-center md:justify-start pt-4 border-t border-secondary/10"
+            className="flex flex-wrap gap-8 justify-center pt-4 border-t border-secondary/10 backdrop-blur-sm"
           >
             {[
               { label: "Projects Delivered", value: "500+" },
@@ -669,56 +679,54 @@ const HeroSection = () => {
               </div>
             ))}
           </motion.div>
-        </div>
-        
-        {/* Right side - Hero image or illustration */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="w-full md:w-1/2 relative"
-        >
-          <div className="relative aspect-square max-w-lg mx-auto">
-            {/* Decorative ring */}
-            <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 animate-spin-slow"></div>
-            
-            {/* Floating elements */}
-            {['Code', 'Smartphone', 'BarChart', 'Shield', 'Cloud'].map((icon, i) => (
+          
+          {/* Service badges */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 1 }}
+            className="flex flex-wrap justify-center gap-3"
+          >
+            {HERO_SERVICES.map((service, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + (i * 0.2) }}
-                className={`absolute w-12 h-12 rounded-2xl bg-background shadow-lg flex items-center justify-center
-                  ${i === 0 ? 'top-10 left-10' : ''}
-                  ${i === 1 ? 'top-28 right-10' : ''}
-                  ${i === 2 ? 'bottom-28 left-10' : ''}
-                  ${i === 3 ? 'bottom-10 right-28' : ''}
-                  ${i === 4 ? 'top-1/2 right-1/4' : ''}
-                  animate-float-${i + 1}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1 + (i * 0.1), duration: 0.5 }}
+                className="px-3 py-2 bg-background/50 backdrop-blur-md rounded-full border border-primary/20 flex items-center gap-2"
               >
-                <span className="text-primary">
-                  {icon === 'Code' && <Code size={24} />}
-                  {icon === 'Smartphone' && <Smartphone size={24} />}
-                  {icon === 'BarChart' && <BarChart size={24} />}
-                  {icon === 'Shield' && <Award size={24} />}
-                  {icon === 'Cloud' && <Brush size={24} />}
-                </span>
+                <span className="text-primary">{service.icon}</span>
+                <span className="text-xs font-medium">{service.title}</span>
               </motion.div>
             ))}
-            
-            {/* Central image */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/5 aspect-square">
-              <div className="relative w-full h-full">
-                <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 animate-spin-slow"></div>
-                <Globe />
-              </div>
-            </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
       
-
+      {/* Floating technology icons around the globe */}
+      {['Code', 'Smartphone', 'BarChart', 'Shield', 'Cloud'].map((icon, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 0.9, scale: 1 }}
+          transition={{ delay: 1.2 + (i * 0.2), duration: 0.7, type: "spring" }}
+          className={`absolute w-12 h-12 rounded-2xl bg-background/70 shadow-lg backdrop-blur-md flex items-center justify-center
+            ${i === 0 ? 'top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2' : ''}
+            ${i === 1 ? 'top-1/4 right-1/4 translate-x-1/2 -translate-y-1/2' : ''}
+            ${i === 2 ? 'bottom-1/4 left-1/4 -translate-x-1/2 translate-y-1/2' : ''}
+            ${i === 3 ? 'bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2' : ''}
+            ${i === 4 ? 'top-1/2 right-[15%] -translate-y-1/2' : ''}
+            animate-float-${i + 1} z-10`}
+        >
+          <span className="text-primary">
+            {icon === 'Code' && <Code size={24} />}
+            {icon === 'Smartphone' && <Smartphone size={24} />}
+            {icon === 'BarChart' && <BarChart size={24} />}
+            {icon === 'Shield' && <Award size={24} />}
+            {icon === 'Cloud' && <Brush size={24} />}
+          </span>
+        </motion.div>
+      ))}
     </section>
   );
 };
