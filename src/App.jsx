@@ -5,9 +5,10 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import WebDevelopment from './pages/WebDevelopment';
-import GamingDevServices from './pages/AIServices';
+import GamingDevServices from './pages/GameDevelopment ';
 import LogoDesign from './pages/LogoDesign';
 import VideoEditing from './pages/VideoEditing';
+import AppDevelopment from './pages/AppDevelopment';
 
 function AppContent() {
   const location = useLocation();
@@ -54,6 +55,8 @@ function AppContent() {
           <Route path="/game-development" element={<GamingDevServices theme={theme} toggleTheme={toggleTheme} />} />
           <Route path="/logo-design" element={<LogoDesign />} />
           <Route path="/video-editing" element={<VideoEditing />} />
+          <Route path ="/app-development" element={<AppDevelopment />} />
+
         </Routes>
       </AnimatePresence>
       <Footer />
