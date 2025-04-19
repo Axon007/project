@@ -3,12 +3,46 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import PageTransition from '../components/PageTransition';
 import { Cover } from "../components/ui/cover";
+import { SmoothCursor } from "../components/ui/smooth-cursor";
 import { 
   Palette, Figma, PenTool, LayoutGrid, 
   MessageCircle, Download, Award, CheckCircle2,
   ArrowRight, ImagePlus, FileType, Layers,
   ChevronRight, Shield, Zap
 } from "lucide-react";
+
+// Custom cursor SVG for the LogoDesign page
+const LogoDesignCursor = ({ color = "currentColor" }) => {
+  return (
+    <svg
+      width="36"
+      height="36"
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="text-primary drop-shadow-md"
+    >
+      <circle
+        cx="18"
+        cy="18"
+        r="16"
+        stroke="currentColor"
+        strokeWidth="2"
+        fill="rgba(255, 255, 255, 0.1)"
+        className="animate-pulse"
+      />
+      <circle cx="18" cy="18" r="5" fill="currentColor" />
+      <path 
+        d="M18 2C9.16 2 2 9.16 2 18" 
+        stroke="currentColor" 
+        strokeWidth="3"
+        strokeLinecap="round"
+        className="origin-center animate-spin"
+        style={{ animationDuration: '8s' }}
+      />
+    </svg>
+  );
+};
 
 // Portfolio samples
 const LOGO_PORTFOLIO = [
@@ -680,6 +714,7 @@ function LogoDesign() {
 
   return (
     <PageTransition>
+      <SmoothCursor CustomCursor={LogoDesignCursor} />
       <div className="min-h-screen bg-gradient-to-b from-background to-background/95 relative overflow-hidden">
         <FloatingElements />
         {/* Hero Section with enhanced background */}
