@@ -7,8 +7,11 @@ import {
   Database, Server, Settings, Monitor,
   Smartphone, Tablet, Layout, MessageSquare,
   PieChart, Cloud, GitBranch, Zap, 
-  BadgeCheck, Play, FileCode, Repeat, Download
+  BadgeCheck, Play, FileCode, Repeat, Download,
+  BellIcon, Share2Icon, FileTextIcon, CalendarIcon
 } from "lucide-react";
+import { BentoCard, BentoGrid } from '../components/magicui/bento-grid';
+import { cn } from "../lib/utils";
 
 // Core theme with dark mode support
 const THEME = {

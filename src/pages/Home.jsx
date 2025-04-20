@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import PageTransition from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
-import { Globe } from "@/components/magicui/globe"; // Import the Globe component
+import { Globe } from "@/components/magicui/globe";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Smartphone } from "lucide-react";
 
-// Core theme with only what's used
+/* THEME AND UI CONFIGURATION */
 const THEME = {
   primary: {
     DEFAULT: "#0070F3",
@@ -35,7 +35,6 @@ const THEME = {
   }
 };
 
-// Simplified UI object with only what's used
 const UI = {
   card: {
     base: "rounded-2xl overflow-hidden border border-secondary/20 hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/10 bg-background/50 backdrop-blur-sm",
@@ -58,7 +57,7 @@ const UI = {
   }
 };
 
-// Simplified animations
+/* ANIMATIONS */
 const animations = {
   fadeIn: {
     initial: { opacity: 0 },
@@ -72,7 +71,6 @@ const animations = {
   }
 };
 
-// Animation helper
 const createMotionProps = (type, delay = 0) => {
   const base = animations[type];
   return {
@@ -85,12 +83,12 @@ const createMotionProps = (type, delay = 0) => {
   };
 };
 
-// Section component with cleaner backgrounds but retaining pattern option
+/* REUSABLE COMPONENTS */
 const Section = ({ children, dark = false, pattern = false, className = "", id = null }) => (
   <section 
     id={id}
     className={`py-24 px-4 ${
-      dark ? 'bg-background' : // Changed from bg-secondary/20
+      dark ? 'bg-background' : 
       'bg-background'
     } ${className}`}
     aria-labelledby={id}
@@ -104,7 +102,6 @@ const Section = ({ children, dark = false, pattern = false, className = "", id =
   </section>
 );
 
-// Service card component with hover-only action and streamlined features
 const ServiceCard = ({ service, index }) => (
   <motion.div
     key={index}
@@ -118,12 +115,10 @@ const ServiceCard = ({ service, index }) => (
       <h3 className={`text-xl ${UI.text.heading} mb-3`}>{service.title}</h3>
       <p className={`${UI.text.body} mb-6 text-sm`}>{service.description}</p>
       
-      {/* Features as paragraph instead of list */}
       <p className={`${UI.text.body} text-sm mb-6`}>
         Offering {service.features.join(", ")}.
       </p>
       
-      {/* Hidden learn more that appears on hover */}
       <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="flex items-center text-primary font-medium">
           <span>Learn more</span>
@@ -134,7 +129,6 @@ const ServiceCard = ({ service, index }) => (
   </motion.div>
 );
 
-// Project card component
 const ProjectCard = ({ project, index }) => (
   <motion.div
     key={index}
@@ -200,13 +194,12 @@ const ProjectCard = ({ project, index }) => (
   </motion.div>
 );
 
-// Enhanced Interactive Projects List Component
+/* PROJECTS LIST COMPONENT */
 const ProjectsList = ({ projects }) => {
   const [activeProject, setActiveProject] = useState(0);
   
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      {/* Projects List - Left Side */}
       <div className="lg:col-span-4 lg:border-r border-secondary/10 lg:pr-8">
         <nav className="space-y-1" aria-label="Project Navigation">
           {projects.map((project, index) => (
@@ -268,7 +261,6 @@ const ProjectsList = ({ projects }) => {
         </div>
       </div>
       
-      {/* Project Details - Right Side with immersive design */}
       <div className="lg:col-span-8">
         <AnimatePresence mode="wait">
           <motion.div
@@ -279,9 +271,7 @@ const ProjectsList = ({ projects }) => {
             transition={{ duration: 0.4 }}
             className="rounded-2xl overflow-hidden shadow-xl group relative"
           >
-            {/* Full-height image with text overlay */}
             <div className="relative h-[600px] overflow-hidden">
-              {/* Image with subtle zoom effect on hover */}
               <div className="absolute inset-0 w-full h-full">
                 <img 
                   src={projects[activeProject].image}
@@ -290,18 +280,15 @@ const ProjectsList = ({ projects }) => {
                 />
               </div>
               
-              {/* Gradient overlays for better text visibility */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
               <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
               
-              {/* Category badge */}
               <div className="absolute top-6 left-6 z-20">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/40 text-white backdrop-blur-sm border border-primary/20">
                   {projects[activeProject].category}
                 </span>
               </div>
               
-              {/* Featured badge */}
               {projects[activeProject].featured && (
                 <div className="absolute top-6 right-6 z-20">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/40 text-white backdrop-blur-sm border border-yellow-500/20">
@@ -311,9 +298,7 @@ const ProjectsList = ({ projects }) => {
                 </div>
               )}
               
-              {/* Content overlay - positioned at the bottom */}
               <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
-                {/* Project title with animated underline */}
                 <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-primary/90 transition-colors">
                   <span className="relative">
                     {projects[activeProject].title}
@@ -321,12 +306,10 @@ const ProjectsList = ({ projects }) => {
                   </span>
                 </h3>
                 
-                {/* Project description */}
                 <p className="text-white/90 mb-6 max-w-lg text-lg">
                   {projects[activeProject].description}
                 </p>
                 
-                {/* Technologies used */}
                 <div className="flex flex-wrap gap-2 mb-8">
                   {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'].slice(0, 3 + Math.floor(Math.random() * 2)).map((tech, i) => (
                     <span key={i} className="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-md text-sm text-white">
@@ -335,7 +318,6 @@ const ProjectsList = ({ projects }) => {
                   ))}
                 </div>
                 
-                {/* Stats and CTA button in a row */}
                 <div className="flex items-center justify-between">
                   {projects[activeProject].stats && (
                     <div className="flex items-center text-primary/90 text-sm bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm">
@@ -379,7 +361,7 @@ const ProjectsList = ({ projects }) => {
   );
 };
 
-// Section heading component
+/* SECTION COMPONENTS */
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
   <div className={`mb-16 ${center ? 'text-center' : ''}`}>
     <motion.span
@@ -411,7 +393,6 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
   </div>
 );
 
-// CTA button component
 const CTAButton = ({ primary = true, children, className = "", small = false }) => (
   <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary/70'} ${primary ? 'bg-primary' : 'bg-transparent'} 
     ${small ? 'px-4 py-2 text-sm' : 'px-8 py-4 text-lg'} font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`}>
@@ -422,7 +403,7 @@ const CTAButton = ({ primary = true, children, className = "", small = false }) 
   </button>
 );
 
-// Constants
+/* CONSTANTS AND DATA */
 const COMPANY_LOGOS = [
   'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
   'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
@@ -571,42 +552,38 @@ const HERO_SERVICES = [
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
-// Hero Section
+/* HERO SECTION */
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
-      {/* Background elements */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16 md:pb-24" aria-labelledby="hero-heading">
       <div className="absolute inset-0 overflow-hidden">
-        {/* Glowing orbs */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50/30 dark:from-blue-950/20 via-background to-background/90"></div>
+        
         <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow animation-delay-2000"></div>
-        <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-accent-blue/10 rounded-full blur-xl animate-pulse-slow animation-delay-1000"></div>
+        <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-blue-400/10 rounded-full blur-xl animate-pulse-slow animation-delay-1000"></div>
         
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]"></div>
       </div>
       
-      {/* Globe background */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.8, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="w-[700px] h-[700px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.7 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="w-[min(90vw,90vh)] h-[min(90vw,90vh)] md:w-[700px] md:h-[700px]"
         >
           <Globe />
         </motion.div>
       </div>
       
-      {/* Hero content container with centered text */}
-      <div className="relative z-20 container mx-auto px-4 md:px-6">
-        <div className="max-w-3xl mx-auto text-center space-y-8">
-          {/* Badge */}
+      <div className="relative z-20 container mx-auto px-4 md:px-6 py-8">
+        <div className="max-w-3xl mx-auto text-center space-y-6 md:space-y-8">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm"
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 shadow-sm"
           >
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -615,33 +592,41 @@ const HeroSection = () => {
             <span className="text-sm font-medium text-primary">Enterprise Technology Solutions</span>
           </motion.div>
           
-          {/* Main heading with animated gradient */}
           <motion.h1 
             id="hero-heading"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight backdrop-blur-sm"
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
           >
-            <span className="block">Jason</span>
-            <span className="bg-gradient-to-r from-primary via-blue-500 to-secondary bg-clip-text text-transparent animate-gradient-x">Business With Tech</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-secondary">
+              Jason Tech Solutions
+            </span>
           </motion.h1>
-          
-          {/* Subheading */}
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto backdrop-blur-sm"
+                    <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="flex flex-wrap justify-center gap-2 md:gap-3 px-2 mx-auto max-w-2xl"
           >
-            We empower enterprises with cutting-edge solutions that drive innovation, efficiency, and growth in the digital landscape.
-          </motion.p>
+            {HERO_SERVICES.map((service, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 + (i * 0.08), duration: 0.4 }}
+                className="px-3 py-1.5 rounded-full border border-primary/20 flex items-center gap-2 shadow-sm"
+              >
+                <span className="text-primary">{service.icon}</span>
+                <span className="text-xs font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
+              </motion.div>
+            ))}
+          </motion.div>
           
-          {/* CTA buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center"
           >
             <CTAButton 
@@ -661,12 +646,11 @@ const HeroSection = () => {
             </CTAButton>
           </motion.div>
           
-          {/* Stats row */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.8 }}
-            className="flex flex-wrap gap-8 justify-center pt-4 border-t border-secondary/10 backdrop-blur-sm"
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-wrap gap-8 justify-center pt-4 mt-6 border-t border-secondary/10 py-3 px-6"
           >
             {[
               { label: "Projects Delivered", value: "500+" },
@@ -675,90 +659,195 @@ const HeroSection = () => {
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <div className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
-                <div className="text-sm text-foreground/60">{stat.label}</div>
+                <div className="text-sm text-foreground/70 dark:text-foreground/80">{stat.label}</div>
               </div>
-            ))}
-          </motion.div>
-          
-          {/* Service badges */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 1 }}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            {HERO_SERVICES.map((service, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1 + (i * 0.1), duration: 0.5 }}
-                className="px-3 py-2 bg-background/50 backdrop-blur-md rounded-full border border-primary/20 flex items-center gap-2"
-              >
-                <span className="text-primary">{service.icon}</span>
-                <span className="text-xs font-medium">{service.title}</span>
-              </motion.div>
             ))}
           </motion.div>
         </div>
       </div>
-      
-      {/* Floating technology icons around the globe */}
-      {['Code', 'Smartphone', 'BarChart', 'Shield', 'Cloud'].map((icon, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 0.9, scale: 1 }}
-          transition={{ delay: 1.2 + (i * 0.2), duration: 0.7, type: "spring" }}
-          className={`absolute w-12 h-12 rounded-2xl bg-background/70 shadow-lg backdrop-blur-md flex items-center justify-center
-            ${i === 0 ? 'top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2' : ''}
-            ${i === 1 ? 'top-1/4 right-1/4 translate-x-1/2 -translate-y-1/2' : ''}
-            ${i === 2 ? 'bottom-1/4 left-1/4 -translate-x-1/2 translate-y-1/2' : ''}
-            ${i === 3 ? 'bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2' : ''}
-            ${i === 4 ? 'top-1/2 right-[15%] -translate-y-1/2' : ''}
-            animate-float-${i + 1} z-10`}
-        >
-          <span className="text-primary">
-            {icon === 'Code' && <Code size={24} />}
-            {icon === 'Smartphone' && <Smartphone size={24} />}
-            {icon === 'BarChart' && <BarChart size={24} />}
-            {icon === 'Shield' && <Award size={24} />}
-            {icon === 'Cloud' && <Brush size={24} />}
-          </span>
-        </motion.div>
-      ))}
     </section>
   );
 };
 
-// Add these animations to your CSS file or use tailwind.config.js
-// The necessary animation classes:
-// animate-pulse-slow: a slower pulse animation
-// animate-gradient-x: moving gradient animation
-// animate-spin-slow: slow rotation
-// animation-delay-1000, animation-delay-2000: animation delays
-// animate-float-1 through animate-float-5: floating animations with different timing
+/* PROJECTS SECTION REDESIGN */
+const ProjectsSection = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const categories = ['All', 'Web Development', 'Logo Design', 'Game Development', 'Video Editing', 'UI/UX Design'];
+  const [filteredProjects, setFilteredProjects] = useState(PROJECTS);
+  
+  useEffect(() => {
+    if (activeFilter === 'All') {
+      setFilteredProjects(PROJECTS);
+    } else {
+      setFilteredProjects(PROJECTS.filter(project => project.category === activeFilter));
+    }
+  }, [activeFilter]);
 
+  return (
+    <Section pattern id="projects">
+      <SectionHeading 
+        eyebrow="Our Portfolio" 
+        title="Featured Projects" 
+        description="Explore our award-winning work delivered for clients across industries"
+        center={true} 
+      />
+      
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="flex flex-wrap justify-center gap-3 mb-12"
+      >
+        {categories.map((category, index) => (
+          <button
+            key={index}
+            onClick={() => setActiveFilter(category)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              activeFilter === category 
+                ? 'bg-primary text-white shadow-md shadow-primary/20' 
+                : 'bg-secondary/10 text-foreground/70 hover:bg-secondary/20'
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </motion.div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <AnimatePresence mode="popLayout">
+          {filteredProjects.map((project, index) => (
+            <motion.div
+              layout
+              key={project.title}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.4 }}
+              className="group relative overflow-hidden rounded-2xl border border-secondary/20 hover:border-primary/50 transition-all duration-300"
+            >
+              {/* Project Image with Overlay */}
+              <div className="relative h-64 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10"></div>
+                <img 
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                
+                {/* Category Badge */}
+                <div className="absolute top-4 left-4 z-20">
+                  <span 
+                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm"
+                    style={{ backgroundColor: `${project.color}40` }}
+                  >
+                    {project.category}
+                  </span>
+                </div>
+                
+                {/* Featured Badge */}
+                {project.featured && (
+                  <div className="absolute top-4 right-4 z-20">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/30 text-white backdrop-blur-sm">
+                      <BadgeCheck className="w-3 h-3 mr-1" />
+                      Featured
+                    </span>
+                  </div>
+                )}
+              </div>
+              
+              {/* Project Content */}
+              <div className="p-6 bg-white/5 backdrop-blur-sm border-t border-white/10">
+                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                  {project.title}
+                </h3>
+                
+                <p className="text-foreground/70 text-sm mb-4 line-clamp-2">
+                  {project.description}
+                </p>
+                
+                {/* Tech Stack */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'].slice(0, 3 + Math.floor(Math.random() * 2)).map((tech, i) => (
+                    <span key={i} className="px-2 py-1 bg-primary/10 rounded-md text-xs text-primary/80">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                
+                {/* Project Stats & CTA */}
+                <div className="flex items-center justify-between">
+                  {project.stats && (
+                    <div className="flex items-center text-primary/80 text-xs">
+                      <BarChart className="w-3 h-3 mr-1" />
+                      {project.stats}
+                    </div>
+                  )}
+                  
+                  <button className={`${UI.button.base} ${UI.button.pill} ${UI.button.primary} px-4 py-1.5 group/btn ml-auto`}>
+                    View Details
+                    <ArrowRight className="w-3 h-3 transform group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+              
+              {/* Hover Border Effect */}
+              <div 
+                className="absolute inset-0 border-2 border-transparent group-hover:border-primary/50 rounded-2xl transition-all duration-300 pointer-events-none"
+                style={{ background: `linear-gradient(120deg, transparent, ${project.color}20, transparent)` }}
+              ></div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+      
+      {filteredProjects.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-12"
+        >
+          <p className="text-lg text-foreground/70">No projects found in this category.</p>
+          <button 
+            onClick={() => setActiveFilter('All')}
+            className="mt-4 px-4 py-2 bg-primary text-white rounded-full text-sm font-medium"
+          >
+            View all projects
+          </button>
+        </motion.div>
+      )}
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mt-16 text-center"
+      >
+        <a href="/projects" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-full font-medium transition-all group">
+          View All Projects
+          <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+        </a>
+      </motion.div>
+    </Section>
+  );
+};
+
+/* MAIN COMPONENT */
 function Home() {
   return (
     <PageTransition>
       <div className="min-h-screen">
-        {/* Background container that extends to services */}
         <div className="relative bg-gradient-to-b from-background to-background/95">
-          {/* Background Pattern */}
           <div className="absolute inset-0 w-full h-full">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
           </div>
           
-          {/* Aurora Background */}
           <AuroraBackground className="absolute inset-0" showRadialGradient={true} />
 
-          {/* Replace the existing hero section with the new one */}
           <HeroSection />
 
-          {/* Rest of the page content remains the same */}
-
-          {/* Partnerships Section - Background overlay removed */}
+          {/* PARTNERSHIPS SECTION */}
           <section className="relative py-12 px-4">
             <div className="relative z-10 max-w-7xl mx-auto">
               <motion.div 
@@ -796,7 +885,7 @@ function Home() {
           </section>
         </div>
 
-        {/* Services Section */}
+        {/* SERVICES SECTION */}
         <Section pattern>
           <SectionHeading 
             eyebrow="What We Do" 
@@ -810,29 +899,14 @@ function Home() {
               <ServiceCard key={index} service={service} index={index} />
             ))}
           </div>
-          
- 
         </Section>
 
-        {/* Projects Section Redesign with Interactive List */}
-        <Section pattern>
-          <SectionHeading 
-            eyebrow="Our Portfolio" 
-            title="Featured Projects" 
-            description="Explore our award-winning work delivered for clients across industries"
-            center={true} 
-          />
-          
-          <div className="mt-12">
-            {/* Interactive Projects Component */}
-            <ProjectsList projects={PROJECTS} />
-          </div>
-        </Section>
+        {/* PROJECTS SECTION */}
+        <ProjectsSection />
 
-        {/* Why Choose Us Section with image on the left side */}
+        {/* WHY CHOOSE US SECTION */}
         <Section dark>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Image now positioned on the left side */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -853,7 +927,6 @@ function Home() {
               </div>
             </motion.div>
             
-            {/* Text content now positioned on the right side */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -892,7 +965,7 @@ function Home() {
           </div>
         </Section>
 
-        {/* Testimonials Section */}
+        {/* TESTIMONIALS SECTION */}
         <Section>
           <SectionHeading 
             eyebrow="Testimonials" 
@@ -943,8 +1016,6 @@ function Home() {
             </a>
           </motion.div>
         </Section>
-
-
       </div>
     </PageTransition>
   );
