@@ -554,113 +554,178 @@ const HERO_SERVICES = [
 
 /* HERO SECTION */
 const HeroSection = () => {
+  const [typedText, setTypedText] = useState("");
+  const phrases = ["transform businesses", "build innovative solutions", "drive digital growth", "create amazing experiences"];
+  const currentPhraseIndex = useRef(0);
+  const currentCharIndex = useRef(0);
+  const isDeleting = useRef(false);
+  const typingSpeed = useRef(80);
+
+  useEffect(() => {
+    const type = () => {
+      const currentPhrase = phrases[currentPhraseIndex.current];
+      
+      if (isDeleting.current) {
+        setTypedText(prevText => prevText.substring(0, prevText.length - 1));
+        typingSpeed.current = 50;
+      } else {
+        setTypedText(currentPhrase.substring(0, currentCharIndex.current + 1));
+        typingSpeed.current = 80;
+      }
+
+      currentCharIndex.current = isDeleting.current 
+        ? currentCharIndex.current - 1 
+        : currentCharIndex.current + 1;
+
+      if (!isDeleting.current && currentCharIndex.current === currentPhrase.length) {
+        isDeleting.current = true;
+        typingSpeed.current = 1500; // Pause before deleting
+      } else if (isDeleting.current && currentCharIndex.current === 0) {
+        isDeleting.current = false;
+        currentPhraseIndex.current = (currentPhraseIndex.current + 1) % phrases.length;
+        typingSpeed.current = 500; // Pause before typing next phrase
+      }
+    };
+
+    const timer = setTimeout(type, typingSpeed.current);
+    return () => clearTimeout(timer);
+  }, [typedText]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16 md:pb-24" aria-labelledby="hero-heading">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-50/30 dark:from-blue-950/20 via-background to-background/90"></div>
-        
-        <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow animation-delay-2000"></div>
-        <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-blue-400/10 rounded-full blur-xl animate-pulse-slow animation-delay-1000"></div>
-        
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-      </div>
+      {/* Enhanced background with depth layers */}
+
       
+      {/* Improved globe with better positioning and effects */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.7 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="w-[min(90vw,90vh)] h-[min(90vw,90vh)] md:w-[700px] md:h-[700px]"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.8, scale: 1 }}
+          transition={{ duration: 2, ease: "easeOut" }}
+          className="w-[min(110vw,110vh)] h-[min(110vw,110vh)] md:w-[800px] md:h-[800px]"
         >
           <Globe />
         </motion.div>
       </div>
       
+
+      
+      {/* Main content with improved layout */}
       <div className="relative z-20 container mx-auto px-4 md:px-6 py-8">
-        <div className="max-w-3xl mx-auto text-center space-y-6 md:space-y-8">
+        <div className="max-w-4xl mx-auto text-center space-y-8 md:space-y-10">
+          {/* Enhanced label with improved design */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5"
           >
-            <span className="flex h-2 w-2 relative">
+            <span className="flex h-2.5 w-2.5 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
             </span>
-            <span className="text-sm font-medium text-primary">Enterprise Technology Solutions</span>
+            <span className="text-sm font-semibold text-primary">Enterprise Technology Solutions</span>
           </motion.div>
           
-          <motion.h1 
-            id="hero-heading"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
-          >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-secondary">
-              Jason Tech Solutions
-            </span>
-          </motion.h1>
-                    <motion.div
+          {/* Improved heading with better typography */}
+          <div className="space-y-4">
+            <motion.h1 
+              id="hero-heading"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
+            >
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-secondary drop-shadow-sm">
+                Jason Tech Solutions
+              </span>
+            </motion.h1>
+            
+            {/* Dynamic typing effect */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="h-14 flex items-center justify-center"
+            >
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-foreground/80">
+                We help companies <span className="text-primary relative">{typedText}<span className="absolute -right-1 top-0 animate-pulse">|</span></span>
+              </h2>
+            </motion.div>
+          </div>
+          
+          {/* Enhanced service tags with improved animation and design */}
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-wrap justify-center gap-2 md:gap-3 px-2 mx-auto max-w-2xl"
+            className="flex flex-wrap justify-center gap-2.5 md:gap-3 px-2 mx-auto max-w-3xl"
           >
             {HERO_SERVICES.map((service, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(0,112,243,0.15)' }}
                 transition={{ delay: 0.6 + (i * 0.08), duration: 0.4 }}
-                className="px-3 py-1.5 rounded-full border border-primary/20 flex items-center gap-2 shadow-sm"
+                className="px-3.5 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm hover:shadow-md hover:shadow-primary/10 cursor-pointer"
               >
-                <span className="text-primary">{service.icon}</span>
-                <span className="text-xs font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
+                <span className="text-primary p-1 bg-primary/10 rounded-full">{service.icon}</span>
+                <span className="text-sm font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
               </motion.div>
             ))}
           </motion.div>
           
+          {/* Improved CTA buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center"
+            className="flex flex-col sm:flex-row gap-5 sm:gap-6 justify-center pt-4"
           >
             <CTAButton 
               primary
-              className="group shadow-lg shadow-primary/20 hover:shadow-primary/30"
+              className="group shadow-xl shadow-primary/20 hover:shadow-primary/40 border-primary backdrop-blur-md"
             >
               Get Started
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+              <ArrowRight className="group-hover:translate-x-1.5 transition-transform duration-300" size={18} />
             </CTAButton>
             
             <CTAButton 
               primary={false}
-              className="group"
+              className="group backdrop-blur-md"
             >
               Watch Demo
-              <VideoIcon className="ml-1 group-hover:scale-110 transition-transform" size={18} />
+              <VideoIcon className="ml-1 group-hover:scale-110 transition-transform duration-300" size={18} />
             </CTAButton>
           </motion.div>
           
+          {/* Improved stats with enhanced visuals */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap gap-8 justify-center pt-4 mt-6 border-t border-secondary/10 py-3 px-6"
+            className="flex flex-wrap gap-12 justify-center pt-6 mt-6 border-t border-secondary/10 py-5 px-8 backdrop-blur-sm bg-white/5 rounded-2xl"
           >
             {[
-              { label: "Projects Delivered", value: "500+" },
-              { label: "Client Satisfaction", value: "99%" },
-              { label: "Team Experts", value: "50+" }
+              { label: "Projects Delivered", value: "500+", icon: <Award className="w-5 h-5" /> },
+              { label: "Client Satisfaction", value: "99%", icon: <BadgeCheck className="w-5 h-5" /> },
+              { label: "Team Experts", value: "50+", icon: <Users className="w-5 h-5" /> }
             ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
-                <div className="text-sm text-foreground/70 dark:text-foreground/80">{stat.label}</div>
-              </div>
+              <motion.div 
+                key={i} 
+                className="text-center"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <div className="flex items-center justify-center mb-2">
+                  <div className="p-2 rounded-full bg-primary/10 text-primary mr-2">
+                    {stat.icon}
+                  </div>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
+                </div>
+                <div className="text-sm text-foreground/70 font-medium dark:text-foreground/80">{stat.label}</div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -840,7 +905,6 @@ function Home() {
       <div className="min-h-screen">
         <div className="relative bg-gradient-to-b from-background to-background/95">
           <div className="absolute inset-0 w-full h-full">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
           </div>
           
           <AuroraBackground className="absolute inset-0" showRadialGradient={true} />
