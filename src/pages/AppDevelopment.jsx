@@ -217,12 +217,10 @@ const ProcessStep = ({ step, index, totalSteps }) => (
 );
 
 // Component: AppShowcase
-const AppShowcase = ({ screenshots }) => {
-  const [active, setActive] = useState(0);
-  
+const AppShowcase = () => {
   return (
     <div className="relative">
-      {/* Spline 3D Model */}
+      {/* 3D Model using Spline */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -232,48 +230,6 @@ const AppShowcase = ({ screenshots }) => {
         style={{ height: "500px" }}
       >
         <Spline scene="https://prod.spline.design/ciMTxmd2F8kgbhMG/scene.splinecode" />
-      </motion.div>
-      
-      {/* Phone Frame - Now hidden by default, could be toggled via state if needed */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
-        className="relative mx-auto w-64 md:w-72 aspect-[9/19] rounded-3xl border-[14px] border-slate-900 dark:border-slate-800 bg-slate-800 overflow-hidden shadow-2xl hidden"
-      >
-        {/* Notch */}
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-7 bg-slate-900 dark:bg-black rounded-b-xl z-10"></div>
-        
-        {/* Screenshot carousel */}
-        <div className="absolute inset-0 bg-white">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="w-full h-full"
-          >
-            <img
-              src="/api/placeholder/400/800"
-              alt={`App screenshot ${active + 1}`}
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-        </div>
-        
-        {/* Controls */}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-          {[0, 1, 2].map((i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className={`w-2 h-2 rounded-full transition-colors ${active === i ? 'bg-white' : 'bg-white/40'}`}
-              aria-label={`View screenshot ${i + 1}`}
-            ></button>
-          ))}
-        </div>
       </motion.div>
       
       {/* Glow effects */}
