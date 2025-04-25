@@ -636,7 +636,7 @@ const HeroSection = () => {
               transition={{ duration: 0.7, delay: 0.1 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-secondary drop-shadow-sm">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-violet-700 drop-shadow[0_1px_2px_rgba(0,0,0,0.15)]-sm">
                 Jason Tech Solutions
               </span>
             </motion.h1>
