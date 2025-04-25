@@ -6,9 +6,10 @@ import { Globe } from "@/components/magicui/globe";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
-  VideoIcon, Brush, Lightbulb, ArrowLeft
+  VideoIcon, Brush, Lightbulb, ArrowLeft, MessageSquare, CheckCircle, Phone, Mail, MessageCircle
 } from "lucide-react";
 import { Smartphone } from "lucide-react";
+import FeaturesSectionDemo from '../components/FeaturesSectionDemo';
 
 /* THEME AND UI CONFIGURATION */
 const THEME = {
@@ -898,6 +899,274 @@ const ProjectsSection = () => {
   );
 };
 
+/* PROCESS SECTION WITH STICKY STACKING CARDS */
+const ProcessSection = () => {
+  // This will be used for the observer
+  const containerRef = useRef(null);
+  const [activeCard, setActiveCard] = useState(0);
+  const prevActiveCard = useRef(0);
+  
+  const PROCESS_CARDS = [
+    {
+      id: 1,
+      title: "Contact Us",
+      description: "Reach out to discuss your project.",
+      icon: <Users className="w-6 h-6 text-primary" />,
+      color: "from-blue-500/20 to-indigo-500/20"
+    },
+    {
+      id: 2,
+      title: "Share Your Requirements",
+      description: "Tell us your goals and ideas.",
+      icon: <MessageSquare className="w-6 h-6 text-primary" />,
+      color: "from-indigo-500/20 to-violet-500/20"
+    },
+    {
+      id: 3,
+      title: "Set Your Budget",
+      description: "We'll plan a solution that fits.",
+      icon: <LineChart className="w-6 h-6 text-primary" />,
+      color: "from-violet-500/20 to-purple-500/20"
+    },
+    {
+      id: 4,
+      title: "Project Development",
+      description: "Our team builds your solution.",
+      icon: <Code className="w-6 h-6 text-primary" />,
+      color: "from-purple-500/20 to-pink-500/20"
+    },
+    {
+      id: 5,
+      title: "Testing & Delivery",
+      description: "Quality assurance and project handover.",
+      icon: <CheckCircle className="w-6 h-6 text-primary" />,
+      color: "from-pink-500/20 to-rose-500/20"
+    }
+  ];
+
+  // Debounce function to improve performance
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: [0.6, 0.8]
+    };
+
+    // Debounced handler for smoother transitions
+    const handleIntersection = debounce((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Get the card index from the data attribute
+          const cardIndex = parseInt(entry.target.dataset.index);
+          
+          // Smooth transition between cards
+          setActiveCard(prev => {
+            prevActiveCard.current = prev;
+            return cardIndex;
+          });
+        }
+      });
+    }, 50); // 50ms debounce
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+
+    // Get all the card elements and observe them
+    const cardElements = containerRef.current?.querySelectorAll('.process-card-item');
+    if (cardElements) {
+      cardElements.forEach((card) => {
+        observer.observe(card);
+      });
+    }
+
+    return () => {
+      if (cardElements) {
+        cardElements.forEach((card) => {
+          observer.unobserve(card);
+        });
+      }
+    };
+  }, []);
+
+  return (
+    <Section pattern id="process" aria-labelledby="process-heading">
+      <SectionHeading 
+        eyebrow="Simple Process" 
+        title="To Get You Started" 
+        description="We've streamlined our workflow to make your experience seamless and straightforward from start to finish."
+        center={true} 
+      />
+      
+      <div className="mt-16 relative">
+        {/* Left side - sticky cards that stack */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-6 lg:h-[800px] relative">
+            <div className="sticky top-24">
+              <AnimatePresence mode="popLayout">
+                {PROCESS_CARDS.map((card, index) => (
+                  <motion.div
+                    key={card.id}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ 
+                      opacity: activeCard > index + 2 ? 0 : 1,
+                      y: 0
+                    }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    className={`absolute inset-0 p-8 rounded-2xl bg-gradient-to-br ${card.color} border border-primary/10 shadow-xl transition-all duration-300 backdrop-blur-sm h-80`}
+                    style={{
+                      transform: `perspective(1000px) rotateX(0deg) rotateY(${activeCard >= index ? 0 : 5}deg) rotateZ(0deg) scale(${1 - Math.min(Math.max(activeCard - index, 0), 3) * 0.05})`,
+                      top: `${Math.min(Math.max(activeCard - index, 0), 3) * 40}px`,
+                      zIndex: PROCESS_CARDS.length - index
+                    }}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-14 h-14 rounded-xl bg-white/80 backdrop-blur flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                          {card.icon}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium text-primary/80 mb-1">Step {card.id}</div>
+                        <h3 className="text-2xl font-bold mb-2" id={`process-step-title-${card.id}`}>{card.title}</h3>
+                        <p className="text-foreground/70">{card.description}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+          
+          {/* Right side - scrolling content that activates the cards */}
+          <div className="lg:col-span-6" ref={containerRef}>
+            {PROCESS_CARDS.map((card, index) => (
+              <article 
+                className="process-card-item h-80 mb-8 p-8 rounded-2xl border border-secondary/20 bg-secondary/5 backdrop-blur-sm"
+                key={card.id}
+                data-index={index}
+                aria-labelledby={`process-step-${card.id}`}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      {card.icon}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-primary/80 mb-1">Step {card.id}</div>
+                    <h3 className="text-2xl font-bold mb-4" id={`process-step-${card.id}`}>{card.title}</h3>
+                    <p className="text-foreground/70 mb-6">{card.description}</p>
+                    {/* Additional content for each step */}
+                    <div className="pl-6 border-l-2 border-primary/20">
+                      {index === 0 && (
+                        <div className="space-y-2">
+                          <p className="text-sm text-foreground/80">Ready to transform your business with technology? Contact us through:</p>
+                          <div className="flex items-center gap-2 text-sm">
+                            <Phone className="w-4 h-4 text-primary" />
+                            <span>Call us at (123) 456-7890</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <Mail className="w-4 h-4 text-primary" />
+                            <span>Email at info@jasontechsolutions.com</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <MessageCircle className="w-4 h-4 text-primary" />
+                            <span>Chat with us online</span>
+                          </div>
+                        </div>
+                      )}
+                      {index === 1 && (
+                        <div className="space-y-2">
+                          <p className="text-sm text-foreground/80">We'll discuss:</p>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Your business goals and objectives</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Target audience and market positioning</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Technical requirements and constraints</span>
+                          </div>
+                        </div>
+                      )}
+                      {index === 2 && (
+                        <div className="space-y-2">
+                          <p className="text-sm text-foreground/80">We offer flexible pricing options:</p>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Fixed price projects</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Time and materials model</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Retainer agreements for ongoing work</span>
+                          </div>
+                        </div>
+                      )}
+                      {index === 3 && (
+                        <div className="space-y-2">
+                          <p className="text-sm text-foreground/80">Our development process includes:</p>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Regular progress updates</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Iterative development with feedback cycles</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Transparent project management</span>
+                          </div>
+                        </div>
+                      )}
+                      {index === 4 && (
+                        <div className="space-y-2">
+                          <p className="text-sm text-foreground/80">Before delivery, we ensure:</p>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Comprehensive testing and quality assurance</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Complete documentation and knowledge transfer</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm">
+                            <CheckCircle className="w-4 h-4 text-primary" />
+                            <span>Ongoing support options as needed</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+};
+
 /* MAIN COMPONENT */
 function Home() {
   return (
@@ -964,6 +1233,11 @@ function Home() {
             ))}
           </div>
         </Section>
+
+        {/* PROCESS SECTION */}
+        <ProcessSection />
+
+        <FeaturesSectionDemo />
 
         {/* PROJECTS SECTION */}
         <ProjectsSection />
