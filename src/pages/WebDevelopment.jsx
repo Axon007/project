@@ -1623,31 +1623,33 @@ function WebDevelopmentServices() {
                 </div>
                 <div className="p-6 bg-background/95 backdrop-blur-sm font-mono text-sm max-h-[400px] overflow-y-auto">
                   <pre className="text-[13px] leading-relaxed">
-                    <code className="language-jsx">
-                      <span className="text-blue-400">import</span> <span className="text-foreground">{'{'}</span> <span className="text-yellow-300">motion</span> <span className="text-foreground">{'}'}</span> <span className="text-blue-400">from</span> <span className="text-green-300">'framer-motion'</span><span className="text-foreground">;</span>{'\n\n'}
-                      <span className="text-blue-400">const</span> <span className="text-yellow-300">HeroSection</span> <span className="text-foreground">= () => {'{'}</span>{'\n'}
-                      {'  '}<span className="text-blue-400">return</span> <span className="text-foreground">(</span>{'\n'}
-                      {'    '}<span className="text-purple-400">{'<div'}</span> <span className="text-blue-300">className</span><span className="text-foreground">=</span><span className="text-green-300">"relative h-screen flex items-center"</span><span className="text-purple-400">{'>'}</span>{'\n'}
-                      {'      '}<span className="text-purple-400">{'<motion.h1'}</span>{'\n'}
-                      {'        '}<span className="text-blue-300">initial</span><span className="text-foreground">={'{{'}</span> <span className="text-orange-300">opacity</span><span className="text-foreground">:</span> <span className="text-blue-300">0</span><span className="text-foreground">, </span><span className="text-orange-300">y</span><span className="text-foreground">:</span> <span className="text-blue-300">20</span> <span className="text-foreground">{'}}'}</span>{'\n'}
-                      {'        '}<span className="text-blue-300">animate</span><span className="text-foreground">={'{{'}</span> <span className="text-orange-300">opacity</span><span className="text-foreground">:</span> <span className="text-blue-300">1</span><span className="text-foreground">, </span><span className="text-orange-300">y</span><span className="text-foreground">:</span> <span className="text-blue-300">0</span> <span className="text-foreground">{'}}'}</span>{'\n'}
-                      {'        '}<span className="text-blue-300">transition</span><span className="text-foreground">={'{{'}</span> <span className="text-orange-300">duration</span><span className="text-foreground">:</span> <span className="text-blue-300">0.8</span> <span className="text-foreground">{'}}'}</span>{'\n'}
-                      {'        '}<span className="text-blue-300">className</span><span className="text-foreground">=</span><span className="text-green-300">"text-5xl font-bold"</span>{'\n'}
-                      {'      '}<span className="text-purple-400">{'>'}</span>{'\n'}
-                      {'        '}Building exceptional web experiences{'\n'}
-                      {'      '}<span className="text-purple-400">{'</motion.h1>'}</span>{'\n'}
-                      {'      '}<span className="text-purple-400">{'<motion.p'}</span>{'\n'}
-                      {'        '}<span className="text-blue-300">initial</span><span className="text-foreground">={'{{'}</span> <span className="text-orange-300">opacity</span><span className="text-foreground">:</span> <span className="text-blue-300">0</span> <span className="text-foreground">{'}}'}</span>{'\n'}
-                      {'        '}<span className="text-blue-300">animate</span><span className="text-foreground">={'{{'}</span> <span className="text-orange-300">opacity</span><span className="text-foreground">:</span> <span className="text-blue-300">1</span> <span className="text-foreground">{'}}'}</span>{'\n'}
-                      {'        '}<span className="text-blue-300">transition</span><span className="text-foreground">={'{{'}</span> <span className="text-orange-300">delay</span><span className="text-foreground">:</span> <span className="text-blue-300">0.2</span> <span className="text-foreground">{'}}'}</span>{'\n'}
-                      {'      '}<span className="text-purple-400">{'>'}</span>{'\n'}
-                      {'        '}Custom websites and web applications that drive results{'\n'}
-                      {'      '}<span className="text-purple-400">{'</motion.p>'}</span>{'\n'}
-                      {'    '}<span className="text-purple-400">{'</div>'}</span>{'\n'}
-                      {'  '}<span className="text-foreground">);</span>{'\n'}
-                      <span className="text-foreground">{'}'};</span>{'\n\n'}
-                      <span className="text-blue-400">export</span> <span className="text-blue-400">default</span> <span className="text-yellow-300">HeroSection</span><span className="text-foreground">;</span>
-                    </code>
+                    {`
+<span class="text-blue-400">import</span> <span class="text-foreground">&#123;</span> <span class="text-yellow-300">motion</span> <span class="text-foreground">&#125;</span> <span class="text-blue-400">from</span> <span class="text-green-300">'framer-motion'</span><span class="text-foreground">;</span>
+
+<span class="text-blue-400">const</span> <span class="text-yellow-300">HeroSection</span> <span class="text-foreground">= () =&#62; &#123;</span>
+  <span class="text-blue-400">return</span> <span class="text-foreground">(</span>
+    <span class="text-purple-400">&#60;div</span> <span class="text-blue-300">className</span><span class="text-foreground">=</span><span class="text-green-300">"relative h-screen flex items-center"</span><span class="text-purple-400">&#62;</span>
+      <span class="text-purple-400">&#60;motion.h1</span>
+        <span class="text-blue-300">initial</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">opacity</span><span class="text-foreground">:</span> <span class="text-blue-300">0</span><span class="text-foreground">, </span><span class="text-orange-300">y</span><span class="text-foreground">:</span> <span class="text-blue-300">20</span> <span class="text-foreground">&#125;&#125;</span>
+        <span class="text-blue-300">animate</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">opacity</span><span class="text-foreground">:</span> <span class="text-blue-300">1</span><span class="text-foreground">, </span><span class="text-orange-300">y</span><span class="text-foreground">:</span> <span class="text-blue-300">0</span> <span class="text-foreground">&#125;&#125;</span>
+        <span class="text-blue-300">transition</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">duration</span><span class="text-foreground">:</span> <span class="text-blue-300">0.8</span> <span class="text-foreground">&#125;&#125;</span>
+        <span class="text-blue-300">className</span><span class="text-foreground">=</span><span class="text-green-300">"text-5xl font-bold"</span>
+      <span class="text-purple-400">&#62;</span>
+        Building exceptional web experiences
+      <span class="text-purple-400">&#60;/motion.h1&#62;</span>
+      <span class="text-purple-400">&#60;motion.p</span>
+        <span class="text-blue-300">initial</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">opacity</span><span class="text-foreground">:</span> <span class="text-blue-300">0</span> <span class="text-foreground">&#125;&#125;</span>
+        <span class="text-blue-300">animate</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">opacity</span><span class="text-foreground">:</span> <span class="text-blue-300">1</span> <span class="text-foreground">&#125;&#125;</span>
+        <span class="text-blue-300">transition</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">delay</span><span class="text-foreground">:</span> <span class="text-blue-300">0.2</span> <span class="text-foreground">&#125;&#125;</span>
+      <span class="text-purple-400">&#62;</span>
+        Custom websites and web applications that drive results
+      <span class="text-purple-400">&#60;/motion.p&#62;</span>
+    <span class="text-purple-400">&#60;/div&#62;</span>
+  <span class="text-foreground">);</span>
+<span class="text-foreground">&#125;;</span>
+
+<span class="text-blue-400">export</span> <span class="text-blue-400">default</span> <span class="text-yellow-300">HeroSection</span><span class="text-foreground">;</span>
+                    `}
                   </pre>
                 </div>
                 <div className="absolute bottom-6 right-6 animate-pulse">

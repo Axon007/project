@@ -36,24 +36,70 @@ const THEME = {
 };
 
 const UI = {
+  // Card patterns - unified
   card: {
-    base: "rounded-2xl overflow-hidden border border-secondary/20 hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/10 bg-background/50 backdrop-blur-sm",
-    padding: "p-6",
-    iconContainer: "mb-6 bg-primary/10 w-16 h-16 rounded-xl flex items-center justify-center"
+    base: "rounded-2xl overflow-hidden border border-secondary/20 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 bg-background/50 backdrop-blur-sm",
+    padding: "p-6 md:p-8",
+    iconContainer: "mb-6 bg-primary/10 w-16 h-16 rounded-xl flex items-center justify-center",
+    hover: {
+      transform: "hover:-translate-y-1",
+      glow: "group-hover:opacity-100 opacity-0 transition-opacity duration-300"
+    }
   },
+  
+  // Typography system - unified
   text: {
-    heading: "font-bold text-foreground",
-    body: "text-foreground/70",
+    heading: {
+      h1: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight",
+      h2: "text-2xl sm:text-3xl md:text-4xl font-bold",
+      h3: "text-xl md:text-2xl font-bold",
+      h4: "text-lg font-semibold",
+      section: "text-4xl md:text-5xl font-bold mt-4 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
+    },
+    body: {
+      default: "text-foreground/70",
+      sm: "text-sm text-foreground/70",
+      lg: "text-lg text-foreground/70"
+    },
     accent: "text-primary"
   },
+  
+  // Gradient patterns - unified
   gradients: {
     primary: "bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary",
-    hover: "bg-gradient-to-r from-primary/20 to-blue-500/20"
+    hover: "bg-gradient-to-r from-primary/10 to-secondary/10",
+    card: "bg-gradient-to-r from-primary/5 to-secondary/5",
+    glow: "bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 blur-sm"
   },
+  
+  // Button styles - unified
   button: {
-    base: "flex items-center gap-1 font-medium",
+    base: "flex items-center gap-2 font-medium transition-all",
+    sizes: {
+      sm: "px-3 py-1.5 text-sm",
+      md: "px-5 py-2.5 text-sm", 
+      lg: "px-6 py-3 text-base"
+    },
+    variants: {
+      primary: "bg-primary hover:bg-primary/90 text-white", 
+      secondary: "bg-primary/10 hover:bg-primary/20 text-primary",
+      outline: "border-2 border-primary/30 hover:bg-primary/10 text-primary"
+    },
     pill: "rounded-full",
-    primary: "bg-primary/10 hover:bg-primary/20 text-primary"
+    icon: "group-hover:translate-x-1 transition-transform duration-300"
+  },
+  
+  // Section & spacing - unified
+  section: {
+    padding: "py-16 md:py-24",
+    container: "max-w-7xl mx-auto relative z-10",
+    eyebrow: "text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
+  },
+  
+  // Effects - unified
+  effects: {
+    glow: "absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300",
+    hoverLift: "transition-transform duration-300 hover:-translate-y-1"
   }
 };
 
@@ -102,97 +148,315 @@ const Section = ({ children, dark = false, pattern = false, className = "", id =
   </section>
 );
 
-const ServiceCard = ({ service, index }) => (
+// Universal Card component
+const Card = ({ 
+  children, 
+  className = "", 
+  hoverEffect = true, 
+  gradient = false,
+  border = true,
+  glow = true,
+  onClick = null 
+}) => (
   <motion.div
-    key={index}
-    {...createMotionProps('fadeInUp', index * 0.1)}
-    className={`${UI.card.base} group relative`}
+    whileHover={hoverEffect ? { y: -5 } : {}}
+    transition={{ duration: 0.2 }}
+    className={`group relative ${UI.card.base} ${
+      border ? "" : "border-0"
+    } ${className}`}
+    onClick={onClick}
   >
-    <div className={UI.card.padding}>
-      <div className={UI.card.iconContainer}>
-        {service.icon}
-      </div>
-      <h3 className={`text-xl ${UI.text.heading} mb-3`}>{service.title}</h3>
-      <p className={`${UI.text.body} mb-6 text-sm`}>{service.description}</p>
-      
-      <p className={`${UI.text.body} text-sm mb-6`}>
-        Offering {service.features.join(", ")}.
-      </p>
-      
-      <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="flex items-center text-primary font-medium">
-          <span>Learn more</span>
-          <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-        </div>
-      </div>
+    {/* Conditional glow effect */}
+    {glow && (
+      <div className={UI.effects.glow}></div>
+    )}
+    
+    {/* Conditional background gradient */}
+    {gradient && (
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl"></div>
+    )}
+    
+    {/* Card content */}
+    <div className={`${UI.card.padding} relative z-10 h-full flex flex-col`}>
+      {children}
     </div>
   </motion.div>
 );
 
-const ProjectCard = ({ project, index }) => (
-  <motion.div
-    key={index}
-    {...createMotionProps('fadeInUp', index * 0.1)}
-    className={`group relative flex flex-col overflow-hidden ${UI.card.base}`}
-  >
-    <div className="relative h-56 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-      <img 
-        src={project.image}
-        alt={project.title}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-      <div className="absolute top-4 left-4 z-20">
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/30 text-white backdrop-blur-sm">
-          {project.category}
-        </span>
-      </div>
-      {project.featured && (
-        <div className="absolute top-4 right-4 z-20">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/30 text-white backdrop-blur-sm">
-            <BadgeCheck className="w-3 h-3 mr-1" />
-            Featured
-          </span>
-        </div>
-      )}
-      <div className="absolute bottom-0 left-0 right-0 z-20 p-4">
-        <h3 className="text-xl font-bold text-white mb-1 line-clamp-1">
-          {project.title}
-        </h3>
-        <p className="text-white/80 text-sm line-clamp-1">
-          {project.description}
-        </p>
-      </div>
-    </div>
-    <div className="flex flex-col p-5 flex-grow bg-secondary/20 backdrop-blur-sm">
-      <div className="mb-auto">
-        <p className={`${UI.text.body} text-sm mb-4 line-clamp-2`}>
-          {project.description}
-        </p>
-        <div className="flex flex-wrap gap-2 mb-4">
-          {[...Array(3)].map((_, i) => (
-            <span key={i} className="px-2 py-1 bg-primary/10 rounded-md text-xs text-primary/80">
-              {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'][Math.floor(Math.random() * 5)]}
-            </span>
-          ))}
-        </div>
-      </div>
-      <div className="flex items-center justify-between mt-4 border-t border-secondary/30 pt-4">
-        {project.stats && (
-          <div className="flex items-center text-primary/80 text-xs">
-            <LineChart className="w-3 h-3 mr-1" />
-            {project.stats}
+// Update the ServiceCard component for better interactivity and visual appeal
+const ServiceCard = ({ service, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <motion.div
+      key={index}
+      {...createMotionProps('fadeInUp', index * 0.1)}
+      className={`${UI.card.base} group relative overflow-hidden`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+    >
+      {/* Service glow effect */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300"></div>
+      
+      <div className={`${UI.card.padding} relative z-10 bg-background/95 rounded-2xl h-full flex flex-col`}>
+        {/* Icon with enhanced animation */}
+        <div className={`${UI.card.iconContainer} relative transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/20`}>
+          <motion.div 
+            animate={{ 
+              rotate: isHovered ? 360 : 0,
+            }}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
+            className="absolute inset-0 bg-primary/10 rounded-xl"
+          />
+          <div className="relative z-10">
+            {service.icon}
           </div>
-        )}
-        <button className={`ml-auto ${UI.button.base} ${UI.button.pill} ${UI.button.primary} px-4 py-1.5`}>
-          View Project
-          <ArrowRight className="w-3 h-3 transform group-hover:translate-x-1 transition-transform" />
-        </button>
+        </div>
+        
+        {/* Content with better spacing */}
+        <h3 className={`text-lg md:text-xl ${UI.text.heading} mb-2 md:mb-3 group-hover:text-primary transition-colors`}>
+          {service.title}
+        </h3>
+        
+        <p className={`${UI.text.body} text-sm mb-4 md:mb-6`}>
+          {service.description}
+        </p>
+        
+        {/* Features list with improved bullets */}
+        <div className="flex-grow">
+          <h4 className="text-sm font-medium text-primary/80 mb-3">Features:</h4>
+          <ul className="space-y-2">
+            {service.features.map((feature, i) => (
+              <li key={i} className="flex items-center text-sm text-foreground/70">
+                <span className="mr-2 h-1.5 w-1.5 rounded-full bg-primary/70"></span>
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        {/* Bottom CTA with animation */}
+        <div className="mt-6 pt-4 border-t border-secondary/10">
+          <motion.div 
+            className="flex items-center justify-between text-primary font-medium"
+            animate={{ x: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.9 }}
+            transition={{ duration: 0.3 }}
+          >
+            <span className="text-sm">Learn more</span>
+            <ArrowRight size={16} className="ml-2 group-hover:translate-x-1.5 transition-transform" />
+          </motion.div>
+        </div>
       </div>
-    </div>
-    <div className={`absolute -inset-px ${UI.gradients.hover} opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300 pointer-events-none`}></div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
+
+// Add this new component for mobile services carousel
+const MobileServiceCarousel = ({ services }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef(null);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!carouselRef.current) return;
+      
+      const scrollPosition = carouselRef.current.scrollLeft;
+      const itemWidth = carouselRef.current.offsetWidth;
+      const newIndex = Math.round(scrollPosition / itemWidth);
+      
+      if (newIndex !== activeIndex) {
+        setActiveIndex(newIndex);
+      }
+    };
+    
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.addEventListener('scroll', handleScroll);
+      return () => carousel.removeEventListener('scroll', handleScroll);
+    }
+  }, [activeIndex]);
+  
+  return (
+    <>
+      <div 
+        ref={carouselRef}
+        className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar -mx-4 px-4 pb-6"
+      >
+        {services.map((service, index) => (
+          <div 
+            key={index} 
+            className="w-full flex-shrink-0 snap-center px-2 first:pl-4 last:pr-4"
+          >
+            <ServiceCard service={service} index={index} />
+          </div>
+        ))}
+      </div>
+      
+      <div className="flex justify-center gap-1.5 mt-4">
+        {services.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              if (carouselRef.current) {
+                carouselRef.current.scrollLeft = index * carouselRef.current.offsetWidth;
+              }
+            }}
+            aria-label={`Go to slide ${index + 1}`}
+            className={`w-2.5 h-2.5 rounded-full transition-colors ${
+              activeIndex === index 
+                ? 'bg-primary' 
+                : 'bg-primary/30'
+            }`}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
+
+// Update the Services Section
+const ServicesSection = () => {
+  const isMobile = useRef(window.innerWidth < 768);
+  const [isClient, setIsClient] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+    const handleResize = () => {
+      isMobile.current = window.innerWidth < 768;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  return (
+    <Section pattern>
+      <SectionHeading 
+        eyebrow="What We Do" 
+        title="Our Services" 
+        description="We deliver cutting-edge solutions tailored to your specific business needs, leveraging the latest technologies and industry best practices."
+        center={true} 
+      />
+      
+      {/* Featured Service with highlight */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-12 md:mb-16"
+      >
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/10">
+          <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-primary/10 to-transparent"></div>
+          <div className="absolute bottom-0 right-0 w-40 h-40 bg-secondary/20 blur-3xl rounded-full"></div>
+          
+          <div className="grid md:grid-cols-5 gap-6 md:gap-8 p-6 md:p-8 relative z-10">
+            <div className="md:col-span-3">
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                <BadgeCheck className="w-4 h-4 mr-2" />
+                Most Popular Service
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-3">Web Development Solutions</h3>
+              <p className="text-foreground/70 mb-6 md:text-lg">
+                We build scalable, high-performance web applications using modern frameworks and best practices.
+                Our solutions are designed to deliver exceptional user experiences while meeting your business objectives.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                {[
+                  "Custom Web Applications", 
+                  "E-commerce Solutions", 
+                  "Progressive Web Apps", 
+                  "API Development"
+                ].map((feature, i) => (
+                  <div key={i} className="flex items-center">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary mr-2"></span>
+                    <span className="text-sm md:text-base">{feature}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex flex-wrap gap-2 mb-6">
+                {["React", "Node.js", "Next.js", "TypeScript", "GraphQL"].map((tech, i) => (
+                  <span key={i} className="px-2.5 py-1 bg-white/10 backdrop-blur-sm rounded-md text-xs border border-primary/10">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              
+              <button className="group bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full text-sm font-medium transition-all inline-flex items-center">
+                Explore Web Development
+                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+            
+            <div className="md:col-span-2 relative min-h-[180px] md:min-h-0">
+              <img 
+                src="https://images.unsplash.com/photo-1561736778-92e52a7769ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Web Development" 
+                className="rounded-xl object-cover w-full h-full"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl"></div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+      
+      {/* Service cards - responsive display */}
+      {isClient && (
+        <>
+          {isMobile.current ? (
+            <MobileServiceCarousel services={SERVICES} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {SERVICES.map((service, index) => (
+                <ServiceCard key={index} service={service} index={index} />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      
+      {/* Stats banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="mt-16 md:mt-24 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 p-5 md:p-8 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5 rounded-2xl border border-primary/10"
+      >
+        {[
+          { label: "Projects Completed", value: "1,200+", color: "from-blue-500 to-primary" },
+          { label: "Team Members", value: "50+", color: "from-primary to-cyan-500" },
+          { label: "Years Experience", value: "12+", color: "from-purple-500 to-secondary" },
+          { label: "Client Satisfaction", value: "99%", color: "from-secondary to-blue-500" }
+        ].map((stat, i) => (
+          <div key={i} className="text-center p-4">
+            <p className={`text-2xl md:text-4xl font-bold mb-1 md:mb-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+              {stat.value}
+            </p>
+            <p className="text-xs md:text-sm text-foreground/70">{stat.label}</p>
+          </div>
+        ))}
+      </motion.div>
+      
+      {/* CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mt-12 md:mt-16 text-center"
+      >
+        <a href="/services" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 md:py-3 bg-primary hover:bg-primary/90 text-white rounded-full text-sm md:text-base font-medium transition-all group">
+          View All Our Services
+          <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
+        </a>
+      </motion.div>
+    </Section>
+  );
+};
 
 /* PROJECTS LIST COMPONENT */
 const ProjectsList = ({ projects }) => {
@@ -402,6 +666,45 @@ const CTAButton = ({ primary = true, children, className = "", small = false }) 
     <div className={`absolute inset-0 z-0 ${primary ? 'bg-background' : 'bg-primary'} translate-y-full transition-transform duration-300 group-hover:translate-y-0`} />
   </button>
 );
+
+// Universal Button component
+const Button = ({ 
+  children, 
+  variant = "primary", 
+  size = "md", 
+  pill = true,
+  href = null,
+  className = "",
+  onClick = null
+}) => {
+  const buttonClasses = `
+    ${UI.button.base}
+    ${UI.button.variants[variant]}
+    ${UI.button.sizes[size]}
+    ${pill ? UI.button.pill : "rounded-lg"}
+    ${className}
+  `;
+  
+  const content = (
+    <span className="flex items-center justify-center gap-2 group">
+      {children}
+    </span>
+  );
+  
+  if (href) {
+    return (
+      <a href={href} className={buttonClasses}>
+        {content}
+      </a>
+    );
+  }
+  
+  return (
+    <button onClick={onClick} className={buttonClasses}>
+      {content}
+    </button>
+  );
+};
 
 /* CONSTANTS AND DATA */
 const COMPANY_LOGOS = [
@@ -950,81 +1253,148 @@ function Home() {
         </div>
 
         {/* SERVICES SECTION */}
-        <Section pattern>
-          <SectionHeading 
-            eyebrow="What We Do" 
-            title="Our Services" 
-            description="We deliver cutting-edge solutions tailored to your specific business needs, leveraging the latest technologies and industry best practices."
-            center={true} 
-          />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {SERVICES.map((service, index) => (
-              <ServiceCard key={index} service={service} index={index} />
-            ))}
-          </div>
-        </Section>
+        <ServicesSection />
 
         {/* PROJECTS SECTION */}
         <ProjectsSection />
 
-        {/* WHY CHOOSE US SECTION */}
-        <Section dark>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* WHY CHOOSE US SECTION - REDESIGNED */}
+        <Section className="py-16 md:py-24" pattern>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-center">
+            {/* Left content */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="relative order-2 lg:order-1"
+              className="lg:col-span-5 order-2 lg:order-1"
             >
-              <div className="relative h-96 w-full rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-1">
-                <motion.div 
-                  className="absolute inset-0 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-blue-500/20 shadow-xl"
-                >
+              <div className="relative">
+                {/* Background elements */}
+                <div className="absolute -left-6 -top-6 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
+                <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-secondary/10 rounded-full blur-xl"></div>
+                
+                {/* Main image with floating elements */}
+                <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-primary/20">
                   <img 
-                    src="/api/placeholder/600/400" 
-                    alt="Technology visual representation" 
-                    className="w-full h-full object-cover rounded-xl"
+                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                    alt="Team collaboration" 
+                    className="w-full h-auto rounded-2xl"
+                    loading="lazy"
                   />
+                </div>
+                
+                {/* Floating stats cards */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="absolute -right-5 -top-10 bg-white shadow-xl rounded-lg p-3 border border-primary/10 z-20"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Users className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-foreground/60">Team Size</p>
+                      <p className="text-lg font-bold text-primary">50+ Experts</p>
+                    </div>
+                  </div>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                  className="absolute -left-5 -bottom-8 bg-white shadow-xl rounded-lg p-3 border border-primary/10 z-20"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Award className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-foreground/60">Experience</p>
+                      <p className="text-lg font-bold text-primary">12+ Years</p>
+                    </div>
+                  </div>
                 </motion.div>
               </div>
             </motion.div>
             
+            {/* Right content */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="order-1 lg:order-2"
+              className="lg:col-span-7 order-1 lg:order-2"
             >
-              <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">Why Choose Us</span>
-              <h2 className="text-4xl font-bold mt-6 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">Technology expertise that drives business growth</h2>
-              <p className="text-foreground/70 mb-8">
+              <motion.span
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
+              >
+                Why Choose Us
+              </motion.span>
+              
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-3xl md:text-4xl font-bold mt-4 mb-6"
+              >
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Technology expertise</span> that drives business growth
+              </motion.h2>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="text-foreground/70 mb-10 text-base md:text-lg"
+              >
                 At Jason Tech Solutions, we combine technical excellence with strategic thinking to deliver solutions 
                 that not only solve today's challenges but position your business for future success.
-              </p>
+              </motion.p>
               
               <div className="space-y-8">
                 {WHY_CHOOSE_US.map((item, index) => (
                   <motion.div 
                     key={index}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="flex gap-6"
+                    transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                    whileHover={{ x: 5 }}
+                    className="flex gap-5 group"
                   >
-                    <div className="mt-1 bg-primary/20 h-12 w-12 rounded-xl flex items-center justify-center shrink-0" aria-hidden="true">
+                    <div className="mt-1 bg-gradient-to-br from-primary/20 to-secondary/20 h-14 w-14 rounded-2xl flex items-center justify-center shrink-0 shadow-md group-hover:shadow-lg group-hover:shadow-primary/10 transition-all" aria-hidden="true">
                       {item.icon}
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                      <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
                       <p className="text-foreground/70">{item.description}</p>
                     </div>
                   </motion.div>
                 ))}
               </div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6 }}
+                className="mt-10"
+              >
+                <button className="inline-flex items-center px-5 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-full text-sm font-medium transition-all group">
+                  Learn More About Our Approach
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+                </button>
+              </motion.div>
             </motion.div>
           </div>
         </Section>
