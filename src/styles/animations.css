@@ -94,6 +94,20 @@
   }
 }
 
+@keyframes meteor {
+  0% {
+    opacity: 0;
+    transform: translateX(0) translateY(0);
+  }
+  10%, 15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-200px) translateY(200px);
+  }
+}
+
 .animate-pulse-slow {
   animation: pulse-slow 6s ease-in-out infinite;
 }
@@ -113,6 +127,10 @@
 
 .animate-spin-slow-reverse {
   animation: spin-slow-reverse 15s linear infinite;
+}
+
+.animate-meteor {
+  animation: meteor 10s linear infinite;
 }
 
 .animation-delay-1000 {

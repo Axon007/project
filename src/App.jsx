@@ -9,6 +9,7 @@ import GamingDevServices from './pages/GameDevelopment ';
 import LogoDesign from './pages/LogoDesign';
 import VideoEditing from './pages/VideoEditing';
 import AppDevelopment from './pages/AppDevelopment';
+import ContactUs from './pages/ContactUs';
 
 function AppContent() {
   const location = useLocation();
@@ -56,7 +57,7 @@ function AppContent() {
           <Route path="/logo-design" element={<LogoDesign />} />
           <Route path="/video-editing" element={<VideoEditing />} />
           <Route path ="/app-development" element={<AppDevelopment />} />
-
+          <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </AnimatePresence>
       <Footer />
