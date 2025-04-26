@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Mail, Facebook, Twitter, Linkedin, Instagram, Github, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { AnimatedSubscribeButton } from "./magicui/animated-subscribe-button";
 
 const FooterWithNewsletter = ({
   newsletterTitle = "Stay Ahead of Innovation",
@@ -7,6 +9,14 @@ const FooterWithNewsletter = ({
   newsletterBadge = "Enterprise Newsletter"
 }) => {
   const currentYear = new Date().getFullYear();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubscribe = () => {
+    // Here you would typically handle the actual subscription logic
+    setIsSubscribed(true);
+    // You could also add a timeout to reset the state after showing success
+    // setTimeout(() => setIsSubscribed(false), 5000);
+  };
 
   return (
     <footer className="bg-background border-t border-secondary/10">
@@ -44,13 +54,21 @@ const FooterWithNewsletter = ({
                   className="w-full px-4 py-3 md:py-3.5 pl-10 rounded-xl border border-gray-200 bg-gray-50/50 focus:outline-none focus:border-primary/30 focus:ring-2 focus:ring-primary/20 transition-all text-sm md:text-base"
                 />
               </div>
-              <button 
-                aria-label="Subscribe to updates"
-                className="w-full bg-primary text-white px-5 py-2.5 md:py-3.5 rounded-xl font-medium hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group text-sm md:text-base"
+              
+              <AnimatedSubscribeButton 
+                subscribeStatus={isSubscribed}
+                onClick={handleSubscribe}
+                className="group"
               >
-                Subscribe to Updates
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+                <span className="flex items-center justify-center">
+                  Subscribe to Updates
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <span className="flex items-center justify-center">
+                  Subscribed Successfully
+                  <CheckCircle className="w-4 h-4 ml-2" />
+                </span>
+              </AnimatedSubscribeButton>
             </motion.div>
             
             <div className="flex flex-wrap justify-center md:justify-between text-xs text-foreground/50 gap-3">
