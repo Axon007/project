@@ -677,117 +677,102 @@ function AppDevelopment() {
               />
             ))}
           </div>
-        </div>
-      </Section>
-      
-      {/* Technologies Section with Modern Cards */}
-      <Section dark pattern id="technologies">
-        <SectionHeading 
-          eyebrow="Tech Stack" 
-          title="Powerful Technologies"
-          description="We leverage cutting-edge technologies to build robust, scalable, and high-performance applications."
-          center={true}
-        />
+        </Section>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-16">
-          {/* Mobile Stack */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8"
-          >
-            <div className="absolute -top-12 -right-12 w-32 h-32 bg-indigo-600/20 rounded-full blur-3xl"></div>
-            <div className="relative z-10">
-              <div className="w-14 h-14 rounded-xl bg-indigo-600/20 flex items-center justify-center mb-6">
-                <Smartphone className="w-8 h-8 text-indigo-400" />
-              </div>
-              
-              <h3 className="text-2xl font-bold text-white mb-6">Mobile Technologies</h3>
-              
-              <div className="flex flex-wrap gap-3">
-                {TECHNOLOGIES.mobile.map((tech, index) => (
-                  <TechBadge 
-                    key={index} 
-                    name={tech.name} 
-                    icon={tech.icon} 
-                    delay={index * 0.1} 
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div>
+        {/* Technologies Section with Modern Cards */}
+        <Section dark pattern id="technologies">
+          <SectionHeading 
+            eyebrow="Tech Stack" 
+            title="Powerful Technologies"
+            description="We leverage cutting-edge technologies to build robust, scalable, and high-performance applications."
+            center={true}
+          />
           
-          {/* Backend Stack */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8"
-          >
-            <div className="absolute -top-12 -right-12 w-32 h-32 bg-purple-600/20 rounded-full blur-3xl"></div>
-            <div className="relative z-10">
-              <div className="w-14 h-14 rounded-xl bg-purple-600/20 flex items-center justify-center mb-6">
-                <Server className="w-8 h-8 text-purple-400" />
-              </div>
-              
-              <h3 className="text-2xl font-bold text-white mb-6">Backend & API</h3>
-              
-              <div className="flex flex-wrap gap-3">
-                {TECHNOLOGIES.backend.map((tech, index) => (
-                  <TechBadge 
-                    key={index} 
-                    name={tech.name} 
-                    icon={tech.icon} 
-                    delay={index * 0.1} 
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-          
-          {/* Development Tools */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8"
-          >
-            <div className="absolute -top-12 -right-12 w-32 h-32 bg-pink-600/20 rounded-full blur-3xl"></div>
-            <div className="relative z-10">
-              <div className="w-14 h-14 rounded-xl bg-pink-600/20 flex items-center justify-center mb-6">
-                <Settings className="w-8 h-8 text-pink-400" />
-              </div>
-              
-              <h3 className="text-2xl font-bold text-white mb-6">Development Tools</h3>
-              
-              <div className="flex flex-wrap gap-3">
-                {TECHNOLOGIES.tools.map((tech, index) => (
-                  <TechBadge 
-                    key={index} 
-                    name={tech.name} 
-                    icon={tech.icon} 
-                    delay={index * 0.1} 
-                  />
-                ))}
-              </div>
-            </motion.div>
-            
-            <motion.div
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-16">
+            {/* Mobile Stack */}
+            <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg"
+              transition={{ duration: 0.5 }}
+              className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8"
             >
-              <h3 className={`text-xl font-bold mb-6 ${UI.text.heading} text-center`}>Tools & Workflow</h3>
-              <div className="flex flex-wrap justify-center gap-3">
-                {TECHNOLOGIES.tools.map((tech, i) => (
-                  <TechBadge key={i} name={tech.name} icon={tech.icon} delay={i * 0.1 + 0.4} />
-                ))}
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-indigo-600/20 rounded-full blur-3xl"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-xl bg-indigo-600/20 flex items-center justify-center mb-6">
+                  <Smartphone className="w-8 h-8 text-indigo-400" />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-white mb-6">Mobile Technologies</h3>
+                
+                <div className="flex flex-wrap gap-3">
+                  {TECHNOLOGIES.mobile.map((tech, index) => (
+                    <TechBadge 
+                      key={index} 
+                      name={tech.name} 
+                      icon={tech.icon} 
+                      delay={index * 0.1} 
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+            
+            {/* Backend Stack */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8"
+            >
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-purple-600/20 rounded-full blur-3xl"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-xl bg-purple-600/20 flex items-center justify-center mb-6">
+                  <Server className="w-8 h-8 text-purple-400" />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-white mb-6">Backend & API</h3>
+                
+                <div className="flex flex-wrap gap-3">
+                  {TECHNOLOGIES.backend.map((tech, index) => (
+                    <TechBadge 
+                      key={index} 
+                      name={tech.name} 
+                      icon={tech.icon} 
+                      delay={index * 0.1} 
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+            
+            {/* Development Tools */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8"
+            >
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-pink-600/20 rounded-full blur-3xl"></div>
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-xl bg-pink-600/20 flex items-center justify-center mb-6">
+                  <Settings className="w-8 h-8 text-pink-400" />
+                </div>
+                
+                <h3 className="text-2xl font-bold text-white mb-6">Development Tools</h3>
+                
+                <div className="flex flex-wrap gap-3">
+                  {TECHNOLOGIES.tools.map((tech, index) => (
+                    <TechBadge 
+                      key={index} 
+                      name={tech.name} 
+                      icon={tech.icon} 
+                      delay={index * 0.1} 
+                    />
+                  ))}
+                </div>
               </div>
             </motion.div>
           </div>
@@ -829,7 +814,7 @@ function AppDevelopment() {
                 className="absolute -bottom-8 -right-8 bg-white dark:bg-gray-900 rounded-xl p-4 shadow-lg"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center">
                     <Zap className="w-6 h-6 text-primary" />
                   </div>
                   <div>
@@ -847,7 +832,7 @@ function AppDevelopment() {
                 className="absolute -top-8 -left-8 bg-white dark:bg-gray-900 rounded-xl p-4 shadow-lg"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center">
                     <Users className="w-6 h-6 text-primary" />
                   </div>
                   <div>
