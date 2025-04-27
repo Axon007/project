@@ -831,23 +831,13 @@ function AppDevelopment() {
                   </a>
                   
                   {/* Secondary pricing link */}
-                  <a 
-                    href="#" 
-                    className="inline-flex items-center text-lg font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                  >
-                    See Pricing
-                    <ArrowRight size={18} className="ml-1" />
-                  </a>
+                 
                 </div>
                 
                 {/* Free tier tag */}
                 <div className="mt-8 flex items-center">
-                  <div className="rounded-full bg-green-100 dark:bg-green-900/30 p-1 mr-2">
-                    <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
-                  </div>
-                  <span className="text-gray-600 dark:text-gray-300 font-medium">
-                    Start for Free
-                  </span>
+                   
+                 
                 </div>
               </div>
             </div>
@@ -906,7 +896,7 @@ function AppDevelopment() {
                   {/* Fallback if image doesn't load */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-lg text-gray-500 dark:text-gray-400 font-medium">
-                      App Builder Interface Preview
+                    Jason Tech Solutions
                     </div>
                   </div>
                 </div>
