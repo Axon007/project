@@ -8,32 +8,32 @@ import { IconBrandYoutubeFilled } from "@tabler/icons-react";
 export default function FeaturesSectionDemo() {
   const features = [
     {
-      title: "Track issues effectively",
+      title: "Responsive Web Design",
       description:
-        "Track and manage your project issues with ease using our intuitive interface.",
+        "Custom websites that adapt perfectly to all devices, ensuring optimal user experience on desktop, tablet, and mobile.",
       skeleton: <SkeletonOne />,
       className:
         "col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800",
     },
     {
-      title: "Capture pictures with AI",
+      title: "UI/UX Excellence",
       description:
-        "Capture stunning photos effortlessly using our advanced AI technology.",
+        "Stunning visual design with intuitive user interfaces that enhance engagement and drive conversions.",
       skeleton: <SkeletonTwo />,
       className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
     },
     {
-      title: "Watch our AI on YouTube",
+      title: "Project Showcase",
       description:
-        "Whether it's you or Tyler Durden, you can get to know about our product on YouTube",
+        "Explore our portfolio of successful client projects and see how we've transformed their digital presence.",
       skeleton: <SkeletonThree />,
       className:
         "col-span-1 lg:col-span-3 lg:border-r dark:border-neutral-800",
     },
     {
-      title: "Deploy in seconds",
+      title: "Global Reach",
       description:
-        "With our blazing fast, state of the art, cutting edge cloud services - you can deploy your model in seconds.",
+        "With our SEO-optimized websites and international hosting solutions, we help businesses connect with customers worldwide.",
       skeleton: <SkeletonFour />,
       className: "col-span-1 lg:col-span-3 border-b lg:border-none",
     },
@@ -42,12 +42,12 @@ export default function FeaturesSectionDemo() {
     <div className="relative z-20 py-10 lg:py-40 max-w-7xl mx-auto">
       <div className="px-8">
         <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
-          Packed with thousands of features
+          Web Solutions That Drive Results
         </h4>
 
         <p className="text-sm lg:text-base max-w-2xl my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300">
-          From image generation to video generation, our platform has APIs for
-          literally everything. It can even create this website copy for you.
+          From responsive design to e-commerce solutions, our agency delivers custom web experiences 
+          that elevate your brand and boost your business growth.
         </p>
       </div>
 
