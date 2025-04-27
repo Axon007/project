@@ -1544,6 +1544,252 @@ function AppDevelopment() {
             </div>
           </div>
         </section>
+
+        {/* Stunning App Designs Section - Redesigned */}
+        <section className="py-24 overflow-hidden relative">
+          {/* Background elements */}
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 -z-10"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.08),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.08),transparent_40%)] -z-10"></div>
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mx-auto text-center mb-16"
+            >
+              {/* Section badge */}
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 mb-6">
+                <Smartphone className="w-4 h-4 mr-2" />
+                App Gallery
+              </span>
+              
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+                Stunning App Designs
+              </h2>
+              
+              <p className="text-lg text-gray-600 dark:text-gray-300">
+                Create visually appealing apps with customizable layouts and ready-to-use components. 
+                Bring your creative ideas to life with our powerful design tools.
+              </p>
+            </motion.div>
+        
+            {/* 3D App Showcase */}
+            <div className="relative my-24">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-[600px] h-[600px] bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-full blur-3xl"></div>
+              </div>
+              
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="relative"
+              >
+                {/* Primary device */}
+                <motion.div
+                  initial={{ y: 60, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className="relative z-30 mx-auto w-[280px]"
+                >
+                  <div className="relative mx-auto">
+                    {/* Phone frame */}
+                    <div className="rounded-[32px] overflow-hidden border-[8px] border-gray-900 dark:border-gray-800 bg-gray-900 shadow-xl shadow-blue-900/20 dark:shadow-blue-500/10">
+                      <img 
+                        src="https://images.unsplash.com/photo-1609921212029-bb5a28e60960?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3"
+                        alt="Mobile App Interface"
+                        className="w-full h-auto rounded-2xl"
+                      />
+                      
+                      {/* Home indicator */}
+                      <div className="h-1 w-1/3 bg-gray-600 rounded-full mx-auto my-3"></div>
+                    </div>
+                    
+                    {/* Reflection */}
+                    <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-[90%] h-4 bg-black/20 dark:bg-white/10 filter blur-lg rounded-full"></div>
+                    
+                    {/* App highlight badge */}
+                    <div className="absolute -top-5 -right-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
+                      Featured
+                    </div>
+                  </div>
+                </motion.div>
+                
+                {/* Secondary devices - left side */}
+                <motion.div
+                  initial={{ x: -60, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="absolute top-1/4 left-0 md:left-1/4 transform -translate-x-1/2 z-20 w-[200px] hidden md:block"
+                >
+                  <div className="rounded-[24px] overflow-hidden border-[6px] border-gray-900 dark:border-gray-800 bg-gray-900 shadow-lg rotate-[-15deg]">
+                    <img 
+                      src="https://images.unsplash.com/photo-1615529328331-f8917597711f?w=500&h=900&fit=crop"
+                      alt="Mobile App Interface"
+                      className="w-full h-auto rounded-2xl"
+                    />
+                  </div>
+                </motion.div>
+                
+                {/* Secondary devices - right side */}
+                <motion.div
+                  initial={{ x: 60, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="absolute top-1/4 right-0 md:right-1/4 transform translate-x-1/2 z-20 w-[200px] hidden md:block"
+                >
+                  <div className="rounded-[24px] overflow-hidden border-[6px] border-gray-900 dark:border-gray-800 bg-gray-900 shadow-lg rotate-[15deg]">
+                    <img 
+                      src="https://images.unsplash.com/photo-1596239190253-6322cd0ab014?w=500&h=900&fit=crop"
+                      alt="Mobile App Interface"
+                      className="w-full h-auto rounded-2xl"
+                    />
+                  </div>
+                </motion.div>
+                
+                {/* Floating UI elements */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="absolute -bottom-6 md:bottom-10 left-4 md:left-1/4 z-40 hidden md:block"
+                >
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-xl">
+                    <div className="flex items-center gap-2">
+                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                        <Download className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium">Downloads</div>
+                        <div className="text-xl font-bold">2.4M+</div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                  className="absolute -bottom-6 md:bottom-10 right-4 md:right-1/4 z-40 hidden md:block"
+                >
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-xl">
+                    <div className="flex items-center gap-2">
+                      <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                        <Star className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium">Rating</div>
+                        <div className="text-xl font-bold">4.9/5</div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            </div>
+        
+            {/* App Features Section */}
+            <div className="mt-16">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  {
+                    icon: <Layout className="w-6 h-6" />,
+                    title: "Intuitive Design System",
+                    description: "Drag-and-drop interface elements with pixel-perfect alignment and responsive layouts for all device sizes.",
+                    color: "blue"
+                  },
+                  {
+                    icon: <Zap className="w-6 h-6" />,
+                    title: "Performance Optimized",
+                    description: "Lightweight, fast-loading apps with optimized code and assets for smooth experiences on any device.",
+                    color: "purple"
+                  },
+                  {
+                    icon: <Code className="w-6 h-6" />,
+                    title: "No Coding Required",
+                    description: "Create complex functionality using our visual logic builder without writing a single line of code.",
+                    color: "indigo"
+                  }
+                ].map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 + 0.3 }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 group"
+                  >
+                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 bg-${feature.color}-100 dark:bg-${feature.color}-900/30 text-${feature.color}-600 dark:text-${feature.color}-400 group-hover:scale-110 transition-transform duration-300`}>
+                      {feature.icon}
+                    </div>
+                    
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {feature.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {feature.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Design Templates Preview */}
+            <div className="mt-20 text-center">
+              <h3 className="text-2xl font-bold mb-8">
+                Choose from 100+ design templates
+              </h3>
+              
+              <div className="flex flex-wrap justify-center gap-4 mb-12">
+                {[
+                  { color: "blue", label: "E-commerce" },
+                  { color: "purple", label: "Social Media" },
+                  { color: "indigo", label: "Fitness" },
+                  { color: "pink", label: "Food Delivery" },
+                  { color: "amber", label: "Travel" },
+                  { color: "emerald", label: "Finance" },
+                ].map((category, index) => (
+                  <motion.button
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`px-4 py-2 rounded-full bg-${category.color}-100 dark:bg-${category.color}-900/30 text-${category.color}-600 dark:text-${category.color}-400 font-medium text-sm`}
+                  >
+                    {category.label}
+                  </motion.button>
+                ))}
+              </div>
+              
+              {/* CTA Button */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-block"
+              >
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all group"
+                >
+                  <span>Explore All Design Templates</span>
+                  <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </motion.div>
+            </div>
+          </div>
+        </section>
       </div>
     </PageTransition>
   );

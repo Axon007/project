@@ -331,7 +331,9 @@ const ServicesSection = () => {
   }, []);
   
   return (
-    <Section pattern>
+    <Section>
+
+      
       <SectionHeading 
         eyebrow="What We Do" 
         title="Our Services" 
@@ -419,42 +421,6 @@ const ServicesSection = () => {
         </>
       )}
       
-      {/* Stats banner */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="mt-16 md:mt-24 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 p-5 md:p-8 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5 rounded-2xl border border-primary/10"
-      >
-        {[
-          { label: "Projects Completed", value: "1,200+", color: "from-blue-500 to-primary" },
-          { label: "Team Members", value: "50+", color: "from-primary to-cyan-500" },
-          { label: "Years Experience", value: "12+", color: "from-purple-500 to-secondary" },
-          { label: "Client Satisfaction", value: "99%", color: "from-secondary to-blue-500" }
-        ].map((stat, i) => (
-          <div key={i} className="text-center p-4">
-            <p className={`text-2xl md:text-4xl font-bold mb-1 md:mb-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
-              {stat.value}
-            </p>
-            <p className="text-xs md:text-sm text-foreground/70">{stat.label}</p>
-          </div>
-        ))}
-      </motion.div>
-      
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="mt-12 md:mt-16 text-center"
-      >
-        <a href="/services" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 md:py-3 bg-primary hover:bg-primary/90 text-white rounded-full text-sm md:text-base font-medium transition-all group">
-          View All Our Services
-          <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
-        </a>
-      </motion.div>
     </Section>
   );
 };
@@ -1053,7 +1019,7 @@ const ProjectsSection = () => {
   }, [activeFilter]);
 
   return (
-    <Section pattern id="projects">
+    <Section id="projects">
       <SectionHeading 
         eyebrow="Our Portfolio" 
         title="Featured Projects" 
@@ -1303,7 +1269,7 @@ const ProcessSection = () => {
   }, []);
 
   return (
-    <Section pattern id="process" aria-labelledby="process-heading">
+    <Section id="process" aria-labelledby="process-heading">
       <SectionHeading 
         eyebrow="Simple Process" 
         title="To Get You Started" 
@@ -1533,7 +1499,7 @@ function Home() {
         <ProjectsSection />
 
         {/* WHY CHOOSE US SECTION - REDESIGNED */}
-        <Section className="py-16 md:py-24" pattern>
+        <Section className="py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-center">
             {/* Left content */}
             <motion.div
