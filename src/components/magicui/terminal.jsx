@@ -18,7 +18,7 @@ const Terminal = forwardRef(({ children, className, ...props }, ref) => {
           <div className="w-3 h-3 rounded-full bg-green-500"></div>
         </div>
         <div className="text-xs text-foreground/60 px-2 py-1 bg-background/50 rounded flex-1 text-center">
-          terminal@magicui
+        Jason Tech Solutions 
         </div>
       </div>
       <div className="p-6 bg-background/95 backdrop-blur-sm font-mono text-sm max-h-[400px] overflow-y-auto">
