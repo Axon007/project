@@ -1527,7 +1527,7 @@ function Home() {
         {/* PROCESS SECTION */}
         <ProcessSection />
 
-        <FeaturesSectionDemo />
+       
 
         {/* PROJECTS SECTION */}
         <ProjectsSection />

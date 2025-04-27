@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { BentoCard, BentoGrid } from '../components/magicui/bento-grid';
 import { cn } from "../lib/utils";
+import FeaturesSectionDemo from '../components/FeaturesSectionDemo';
 
 // Core theme with dark mode support
 const THEME = {
@@ -1068,6 +1069,7 @@ function AppDevelopment() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
               className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg"
             >
               <h3 className={`text-xl font-bold mb-6 ${UI.text.heading} text-center`}>Mobile Development</h3>
@@ -1118,6 +1120,8 @@ function AppDevelopment() {
           </div>
         </div>
         
+        <FeaturesSectionDemo />
+
         {/* New: Testimonials Section */}
         <Section dark pattern id="testimonials">
           <SectionHeading
@@ -1131,6 +1135,9 @@ function AppDevelopment() {
             <TestimonialsCarousel testimonials={TESTIMONIALS} />
           </div>
         </Section>
+
+        {/* Core Features Section from FeaturesSectionDemo component */}
+        
         
         {/* New: FAQ Section with accordion */}
         <Section id="faq">
