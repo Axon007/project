@@ -4,6 +4,7 @@ import { Code, Palette, Globe, Users, Rocket, Smartphone, ArrowUpRight, CheckCir
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { Terminal, TypingAnimation, AnimatedSpan } from "../components/magicui/terminal";
 
 const FEATURED_PROJECTS = [
   {
@@ -714,6 +715,151 @@ function WebDevelopmentServices() {
         </div>
       </section>
 
+      {/* Code Showcase Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-background to-secondary/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6"
+            >
+              <span className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                Clean Code Architecture
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold">We Write Code That Scales</h2>
+              <p className="text-foreground/70 text-lg">
+                Our development approach prioritizes maintainability, scalability, and performance. 
+                We follow industry best practices and modern coding standards to ensure your web 
+                application can grow with your business.
+              </p>
+              <ul className="space-y-4">
+                {[
+                  "Component-based architecture",
+                  "Optimized for performance",
+                  "Secure coding practices",
+                  "Fully documented codebase"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-primary" />
+                    </div>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div>
+                <a 
+                  href="#process" 
+                  className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
+                >
+                  Learn more about our development process
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-violet-500/20 blur-3xl opacity-30 rounded-full"></div>
+              <motion.div
+                className="relative"
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.7 }}
+              >
+                <Terminal className="shadow-2xl">
+                  <TypingAnimation>
+                    <AnimatedSpan className="text-blue-400" delay={400}>import</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={800}> {'{'} </AnimatedSpan>
+                    <AnimatedSpan className="text-yellow-300" delay={1200}>motion</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={1600}> {'}'}</AnimatedSpan>
+                    <AnimatedSpan className="text-blue-400" delay={2000}> from</AnimatedSpan>
+                    <AnimatedSpan className="text-green-300" delay={2400}> 'framer-motion'</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={2800}>;</AnimatedSpan>
+                    <AnimatedSpan delay={3200}>{"\n\n"}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-400" delay={3600}>const</AnimatedSpan>
+                    <AnimatedSpan className="text-yellow-300" delay={4000}> HeroSection</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={4400}> {`= () => {`}</AnimatedSpan>
+                    <AnimatedSpan delay={4800}>{"\n  "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-400" delay={5200}>return</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={5600}> (</AnimatedSpan>
+                    <AnimatedSpan delay={6000}>{"\n    "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={6400}>&lt;div</AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={6800}> className</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={7200}>=</AnimatedSpan>
+                    <AnimatedSpan className="text-green-300" delay={7600}>"relative h-screen flex items-center"</AnimatedSpan>
+                    <AnimatedSpan className="text-purple-400" delay={8000}>&gt;</AnimatedSpan>
+                    <AnimatedSpan delay={8400}>{"\n      "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={8800}>&lt;motion.h1</AnimatedSpan>
+                    <AnimatedSpan delay={9200}>{"\n        "}</AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={9600}>initial</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={10000}>=&#123;&#123; </AnimatedSpan>
+                    <AnimatedSpan className="text-orange-300" delay={10400}>opacity</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={10800}>: </AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={11200}>0</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={11600}>, </AnimatedSpan>
+                    <AnimatedSpan className="text-orange-300" delay={12000}>y</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={12400}>: </AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={12800}>20</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={13200}> &#125;&#125;</AnimatedSpan>
+                    <AnimatedSpan delay={13600}>{"\n        "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-300" delay={14000}>animate</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={14400}>=&#123;&#123; </AnimatedSpan>
+                    <AnimatedSpan className="text-orange-300" delay={14800}>opacity</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={15200}>: </AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={15600}>1</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={16000}>, </AnimatedSpan>
+                    <AnimatedSpan className="text-orange-300" delay={16400}>y</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={16800}>: </AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={17200}>0</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={17600}> &#125;&#125;</AnimatedSpan>
+                    <AnimatedSpan delay={18000}>{"\n        "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-300" delay={18400}>className</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={18800}>=</AnimatedSpan>
+                    <AnimatedSpan className="text-green-300" delay={19200}>"text-5xl font-bold"</AnimatedSpan>
+                    <AnimatedSpan delay={19600}>{"\n      "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={20000}>&gt;</AnimatedSpan>
+                    <AnimatedSpan delay={20400}>{"\n        "}</AnimatedSpan>
+                    <AnimatedSpan delay={20800}>Building exceptional web experiences</AnimatedSpan>
+                    <AnimatedSpan delay={21200}>{"\n      "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={21600}>&lt;/motion.h1&gt;</AnimatedSpan>
+                    <AnimatedSpan delay={22000}>{"\n    "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={22400}>&lt;/div&gt;</AnimatedSpan>
+                    <AnimatedSpan delay={22800}>{"\n  "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-foreground" delay={23200}>);</AnimatedSpan>
+                    <AnimatedSpan delay={23600}>{"\n"}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-foreground" delay={24000}>;</AnimatedSpan>
+                    <AnimatedSpan delay={24400}>{"\n\n"}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-400" delay={24800}>export</AnimatedSpan>
+                    <AnimatedSpan className="text-blue-400" delay={25200}> default</AnimatedSpan>
+                    <AnimatedSpan className="text-yellow-300" delay={25600}> HeroSection</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={26000}>;</AnimatedSpan>
+                  </TypingAnimation>
+                </Terminal>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Interactive Development Process Timeline */}
       <section className="py-20 px-4" id="process">
         <div className="max-w-6xl mx-auto">
@@ -1080,7 +1226,7 @@ function WebDevelopmentServices() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-24 px-4" id="pricing">
+      {/* <section className="py-24 px-4" id="pricing">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <motion.span
@@ -1216,7 +1362,7 @@ function WebDevelopmentServices() {
             </p>
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* FAQ Section */}
       <section className="py-24 px-4 bg-secondary/30" id="faq">
@@ -1363,7 +1509,7 @@ function WebDevelopmentServices() {
                   >
                     <span className="sr-only">{platform}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l3-4H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z" />
                     </svg>
                   </a>
                 ))}
@@ -1558,108 +1704,7 @@ function WebDevelopmentServices() {
         </div>
       </section>
 
-      {/* Code Showcase Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-background to-secondary/20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-6"
-            >
-              <span className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                Clean Code Architecture
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold">We Write Code That Scales</h2>
-              <p className="text-foreground/70 text-lg">
-                Our development approach prioritizes maintainability, scalability, and performance. 
-                We follow industry best practices and modern coding standards to ensure your web 
-                application can grow with your business.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  "Component-based architecture",
-                  "Optimized for performance",
-                  "Secure coding practices",
-                  "Fully documented codebase"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-primary" />
-                    </div>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div>
-                <a 
-                  href="#process" 
-                  className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
-                >
-                  Learn more about our development process
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-violet-500/20 blur-3xl opacity-30 rounded-full"></div>
-              <div className="relative rounded-xl overflow-hidden border border-border/50 shadow-2xl">
-                <div className="bg-background/90 backdrop-blur-sm p-2 border-b border-border/50 flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  </div>
-                  <div className="text-xs text-foreground/60 px-2 py-1 bg-background/50 rounded flex-1 text-center">
-                    app/components/HeroSection.jsx
-                  </div>
-                </div>
-                <div className="p-6 bg-background/95 backdrop-blur-sm font-mono text-sm max-h-[400px] overflow-y-auto">
-                  <pre className="text-[13px] leading-relaxed">
-                    {`
-<span class="text-blue-400">import</span> <span class="text-foreground">&#123;</span> <span class="text-yellow-300">motion</span> <span class="text-foreground">&#125;</span> <span class="text-blue-400">from</span> <span class="text-green-300">'framer-motion'</span><span class="text-foreground">;</span>
-
-<span class="text-blue-400">const</span> <span class="text-yellow-300">HeroSection</span> <span class="text-foreground">= () =&#62; &#123;</span>
-  <span class="text-blue-400">return</span> <span class="text-foreground">(</span>
-    <span class="text-purple-400">&#60;div</span> <span class="text-blue-300">className</span><span class="text-foreground">=</span><span class="text-green-300">"relative h-screen flex items-center"</span><span class="text-purple-400">&#62;</span>
-      <span class="text-purple-400">&#60;motion.h1</span>
-        <span class="text-blue-300">initial</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">opacity</span><span class="text-foreground">:</span> <span class="text-blue-300">0</span><span class="text-foreground">, </span><span class="text-orange-300">y</span><span class="text-foreground">:</span> <span class="text-blue-300">20</span> <span class="text-foreground">&#125;&#125;</span>
-        <span class="text-blue-300">animate</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">opacity</span><span class="text-foreground">:</span> <span class="text-blue-300">1</span><span class="text-foreground">, </span><span class="text-orange-300">y</span><span class="text-foreground">:</span> <span class="text-blue-300">0</span> <span class="text-foreground">&#125;&#125;</span>
-        <span class="text-blue-300">transition</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">duration</span><span class="text-foreground">:</span> <span class="text-blue-300">0.8</span> <span class="text-foreground">&#125;&#125;</span>
-        <span class="text-blue-300">className</span><span class="text-foreground">=</span><span class="text-green-300">"text-5xl font-bold"</span>
-      <span class="text-purple-400">&#62;</span>
-        Building exceptional web experiences
-      <span class="text-purple-400">&#60;/motion.h1&#62;</span>
-      <span class="text-purple-400">&#60;motion.p</span>
-        <span class="text-blue-300">initial</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">opacity</span><span class="text-foreground">:</span> <span class="text-blue-300">0</span> <span class="text-foreground">&#125;&#125;</span>
-        <span class="text-blue-300">animate</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">opacity</span><span class="text-foreground">:</span> <span class="text-blue-300">1</span> <span class="text-foreground">&#125;&#125;</span>
-        <span class="text-blue-300">transition</span><span class="text-foreground">=&#123;&#123;</span> <span class="text-orange-300">delay</span><span class="text-foreground">:</span> <span class="text-blue-300">0.2</span> <span class="text-foreground">&#125;&#125;</span>
-      <span class="text-purple-400">&#62;</span>
-        Custom websites and web applications that drive results
-      <span class="text-purple-400">&#60;/motion.p&#62;</span>
-    <span class="text-purple-400">&#60;/div&#62;</span>
-  <span class="text-foreground">);</span>
-<span class="text-foreground">&#125;;</span>
-
-<span class="text-blue-400">export</span> <span class="text-blue-400">default</span> <span class="text-yellow-300">HeroSection</span><span class="text-foreground">;</span>
-                    `}
-                  </pre>
-                </div>
-                <div className="absolute bottom-6 right-6 animate-pulse">
-                  <div className="w-2 h-4 bg-primary rounded-full"></div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+     
     </div>
   );
 }
