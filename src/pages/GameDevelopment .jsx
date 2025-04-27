@@ -281,7 +281,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
       <div className="relative z-10">
         {/* New Hero Section with 3D Car Model */}
         <section className="min-h-screen relative overflow-hidden">
-          {/* 3D Car Model with Spline - IMPORTANT: Place this first to ensure it's at the bottom of the stacking context */}
+          {/* 3D Car Model with Spline - keeping as background */}
           <div 
             ref={splineContainerRef}
             className="absolute inset-0 z-0 w-full h-full"
@@ -296,132 +296,94 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             {!splineLoaded && (
               <div className="absolute inset-0 flex items-center justify-center z-50">
                 <div className="flex flex-col items-center">
-                  <div className={`w-12 h-12 rounded-full border-4 border-t-transparent border-b-transparent ${darkMode ? 'border-blue-400' : 'border-blue-600'} animate-spin`}></div>
-                  <p className={`mt-4 ${colorMode.text}`}>Loading 3D Experience...</p>
+                  <div className="w-12 h-12 rounded-full border-4 border-t-transparent border-b-transparent border-blue-400 animate-spin"></div>
+                  <p className="mt-4 text-white">Loading 3D Experience...</p>
                 </div>
               </div>
             )}
           </div>
           
-          {/* Semi-transparent overlay to ensure text readability - REMOVED z-10 to prevent blocking interactions */}
-          <div className={`absolute inset-0 ${darkMode ? 'bg-gray-950/30' : 'bg-gray-50/20'} pointer-events-none`}></div>
-
-          {/* Hero content - CRITICAL: Add pointer-events-none to allow clicks to pass through to the 3D model */}
+          {/* Hero content with improved design */}
           <div className="relative z-20 flex flex-col justify-center items-start h-screen px-6 md:px-16 lg:px-24 pointer-events-none">
             <div className="max-w-2xl">
+              {/* Animated tag/badge */}
               <motion.div 
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className={`inline-block mb-6 px-4 py-1.5 rounded-full border backdrop-blur-md
-                  ${darkMode 
-                    ? "bg-gradient-to-r from-blue-600/30 to-indigo-600/30 border-blue-500/20" 
-                    : "bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-200"}`
-                }
+                className="inline-flex items-center mb-8 px-4 py-1.5 rounded-full backdrop-blur-md bg-blue-600/20 border border-blue-500/30"
               >
-                <p className="text-sm font-medium flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full animate-pulse ${darkMode ? 'bg-blue-400' : 'bg-blue-600'}`}></span>
-                  Interactive Game Development
-                </p>
+                <span className="w-2 h-2 rounded-full animate-pulse bg-blue-400 mr-2"></span>
+                <p className="text-sm font-medium text-white">Interactive Game Development</p>
               </motion.div>
               
+              {/* Main headline with improved gradient */}
               <motion.h1 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+                className="text-5xl md:text-7xl font-bold mb-6 leading-[1.1]"
               >
-                <span className={`block bg-clip-text text-transparent bg-gradient-to-r 
-                  ${darkMode 
-                    ? "from-blue-300 via-indigo-400 to-purple-500" 
-                    : "from-blue-600 via-indigo-600 to-purple-700"}`
-                }>
+                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-indigo-400 to-purple-500">
                   Racing Into The
                 </span>
-                <span className="block mt-2 relative">
+                <span className="block mt-2 text-white">
                   Gaming Future
                 </span>
               </motion.h1>
               
+              {/* Description text with improved backdrop */}
               <motion.p 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
-                className={`mb-10 text-xl leading-relaxed max-w-lg backdrop-blur-sm py-2 ${darkMode ? 'bg-gray-900/50' : 'bg-white/50'} rounded-lg px-4`}
+                className="mb-10 text-xl leading-relaxed max-w-lg text-gray-100 backdrop-blur-sm bg-black/20 rounded-xl py-3 px-5"
               >
                 Interact with our 3D model and experience the next level of gaming development. We create immersive experiences that push boundaries.
               </motion.p>
               
-              {/* Buttons - IMPORTANT: Add pointer-events-auto to make just the buttons clickable */}
+              {/* Action buttons with consistent styling */}
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
-                className="flex flex-wrap gap-4 pointer-events-auto"
+                className="flex flex-wrap gap-5 pointer-events-auto"
               >
                 <motion.button 
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.5)" }}
                   whileTap={{ scale: 0.98 }}
-                  className={`group relative px-8 py-4 bg-gradient-to-r ${colorMode.primary} rounded-full font-medium text-lg shadow-lg shadow-blue-900/30 text-white flex items-center gap-3`}
+                  className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full font-medium text-lg shadow-xl shadow-blue-900/30 text-white flex items-center gap-3 overflow-hidden"
                 >
-                  Start Your Game Project
-                  <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                  <span className="relative z-10">Start Your Game Project</span>
+                  <ArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </motion.button>
                 
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => scrollToSection(servicesRef)}
-                  className={`flex items-center gap-3 px-6 py-4 border rounded-full font-medium transition-colors
-                    ${darkMode 
-                      ? "border-blue-500/30 hover:bg-blue-500/10 backdrop-blur-md" 
-                      : "border-blue-300 hover:bg-blue-50 backdrop-blur-md"}`
-                  }
+                  className="flex items-center gap-3 px-7 py-4 border rounded-full font-medium transition-colors border-blue-500/30 hover:bg-blue-500/20 backdrop-blur-sm text-white"
                 >
                   <Gamepad className="w-5 h-5" />
                   Explore Our Services
                 </motion.button>
               </motion.div>
               
-              <motion.p
+              {/* Interactive tip with improved backdrop */}
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 1.2 }}
-                className={`mt-8 text-sm ${colorMode.textMuted} backdrop-blur-sm py-2 ${darkMode ? 'bg-gray-900/50' : 'bg-white/50'} rounded-lg px-4 inline-block`}
+                className="mt-10 inline-flex items-center text-sm backdrop-blur-md bg-blue-900/20 rounded-full px-5 py-2 border border-blue-800/30"
               >
-                <span className="font-semibold">Tip:</span> Click and drag to interact with the 3D car model
-              </motion.p>
+                <span className="text-blue-300 mr-2">💡</span>
+                <span className="text-gray-200">Tip: Click and drag to interact with the 3D model</span>
+              </motion.div>
             </div>
-          </div>
+            
 
-          {/* Enhanced scroll indicator - Make sure this is also pointer-events-none */}
-          <motion.div 
-            animate={{ 
-              y: [0, 10, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "loop"
-            }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 pointer-events-none"
-          >
-            <motion.div 
-              className={`w-6 h-10 border-2 rounded-full flex justify-center p-1 backdrop-blur-md ${darkMode ? 'border-gray-300' : 'border-gray-600'}`}
-            >
-              <motion.div 
-                animate={{ y: [0, 12, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  ease: "easeInOut"
-                }}
-                className={`w-1.5 h-1.5 rounded-full ${darkMode ? 'bg-white' : 'bg-gray-800'}`}
-              />
-            </motion.div>
-            <p className={`text-xs mt-2 text-center ${colorMode.textMuted}`}>Scroll to explore</p>
-          </motion.div>
+          </div>
         </section>
 
         {/* Key Features Section */}
