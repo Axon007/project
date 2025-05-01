@@ -6,10 +6,11 @@ import { Globe } from "@/components/magicui/globe";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
-  VideoIcon, Brush, Lightbulb, ArrowLeft, MessageSquare, CheckCircle, Phone, Mail, MessageCircle
+  VideoIcon, Brush, Lightbulb, ArrowLeft,ArrowDown,  MessageSquare, CheckCircle, Phone, Mail, MessageCircle
 } from "lucide-react";
 import { Smartphone } from "lucide-react";
 import FeaturesSectionDemo from '../components/FeaturesSectionDemo';
+import { Link } from "react-router-dom";
 
 /* THEME AND UI CONFIGURATION */
 const THEME = {
@@ -187,69 +188,68 @@ const Card = ({
 // Update the ServiceCard component for better interactivity and visual appeal
 const ServiceCard = ({ service, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  
+
   return (
-    <motion.div
-      key={index}
-      {...createMotionProps('fadeInUp', index * 0.1)}
-      className={`${UI.card.base} group relative overflow-hidden`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-    >
-      {/* Service glow effect */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300"></div>
+    <Link to={service.href} tabIndex={0} className="block focus:outline-none" key={index}>
+      <div
+        className={`${UI.card.base} group relative overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        tabIndex={-1}
+        role="button"
+        aria-label={service.title}
+      >
+        {/* Service glow effect */}
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300"></div>
+        
+        <div className={`${UI.card.padding} relative z-10 bg-background/95 rounded-2xl h-full flex flex-col`}>
+          {/* Icon with enhanced animation */}
+          <div className={`${UI.card.iconContainer} relative transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/20`}>
+            <motion.div 
       
-      <div className={`${UI.card.padding} relative z-10 bg-background/95 rounded-2xl h-full flex flex-col`}>
-        {/* Icon with enhanced animation */}
-        <div className={`${UI.card.iconContainer} relative transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/20`}>
-          <motion.div 
-            animate={{ 
-              rotate: isHovered ? 360 : 0,
-            }}
-            transition={{ duration: 0.7, ease: "easeInOut" }}
-            className="absolute inset-0 bg-primary/10 rounded-xl"
-          />
-          <div className="relative z-10">
-            {service.icon}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+              className="absolute inset-0 bg-primary/10 rounded-xl" />
+            <div className="relative z-10">
+              {service.icon}
+            </div>
+          </div>
+          
+          {/* Content with better spacing */}
+          <h3 className={`text-lg md:text-xl ${UI.text.heading} mb-2 md:mb-3 group-hover:text-primary transition-colors`}>
+            {service.title}
+          </h3>
+          
+          <p className={`${UI.text.body} text-sm mb-4 md:mb-6`}>
+            {service.description}
+          </p>
+          
+          {/* Features list with improved bullets */}
+          <div className="flex-grow">
+            <h4 className="text-sm font-medium text-primary/80 mb-3">Features:</h4>
+            <ul className="space-y-2">
+              {service.features.map((feature, i) => (
+                <li key={i} className="flex items-center text-sm text-foreground/70">
+                  <span className="mr-2 h-1.5 w-1.5 rounded-full bg-primary/70"></span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Bottom CTA with animation */}
+          <div className="mt-6 pt-4 border-t border-secondary/10">
+            <motion.div 
+              className="flex items-center justify-between text-primary font-medium"
+              animate={{ x: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.9 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="text-sm">Learn more</span>
+              <ArrowRight size={16} className="ml-2 group-hover:translate-x-1.5 transition-transform" />
+            </motion.div>
           </div>
         </div>
-        
-        {/* Content with better spacing */}
-        <h3 className={`text-lg md:text-xl ${UI.text.heading} mb-2 md:mb-3 group-hover:text-primary transition-colors`}>
-          {service.title}
-        </h3>
-        
-        <p className={`${UI.text.body} text-sm mb-4 md:mb-6`}>
-          {service.description}
-        </p>
-        
-        {/* Features list with improved bullets */}
-        <div className="flex-grow">
-          <h4 className="text-sm font-medium text-primary/80 mb-3">Features:</h4>
-          <ul className="space-y-2">
-            {service.features.map((feature, i) => (
-              <li key={i} className="flex items-center text-sm text-foreground/70">
-                <span className="mr-2 h-1.5 w-1.5 rounded-full bg-primary/70"></span>
-                {feature}
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-        {/* Bottom CTA with animation */}
-        <div className="mt-6 pt-4 border-t border-secondary/10">
-          <motion.div 
-            className="flex items-center justify-between text-primary font-medium"
-            animate={{ x: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.9 }}
-            transition={{ duration: 0.3 }}
-          >
-            <span className="text-sm">Learn more</span>
-            <ArrowRight size={16} className="ml-2 group-hover:translate-x-1.5 transition-transform" />
-          </motion.div>
-        </div>
       </div>
-    </motion.div>
+    </Link>
   );
 };
 
@@ -336,7 +336,7 @@ const ServicesSection = memo(() => {
   }, []);
   
   return (
-    <Section>
+    <Section id="our-services-section">
       <SectionHeading 
         eyebrow="What We Do" 
         title="Our Services" 
@@ -344,66 +344,7 @@ const ServicesSection = memo(() => {
         center={true} 
       />
       
-      {/* Featured Service - static version without animations */}
-      <div className="mb-12 md:mb-16">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/10">
-          <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-primary/10 to-transparent"></div>
-          <div className="absolute bottom-0 right-0 w-40 h-40 bg-secondary/20 blur-3xl rounded-full"></div>
-          
-          <div className="grid md:grid-cols-5 gap-6 md:gap-8 p-6 md:p-8 relative z-10">
-            <div className="md:col-span-3">
-              <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                <BadgeCheck className="w-4 h-4 mr-2" />
-                Most Popular Service
-              </div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-3">Web Development Solutions</h3>
-              <p className="text-foreground/70 mb-6 md:text-lg">
-                We build scalable, high-performance web applications using modern frameworks and best practices.
-                Our solutions are designed to deliver exceptional user experiences while meeting your business objectives.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                {[
-                  "Custom Web Applications", 
-                  "E-commerce Solutions", 
-                  "Progressive Web Apps", 
-                  "API Development"
-                ].map((feature, i) => (
-                  <div key={i} className="flex items-center">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary mr-2"></span>
-                    <span className="text-sm md:text-base">{feature}</span>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="flex flex-wrap gap-2 mb-6">
-                {["React", "Node.js", "Next.js", "TypeScript", "GraphQL"].map((tech, i) => (
-                  <span key={i} className="px-2.5 py-1 bg-white/10 backdrop-blur-sm rounded-md text-xs border border-primary/10">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-              
-              <button className="group bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full text-sm font-medium transition-all inline-flex items-center">
-                Explore Web Development
-                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-            
-            <div className="md:col-span-2 relative min-h-[180px] md:min-h-0">
-              <img 
-                src="https://images.unsplash.com/photo-1561736778-92e52a7769ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Web Development" 
-                className="rounded-xl object-cover w-full h-full"
-                loading="lazy"
-                width="400"
-                height="300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+
       
       {/* Service cards - client-side only rendering for better initial load */}
       {isClient && (
@@ -622,9 +563,9 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
   </div>
 );
 
-const CTAButton = ({ primary = true, children, className = "", small = false }) => (
+const CTAButton = ({ primary = true, children, className = "", small = false, onClick = null }) => (
   <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary/70'} ${primary ? 'bg-primary' : 'bg-transparent'} 
-    ${small ? 'px-4 py-2 text-sm' : 'px-8 py-4 text-lg'} font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`}>
+    ${small ? 'px-4 py-2 text-sm' : 'px-8 py-4 text-lg'} font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`} onClick={onClick}>
     <span className={`relative z-10 transition-colors ${primary ? 'text-background group-hover:text-primary' : 'text-primary group-hover:text-background'} flex items-center justify-center gap-2`}>
       {children}
     </span>
@@ -687,6 +628,7 @@ const SERVICES = [
     description: "Custom websites and web applications built with modern technologies and best practices for optimal performance",
     icon: <Code className="w-10 h-10 text-primary" />,
     features: ["Responsive Design", "SEO Optimization", "Performance Tuning", "Custom Solutions"],
+    href: "/web-development",
     delay: 0
   },
   {
@@ -694,6 +636,7 @@ const SERVICES = [
     description: "Engaging and immersive gaming experiences across multiple platforms using cutting-edge game engines",
     icon: <Gamepad2 className="w-10 h-10 text-primary" />,
     features: ["Unity & Unreal Engine", "Mobile Games", "Cross-platform", "3D/2D Games"],
+    href: "/game-development",
     delay: 0.2
   },
   {
@@ -701,6 +644,7 @@ const SERVICES = [
     description: "Professional branding solutions with unique and memorable logo designs that capture your brand essence",
     icon: <Palette className="w-10 h-10 text-primary" />,
     features: ["Brand Identity", "Vector Graphics", "Color Theory", "Scalable Designs"],
+    href: "/logo-design",
     delay: 0.4
   },
   {
@@ -708,6 +652,7 @@ const SERVICES = [
     description: "Professional video editing services that transform raw footage into compelling visual stories",
     icon: <VideoIcon className="w-10 h-10 text-primary" />,
     features: ["Color Grading", "Motion Graphics", "Audio Mixing", "Post-Production"],
+    href: "/video-editing",
     delay: 0.6
   },
   {
@@ -715,6 +660,7 @@ const SERVICES = [
     description: "User-centered design solutions that create intuitive, engaging, and effective digital experiences",
     icon: <Brush className="w-10 h-10 text-primary" />,
     features: ["User Research", "Wireframing", "Prototype Testing", "Interaction Design"],
+    href: "/ui-ux-design",
     delay: 0.8
   },
   {
@@ -722,6 +668,7 @@ const SERVICES = [
     description: "Native and cross-platform mobile applications that deliver seamless user experiences across devices",
     icon: <Smartphone className="w-10 h-10 text-primary" />,
     features: ["iOS & Android", "React Native", "Flutter", "App Store Optimization"],
+    href: "/mobile-app-development",
     delay: 1.0
   }
 ];
@@ -822,62 +769,20 @@ const HERO_SERVICES = [
 
 /* HERO SECTION */
 const HeroSection = () => {
-  const [typedText, setTypedText] = useState("");
-  const phrases = ["transform businesses", "build innovative solutions", "drive digital growth", "create amazing experiences"];
-  const currentPhraseIndex = useRef(0);
-  const currentCharIndex = useRef(0);
-  const isDeleting = useRef(false);
-  const typingSpeed = useRef(80);
-
-  useEffect(() => {
-    const type = () => {
-      const currentPhrase = phrases[currentPhraseIndex.current];
-      
-      if (isDeleting.current) {
-        setTypedText(prevText => prevText.substring(0, prevText.length - 1));
-        typingSpeed.current = 50;
-      } else {
-        setTypedText(currentPhrase.substring(0, currentCharIndex.current + 1));
-        typingSpeed.current = 80;
-      }
-
-      currentCharIndex.current = isDeleting.current 
-        ? currentCharIndex.current - 1 
-        : currentCharIndex.current + 1;
-
-      if (!isDeleting.current && currentCharIndex.current === currentPhrase.length) {
-        isDeleting.current = true;
-        typingSpeed.current = 1500; // Pause before deleting
-      } else if (isDeleting.current && currentCharIndex.current === 0) {
-        isDeleting.current = false;
-        currentPhraseIndex.current = (currentPhraseIndex.current + 1) % phrases.length;
-        typingSpeed.current = 500; // Pause before typing next phrase
-      }
-    };
-
-    const timer = setTimeout(type, typingSpeed.current);
-    return () => clearTimeout(timer);
-  }, [typedText]);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16 md:pb-24" aria-labelledby="hero-heading">
       {/* Enhanced background with depth layers */}
 
-      
-      {/* Improved globe with better positioning and effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+      {/* Improved globe with better positioning and effects 
+     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 0.8, scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
+
           className="w-[min(110vw,110vh)] h-[min(110vw,110vh)] md:w-[800px] md:h-[800px]"
         >
           <Globe />
         </motion.div>
-      </div>
-      
+      </div>*/}
 
-      
       {/* Main content with improved layout */}
       <div className="relative z-20 container mx-auto px-4 md:px-6 py-8">
         <div className="max-w-4xl mx-auto text-center space-y-8 md:space-y-10">
@@ -909,20 +814,15 @@ const HeroSection = () => {
               </span>
             </motion.h1>
             
-            {/* Dynamic typing effect */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="h-14 flex items-center justify-center"
-            >
+            {/* Static typing effect replaced here */}
+            <div className="h-14 flex items-center justify-center">
               <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-foreground/80">
-                We help companies <span className="text-primary relative">{typedText}<span className="absolute -right-1 top-0 animate-pulse">|</span></span>
+                We help companies <span className="text-primary relative">transform businesses</span>
               </h2>
-            </motion.div>
+            </div>
           </div>
           
-          {/* Enhanced service tags with improved animation and design */}
+          {/* Service tags - hover effect removed */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -931,12 +831,11 @@ const HeroSection = () => {
           >
             {HERO_SERVICES.map((service, i) => (
               <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.05, backgroundColor: 'rgba(0,112,243,0.15)' }}
-                transition={{ delay: 0.6 + (i * 0.08), duration: 0.4 }}
-                className="px-3.5 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm hover:shadow-md hover:shadow-primary/10 cursor-pointer"
+                className="
+              px-3.5 py-2 rounded-full border border-primary/20 
+    bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm cursor-default
+    dark:bg-neutral-900/80 dark:border-primary/40 dark:backdrop-blur-xl
+  "
               >
                 <span className="text-primary p-1 bg-primary/10 rounded-full">{service.icon}</span>
                 <span className="text-sm font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
@@ -956,15 +855,20 @@ const HeroSection = () => {
               className="group shadow-xl shadow-primary/20 hover:shadow-primary/40 border-primary backdrop-blur-md"
             >
               Get Started
+              {/* Keep button hover effect for CTA */}
               <ArrowRight className="group-hover:translate-x-1.5 transition-transform duration-300" size={18} />
             </CTAButton>
             
             <CTAButton 
               primary={false}
               className="group backdrop-blur-md"
+              onClick={() => {
+                const section = document.getElementById('our-services-section');
+                if (section) section.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
-              Watch Demo
-              <VideoIcon className="ml-1 group-hover:scale-110 transition-transform duration-300" size={18} />
+              Our Services
+              <ArrowDown className="ml-1 group-hover:translate-x-1 transition-transform duration-300" size={18} />
             </CTAButton>
           </motion.div>
           
@@ -983,7 +887,7 @@ const HeroSection = () => {
               <motion.div 
                 key={i} 
                 className="text-center"
-                whileHover={{ scale: 1.05 }}
+                // Removed whileHover for stats
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <div className="flex items-center justify-center mb-2">
@@ -1202,198 +1106,112 @@ const ProjectsSection = memo(() => {
           <p className="text-foreground/60 mb-8 max-w-md mx-auto">
             We couldn't find any projects in the {activeFilter} category. Try selecting a different category or check back later.
           </p>
-          <button 
-            onClick={() => setActiveFilter('All')}
-            className="px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary/90 transition-all inline-flex items-center justify-center gap-2"
-          >
-            View all projects
-            <ArrowRight size={16} className="transition-transform" />
-          </button>
+
         </div>
       )}
-      
-      {/* Static CTA button with hover effect */}
-      <div className="mt-16 text-center">
-        <a 
-          href="/projects" 
-          className="relative inline-flex group"
-        >
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-blue-600 rounded-full blur opacity-60 group-hover:opacity-100 transition duration-1000"></div>
-          <button className="relative px-8 py-4 bg-background rounded-full leading-none flex items-center gap-3 text-foreground">
-            <span className="text-primary font-medium">View All Projects</span>
-            <ArrowRight className="text-primary group-hover:translate-x-1 transition-transform duration-300" />
-          </button>
-        </a>
-      </div>
+
     </Section>
   );
 });
 
 /* PROCESS SECTION OPTIMIZATION */
 const ProcessSection = memo(() => {
-  // Use a single intersection observer setup
-  const [activeCard, setActiveCard] = useState(0);
-  
-  const PROCESS_CARDS = useMemo(() => [
+  const PROCESS_CARDS = [
     {
       id: 1,
       title: "Contact Us",
-      description: "Reach out to discuss your project.",
-      icon: <Users className="w-6 h-6 text-primary" />,
-      color: "from-blue-500/20 to-indigo-500/20"
+      description: "Reach out and tell us about your project or idea. We'll listen and guide you to the next step.",
+      icon: <Users className="w-7 h-7 text-primary" />,
     },
     {
       id: 2,
-      title: "Share Your Requirements",
-      description: "Tell us your goals and ideas.",
-      icon: <MessageSquare className="w-6 h-6 text-primary" />,
-      color: "from-indigo-500/20 to-violet-500/20"
+      title: "Share Requirements",
+      description: "Discuss your goals, requirements, and vision with our experts for a tailored solution.",
+      icon: <MessageSquare className="w-7 h-7 text-primary" />,
     },
     {
       id: 3,
-      title: "Set Your Budget",
-      description: "We'll plan a solution that fits.",
-      icon: <LineChart className="w-6 h-6 text-primary" />,
-      color: "from-violet-500/20 to-purple-500/20"
+      title: "Set Budget",
+      description: "We’ll propose a plan that fits your needs and budget, ensuring transparency from the start.",
+      icon: <LineChart className="w-7 h-7 text-primary" />,
     },
     {
       id: 4,
-      title: "Project Development",
-      description: "Our team builds your solution.",
-      icon: <Code className="w-6 h-6 text-primary" />,
-      color: "from-purple-500/20 to-pink-500/20"
+      title: "Development",
+      description: "Our team brings your project to life, keeping you updated at every milestone.",
+      icon: <Code className="w-7 h-7 text-primary" />,
     },
     {
       id: 5,
       title: "Testing & Delivery",
-      description: "Quality assurance and project handover.",
-      icon: <CheckCircle className="w-6 h-6 text-primary" />,
-      color: "from-pink-500/20 to-rose-500/20"
+      description: "Rigorous testing and final delivery, ensuring quality and your complete satisfaction.",
+      icon: <CheckCircle className="w-7 h-7 text-primary" />,
     }
-  ], []);
+  ];
 
-  // More efficient intersection observer setup
-  const observerRef = useRef(null);
-  const containerRef = useRef(null);
-  
-  useEffect(() => {
-    if (!containerRef.current) return;
-    
-    // More efficient intersection observer config
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.7
-    };
-    
-    const callback = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const index = parseInt(entry.target.dataset.index);
-          setActiveCard(index);
-        }
-      });
-    };
-    
-    observerRef.current = new IntersectionObserver(callback, options);
-    
-    // Get the card elements and observe them
-    const cards = containerRef.current.querySelectorAll('.process-card-item');
-    cards.forEach(card => observerRef.current.observe(card));
-    
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
-
-  // Optimized card component using CSS transforms
-  const ProcessCardStatic = ({ card, index }) => (
-    <div
-      className={`absolute inset-0 p-8 rounded-2xl bg-gradient-to-br ${card.color} border border-primary/10 shadow-xl transition-all duration-300 backdrop-blur-sm h-80`}
-      style={{
-        transform: `perspective(1000px) scale(${1 - Math.min(Math.max(activeCard - index, 0), 3) * 0.05})`,
-        top: `${Math.min(Math.max(activeCard - index, 0), 3) * 40}px`,
-        zIndex: PROCESS_CARDS.length - index,
-        opacity: activeCard > index + 2 ? 0 : 1,
-        willChange: 'transform, opacity, top'
-      }}
-    >
-      <div className="flex items-start gap-4">
-        <div className="w-14 h-14 rounded-xl bg-white/80 backdrop-blur flex items-center justify-center shrink-0">
-          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-            {card.icon}
-          </div>
-        </div>
-        <div>
-          <div className="text-sm font-medium text-primary/80 mb-1">Step {card.id}</div>
-          <h3 className="text-2xl font-bold mb-2" id={`process-step-title-${card.id}`}>{card.title}</h3>
-          <p className="text-foreground/70">{card.description}</p>
-        </div>
-      </div>
-    </div>
-  );
+  const [activeStep, setActiveStep] = useState(0);
 
   return (
     <Section id="process" aria-labelledby="process-heading">
-      <SectionHeading 
-        eyebrow="Simple Process" 
-        title="To Get You Started" 
-        description="We've streamlined our workflow to make your experience seamless and straightforward from start to finish."
-        center={true} 
+      <SectionHeading
+        eyebrow="Our Process"
+        title="How We Work"
+        description="A transparent, step-by-step approach to ensure your project's success."
+        center={true}
       />
-      
-      <div className="mt-16 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left side - static cards with CSS transitions */}
-          <div className="lg:col-span-6 lg:h-[800px] relative">
-            <div className="sticky top-24">
-              {PROCESS_CARDS.map((card, index) => (
-                <ProcessCardStatic 
-                  key={card.id} 
-                  card={card} 
-                  index={index}
-                />
-              ))}
-            </div>
-          </div>
-          
-          {/* Right side - scrolling content */}
-          <div className="lg:col-span-6" ref={containerRef}>
-            {PROCESS_CARDS.map((card, index) => (
-              <article 
-                className="process-card-item h-80 mb-8 p-8 rounded-2xl border border-secondary/20 bg-secondary/5 backdrop-blur-sm"
-                key={card.id}
-                data-index={index}
-                aria-labelledby={`process-step-${card.id}`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center shrink-0">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      {card.icon}
-                    </div>
+
+      {/* Horizontal Stepper */}
+      <div className="w-full max-w-5xl mx-auto mt-16">
+        <div className="flex flex-col items-center">
+          {/* Stepper bar */}
+          <div className="relative w-full flex items-center justify-between mb-12">
+            {PROCESS_CARDS.map((step, idx) => (
+              <div key={step.id} className="flex-1 flex flex-col items-center group">
+                {/* Step circle */}
+                <button
+                  type="button"
+                  onClick={() => setActiveStep(idx)}
+                  className={`relative z-10 flex items-center justify-center w-14 h-14 rounded-full border-2 transition-all duration-300
+                    ${activeStep === idx
+                      ? 'border-primary bg-primary/10 shadow-lg scale-110'
+                      : idx < activeStep
+                        ? 'border-primary bg-primary/20'
+                        : 'border-secondary/30 bg-background'}
+                  `}
+                  aria-current={activeStep === idx ? "step" : undefined}
+                >
+                  <span className="absolute -top-2 -right-2 text-xs bg-primary text-white rounded-full px-2 py-0.5 shadow">{step.id}</span>
+                  {step.icon}
+                </button>
+                {/* Step label */}
+                <span className={`mt-4 text-sm font-semibold transition-colors duration-300
+                  ${activeStep === idx ? 'text-primary' : 'text-foreground/70 group-hover:text-primary'}
+                `}>
+                  {step.title}
+                </span>
+                {/* Progress bar */}
+                {idx < PROCESS_CARDS.length - 1 && (
+                  <div className="absolute left-full top-1/2 w-full h-1 -translate-y-1/2">
+                    <div className={`h-full rounded bg-gradient-to-r from-primary to-secondary transition-all duration-300
+                      ${idx < activeStep ? 'opacity-100' : 'opacity-30'}
+                    `} />
                   </div>
-                  <div>
-                    <div className="text-sm font-medium text-primary/80 mb-1">Step {card.id}</div>
-                    <h3 className="text-2xl font-bold mb-4" id={`process-step-${card.id}`}>{card.title}</h3>
-                    <p className="text-foreground/70 mb-6">{card.description}</p>
-                    
-                    {/* Keep additional content for each step */}
-                    <div className="pl-6 border-l-2 border-primary/20">
-                      {/* Content for each step - same as original */}
-                      {index === 0 && (
-                        <div className="space-y-2">
-                          <p className="text-sm text-foreground/80">Ready to transform your business with technology? Contact us through:</p>
-                          {/* Contact methods */}
-                        </div>
-                      )}
-                      {/* Other steps content */}
-                    </div>
-                  </div>
-                </div>
-              </article>
+                )}
+              </div>
             ))}
+          </div>
+
+          {/* Step Details Card */}
+          <div className="w-full max-w-2xl mx-auto mt-4">
+            <div className="rounded-2xl bg-background/80 border border-primary/10 shadow-xl p-8 text-center transition-all duration-500">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                  {PROCESS_CARDS[activeStep].icon}
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-primary">{PROCESS_CARDS[activeStep].title}</h3>
+              <p className="text-foreground/70 text-base">{PROCESS_CARDS[activeStep].description}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1587,19 +1405,7 @@ function Home() {
                   </motion.div>
                 ))}
               </div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-                className="mt-10"
-              >
-                <button className="inline-flex items-center px-5 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-full text-sm font-medium transition-all group">
-                  Learn More About Our Approach
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-                </button>
-              </motion.div>
+
             </motion.div>
           </div>
         </Section>

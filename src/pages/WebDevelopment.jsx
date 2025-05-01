@@ -349,59 +349,7 @@ function WebDevelopmentServices() {
         </motion.div>
       </div>
 
-      {/* About Section */}
-      <section className="py-20 px-4" id="about">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h2 className="text-3xl font-bold mb-6">About Me</h2>
-              <p className="text-foreground/70 mb-6 leading-relaxed">
-                With over 5 years of experience in web development, I help businesses and individuals 
-                establish their online presence through modern, performant, and user-friendly websites.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Code className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Clean Code</h3>
-                    <p className="text-sm text-foreground/60">Writing maintainable, scalable solutions</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Rocket className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Fast Delivery</h3>
-                    <p className="text-sm text-foreground/60">Quick turnaround without compromising quality</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="relative"
-            >
-              <div className="aspect-square rounded-2xl overflow-hidden">
-                <img 
-                  src="/profile-image.jpg" 
-                  alt="John Doe" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Enhanced Services Section with Interactive Cards */}
       <section className="py-24 px-4" id="services">
