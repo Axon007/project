@@ -428,10 +428,9 @@ function WebDevelopmentServices() {
             ].map((service, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+                initial={false}
+                animate={false}
+                transition={false}
                 className={`group relative overflow-hidden rounded-3xl p-8 hover:bg-primary/5 transition-all duration-300 border border-transparent hover:border-primary/30 bg-gradient-to-br ${service.gradient}`}
               >
                 <div className="absolute top-0 left-0 w-full h-full bg-secondary opacity-90 group-hover:opacity-95 transition-opacity duration-300"></div>
@@ -449,21 +448,7 @@ function WebDevelopmentServices() {
                       </li>
                     ))}
                   </ul>
-                  
-                  <motion.div 
-                    className="mt-6 h-10 overflow-hidden hidden group-hover:block"
-                    initial={{ height: 0 }}
-                    animate={{ height: "auto" }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <a 
-                      href="#contact" 
-                      className="inline-flex items-center gap-2 text-primary font-medium"
-                    >
-                      Learn more about this service
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-                  </motion.div>
+                  {/* Removed "Learn more about this service" and its animation */}
                 </div>
               </motion.div>
             ))}
