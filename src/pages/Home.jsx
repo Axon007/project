@@ -912,7 +912,7 @@ const ProjectCard = memo(({ project, isHovered, onHoverChange }) => {
   return (
     <div
       className="group relative overflow-hidden rounded-2xl border border-secondary/20 hover:border-primary/50 transition-all duration-300"
-      style={{ height: project.featured ? '500px' : '450px' }}
+      style={{ height: '470px' }} // Unified height for all cards
       onMouseEnter={() => onHoverChange(project.title)}
       onMouseLeave={() => onHoverChange(null)}
     >
@@ -948,7 +948,7 @@ const ProjectCard = memo(({ project, isHovered, onHoverChange }) => {
                 className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm shadow-lg shadow-black/20"
                 style={{ backgroundColor: `${project.color}70` }}
               >
-                {project.category}
+                {project.category.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
               </span>
               
               {project.featured && (
@@ -963,7 +963,7 @@ const ProjectCard = memo(({ project, isHovered, onHoverChange }) => {
           <div className="transform transition-all duration-500">
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 group-hover:text-primary/90 transition-colors">
               <span className="relative inline-block">
-                {project.title}
+                {project.title.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
                 <span 
                   className="absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300"
                   style={{ width: isHovered ? '100%' : '0%' }}
@@ -1078,10 +1078,11 @@ const ProjectsSection = memo(() => {
           })}
         </div>
         
-        <p className="text-center text-sm text-foreground/50 mt-2">
+        {/* Removed showing results text */}
+        {/* <p className="text-center text-sm text-foreground/50 mt-2">
           Showing {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
           {activeFilter !== 'All' ? ` in ${activeFilter}` : ''}
-        </p>
+        </p> */}
       </div>
       
       {/* Optimized grid without AnimatePresence */}
