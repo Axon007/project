@@ -9,91 +9,12 @@ import {
   CheckCircle, ArrowUpRight,
   Layout, Download
 } from "lucide-react";
-import { BentoCard, BentoGrid } from '../components/magicui/bento-grid';
-import { Iphone15Pro } from "../components/magicui/iphone-15-pro";
-import { cn } from "../lib/utils";
-import FeaturesSectionDemo from '../components/FeaturesSectionDemo';
 
-// Core theme with dark mode support
-const THEME = {
-  primary: {
-    DEFAULT: "#0070F3",
-    light: "#3291FF",
-    dark: "#0052cc"
-  },
-  secondary: {
-    DEFAULT: "#7928CA",
-  },
-  background: {
-    DEFAULT: "#FCFCFC",
-    muted: "#F5F5F5",
-    dark: "#121212",
-  },
-  foreground: {
-    DEFAULT: "#18181B",
-    dark: "#f8f8f8"
-  }
-};
-
-// UI object with styles - Enhanced with new interactive elements
-const UI = {
-  card: {
-    base: "rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm",
-    padding: "p-6",
-    iconContainer: "mb-6 bg-primary/10 dark:bg-primary/20 w-16 h-16 rounded-xl flex items-center justify-center"
-  },
-  text: {
-    heading: "font-bold text-gray-900 dark:text-white",
-    body: "text-gray-600 dark:text-gray-300",
-    accent: "text-primary"
-  },
-  gradients: {
-    primary: "bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary",
-    hover: "bg-gradient-to-r from-primary/20 to-secondary/20"
-  },
-  button: {
-    base: "flex items-center gap-1 font-medium",
-    pill: "rounded-full",
-    primary: "bg-primary hover:bg-primary/90 text-white",
-    secondary: "bg-primary/10 hover:bg-primary/20 text-primary"
-  },
-  interactive: {
-    tab: "px-4 py-2 rounded-lg transition-colors cursor-pointer",
-    tabActive: "bg-primary text-white",
-    tabInactive: "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-  }
-};
-
-// Animations - Enhanced with more sophisticated effects
-const animations = {
-  fadeIn: {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    transition: { duration: 0.5 }
-  },
-  fadeInUp: {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
-  },
-  staggerContainer: {
-    animate: { 
-      transition: { 
-        staggerChildren: 0.1,
-      } 
-    }
-  },
-  scaleIn: {
-    initial: { scale: 0.9, opacity: 0 },
-    animate: { scale: 1, opacity: 1 },
-    transition: { type: "spring", stiffness: 100, damping: 15 }
-  },
-  pulse: {
-    animate: { 
-      scale: [1, 1.05, 1],
-      transition: { repeat: Infinity, duration: 2 }
-    }
-  }
+// Component to create the animated cosmic sphere
+const CosmicSphere = () => {
+  return (
+    <div className="absolute right-24 top-40 h-80 w-80 lg:w-96 lg:h-96 blur-3xl rounded-full bg-gradient-to-br from-primary/30 via-purple-600/20 to-blue-600/30 animate-slow-spin hidden lg:block" />
+  );
 };
 
 // Feature card component
@@ -497,181 +418,243 @@ function AppDevelopment() {
               <div className="absolute top-1/4 right-1/3 w-2 h-2 bg-violet-500 rounded-full animate-pulse delay-1000"></div>
             </div>
             
-            {/* Browser mockup image */}
-            <div className="mt-16 relative max-w-6xl mx-auto">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-800">
-                {/* Browser chrome styling */}
-                <div className="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-2 px-4 flex items-center">
-                  {/* Browser controls */}
-                  <div className="flex items-center space-x-2 mr-4">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  </div>
-                  
-                  {/* Browser navigation buttons */}
-                  <div className="flex space-x-2 mr-4">
-                    <div className="w-5 h-5 flex items-center justify-center text-gray-500">
-                      <ArrowRight size={14} className="rotate-180" />
-                    </div>
-                    <div className="w-5 h-5 flex items-center justify-center text-gray-500">
-                      <ArrowRight size={14} />
-                    </div>
-                  </div>
-                  
-                  {/* URL bar */}
-                  <div className="flex-1 bg-white dark:bg-gray-700 rounded-md px-3 py-1.5 flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-4 h-4 mr-2 text-gray-400">⊘</div>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">x.jason.com</span>
-                    </div>
-                    <div className="w-4 h-4 text-gray-400">↻</div>
-                  </div>
-                  
-                  {/* Browser menu buttons */}
-                  <div className="ml-4 flex space-x-2">
-                    <div className="w-5 h-5 flex items-center justify-center text-gray-500">⊕</div>
-                    <div className="w-5 h-5 flex items-center justify-center text-gray-500">□</div>
-                  </div>
-                </div>
-                
-                {/* App builder interface */}
-                <div className="bg-gray-50 dark:bg-gray-900 h-[400px] relative">
-                  {/* This would be the actual app builder interface content */}
-                  <img 
-                    src="/images/app-builder-interface.png" 
-                    alt="App builder interface" 
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                  
-                  {/* Fallback if image doesn't load */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-lg text-gray-500 dark:text-gray-400 font-medium">
-                    Jason Tech Solutions
-                    </div>
-                  </div>
-                </div>
+            {/* Reflection */}
+            <div className="absolute top-full left-12 right-12 h-20 bg-gradient-to-b from-primary/20 to-transparent blur-md -mt-1 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="col-span-1 order-1 lg:order-2 flex flex-col justify-center">
+        <div className="space-y-10">
+          {[
+            {
+              title: "Z-Axis Interactions",
+              description: "Create depth with parallax effects, 3D rotations, and multi-layered interfaces.",
+              icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M7 7h10v10H7z"></path></svg>
+            },
+            {
+              title: "Spatial Awareness",
+              description: "Elements that respond to device orientation and user perspective for intuitive navigation.",
+              icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"></path><path d="M12 19v2"></path><path d="M12 3V1"></path><path d="m4.9 4.9 1.4 1.4"></path><path d="m17.7 17.7 1.4 1.4"></path><path d="M19 12h2"></path><path d="M3 12h2"></path><path d="m17.7 6.3 1.4-1.4"></path><path d="m4.9 19.1 1.4-1.4"></path></svg>
+            },
+            {
+              title: "Morphic Transitions",
+              description: "Fluid element transformations that guide users through interface state changes.",
+              icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+            }
+          ].map((feature, index) => (
+            <div key={index} className="flex gap-5 group">
+              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                {feature.icon}
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+                <p className="text-foreground/70">{feature.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* Neuomorphic Interface Elements */}
+<section className="py-28 px-4 relative overflow-hidden bg-secondary/5">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-20">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><circle cx="12" cy="12" r="10"></circle><path d="m16.24 7.76-8.48 8.48"></path><path d="m7.76 7.76 8.48 8.48"></path></svg>
+        Modern Interface Design
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
+        Neuomorphic Design Language
+      </h2>
+      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+        Soft, tactile interfaces that blur the line between digital and physical with subtle shadows and highlights.
+      </p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+      <div className="col-span-1">
+        <div className="space-y-8">
+          {[
+            {
+              title: "Subtle Depth",
+              description: "Elements appear to raise from or sink into the background, creating a tactile sensation."
+            },
+            {
+              title: "Mindful Contrast",
+              description: "Careful balance of light and shadow to maintain accessibility while adding dimension."
+            },
+            {
+              title: "Reactive Surfaces",
+              description: "Interface elements that respond to touch with realistic physical feedback."
+            }
+          ].map((item, index) => (
+            <div key={index} className="group">
+              <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                {item.title}
+              </h3>
+              <p className="text-foreground/70 ml-5">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Center showcase */}
+      <div className="col-span-1 md:col-span-1 p-10">
+        <div className="relative w-full aspect-square bg-secondary/5 rounded-3xl shadow-[10px_10px_30px_rgba(0,0,0,0.1),-10px_-10px_30px_rgba(255,255,255,0.05)] flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-20 h-20 rounded-full bg-secondary/5 shadow-[5px_5px_15px_rgba(0,0,0,0.1),-5px_-5px_15px_rgba(255,255,255,0.05)] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className=""><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               </div>
             </div>
           </div>
-        </section>
-        
-        {/* New: Statistics Section */}
-        <Section className="py-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { value: 100, suffix: "+", label: "Apps Delivered" },
-              { value: 98, suffix: "%", label: "Client Satisfaction" },
-              { value: 15, suffix: "+", label: "Years Experience" },
-              { value: 5, suffix: "M+", label: "App Downloads" },
-            ].map((stat, index) => (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <StatsCounter 
-                  end={stat.value} 
-                  suffix={stat.suffix} 
-                  duration={1.5} 
-                />
-                <p className="text-gray-500 dark:text-gray-400 mt-2">{stat.label}</p>
-              </motion.div>
-            ))}
+          
+          {/* Neuomorphic controls */}
+          <div className="absolute bottom-6 left-6 right-6 h-10 rounded-full bg-secondary/5 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.1),inset_-2px_-2px_5px_rgba(255,255,255,0.05)] flex items-center px-3">
+            <div className="w-5 h-5 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] mr-auto"></div>
+            <div className="w-16 h-4 rounded-full bg-secondary/5 shadow-[inset_2px_2px_3px_rgba(0,0,0,0.1),inset_-2px_-2px_3px_rgba(255,255,255,0.05)]">
+              <div className="w-5 h-4 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] ml-1"></div>
+            </div>
+            <div className="w-5 h-5 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] ml-auto"></div>
           </div>
-        </Section>
-        
-        {/* Services Section with interactive tabs */}
-        <Section dark pattern id="services">
-          <SectionHeading 
-            eyebrow="Our Services" 
-            title="Comprehensive App Development" 
-            description="We offer end-to-end development services to transform your vision into a market-ready application with cutting-edge features and technologies."
-            center={true}
-          />
-          
-          <ServiceTabs 
-            services={SERVICE_TABS}
-            activeTab={activeServiceTab}
-            setActiveTab={setActiveServiceTab}
-          />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-            {APP_FEATURES.map((feature, index) => (
-              <FeatureCard key={index} feature={feature} index={index} />
-            ))}
-          </div>
-        </Section>
-        
-        {/* Development Process with interactive timeline */}
-        <Section id="process">
-          <SectionHeading 
-            eyebrow="Our Process" 
-            title="How We Build Your App" 
-            description="Our proven development methodology ensures transparency, quality, and alignment with your business objectives at every step."
-          />
-          
-          <div className="mt-16">
-            {DEV_PROCESS.map((step, index) => (
-              <ProcessStep 
-                key={index} 
-                step={step} 
-                index={index} 
-                totalSteps={DEV_PROCESS.length}
-                isActive={activeProcessStep === index}
-                onClick={() => setActiveProcessStep(index)}
-              />
-            ))}
-          </div>
-        </Section>
-        
-        {/* Case Studies Section */}
-        <Section dark pattern id="case-studies">
-          <SectionHeading 
-            eyebrow="Success Stories" 
-            title="App Development Case Studies" 
-            description="Explore our recent app development projects that have helped businesses achieve their goals and deliver exceptional user experiences."
-            center={true}
-          />
-          
-          <div className="mt-16 space-y-24">
-            {CASE_STUDIES.map((study, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                  index % 2 === 1 ? 'lg:grid-flow-dense' : ''
-                }`}
-              >
-                {/* Image side */}
-                <div className={`${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
-                  <div className="relative rounded-2xl overflow-hidden aspect-video shadow-xl">
-                    <img 
-                      src={study.image} 
-                      alt={study.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent flex items-end">
-                      <div className="p-6">
-                        <span className="px-3 py-1 bg-primary/80 text-white text-sm rounded-full">
-                          {study.results}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+        </div>
+      </div>
+      
+      <div className="col-span-1">
+        <div className="grid grid-cols-2 gap-5">
+          {[
+            "Light Surfaces", "Soft Shadows", "Rounded Corners", 
+            "Minimal Borders", "Tactile Feedback", "Muted Colors"
+          ].map((tag, index) => (
+            <div key={index} className="flex items-center justify-center h-16 rounded-2xl bg-secondary/5 shadow-[5px_5px_15px_rgba(0,0,0,0.1),-5px_-5px_15px_rgba(255,255,255,0.05)] text-sm font-medium hover:shadow-[inset_5px_5px_10px_rgba(0,0,0,0.1),inset_-5px_-5px_10px_rgba(255,255,255,0.05)] hover:text-primary transition-all cursor-pointer">
+              {tag}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* Glassmorphism UI Components */}
+<section className="py-28 px-4 relative overflow-hidden">
+  {/* Background blur elements */}
+  <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-blue-500/30 mix-blend-multiply filter blur-[80px] animate-blob"></div>
+  <div className="absolute bottom-20 right-1/4 w-64 h-64 rounded-full bg-primary/30 mix-blend-multiply filter blur-[80px] animate-blob animation-delay-2000"></div>
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-purple-500/30 mix-blend-multiply filter blur-[80px] animate-blob animation-delay-4000"></div>
+  
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-16 relative z-10">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6 backdrop-blur-md">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M21 9V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h4"></path><path d="M16 16h6"></path><path d="M19 13v6"></path></svg>
+        Next-Gen UI
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-violet-500">
+        Glassmorphic UI Components
+      </h2>
+      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+        Transparent, blurred interfaces that create a sense of depth while maintaining focus on content.
+      </p>
+    </div>
+    
+    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Showcase of glass UI components */}
+      <div className="relative h-[600px] order-2 lg:order-1">
+        {/* Main glass card */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[320px] h-[450px] bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/20 shadow-xl z-20 overflow-hidden">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-8">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>
+              </div>
+              <div className="flex space-x-2">
+                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Glass Dashboard</h3>
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent my-4"></div>
+            
+            <div className="space-y-4 mt-6">
+              <div className="bg-white/10 rounded-lg p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">Activity</span>
+                  <span className="text-xs text-primary">+12%</span>
                 </div>
-                
-                {/* Text side */}
+                <div className="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full w-3/4 bg-gradient-to-r from-primary to-blue-500 rounded-full"></div>
+                </div>
+              </div>
+              
+              <div className="bg-white/10 rounded-lg p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">Engagement</span>
+                  <span className="text-xs text-green-500">+24%</span>
+                </div>
+                <div className="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full w-5/6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></div>
+                </div>
+              </div>
+              
+              <div className="bg-white/10 rounded-lg p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">Revenue</span>
+                  <span className="text-xs text-violet-500">+18%</span>
+                </div>
+                <div className="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full w-2/3 bg-gradient-to-r from-blue-500 to-violet-500 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-10 grid grid-cols-3 gap-2">
+              {[1, 2, 3].map((item, index) => (
+                <div key={index} className="bg-white/10 rounded-xl p-3 text-center">
+                  <div className="text-lg font-bold">{index + 1}k</div>
+                  <div className="text-xs opacity-70">Users</div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="absolute bottom-0 left-0 right-0 h-16 bg-white/10 backdrop-blur-md border-t border-white/10 flex items-center justify-around px-6">
+              {['home', 'search', 'bell', 'user'].map((icon, index) => (
+                <div key={index} className={`w-8 h-8 rounded-full ${index === 0 ? 'bg-primary/20 text-primary' : 'bg-white/5 text-white/70'} flex items-center justify-center`}>
+                  {icon === 'home' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>}
+                  {icon === 'search' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>}
+                  {icon === 'bell' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>}
+                  {icon === 'user' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 1 0-16 0"></path></svg>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        {/* Secondary glass components */}
+        <div className="absolute top-20 right-10 w-64 h-40 bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl -rotate-6 z-10 overflow-hidden">
+          <div className="h-1/2 bg-gradient-to-r from-primary/20 to-blue-500/20"></div>
+          <div className="p-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium">Subscribers</span>
+              <span className="text-xs bg-green-500/20 text-green-500 px-2 py-0.5 rounded-full">+5%</span>
+            </div>
+            <div className="mt-2 text-2xl font-bold">142.5K</div>
+          </div>
+        </div>
+        
+        <div className="absolute bottom-20 left-10 w-56 h-56 bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl rotate-12 z-10 overflow-hidden">
+          <div className="p-4 h-full flex flex-col">
+            <div className="text-sm font-medium mb-4">Quick Access</div>
+            {[1, 2, 3].map((item, index) => (
+              <div key={index} className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                </div>
                 <div>
                   <div className="text-xs font-medium">Document {index + 1}</div>
                   <div className="text-xs opacity-50">PDF • 2.4MB</div>
@@ -834,364 +817,971 @@ function AppDevelopment() {
             </video>
           </div>
         </div>
-        
-       
+      </div>
+    </div>
+  </div>
+</section>
 
-        {/* New: Testimonials Section */}
-        <Section dark pattern id="testimonials">
-          <SectionHeading
-            eyebrow="Client Testimonials"
-            title="What Our Clients Say"
-            description="Hear from businesses that have transformed their digital presence with our app development services."
-            center={true}
-          />
-          
-          <div className="max-w-3xl mx-auto mt-16">
-            <TestimonialsCarousel testimonials={TESTIMONIALS} />
+{/* Technology Stack Section */}
+<section className="py-20 px-4 relative">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-12">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+        <Code className="w-4 h-4 mr-2" /> Technology Stack
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+        Built With Cutting-Edge Technologies
+      </h2>
+      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+        We leverage the most advanced and reliable technologies to ensure your application 
+        performs exceptionally well across all platforms.
+      </p>
+    </div>
+    
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mt-12">
+      {[
+        { name: "React Native", logo: "react.svg", description: "Cross-platform mobile apps" },
+        { name: "Flutter", logo: "flutter.svg", description: "Native UI experiences" },
+        { name: "Swift", logo: "swift.svg", description: "iOS development" },
+        { name: "Kotlin", logo: "kotlin.svg", description: "Android development" },
+        { name: "Firebase", logo: "firebase.svg", description: "Backend & analytics" },
+        { name: "AWS", logo: "aws.svg", description: "Cloud infrastructure" }
+      ].map((tech, index) => (
+        <div key={index} className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-secondary/5 transition-all">
+          <div className="w-16 h-16 mb-4 flex items-center justify-center">
+            {/* Replace with actual tech logos */}
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <Code className="w-6 h-6 text-primary" />
+            </div>
           </div>
-        </Section>
+          <h3 className="font-medium mb-1">{tech.name}</h3>
+          <p className="text-sm text-foreground/60">{tech.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
-        {/* Core Features Section from FeaturesSectionDemo component */}
+{/* App Design Showcase Section */}
+<section className="py-24 px-4 relative overflow-hidden">
+  {/* Subtle background pattern */}
+  <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+  
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-20">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+        <Layout className="w-4 h-4 mr-2" /> Design Excellence
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
+        App Design That Captivates Users
+      </h2>
+      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+        Our design philosophy combines aesthetics with functionality to create interfaces that users love.
+      </p>
+    </div>
+    
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="order-2 lg:order-1">
+        <div className="space-y-8">
+          {/* Design pillars with visual indicators */}
+          {[
+            {
+              title: "User-Centered Design",
+              description: "We build every interface with real users in mind, focusing on intuitive navigation and clear visual hierarchy.",
+              color: "bg-gradient-to-r from-primary to-blue-400"
+            },
+            {
+              title: "Consistent Experience",
+              description: "Our design system ensures a cohesive look and feel across all screens and interactions within your application.",
+              color: "bg-gradient-to-r from-blue-500 to-purple-500"
+            },
+            {
+              title: "Accessibility First",
+              description: "We design for everyone, ensuring your app is usable by people of all abilities and meets WCAG standards.",
+              color: "bg-gradient-to-r from-purple-500 to-pink-500"
+            }
+          ].map((pillar, index) => (
+            <div key={index} className="flex gap-5">
+              <div className={`h-full w-1 ${pillar.color} rounded-full self-stretch`}></div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2">{pillar.title}</h3>
+                <p className="text-foreground/70">{pillar.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
         
+        <div className="mt-10 grid grid-cols-3 gap-4">
+          {["Wireframing", "Prototyping", "UI/UX", "Visual Design", "Motion Design", "Design Systems"].map((tag, index) => (
+            <div key={index} className="bg-secondary/10 rounded-lg py-2 px-4 text-sm text-center font-medium text-foreground/80">
+              {tag}
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <div className="order-1 lg:order-2 relative">
+        {/* Design showcase with layered screens */}
+        <div className="relative h-[500px]">
+          <div className="absolute top-0 right-0 w-72 h-auto transform rotate-6 shadow-xl rounded-2xl border-8 border-gray-900 overflow-hidden">
+            <img 
+              src="https://images.unsplash.com/photo-1573867639040-6dd25fa5f597?w=500&h=1000&fit=crop" 
+              alt="App Design Example" 
+              className="w-full h-auto"
+              loading="lazy"
+            />
+          </div>
+          <div className="absolute top-20 left-4 w-64 h-auto transform -rotate-3 shadow-xl rounded-2xl border-8 border-gray-900 overflow-hidden z-10">
+            <img 
+              src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=1000&fit=crop" 
+              alt="App Design Example" 
+              className="w-full h-auto"
+              loading="lazy"
+            />
+          </div>
+          <div className="absolute bottom-0 right-20 w-56 h-auto transform rotate-[-10deg] shadow-xl rounded-2xl border-8 border-gray-900 overflow-hidden">
+            <img 
+              src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=500&h=1000&fit=crop" 
+              alt="App Design Example" 
+              className="w-full h-auto"
+              loading="lazy"
+            />
+          </div>
+          <div className="absolute top-1/4 left-1/3 w-16 h-16 bg-primary/20 rounded-full filter blur-xl"></div>
+          <div className="absolute bottom-1/4 right-1/3 w-24 h-24 bg-blue-500/20 rounded-full filter blur-xl"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* Interactive Feature Showcase */}
+<section className="py-28 px-4 relative bg-gradient-to-b from-secondary/5 to-background">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-16">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+        <Zap className="w-4 h-4 mr-2" /> Interactive Features
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+        Rich Interactive Experiences
+      </h2>
+      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+        Transform ordinary interfaces into extraordinary experiences with our interactive features.
+      </p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-6 mt-20">
+      {[
+        {
+          title: "Gesture Controls",
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M8 13V4.5a1.5 1.5 0 0 1 3 0V12"></path><path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0V12"></path><path d="M14 10.5v-2a1.5 1.5 0 0 1 3 0V14"></path><path d="M17 11.5a1.5 1.5 0 0 1 3 0V16a6 6 0 0 1-6 6h-2 .208a6 6 0 0 1-5.012-2.7A69.74 69.74 0 0 1 7 19c-.312-.479-1.407-2.388-3.286-5.728a1.5 1.5 0 0 1 .536-2.022 1.867 1.867 0 0 1 2.28.28L8 13"></path></svg>,
+          description: "Intuitive swipe, pinch, and tap interactions that feel natural and responsive."
+        },
+        {
+          title: "Micro-animations",
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="m5 19 7-7 7 7"></path><path d="m5 13 7-7 7 7"></path></svg>,
+          description: "Subtle animations that provide feedback and delight users during interactions."
+        },
+        {
+          title: "Real-time Updates",
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path><path d="M16 21h5v-5"></path></svg>,
+          description: "Instant data synchronization and live updates without page refreshes."
+        },
+        {
+          title: "Smart Forms",
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"></path><line x1="9" y1="9" x2="10" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line></svg>,
+          description: "Intelligent forms with real-time validation and contextual input assistance."
+        }
+      ].map((feature, index) => (
+        <div key={index} className="flex flex-col items-center text-center px-4">
+          <div className="relative mb-8">
+            <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+              {feature.icon}
+            </div>
+            <div className="absolute -top-2 -right-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
+              +
+            </div>
+          </div>
+          <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+          <p className="text-foreground/70">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+    
+    <div className="mt-24 relative">
+      <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent w-full my-12"></div>
+      
+      <div className="flex flex-col md:flex-row items-center justify-between p-8 bg-secondary/5 backdrop-blur-sm rounded-2xl border border-secondary/10">
+        <div className="mb-6 md:mb-0 md:mr-10">
+          <h3 className="text-2xl font-bold mb-2">See It In Action</h3>
+          <p className="text-foreground/70 max-w-md">
+            Experience the power of our interactive features with a live demonstration of our latest projects.
+          </p>
+        </div>
+        <a 
+          href="#demo" 
+          className="px-8 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group whitespace-nowrap"
+        >
+          Watch Demo
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 group-hover:translate-x-1 transition-transform"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* App Analytics Dashboard Showcase */}
+<section className="py-24 px-4 relative">
+  <div className="max-w-7xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+          <BarChart className="w-4 h-4 mr-2" /> Analytics & Insights
+        </span>
+        <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+          Data-Driven App Development
+        </h2>
+        <p className="text-lg text-foreground/70 mb-8">
+          Our comprehensive analytics suite gives you actionable insights into user behavior and app performance.
+        </p>
         
-        {/* New: FAQ Section with accordion */}
-        <Section id="faq">
-          <SectionHeading
-            eyebrow="FAQ"
-            title="Frequently Asked Questions"
-            description="Get answers to common questions about our app development process, timeline, and services."
-            center={true}
-          />
-          
-          <div className="max-w-3xl mx-auto mt-16 bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden">
-            {FAQ_ITEMS.map((faq, index) => (
-              <FaqItem
-                key={index}
-                question={faq.question}
-                answer={faq.answer}
-                isOpen={openFaqIndex === index}
-                onClick={() => setOpenFaqIndex(index === openFaqIndex ? -1 : index)}
-              />
+        <div className="space-y-6">
+          {[
+            {
+              title: "User Engagement Metrics",
+              description: "Track session duration, screen views, and interaction patterns to optimize the user journey."
+            },
+            {
+              title: "Performance Monitoring",
+              description: "Monitor app load times, API response rates, and crash reports for continuous improvement."
+            },
+            {
+              title: "Conversion Tracking",
+              description: "Measure and analyze key conversion events and sales funnels within your application."
+            }
+          ].map((item, index) => (
+            <div key={index} className="flex gap-4">
+              <div className="mt-1 flex-shrink-0 w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                <CheckCircle className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">{item.title}</h3>
+                <p className="text-foreground/70">{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-10 flex flex-wrap gap-4">
+          <div className="flex items-center gap-2 bg-secondary/10 rounded-full px-4 py-1.5">
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span className="text-sm font-medium">98.7% Uptime</span>
+          </div>
+          <div className="flex items-center gap-2 bg-secondary/10 rounded-full px-4 py-1.5">
+            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+            <span className="text-sm font-medium">2.3s Average Load Time</span>
+          </div>
+          <div className="flex items-center gap-2 bg-secondary/10 rounded-full px-4 py-1.5">
+            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+            <span className="text-sm font-medium">42% Conversion Rate</span>
+          </div>
+        </div>
+      </div>
+      
+      <div className="relative">
+        {/* Analytics dashboard mockup */}
+        <div className="bg-secondary/5 backdrop-blur-sm rounded-xl border border-secondary/10 shadow-xl overflow-hidden">
+          <div className="bg-background px-4 py-3 border-b border-secondary/10 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-red-500"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <div className="text-xs text-foreground/60">App Analytics Dashboard</div>
+            <div className="w-5"></div>
+          </div>
+          <div className="p-6">
+            <img 
+              src="https://placehold.co/600x400/2a2a3c/FFFFFF/png?text=Analytics+Dashboard" 
+              alt="Analytics Dashboard" 
+              className="w-full h-auto rounded-lg shadow-sm"
+              loading="lazy"
+            />
+            <div className="grid grid-cols-3 gap-4 mt-6">
+              <div className="bg-background p-4 rounded-lg">
+                <div className="text-xs text-foreground/60 mb-1">Active Users</div>
+                <div className="text-2xl font-bold">24.8K</div>
+                <div className="text-xs text-green-500 mt-1">↑ 12% vs last week</div>
+              </div>
+              <div className="bg-background p-4 rounded-lg">
+                <div className="text-xs text-foreground/60 mb-1">Retention</div>
+                <div className="text-2xl font-bold">76%</div>
+                <div className="text-xs text-green-500 mt-1">↑ 5% vs last week</div>
+              </div>
+              <div className="bg-background p-4 rounded-lg">
+                <div className="text-xs text-foreground/60 mb-1">Session Time</div>
+                <div className="text-2xl font-bold">4:32</div>
+                <div className="text-xs text-green-500 mt-1">↑ 18% vs last week</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute -top-6 -right-6 w-20 h-20 bg-primary/10 rounded-full filter blur-xl"></div>
+        <div className="absolute -bottom-10 -left-10 w-28 h-28 bg-blue-500/10 rounded-full filter blur-xl"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* App Store Optimization Section */}
+<section className="py-24 px-4 relative bg-secondary/5">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-16">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+        <ArrowUpRight className="w-4 h-4 mr-2" /> Launch Strategy
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+        App Store Optimization
+      </h2>
+      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+        Your app deserves visibility. We optimize every aspect of your app store presence to maximize downloads.
+      </p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="relative bg-background rounded-3xl overflow-hidden border border-secondary/10 shadow-md h-[400px] group">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/70 to-purple-600/70 opacity-90"></div>
+        <div className="relative h-full p-8 flex flex-col justify-between text-white">
+          <div>
+            <div className="p-3 bg-white/20 rounded-xl inline-flex mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><circle cx="12" cy="12" r="10"></circle><path d="m16 10-4 4-2-2"></path></svg>
+            </div>
+            <h3 className="text-2xl font-bold mb-3">App Store Listing</h3>
+            <p className="text-white/80">Keyword-optimized titles, descriptions, and metadata that improve search rankings.</p>
+          </div>
+          <div className="mt-4 pt-4 border-t border-white/20">
+            <ul className="space-y-2">
+              {["Competitor Analysis", "A/B Testing", "Keyword Optimization"].map((item, index) => (
+                <li key={index} className="flex items-center gap-2 text-sm">
+                  <CheckCircle className="w-4 h-4 text-white" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div className="relative bg-background rounded-3xl overflow-hidden border border-secondary/10 shadow-md h-[400px] group">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/70 to-blue-600/70 opacity-90"></div>
+        <div className="relative h-full p-8 flex flex-col justify-between text-white">
+          <div>
+            <div className="p-3 bg-white/20 rounded-xl inline-flex mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M5 22h14"></path><path d="M5 2h14"></path><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path></svg>
+            </div>
+            <h3 className="text-2xl font-bold mb-3">Visual Assets</h3>
+            <p className="text-white/80">Eye-catching screenshots, preview videos, and app icons that drive conversions.</p>
+          </div>
+          <div className="mt-4 pt-4 border-t border-white/20">
+            <ul className="space-y-2">
+              {["Screenshot Design", "Preview Videos", "Icon Optimization"].map((item, index) => (
+                <li key={index} className="flex items-center gap-2 text-sm">
+                  <CheckCircle className="w-4 h-4 text-white" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div className="relative bg-background rounded-3xl overflow-hidden border border-secondary/10 shadow-md h-[400px] group">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/70 to-primary/70 opacity-90"></div>
+        <div className="relative h-full p-8 flex flex-col justify-between text-white">
+          <div>
+            <div className="p-3 bg-white/20 rounded-xl inline-flex mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+            </div>
+            <h3 className="text-2xl font-bold mb-3">User Reviews</h3>
+            <p className="text-white/80">Strategies to encourage positive ratings and thoughtful response management.</p>
+          </div>
+          <div className="mt-4 pt-4 border-t border-white/20">
+            <ul className="space-y-2">
+              {["Review Prompts", "Feedback Collection", "Rating Management"].map((item, index) => (
+                <li key={index} className="flex items-center gap-2 text-sm">
+                  <CheckCircle className="w-4 h-4 text-white" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div className="mt-16 flex justify-center">
+      <div className="flex items-center gap-3 p-4 bg-background/50 backdrop-blur-sm rounded-full shadow-sm border border-secondary/10">
+        <div className="h-10 w-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
+          <ArrowUpRight className="w-5 h-5" />
+        </div>
+        <div className="text-center">
+          <span className="block text-lg font-semibold">Average Download Increase</span>
+          <span className="block text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-emerald-500">127%</span>
+        </div>
+        <div className="h-10 w-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
+          <ArrowUpRight className="w-5 h-5" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* Case Studies Section */}
+<section className="py-24 px-4 relative bg-secondary/5">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-12">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+        <CheckCircle className="w-4 h-4 mr-2" /> Success Stories
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+        Case Studies
+      </h2>
+      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+        Discover how we've helped businesses transform their ideas into successful mobile applications.
+      </p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+      {[
+        {
+          title: "FitTrack Pro",
+          category: "Fitness",
+          image: "https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=800&q=80",
+          results: "300% user growth in 6 months",
+          description: "A comprehensive fitness tracking app with personalized workout plans and nutrition guidance."
+        },
+        {
+          title: "QuickOrder",
+          category: "Food Delivery",
+          image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&q=80",
+          results: "50K+ daily orders processed",
+          description: "Streamlined food ordering platform with real-time delivery tracking and payment processing."
+        },
+        {
+          title: "SecurePay",
+          category: "Finance",
+          image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80",
+          results: "$10M+ in transactions monthly",
+          description: "Secure mobile payment solution with advanced fraud detection and instant transfers."
+        }
+      ].map((project, index) => (
+        <div key={index} className="rounded-xl overflow-hidden bg-background border border-secondary/10 hover:border-primary/20 transition-all shadow-sm hover:shadow-md">
+          <div className="h-48 overflow-hidden">
+            <img 
+              src={project.image} 
+              alt={project.title} 
+              className="w-full h-full object-cover transition-transform hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">{project.category}</span>
+              <span className="text-sm font-medium text-green-500">{project.results}</span>
+            </div>
+            <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+            <p className="text-foreground/70 text-sm mb-4">{project.description}</p>
+            <a href="#" className="inline-flex items-center text-sm text-primary font-medium">
+              View Case Study <ArrowRight className="w-3 h-3 ml-1" />
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <div className="text-center mt-12">
+      <a href="#" className="inline-flex items-center px-6 py-3 border border-primary/30 text-primary rounded-xl font-medium hover:bg-primary/5 transition-all gap-2">
+        View All Case Studies
+        <ArrowRight className="w-4 h-4" />
+      </a>
+    </div>
+  </div>
+</section>
+
+{/* Testimonials Section */}
+<section className="py-24 px-4 relative">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-12">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+        <Star className="w-4 h-4 mr-2" /> Testimonials
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+        What Our Clients Say
+      </h2>
+      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+        Real feedback from businesses we've helped achieve their app development goals.
+      </p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+      {[
+        {
+          quote: "The team delivered a stunning app that exceeded our expectations. Our user engagement has increased by 200% since launch.",
+          author: "Sarah Johnson",
+          position: "CEO, FitTrack",
+          image: "https://i.pravatar.cc/100?img=5"
+        },
+        {
+          quote: "From concept to deployment, the development process was smooth and transparent. The attention to detail and user experience design is unmatched.",
+          author: "Michael Chen",
+          position: "Founder, QuickOrder",
+          image: "https://i.pravatar.cc/100?img=6"
+        },
+        {
+          quote: "Implementing complex financial features seemed daunting, but their team made it feel effortless. Our app now processes millions in transactions securely.",
+          author: "Lisa Rodriguez",
+          position: "CTO, SecurePay",
+          image: "https://i.pravatar.cc/100?img=7"
+        }
+      ].map((testimonial, index) => (
+        <div key={index} className="p-6 rounded-2xl bg-secondary/5 border border-secondary/10 hover:border-primary/20 transition-all">
+          <div className="flex items-center gap-1 mb-4 text-amber-500">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star key={star} className="w-4 h-4" fill="currentColor" />
             ))}
           </div>
-        </Section>
-        
-        {/* Why Choose Us Section */}
-        <Section dark pattern id="why-us">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Image */}
+          <p className="text-foreground/80 italic mb-6">"{testimonial.quote}"</p>
+          <div className="flex items-center gap-3">
+            <img 
+              src={testimonial.image}
+              alt={testimonial.author}
+              className="w-12 h-12 rounded-full"
+              loading="lazy"
+            />
+            <div>
+              <h4 className="font-semibold">{testimonial.author}</h4>
+              <p className="text-sm text-foreground/60">{testimonial.position}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{/* FAQ Section */}
+<section className="py-20 px-4 relative bg-secondary/5">
+  <div className="max-w-4xl mx-auto">
+    <div className="text-center mb-12">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+        <Layout className="w-4 h-4 mr-2" /> FAQ
+      </span>
+      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+        Frequently Asked Questions
+      </h2>
+      <p className="text-lg text-foreground/70">
+        Answers to common questions about our app development services.
+      </p>
+    </div>
+    
+    <div className="space-y-4 mt-12">
+      {[
+        {
+          question: "How long does it take to develop an app?",
+          answer: "The development timeline depends on the complexity of your app. Simple apps may take 2-3 months, while complex applications can take 4-6 months or more. We provide detailed timelines during our initial consultation."
+        },
+        {
+          question: "What platforms do you develop for?",
+          answer: "We develop native applications for iOS and Android, as well as cross-platform solutions using React Native and Flutter. Our team will recommend the best approach based on your specific requirements."
+        },
+        {
+          question: "How much does app development cost?",
+          answer: "App development costs vary based on complexity, features, and platforms. Our pricing starts at $15,000 for basic applications. We provide detailed quotes after understanding your project requirements."
+        },
+        {
+          question: "Do you offer maintenance after launch?",
+          answer: "Yes, we offer ongoing maintenance and support services to ensure your app remains up-to-date and functions smoothly. We have various support packages available to suit different needs."
+        },
+        {
+          question: "Can you help with app store submission?",
+          answer: "Absolutely! We handle the entire app submission process for both the Apple App Store and Google Play Store, ensuring your app meets all requirements and guidelines for approval."
+        }
+      ].map((faq, index) => (
+        <div key={index} className="border border-secondary/10 rounded-xl overflow-hidden hover:border-primary/20 transition-all">
+          <details className="group">
+            <summary className="flex justify-between items-center p-5 font-medium cursor-pointer">
+              <span>{faq.question}</span>
+              <span className="transition group-open:rotate-180">
+                <ArrowRight className="w-4 h-4 rotate-90" />
+              </span>
+            </summary>
+            <div className="px-5 pb-5 pt-0">
+              <p className="text-foreground/70">{faq.answer}</p>
+            </div>
+          </details>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+          </div>
+        </section>
+
+        {/* App Design Features Section */}
+        <section className="py-24 overflow-hidden relative">
+          {/* Background elements */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/50 to-background -z-10"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(var(--primary),0.08),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(var(--primary),0.08),transparent_40%)] -z-10"></div>
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="relative"
+              className="max-w-3xl mx-auto text-center mb-16"
             >
-              <div className="relative aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 p-1 shadow-xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1558655146-d78379a16fe2?w=900&h=500&fit=crop" 
-                  alt="App development team working" 
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              </div>
+              {/* Section badge */}
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+                <Layout className="w-4 h-4 mr-2" /> Design Features
+              </span>
               
-              {/* Floating elements */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                className="absolute -bottom-8 -right-8 bg-white dark:bg-gray-900 rounded-xl p-4 shadow-lg"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Zap className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold">Fast Delivery</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">3-4x faster than industry average</p>
-                  </div>
-                </div>
-              </motion.div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                Powerful Design Tools
+              </h2>
               
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-                className="absolute -top-8 -left-8 bg-white dark:bg-gray-900 rounded-xl p-4 shadow-lg"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Users className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold">Expert Team</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">15+ years combined experience</p>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-            
-            {/* Text content */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 dark:bg-primary/20 px-4 py-1 rounded-full inline-block">Why Choose Us</span>
-              <h2 className={`text-3xl md:text-4xl font-bold mt-6 mb-6 ${UI.gradients.primary}`}>App development expertise that drives business growth</h2>
-              <p className={`${UI.text.body} mb-8`}>
-                We combine technical excellence with strategic thinking to deliver mobile applications 
-                that not only meet but exceed user expectations and business objectives.
+              <p className="text-lg text-foreground/70">
+                Our comprehensive suite of design tools makes app creation simple and efficient, 
+                delivering beautiful results without complex coding.
               </p>
-              
-              <div className="space-y-6">
+            </motion.div>
+
+            {/* App Features Section */}
+            <div className="mt-16">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {[
                   {
-                    title: "User-Centric Approach",
-                    description: "We prioritize user experience and design intuitive interfaces that drive engagement and retention.",
-                    icon: <Users className="w-6 h-6 text-primary" />
+                    icon: <Layout className="w-6 h-6" />,
+                    title: "Intuitive Design System",
+                    description: "Drag-and-drop interface elements with pixel-perfect alignment and responsive layouts for all device sizes.",
+                    color: "primary"
                   },
                   {
-                    title: "Technical Excellence",
-                    description: "Our developers stay current with the latest technologies to build high-performance, scalable applications.",
-                    icon: <Code className="w-6 h-6 text-primary" />
+                    icon: <Zap className="w-6 h-6" />,
+                    title: "Performance Optimized",
+                    description: "Lightweight, fast-loading apps with optimized code and assets for smooth experiences on any device.",
+                    color: "primary"
                   },
                   {
-                    title: "Proven Results",
-                    description: "Our apps have generated millions of downloads and significant ROI for our clients.",
-                    icon: <Award className="w-6 h-6 text-primary" />
-                  },
-                  {
-                    title: "Ongoing Support",
-                    description: "We provide continuous maintenance and updates to keep your app running smoothly.",
-                    icon: <Settings className="w-6 h-6 text-primary" />
+                    icon: <Code className="w-6 h-6" />,
+                    title: "No Coding Required",
+                    description: "Create complex functionality using our visual logic builder without writing a single line of code.",
+                    color: "primary"
                   }
-                ].map((item, index) => (
-                  <motion.div 
+                ].map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 + 0.3 }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    className="bg-secondary/5 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-secondary/10 group"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+                      {feature.icon}
+                    </div>
+                    
+                    <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                      {feature.title}
+                    </h3>
+                    
+                    <p className="text-foreground/70">
+                      {feature.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Design Templates Preview */}
+            <div className="mt-20 text-center">
+              <h3 className="text-2xl font-bold mb-8">
+                Choose from 100+ design templates
+              </h3>
+              
+              <div className="flex flex-wrap justify-center gap-4 mb-12">
+                {[
+                  { color: "primary", label: "E-commerce" },
+                  { color: "primary", label: "Social Media" },
+                  { color: "primary", label: "Fitness" },
+                  { color: "primary", label: "Food Delivery" },
+                  { color: "primary", label: "Travel" },
+                  { color: "primary", label: "Finance" },
+                ].map((category, index) => (
+                  <motion.button
                     key={index}
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    className="flex gap-6"
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm"
                   >
-                    <div className="mt-1 bg-primary/10 dark:bg-primary/20 h-12 w-12 rounded-xl flex items-center justify-center shrink-0">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <h3 className={`text-xl font-semibold mb-2 ${UI.text.heading}`}>{item.title}</h3>
-                      <p className={UI.text.body}>{item.description}</p>
-                    </div>
-                  </motion.div>
+                    {category.label}
+                  </motion.button>
                 ))}
-              </div>
-            </motion.div>
-          </div>
-        </Section>
-        
-        {/* CTA Section with enhanced button effects */}
-        <Section className="text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${UI.gradients.primary}`}>
-              Ready to build your next great app?
-            </h2>
-            <p className={`${UI.text.body} mb-8 text-lg`}>
-              Let's discuss how we can help bring your app idea to life with our expert development team.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <CTAButton primary className="group shadow-lg shadow-primary/20">
-                  Schedule a Free Consultation
-                  <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-                </CTAButton>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <CTAButton primary={false} className="group">
-                  Download PDF Brochure
-                  <Download size={18} className="group-hover:translate-y-0.5 transition-transform" />
-                </CTAButton>
-              </motion.div>
-            </div>
-          </motion.div>
-        </Section>
-
-        {/* App Design Gallery Section with iPhone 15 Pro Mockups */}
-        <section className="py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-                Stunning app designs
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Create visually appealing apps with customizable layouts and ready-to-use blocks for text, images, videos, and more. Bring your creative ideas to life effortlessly.
-              </p>
-            </div>
-
-            {/* Mobile App Gallery using iPhone 15 Pro component */}
-            <div className="relative">
-              {/* Decorative elements */}
-              <div className="absolute top-1/4 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
-              <div className="absolute bottom-1/4 -right-20 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
-              
-              {/* App Mockups Carousel with iPhone 15 Pro */}
-              <div className="overflow-hidden py-8">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="flex flex-wrap justify-center gap-12 pb-8"
-                >
-                  {/* iPhone 15 Pro Mockups */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                    className="relative"
-                  >
-                    <Iphone15Pro 
-                      width={325}
-                      height={660}
-                      src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&h=900&fit=crop"
-                      className="transform rotate-[-5deg]"
-                    />
-                    <div className="absolute -bottom-2 -right-4 bg-white dark:bg-gray-800 rounded-lg px-3 py-2 shadow-lg">
-                      <span className="text-sm font-medium text-primary">Food Delivery</span>
-                    </div>
-                  </motion.div>
-                  
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="relative z-20"
-                  >
-                    <Iphone15Pro 
-                      width={325}
-                      height={660}
-                      src="https://images.unsplash.com/photo-1580910051074-3eb694886505?w=500&h=1000&fit=crop"
-                      className="transform scale-110"
-                    />
-                    <div className="absolute -top-2 -right-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-lg shadow-lg">
-                      <span className="text-sm font-medium">Featured</span>
-                    </div>
-                  </motion.div>
-                  
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
-                    className="relative"
-                  >
-                    <Iphone15Pro 
-                      width={325}
-                      height={660}
-                      src="https://images.unsplash.com/photo-1616469829526-7057a1427659?w=500&h=1000&fit=crop"
-                      className="transform rotate-[5deg]"
-                    />
-                    <div className="absolute -bottom-2 -left-4 bg-white dark:bg-gray-800 rounded-lg px-3 py-2 shadow-lg">
-                      <span className="text-sm font-medium text-primary">Social Media</span>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              </div>
-              
-              {/* Navigation indicators */}
-              <div className="flex justify-center mt-8 gap-2">
-                <div className="w-10 h-1 bg-primary rounded-full"></div>
-                <div className="w-2 h-1 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-                <div className="w-2 h-1 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
-              </div>
-              
-              {/* Feature highlights */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
-                >
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <Layout className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Flexible Layouts</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Choose from various layouts or create your own custom design with our intuitive drag-and-drop interface.
-                  </p>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                  className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
-                >
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <Smartphone className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Pre-built Components</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Access a library of ready-to-use UI components to speed up your app development process.
-                  </p>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 }}
-                  className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
-                >
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <Code className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">No Coding Required</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Build fully functional apps without writing a single line of code using our visual development platform.
-                  </p>
-                </motion.div>
-              </div>
-              
-              {/* CTA button */}
-              <div className="text-center mt-12">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="inline-block"
-                >
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center px-8 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors"
-                  >
-                    Explore Design Templates
-                    <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                </motion.div>
               </div>
             </div>
           </div>
         </section>
+
+        {/* Features Grid - Why Choose Us */}
+        <section className="py-20 px-4 relative">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                Why Choose Us
+              </h2>
+              <p className="text-lg text-foreground/70">
+                We deliver cutting-edge mobile solutions with a focus on quality and innovation
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+              {features.map((feature, index) => (
+                <FeatureCard key={index} {...feature} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section id="services" className="py-20 px-4 relative bg-secondary/5">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                Our Services
+              </h2>
+              <p className="text-lg text-foreground/70">
+                Comprehensive mobile app development solutions for your business needs
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+              {services.map((service, index) => (
+                <ServiceCard key={index} {...service} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Rest of the sections remain unchanged */}
+        {/* Pricing Section */}
+        <section className="py-20 px-4 relative">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                Pricing Plans
+              </h2>
+              <p className="text-lg text-foreground/70">
+                Choose the perfect plan for your app development needs
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              {pricing.map((plan, index) => (
+                <PriceCard key={index} {...plan} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Development Process Section */}
+        <section className="py-24 px-4 relative overflow-hidden">
+          {/* Background elements */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/50 to-background/80 -z-10"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_bottom_right,rgba(var(--primary),0.08),transparent_40%),radial-gradient(circle_at_top_left,rgba(var(--primary),0.08),transparent_40%)] -z-10"></div>
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mx-auto text-center mb-16"
+            >
+              {/* Section badge */}
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+                <Code className="w-4 h-4 mr-2" /> Development Process
+              </span>
+              
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                How We Build Your App
+              </h2>
+              
+              <p className="text-lg text-foreground/70">
+                Our streamlined development process ensures your application is delivered on time, within budget, and exceeds expectations.
+              </p>
+            </motion.div>
+            
+            {/* Development Steps */}
+            <div className="relative">
+              {/* Connecting line */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/40 via-primary/20 to-primary/40 hidden md:block"></div>
+              
+              {[
+                {
+                  icon: <Users className="w-6 h-6" />,
+                  title: "Discovery & Planning",
+                  description: "We start by understanding your business goals, target audience, and app requirements to create a detailed roadmap.",
+                  delay: 0.1
+                },
+                {
+                  icon: <Layout className="w-6 h-6" />,
+                  title: "UI/UX Design",
+                  description: "Our designers create intuitive, user-friendly interfaces that engage users and reflect your brand identity.",
+                  delay: 0.2
+                },
+                {
+                  icon: <Code className="w-6 h-6" />,
+                  title: "Development",
+                  description: "Our expert developers build your application using the latest technologies and best coding practices.",
+                  delay: 0.3
+                },
+                {
+                  icon: <Shield className="w-6 h-6" />,
+                  title: "Testing & QA",
+                  description: "Rigorous testing across multiple devices and platforms ensures your app is bug-free and performs flawlessly.",
+                  delay: 0.4
+                },
+                {
+                  icon: <ArrowUpRight className="w-6 h-6" />,
+                  title: "Deployment",
+                  description: "We handle the app submission process to ensure your application meets all platform requirements.",
+                  delay: 0.5
+                },
+              ].map((step, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: step.delay }}
+                  className="relative flex md:items-center mb-12 md:mb-24"
+                >
+                  <div className={`hidden md:flex w-1/2 ${index % 2 === 0 ? 'justify-end pr-12' : 'order-2 justify-start pl-12'}`}>
+                    <motion.div 
+                      whileHover={{ y: -5 }}
+                      className="bg-secondary/5 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-secondary/10 group max-w-md"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                          {step.icon}
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                            {step.title}
+                          </h3>
+                          <p className="text-foreground/70">
+                            {step.description}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                  
+                  {/* Mobile view - full width */}
+                  <div className="block md:hidden w-full">
+                    <motion.div 
+                      whileHover={{ y: -5 }}
+                      className="bg-secondary/5 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-secondary/10 group"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                          {step.icon}
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                            {step.title}
+                          </h3>
+                          <p className="text-foreground/70">
+                            {step.description}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                  
+                  {/* Timeline node */}
+                  <div className="absolute left-1/2 top-6 transform -translate-x-1/2 hidden md:flex items-center justify-center z-10">
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: step.delay, type: "spring", stiffness: 200 }}
+                      className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-lg"
+                    >
+                      {index + 1}
+                    </motion.div>
+                  </div>
+                  
+                  <div className={`hidden md:block w-1/2 ${index % 2 === 0 ? 'order-2 pl-12' : 'pr-12'}`}></div>
+                </motion.div>
+              ))}
+            </div>
+            
+            {/* Bottom CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+              className="text-center mt-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/5 border border-secondary/10">
+                <span className="text-foreground/70">Ready to start your project?</span>
+                <a 
+                  href="#contact"
+                  className="inline-flex items-center gap-1 text-primary hover:underline font-medium"
+                >
+                  Get in touch <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 px-4 relative">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-blue-500/5 to-primary/5 border border-primary/10 text-center"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Ready to Build Your App?
+              </h2>
+              <p className="text-lg text-foreground/70 mb-8">
+                Let's turn your vision into a successful mobile application.
+              </p>
+              <a 
+                href="#contact" 
+                className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all gap-2 group"
+              >
+                Get Started
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </motion.div>
+          </div>
+        </section>
+        
       </div>
     </PageTransition>
   );
