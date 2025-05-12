@@ -869,7 +869,7 @@ function AppDevelopment() {
                   <div className="flex-1 bg-white dark:bg-gray-700 rounded-md px-3 py-1.5 flex items-center justify-between">
                     <div className="flex items-center">
                       <div className="w-4 h-4 mr-2 text-gray-400">⊘</div>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">x.Thunkable.com</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">x.jason.com</span>
                     </div>
                     <div className="w-4 h-4 text-gray-400">↻</div>
                   </div>
@@ -1111,8 +1111,6 @@ function AppDevelopment() {
           </div>
         </div>
         
-        <FeaturesSectionDemo />
-
         {/* New: Testimonials Section */}
         <Section dark pattern id="testimonials">
           <SectionHeading

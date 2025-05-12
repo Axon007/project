@@ -11,6 +11,7 @@ import {
   BellIcon, Share2Icon, FileTextIcon, CalendarIcon
 } from "lucide-react";
 import { BentoCard, BentoGrid } from '../components/magicui/bento-grid';
+import { Iphone15Pro } from "../components/magicui/iphone-15-pro";
 import { cn } from "../lib/utils";
 import FeaturesSectionDemo from '../components/FeaturesSectionDemo';
 
@@ -868,7 +869,7 @@ function AppDevelopment() {
                   <div className="flex-1 bg-white dark:bg-gray-700 rounded-md px-3 py-1.5 flex items-center justify-between">
                     <div className="flex items-center">
                       <div className="w-4 h-4 mr-2 text-gray-400">⊘</div>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">x.Thunkable.com</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">x.jason.com</span>
                     </div>
                     <div className="w-4 h-4 text-gray-400">↻</div>
                   </div>
@@ -1110,7 +1111,7 @@ function AppDevelopment() {
           </div>
         </div>
         
-        <FeaturesSectionDemo />
+       
 
         {/* New: Testimonials Section */}
         <Section dark pattern id="testimonials">
@@ -1306,7 +1307,7 @@ function AppDevelopment() {
           </motion.div>
         </Section>
 
-        {/* App Design Gallery Section */}
+        {/* App Design Gallery Section with iPhone 15 Pro Mockups */}
         <section className="py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="max-w-3xl mx-auto text-center mb-16">
@@ -1318,152 +1319,75 @@ function AppDevelopment() {
               </p>
             </div>
 
-            {/* Mobile App Gallery */}
+            {/* Mobile App Gallery using iPhone 15 Pro component */}
             <div className="relative">
               {/* Decorative elements */}
               <div className="absolute top-1/4 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
               <div className="absolute bottom-1/4 -right-20 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
               
-              {/* App Mockups Carousel */}
+              {/* App Mockups Carousel with iPhone 15 Pro */}
               <div className="overflow-hidden py-8">
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
-                  className="flex flex-nowrap gap-6 pb-8 overflow-x-auto scrollbar-hide mask-edges"
+                  className="flex flex-wrap justify-center gap-12 pb-8"
                 >
-                  {/* First Phone Mockup */}
-                  <div className="flex-shrink-0 w-[250px]">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 pb-1">
-                      <div className="h-12 bg-gray-100 dark:bg-gray-700 flex justify-center pt-1.5">
-                        <div className="w-24 h-6 bg-gray-200 dark:bg-gray-600 rounded-b-xl"></div>
-                      </div>
-                      <div className="p-2">
-                        <img
-                          src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&h=900&fit=crop"
-                          alt="Food delivery app"
-                          className="w-full h-auto rounded-xl"
-                        />
-                      </div>
-                      <div className="h-14 mt-1 px-2 flex justify-around items-center border-t border-gray-100 dark:border-gray-700">
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                      </div>
+                  {/* iPhone 15 Pro Mockups */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                    className="relative"
+                  >
+                    <Iphone15Pro 
+                      width={325}
+                      height={660}
+                      src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&h=900&fit=crop"
+                      className="transform rotate-[-5deg]"
+                    />
+                    <div className="absolute -bottom-2 -right-4 bg-white dark:bg-gray-800 rounded-lg px-3 py-2 shadow-lg">
+                      <span className="text-sm font-medium text-primary">Food Delivery</span>
                     </div>
-                  </div>
+                  </motion.div>
                   
-                  {/* Second Phone Mockup */}
-                  <div className="flex-shrink-0 w-[250px]">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 pb-1">
-                      <div className="h-12 bg-gray-100 dark:bg-gray-700 flex justify-center pt-1.5">
-                        <div className="w-24 h-6 bg-gray-200 dark:bg-gray-600 rounded-b-xl"></div>
-                      </div>
-                      <div className="p-2">
-                        <img
-                          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=900&fit=crop"
-                          alt="Travel app"
-                          className="w-full h-auto rounded-xl"
-                        />
-                      </div>
-                      <div className="h-14 mt-1 px-2 flex justify-around items-center border-t border-gray-100 dark:border-gray-700">
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                      </div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="relative z-20"
+                  >
+                    <Iphone15Pro 
+                      width={325}
+                      height={660}
+                      src="https://images.unsplash.com/photo-1580910051074-3eb694886505?w=500&h=1000&fit=crop"
+                      className="transform scale-110"
+                    />
+                    <div className="absolute -top-2 -right-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-lg shadow-lg">
+                      <span className="text-sm font-medium">Featured</span>
                     </div>
-                  </div>
+                  </motion.div>
                   
-                  {/* Third Phone Mockup */}
-                  <div className="flex-shrink-0 w-[250px]">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 pb-1">
-                      <div className="h-12 bg-gray-100 dark:bg-gray-700 flex justify-center pt-1.5">
-                        <div className="w-24 h-6 bg-gray-200 dark:bg-gray-600 rounded-b-xl"></div>
-                      </div>
-                      <div className="p-2">
-                        <img
-                          src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=900&fit=crop"
-                          alt="Food app"
-                          className="w-full h-auto rounded-xl"
-                        />
-                      </div>
-                      <div className="h-14 mt-1 px-2 flex justify-around items-center border-t border-gray-100 dark:border-gray-700">
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                      </div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                    className="relative"
+                  >
+                    <Iphone15Pro 
+                      width={325}
+                      height={660}
+                      src="https://images.unsplash.com/photo-1616469829526-7057a1427659?w=500&h=1000&fit=crop"
+                      className="transform rotate-[5deg]"
+                    />
+                    <div className="absolute -bottom-2 -left-4 bg-white dark:bg-gray-800 rounded-lg px-3 py-2 shadow-lg">
+                      <span className="text-sm font-medium text-primary">Social Media</span>
                     </div>
-                  </div>
-                  
-                  {/* Fourth Phone Mockup */}
-                  <div className="flex-shrink-0 w-[250px]">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 pb-1">
-                      <div className="h-12 bg-gray-100 dark:bg-gray-700 flex justify-center pt-1.5">
-                        <div className="w-24 h-6 bg-gray-200 dark:bg-gray-600 rounded-b-xl"></div>
-                      </div>
-                      <div className="p-2">
-                        <img
-                          src="https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?w=500&h=900&fit=crop"
-                          alt="Fitness app"
-                          className="w-full h-auto rounded-xl"
-                        />
-                      </div>
-                      <div className="h-14 mt-1 px-2 flex justify-around items-center border-t border-gray-100 dark:border-gray-700">
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Fifth Phone Mockup */}
-                  <div className="flex-shrink-0 w-[250px]">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 pb-1">
-                      <div className="h-12 bg-gray-100 dark:bg-gray-700 flex justify-center pt-1.5">
-                        <div className="w-24 h-6 bg-gray-200 dark:bg-gray-600 rounded-b-xl"></div>
-                      </div>
-                      <div className="p-2">
-                        <img
-                          src="https://images.unsplash.com/photo-1596239190253-6322cd0ab014?w=500&h=900&fit=crop"
-                          alt="Social media app"
-                          className="w-full h-auto rounded-xl"
-                        />
-                      </div>
-                      <div className="h-14 mt-1 px-2 flex justify-around items-center border-t border-gray-100 dark:border-gray-700">
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Sixth Phone Mockup */}
-                  <div className="flex-shrink-0 w-[250px]">
-                    <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 pb-1">
-                      <div className="h-12 bg-gray-100 dark:bg-gray-700 flex justify-center pt-1.5">
-                        <div className="w-24 h-6 bg-gray-200 dark:bg-gray-600 rounded-b-xl"></div>
-                      </div>
-                      <div className="p-2">
-                        <img
-                          src="https://images.unsplash.com/photo-1615529328331-f8917597711f?w=500&h=900&fit=crop"
-                          alt="E-commerce app"
-                          className="w-full h-auto rounded-xl"
-                        />
-                      </div>
-                      <div className="h-14 mt-1 px-2 flex justify-around items-center border-t border-gray-100 dark:border-gray-700">
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-600"></div>
-                      </div>
-                    </div>
-                  </div>
+                  </motion.div>
                 </motion.div>
               </div>
               
@@ -1537,256 +1461,10 @@ function AppDevelopment() {
                     className="inline-flex items-center justify-center px-8 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors"
                   >
                     Explore Design Templates
-                    <ArrowRight size={18} className="ml-2" />
+                    <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
                   </a>
                 </motion.div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stunning App Designs Section - Redesigned */}
-        <section className="py-24 overflow-hidden relative">
-          {/* Background elements */}
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 -z-10"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.08),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.08),transparent_40%)] -z-10"></div>
-          
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="max-w-3xl mx-auto text-center mb-16"
-            >
-              {/* Section badge */}
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 mb-6">
-                <Smartphone className="w-4 h-4 mr-2" />
-                App Gallery
-              </span>
-              
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                Stunning App Designs
-              </h2>
-              
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                Create visually appealing apps with customizable layouts and ready-to-use components. 
-                Bring your creative ideas to life with our powerful design tools.
-              </p>
-            </motion.div>
-        
-            {/* 3D App Showcase */}
-            <div className="relative my-24">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[600px] h-[600px] bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-full blur-3xl"></div>
-              </div>
-              
-              <motion.div 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="relative"
-              >
-                {/* Primary device */}
-                <motion.div
-                  initial={{ y: 60, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                  className="relative z-30 mx-auto w-[280px]"
-                >
-                  <div className="relative mx-auto">
-                    {/* Phone frame */}
-                    <div className="rounded-[32px] overflow-hidden border-[8px] border-gray-900 dark:border-gray-800 bg-gray-900 shadow-xl shadow-blue-900/20 dark:shadow-blue-500/10">
-                      <img 
-                        src="https://images.unsplash.com/photo-1609921212029-bb5a28e60960?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3"
-                        alt="Mobile App Interface"
-                        className="w-full h-auto rounded-2xl"
-                      />
-                      
-                      {/* Home indicator */}
-                      <div className="h-1 w-1/3 bg-gray-600 rounded-full mx-auto my-3"></div>
-                    </div>
-                    
-                    {/* Reflection */}
-                    <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-[90%] h-4 bg-black/20 dark:bg-white/10 filter blur-lg rounded-full"></div>
-                    
-                    {/* App highlight badge */}
-                    <div className="absolute -top-5 -right-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
-                      Featured
-                    </div>
-                  </div>
-                </motion.div>
-                
-                {/* Secondary devices - left side */}
-                <motion.div
-                  initial={{ x: -60, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="absolute top-1/4 left-0 md:left-1/4 transform -translate-x-1/2 z-20 w-[200px] hidden md:block"
-                >
-                  <div className="rounded-[24px] overflow-hidden border-[6px] border-gray-900 dark:border-gray-800 bg-gray-900 shadow-lg rotate-[-15deg]">
-                    <img 
-                      src="https://images.unsplash.com/photo-1615529328331-f8917597711f?w=500&h=900&fit=crop"
-                      alt="Mobile App Interface"
-                      className="w-full h-auto rounded-2xl"
-                    />
-                  </div>
-                </motion.div>
-                
-                {/* Secondary devices - right side */}
-                <motion.div
-                  initial={{ x: 60, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="absolute top-1/4 right-0 md:right-1/4 transform translate-x-1/2 z-20 w-[200px] hidden md:block"
-                >
-                  <div className="rounded-[24px] overflow-hidden border-[6px] border-gray-900 dark:border-gray-800 bg-gray-900 shadow-lg rotate-[15deg]">
-                    <img 
-                      src="https://images.unsplash.com/photo-1596239190253-6322cd0ab014?w=500&h=900&fit=crop"
-                      alt="Mobile App Interface"
-                      className="w-full h-auto rounded-2xl"
-                    />
-                  </div>
-                </motion.div>
-                
-                {/* Floating UI elements */}
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.6 }}
-                  className="absolute -bottom-6 md:bottom-10 left-4 md:left-1/4 z-40 hidden md:block"
-                >
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-xl">
-                    <div className="flex items-center gap-2">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                        <Download className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium">Downloads</div>
-                        <div className="text-xl font-bold">2.4M+</div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                  className="absolute -bottom-6 md:bottom-10 right-4 md:right-1/4 z-40 hidden md:block"
-                >
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-xl">
-                    <div className="flex items-center gap-2">
-                      <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center text-amber-600 dark:text-amber-400">
-                        <Star className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium">Rating</div>
-                        <div className="text-xl font-bold">4.9/5</div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
-            </div>
-        
-            {/* App Features Section */}
-            <div className="mt-16">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {[
-                  {
-                    icon: <Layout className="w-6 h-6" />,
-                    title: "Intuitive Design System",
-                    description: "Drag-and-drop interface elements with pixel-perfect alignment and responsive layouts for all device sizes.",
-                    color: "blue"
-                  },
-                  {
-                    icon: <Zap className="w-6 h-6" />,
-                    title: "Performance Optimized",
-                    description: "Lightweight, fast-loading apps with optimized code and assets for smooth experiences on any device.",
-                    color: "purple"
-                  },
-                  {
-                    icon: <Code className="w-6 h-6" />,
-                    title: "No Coding Required",
-                    description: "Create complex functionality using our visual logic builder without writing a single line of code.",
-                    color: "indigo"
-                  }
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 + 0.3 }}
-                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-700 group"
-                  >
-                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 bg-${feature.color}-100 dark:bg-${feature.color}-900/30 text-${feature.color}-600 dark:text-${feature.color}-400 group-hover:scale-110 transition-transform duration-300`}>
-                      {feature.icon}
-                    </div>
-                    
-                    <h3 className="text-xl font-bold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                      {feature.title}
-                    </h3>
-                    
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {feature.description}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Design Templates Preview */}
-            <div className="mt-20 text-center">
-              <h3 className="text-2xl font-bold mb-8">
-                Choose from 100+ design templates
-              </h3>
-              
-              <div className="flex flex-wrap justify-center gap-4 mb-12">
-                {[
-                  { color: "blue", label: "E-commerce" },
-                  { color: "purple", label: "Social Media" },
-                  { color: "indigo", label: "Fitness" },
-                  { color: "pink", label: "Food Delivery" },
-                  { color: "amber", label: "Travel" },
-                  { color: "emerald", label: "Finance" },
-                ].map((category, index) => (
-                  <motion.button
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`px-4 py-2 rounded-full bg-${category.color}-100 dark:bg-${category.color}-900/30 text-${category.color}-600 dark:text-${category.color}-400 font-medium text-sm`}
-                  >
-                    {category.label}
-                  </motion.button>
-                ))}
-              </div>
-              
-              {/* CTA Button */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-block"
-              >
-                <a
-                  href="#"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all group"
-                >
-                  <span>Explore All Design Templates</span>
-                  <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </motion.div>
             </div>
           </div>
         </section>
