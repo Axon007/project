@@ -793,7 +793,117 @@ function WebDevelopmentServices() {
           </div>
         </div>
       </section>
+ 
+        <section className="py-20 px-4 bg-background">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+            >
+          <span className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium inline-block mb-4">
+            Interactive Development
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold">Experience Our Coding Environment</h2>
+          <p className="text-foreground/70 mt-4 max-w-2xl mx-auto">
+            Watch how we transform ideas into functional code with modern development practices
+          </p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-6"
+          >
+            <h3 className="text-2xl font-bold">Modern Development Workflow</h3>
+            <p className="text-foreground/70 text-lg">
+              We embrace the latest technologies and development practices to ensure efficient, scalable, and maintainable code. Our workflow includes:
+            </p>
+            <ul className="space-y-4">
+              {[
+            "Component-based architecture for reusability",
+            "Version control with collaborative workflows",
+            "Automated testing and continuous integration",
+            "Responsive design principles and accessibility"
+              ].map((item, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-0.5">
+                <CheckCircle className="w-4 h-4 text-primary" />
+              </div>
+              <span>{item}</span>
+            </li>
+              ))}
+            </ul>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-violet-500/20 blur-3xl opacity-30 rounded-full"></div>
+            <Terminal className="shadow-2xl" title="Web Development Demo">
+              <TypingAnimation duration={30}>
+            <span className="text-green-400">$ </span>
+            <span>npm create next-app@latest my-project</span>
+            <span>{"\n\n"}</span>
+            <span className="text-yellow-300">Creating a new Next.js app in ./my-project...</span>
+            <span>{"\n\n"}</span>
+            <span className="text-blue-400">✓ </span>
+            <span>Would you like to use TypeScript? </span>
+            <span className="text-green-400">Yes</span>
+            <span>{"\n"}</span>
+            <span className="text-blue-400">✓ </span>
+            <span>Would you like to use ESLint? </span>
+            <span className="text-green-400">Yes</span>
+            <span>{"\n"}</span>
+            <span className="text-blue-400">✓ </span>
+            <span>Would you like to use Tailwind CSS? </span>
+            <span className="text-green-400">Yes</span>
+            <span>{"\n"}</span>
+            <span className="text-blue-400">✓ </span>
+            <span>Would you like to use `src/` directory? </span>
+            <span className="text-green-400">Yes</span>
+            <span>{"\n"}</span>
+            <span className="text-blue-400">✓ </span>
+            <span>Would you like to use App Router? </span>
+            <span className="text-green-400">Yes</span>
+            <span>{"\n\n"}</span>
+            <span className="text-yellow-300">Installing dependencies:</span>
+            <span>{"\n"}</span>
+            <span>- react</span>
+            <span>{"\n"}</span>
+            <span>- react-dom</span>
+            <span>{"\n"}</span>
+            <span>- next</span>
+            <span>{"\n"}</span>
+            <span>- typescript</span>
+            <span>{"\n"}</span>
+            <span>- @types/react</span>
+            <span>{"\n"}</span>
+            <span>- tailwindcss</span>
+            <span>{"\n\n"}</span>
+            <span className="text-green-400">Success! </span>
+            <span>Created a new project at ./my-project</span>
+            <span>{"\n\n"}</span>
+            <span className="text-green-400">$ </span>
+            <span>cd my-project && npm run dev</span>
+            <span>{"\n\n"}</span>
+            <span className="text-yellow-300">ready</span>
+            <span> - started server on 0.0.0.0:3000, url: http://localhost:3000</span>
+              </TypingAnimation>
+            </Terminal>
+          </motion.div>
+            </div>
+          </div>
+        </section>
 
+        {/* Code Showcase Section */}
+   
 
       {/* Interactive Development Process Timeline */}
       <section className="py-20 px-4" id="process">

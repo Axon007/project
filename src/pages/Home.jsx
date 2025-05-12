@@ -810,7 +810,7 @@ const HeroSection = () => {
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
             >
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-violet-700 drop-shadow[0_1px_2px_rgba(0,0,0,0.15)]-sm">
-                Jason Tech Solutions
+                Jason Tech 
               </span>
             </motion.h1>
             
