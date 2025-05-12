@@ -423,45 +423,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
           </div>
         </section>
 
-        {/* Stats with animated counters */}
-        <section className="py-16 px-4 md:px-8 relative">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {STATS.map((stat, index) => (
-                <motion.div 
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  className={`${colorMode.cardBg} rounded-2xl p-6 border ${colorMode.border} backdrop-blur-sm
-                    ${darkMode ? 'hover:border-blue-800/50' : 'hover:border-blue-300'} transition-colors`
-                  }
-                >
-                  <div className={`mb-4 w-12 h-12 rounded-full flex items-center justify-center
-                    ${darkMode 
-                      ? 'bg-gradient-to-br from-blue-600/30 to-indigo-600/30'
-                      : 'bg-gradient-to-br from-blue-100 to-indigo-200'}`
-                  }>
-                    <div className={darkMode ? 'text-blue-400' : 'text-blue-700'}>
-                      {stat.icon}
-                    </div>
-                  </div>
-                  <div className={`text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r mb-2
-                    ${darkMode 
-                      ? 'from-blue-400 to-indigo-400'
-                      : 'from-blue-600 to-indigo-600'}`
-                  }>
-                    {stat.value}
-                  </div>
-                  <div className={`text-sm ${colorMode.textMuted}`}>
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+
 
         {/* Game Studio Partnerships */}
         <section className="py-24 px-4 md:px-8 relative">
@@ -635,92 +597,11 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
               ))}
             </div>
             
-            <div className="text-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className={`px-8 py-4 rounded-full font-medium text-lg inline-flex items-center gap-3 transition-shadow
-                  ${darkMode
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-900/30 hover:shadow-xl hover:shadow-blue-900/40'
-                    : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30'
-                  }`
-                }
-              >
-                View All Services
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </div>
+
           </div>
         </section>
 
-        {/* Testimonials section */}
-        <section className="py-24 px-4 md:px-8 relative">
-          <div className={`max-w-6xl mx-auto ${colorMode.cardBg} backdrop-blur-md rounded-3xl p-10 lg:p-16 border ${colorMode.border}`}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What Our <span className={darkMode ? 'text-blue-400' : 'text-blue-600'}>Clients</span> Say
-              </h2>
-              <p className={`max-w-3xl mx-auto ${colorMode.textMuted}`}>
-                Hear directly from the studios and developers who've partnered with us
-              </p>
-            </motion.div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {TESTIMONIALS.map((testimonial, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2, duration: 0.6 }}
-                  className={`relative p-6 rounded-xl border ${colorMode.border}
-                    ${darkMode 
-                      ? 'bg-gray-900/70 hover:border-blue-800/50'
-                      : 'bg-white hover:border-blue-300/80'
-                    } transition-colors`
-                  }
-                >
-                  {/* Quote icon */}
-                  <div className={`absolute -top-4 -left-2 text-4xl
-                    ${darkMode ? 'text-blue-500/30' : 'text-blue-300'}`
-                  }>
-                    "
-                  </div>
-                  
-                  <p className={`mb-6 relative z-10 ${colorMode.textMuted}`}>
-                    {testimonial.text}
-                  </p>
-                  
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full overflow-hidden mr-4 border-2 border-blue-500/50">
-                      <img 
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">{testimonial.name}</h4>
-                      <p className={`text-sm ${colorMode.textMuted}`}>{testimonial.company}</p>
-                    </div>
-                    
-                    <div className="ml-auto flex">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} size={16} className="text-amber-400 fill-amber-400" />
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+
 
         {/* Portfolio Section with 3D card effects */}
         <section ref={projectsRef} className="py-24 px-4 md:px-8 relative">
@@ -907,31 +788,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 </motion.div>
               ))}
             </div>
-            
-            {/* Browse all projects button with enhanced effects */}
-            <div className="text-center">
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 98 }}
-                className={`group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-medium rounded-lg shadow-lg
-                  ${darkMode
-                    ? 'bg-gradient-to-r from-blue-600/80 to-indigo-600/80 shadow-blue-900/20 text-white'
-                    : 'bg-gradient-to-r from-blue-600 to-indigo-600 shadow-blue-500/20 text-white'
-                  }`
-                }
-              >
-                <span className="relative flex items-center gap-2 z-10">
-                  Browse All Projects
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-                <span className={`absolute inset-0 w-full h-full transition-all duration-300 opacity-0 group-hover:opacity-100
-                  ${darkMode
-                    ? 'bg-gradient-to-r from-indigo-600/80 to-blue-600/80'
-                    : 'bg-gradient-to-r from-indigo-700 to-blue-700'
-                  }`
-                }></span>
-              </motion.button>
-            </div>
+
           </div>
         </section>
 
@@ -1002,6 +859,75 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                   </motion.div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+                {/* Testimonials section */}
+                <section className="py-24 px-4 md:px-8 relative">
+          <div className={`max-w-6xl mx-auto ${colorMode.cardBg} backdrop-blur-md rounded-3xl p-10 lg:p-16 border ${colorMode.border}`}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                What Our <span className={darkMode ? 'text-blue-400' : 'text-blue-600'}>Clients</span> Say
+              </h2>
+              <p className={`max-w-3xl mx-auto ${colorMode.textMuted}`}>
+                Hear directly from the studios and developers who've partnered with us
+              </p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {TESTIMONIALS.map((testimonial, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.2, duration: 0.6 }}
+                  className={`relative p-6 rounded-xl border ${colorMode.border}
+                    ${darkMode 
+                      ? 'bg-gray-900/70 hover:border-blue-800/50'
+                      : 'bg-white hover:border-blue-300/80'
+                    } transition-colors`
+                  }
+                >
+                  {/* Quote icon */}
+                  <div className={`absolute -top-4 -left-2 text-4xl
+                    ${darkMode ? 'text-blue-500/30' : 'text-blue-300'}`
+                  }>
+                    "
+                  </div>
+                  
+                  <p className={`mb-6 relative z-10 ${colorMode.textMuted}`}>
+                    {testimonial.text}
+                  </p>
+                  
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 rounded-full overflow-hidden mr-4 border-2 border-blue-500/50">
+                      <img 
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">{testimonial.name}</h4>
+                      <p className={`text-sm ${colorMode.textMuted}`}>{testimonial.company}</p>
+                    </div>
+                    
+                    <div className="ml-auto flex">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} size={16} className="text-amber-400 fill-amber-400" />
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>

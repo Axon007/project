@@ -349,6 +349,152 @@ function WebDevelopmentServices() {
         </motion.div>
       </div>
 
+      
+      {/* Code Showcase Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-background to-secondary/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6"
+            >
+              <span className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                Clean Code Architecture
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold">We Write Code That Scales</h2>
+              <p className="text-foreground/70 text-lg">
+                Our development approach prioritizes maintainability, scalability, and performance. 
+                We follow industry best practices and modern coding standards to ensure your web 
+                application can grow with your business.
+              </p>
+              <ul className="space-y-4">
+                {[
+                  "Component-based architecture",
+                  "Optimized for performance",
+                  "Secure coding practices",
+                  "Fully documented codebase"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-primary" />
+                    </div>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div>
+                <a 
+                  href="#process" 
+                  className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
+                >
+                  Learn more about our development process
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-violet-500/20 blur-3xl opacity-30 rounded-full"></div>
+              <motion.div
+                className="relative"
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.7 }}
+              >
+                <Terminal className="shadow-2xl">
+                  <TypingAnimation>
+                    <AnimatedSpan className="text-blue-400" delay={400}>import</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={800}> {'{'} </AnimatedSpan>
+                    <AnimatedSpan className="text-yellow-300" delay={1200}>motion</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={1600}> {'}'}</AnimatedSpan>
+                    <AnimatedSpan className="text-blue-400" delay={2000}> from</AnimatedSpan>
+                    <AnimatedSpan className="text-green-300" delay={2400}> 'framer-motion'</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={2800}>;</AnimatedSpan>
+                    <AnimatedSpan delay={3200}>{"\n\n"}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-400" delay={3600}>const</AnimatedSpan>
+                    <AnimatedSpan className="text-yellow-300" delay={4000}> HeroSection</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={4400}> {`= () => {`}</AnimatedSpan>
+                    <AnimatedSpan delay={4800}>{"\n  "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-400" delay={5200}>return</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={5600}> (</AnimatedSpan>
+                    <AnimatedSpan delay={6000}>{"\n    "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={6400}>&lt;div</AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={6800}> className</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={7200}>=</AnimatedSpan>
+                    <AnimatedSpan className="text-green-300" delay={7600}>"relative h-screen flex items-center"</AnimatedSpan>
+                    <AnimatedSpan className="text-purple-400" delay={8000}>&gt;</AnimatedSpan>
+                    <AnimatedSpan delay={8400}>{"\n      "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={8800}>&lt;motion.h1</AnimatedSpan>
+                    <AnimatedSpan delay={9200}>{"\n        "}</AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={9600}>initial</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={10000}>=&#123;&#123; </AnimatedSpan>
+                    <AnimatedSpan className="text-orange-300" delay={10400}>opacity</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={10800}>: </AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={11200}>0</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={11600}>, </AnimatedSpan>
+                    <AnimatedSpan className="text-orange-300" delay={12000}>y</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={12400}>: </AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={12800}>20</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={13200}> &#125;&#125;</AnimatedSpan>
+                    <AnimatedSpan delay={13600}>{"\n        "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-300" delay={14000}>animate</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={14400}>=&#123;&#123; </AnimatedSpan>
+                    <AnimatedSpan className="text-orange-300" delay={14800}>opacity</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={15200}>: </AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={15600}>1</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={16000}>, </AnimatedSpan>
+                    <AnimatedSpan className="text-orange-300" delay={16400}>y</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={16800}>: </AnimatedSpan>
+                    <AnimatedSpan className="text-blue-300" delay={17200}>0</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={17600}> &#125;&#125;</AnimatedSpan>
+                    <AnimatedSpan delay={18000}>{"\n        "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-300" delay={18400}>className</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={18800}>=</AnimatedSpan>
+                    <AnimatedSpan className="text-green-300" delay={19200}>"text-5xl font-bold"</AnimatedSpan>
+                    <AnimatedSpan delay={19600}>{"\n      "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={20000}>&gt;</AnimatedSpan>
+                    <AnimatedSpan delay={20400}>{"\n        "}</AnimatedSpan>
+                    <AnimatedSpan delay={20800}>Building exceptional web experiences</AnimatedSpan>
+                    <AnimatedSpan delay={21200}>{"\n      "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={21600}>&lt;/motion.h1&gt;</AnimatedSpan>
+                    <AnimatedSpan delay={22000}>{"\n    "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-purple-400" delay={22400}>&lt;/div&gt;</AnimatedSpan>
+                    <AnimatedSpan delay={22800}>{"\n  "}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-foreground" delay={23200}>);</AnimatedSpan>
+                    <AnimatedSpan delay={23600}>{"\n"}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-foreground" delay={24000}>;</AnimatedSpan>
+                    <AnimatedSpan delay={24400}>{"\n\n"}</AnimatedSpan>
+                    
+                    <AnimatedSpan className="text-blue-400" delay={24800}>export</AnimatedSpan>
+                    <AnimatedSpan className="text-blue-400" delay={25200}> default</AnimatedSpan>
+                    <AnimatedSpan className="text-yellow-300" delay={25600}> HeroSection</AnimatedSpan>
+                    <AnimatedSpan className="text-foreground" delay={26000}>;</AnimatedSpan>
+                  </TypingAnimation>
+                </Terminal>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
 
 
       {/* Enhanced Services Section with Interactive Cards */}
@@ -648,150 +794,6 @@ function WebDevelopmentServices() {
         </div>
       </section>
 
-      {/* Code Showcase Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-background to-secondary/20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-6"
-            >
-              <span className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                Clean Code Architecture
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold">We Write Code That Scales</h2>
-              <p className="text-foreground/70 text-lg">
-                Our development approach prioritizes maintainability, scalability, and performance. 
-                We follow industry best practices and modern coding standards to ensure your web 
-                application can grow with your business.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  "Component-based architecture",
-                  "Optimized for performance",
-                  "Secure coding practices",
-                  "Fully documented codebase"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-primary" />
-                    </div>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div>
-                <a 
-                  href="#process" 
-                  className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
-                >
-                  Learn more about our development process
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-violet-500/20 blur-3xl opacity-30 rounded-full"></div>
-              <motion.div
-                className="relative"
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.7 }}
-              >
-                <Terminal className="shadow-2xl">
-                  <TypingAnimation>
-                    <AnimatedSpan className="text-blue-400" delay={400}>import</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={800}> {'{'} </AnimatedSpan>
-                    <AnimatedSpan className="text-yellow-300" delay={1200}>motion</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={1600}> {'}'}</AnimatedSpan>
-                    <AnimatedSpan className="text-blue-400" delay={2000}> from</AnimatedSpan>
-                    <AnimatedSpan className="text-green-300" delay={2400}> 'framer-motion'</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={2800}>;</AnimatedSpan>
-                    <AnimatedSpan delay={3200}>{"\n\n"}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-400" delay={3600}>const</AnimatedSpan>
-                    <AnimatedSpan className="text-yellow-300" delay={4000}> HeroSection</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={4400}> {`= () => {`}</AnimatedSpan>
-                    <AnimatedSpan delay={4800}>{"\n  "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-400" delay={5200}>return</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={5600}> (</AnimatedSpan>
-                    <AnimatedSpan delay={6000}>{"\n    "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={6400}>&lt;div</AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={6800}> className</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={7200}>=</AnimatedSpan>
-                    <AnimatedSpan className="text-green-300" delay={7600}>"relative h-screen flex items-center"</AnimatedSpan>
-                    <AnimatedSpan className="text-purple-400" delay={8000}>&gt;</AnimatedSpan>
-                    <AnimatedSpan delay={8400}>{"\n      "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={8800}>&lt;motion.h1</AnimatedSpan>
-                    <AnimatedSpan delay={9200}>{"\n        "}</AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={9600}>initial</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={10000}>=&#123;&#123; </AnimatedSpan>
-                    <AnimatedSpan className="text-orange-300" delay={10400}>opacity</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={10800}>: </AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={11200}>0</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={11600}>, </AnimatedSpan>
-                    <AnimatedSpan className="text-orange-300" delay={12000}>y</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={12400}>: </AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={12800}>20</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={13200}> &#125;&#125;</AnimatedSpan>
-                    <AnimatedSpan delay={13600}>{"\n        "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-300" delay={14000}>animate</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={14400}>=&#123;&#123; </AnimatedSpan>
-                    <AnimatedSpan className="text-orange-300" delay={14800}>opacity</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={15200}>: </AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={15600}>1</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={16000}>, </AnimatedSpan>
-                    <AnimatedSpan className="text-orange-300" delay={16400}>y</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={16800}>: </AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={17200}>0</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={17600}> &#125;&#125;</AnimatedSpan>
-                    <AnimatedSpan delay={18000}>{"\n        "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-300" delay={18400}>className</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={18800}>=</AnimatedSpan>
-                    <AnimatedSpan className="text-green-300" delay={19200}>"text-5xl font-bold"</AnimatedSpan>
-                    <AnimatedSpan delay={19600}>{"\n      "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={20000}>&gt;</AnimatedSpan>
-                    <AnimatedSpan delay={20400}>{"\n        "}</AnimatedSpan>
-                    <AnimatedSpan delay={20800}>Building exceptional web experiences</AnimatedSpan>
-                    <AnimatedSpan delay={21200}>{"\n      "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={21600}>&lt;/motion.h1&gt;</AnimatedSpan>
-                    <AnimatedSpan delay={22000}>{"\n    "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={22400}>&lt;/div&gt;</AnimatedSpan>
-                    <AnimatedSpan delay={22800}>{"\n  "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-foreground" delay={23200}>);</AnimatedSpan>
-                    <AnimatedSpan delay={23600}>{"\n"}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-foreground" delay={24000}>;</AnimatedSpan>
-                    <AnimatedSpan delay={24400}>{"\n\n"}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-400" delay={24800}>export</AnimatedSpan>
-                    <AnimatedSpan className="text-blue-400" delay={25200}> default</AnimatedSpan>
-                    <AnimatedSpan className="text-yellow-300" delay={25600}> HeroSection</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={26000}>;</AnimatedSpan>
-                  </TypingAnimation>
-                </Terminal>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Interactive Development Process Timeline */}
       <section className="py-20 px-4" id="process">
@@ -1519,32 +1521,6 @@ function WebDevelopmentServices() {
         </div>
       </section>
 
-      {/* Clients Logo Section */}
-      <section className="py-16 px-4 border-t border-border">
-        <div className="max-w-7xl mx-auto">
-          <motion.h3 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center text-lg font-medium text-foreground/60 mb-10"
-          >
-            Trusted by innovative companies worldwide
-          </motion.h3>
-          
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="flex flex-wrap justify-center gap-12 items-center opacity-60"
-          >
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="w-32 h-12 flex items-center justify-center">
-                <div className="w-full h-6 rounded-md bg-foreground/20 animate-pulse"></div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
       {/* Interactive Final CTA Section with Particles */}
       <section className="py-24 px-4">

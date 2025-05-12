@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import PageTransition from '../components/PageTransition';
 import { Cover } from "../components/ui/cover";
-import { SmoothCursor } from "../components/ui/smooth-cursor";
 import { 
   Palette, Figma, PenTool, LayoutGrid, 
   MessageCircle, Download, Award, CheckCircle2,
@@ -11,37 +10,26 @@ import {
   ChevronRight, Shield, Zap
 } from "lucide-react";
 
-// Custom cursor SVG for the LogoDesign page
-const LogoDesignCursor = ({ color = "currentColor" }) => {
-  return (
-    <svg
-      width="36"
-      height="36"
-      viewBox="0 0 36 36"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="text-primary drop-shadow-md"
-    >
-      <circle
-        cx="18"
-        cy="18"
-        r="16"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="rgba(255, 255, 255, 0.1)"
-        className="animate-pulse"
-      />
-      <circle cx="18" cy="18" r="5" fill="currentColor" />
-      <path 
-        d="M18 2C9.16 2 2 9.16 2 18" 
-        stroke="currentColor" 
-        strokeWidth="3"
-        strokeLinecap="round"
-        className="origin-center animate-spin"
-        style={{ animationDuration: '8s' }}
-      />
-    </svg>
-  );
+// First, add these constants at the top for consistent styling
+const UI = {
+  colors: {
+    primary: "from-blue-600 to-indigo-600",
+    secondary: "from-purple-600 to-pink-600",
+    accent: "from-amber-500 to-orange-500"
+  },
+  container: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+  section: "py-20 md:py-28",
+  heading: {
+    wrapper: "mb-12 text-center",
+    eyebrow: "inline-block text-sm font-medium tracking-wider text-primary mb-3",
+    title: "text-3xl md:text-4xl lg:text-5xl font-bold mb-4",
+    description: "max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300"
+  },
+  card: "rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 p-6",
+  button: {
+    primary: "inline-flex items-center justify-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200",
+    secondary: "inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-blue-600/20 text-blue-600 dark:text-blue-400 font-medium hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-200"
+  }
 };
 
 // Portfolio samples
@@ -102,48 +90,12 @@ const DESIGN_PROCESS = [
   }
 ];
 
-// Component for section headings
+// Update SectionHeading component
 const SectionHeading = ({ eyebrow, title, subtitle = "", center = false }) => (
-  <div className={`mb-12 ${center ? 'text-center' : ''} px-4`}>
-    <motion.span
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="text-primary text-sm font-medium uppercase tracking-wider"
-    >
-      {eyebrow}
-    </motion.span>
-    <motion.h2 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: 0.1 }}
-      className="text-2xl md:text-3xl lg:text-4xl font-bold mt-2 mb-4 relative"
-    >
-      {title}
-      <div className="absolute -right-12 top-0 hidden md:block">
-        <motion.div 
-          className="w-10 h-10 rounded-full bg-gradient-to-r from-secondary to-primary"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 10, -10, 0] 
-          }}
-          transition={{ duration: 4, repeat: Infinity }}
-        />
-      </div>
-    </motion.h2>
-    {subtitle && (
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-base md:text-lg text-foreground/70 max-w-3xl mx-auto"
-      >
-        {subtitle}
-      </motion.p>
-    )}
+  <div className={UI.heading.wrapper}>
+    <span className={UI.heading.eyebrow}>{eyebrow}</span>
+    <h2 className={UI.heading.title}>{title}</h2>
+    {subtitle && <p className={UI.heading.description}>{subtitle}</p>}
   </div>
 );
 
@@ -231,119 +183,13 @@ const FloatingElements = () => {
   );
 };
 
-// Static Background Component for reuse across sections
-const EnhancedBackgroundPattern = ({ variant = "default", withNoise = true, withMesh = false }) => {
-  // Different color variations for different sections
-  const colorVariants = {
-    default: {
-      blob1: "from-pink-500/20 to-purple-600/20",
-      blob2: "from-yellow-400/20 to-orange-500/20",
-      blob3: "from-cyan-400/20 to-blue-500/20",
-      accent: "bg-pink-500/5"
-    },
-    blue: {
-      blob1: "from-blue-500/20 to-indigo-600/20",
-      blob2: "from-cyan-400/20 to-blue-500/20",
-      blob3: "from-indigo-400/20 to-purple-500/20",
-      accent: "bg-blue-500/5"
-    },
-    warm: {
-      blob1: "from-red-500/20 to-orange-600/20",
-      blob2: "from-yellow-400/20 to-amber-500/20",
-      blob3: "from-orange-400/20 to-red-500/20",
-      accent: "bg-orange-500/5"
-    },
-    green: {
-      blob1: "from-green-500/20 to-emerald-600/20",
-      blob2: "from-lime-400/20 to-green-500/20",
-      blob3: "from-teal-400/20 to-cyan-500/20",
-      accent: "bg-green-500/5"
-    },
-    purple: {
-      blob1: "from-purple-500/20 to-fuchsia-600/20",
-      blob2: "from-indigo-400/20 to-purple-500/20",
-      blob3: "from-pink-400/20 to-purple-500/20",
-      accent: "bg-purple-500/5"
-    }
-  };
-  
-  const colors = colorVariants[variant] || colorVariants.default;
-  
+// Update the EnhancedBackgroundPattern component
+const EnhancedBackgroundPattern = ({ variant = "default" }) => {
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      {/* Base gradient overlay */}
-      <div className={`absolute inset-0 ${colors.accent} opacity-50`} />
-      
-      {/* Animated blobs */}
-      <motion.div 
-        className={`absolute -top-48 -left-48 w-96 h-96 rounded-full bg-gradient-to-r ${colors.blob1} blur-3xl`}
-        animate={{ 
-          x: [0, 10, -5, 0],
-          y: [0, -10, 5, 0],
-          scale: [1, 1.05, 0.98, 1] 
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          repeatType: "mirror",
-          ease: "easeInOut"
-        }}
-      />
-      <motion.div 
-        className={`absolute top-1/4 -right-48 w-80 h-80 rounded-full bg-gradient-to-r ${colors.blob2} blur-3xl`}
-        animate={{ 
-          x: [0, -15, 8, 0],
-          y: [0, 10, -10, 0],
-          scale: [1, 0.97, 1.03, 1] 
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          repeatType: "mirror",
-          ease: "easeInOut"
-        }}
-      />
-      <motion.div 
-        className={`absolute bottom-0 left-1/3 w-72 h-72 rounded-full bg-gradient-to-r ${colors.blob3} blur-3xl`}
-        animate={{ 
-          x: [0, 15, -10, 0],
-          y: [0, -5, 12, 0],
-          scale: [1, 1.02, 0.98, 1] 
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          repeatType: "mirror",
-          ease: "easeInOut"
-        }}
-      />
-      
-      {/* Optional noise texture overlay */}
-      {withNoise && (
-        <div 
-          className="absolute inset-0 opacity-25 mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            backgroundSize: '200px 200px'
-          }}
-        />
-      )}
-      
-      {/* Optional mesh grid pattern */}
-      {withMesh && (
-        <div className="absolute inset-0 opacity-10">
-          <div className="h-full w-full" 
-            style={{
-              backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), 
-                               linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
-              backgroundSize: '40px 40px'
-            }}
-          />
-        </div>
-      )}
-      
-      {/* Final overlay to ensure content readability */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-background/90 via-background/70 to-background/90 backdrop-blur-[2px]" />
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-900/50 dark:to-gray-950 -z-10" />
+      <div className="absolute inset-0 bg-grid-gray-900/[0.02] dark:bg-grid-white/[0.02] -z-10" />
+      <div className="absolute w-full h-full bg-[radial-gradient(45%_35%_at_50%_35%,rgba(56,189,248,0.12),transparent),radial-gradient(35%_25%_at_70%_65%,rgba(124,58,237,0.12),transparent)] dark:bg-[radial-gradient(45%_35%_at_50%_35%,rgba(56,189,248,0.08),transparent),radial-gradient(35%_25%_at_70%_65%,rgba(124,58,237,0.08),transparent)] -z-10" />
     </div>
   );
 };
@@ -637,72 +483,6 @@ const LogoPlayground = () => {
   );
 };
 
-const BeforeAfterSlider = () => {
-  const [position, setPosition] = useState(50);
-  const sliderRef = useRef(null);
-  
-  const handleMouseMove = (e) => {
-    if (sliderRef.current) {
-      const rect = sliderRef.current.getBoundingClientRect();
-      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
-      setPosition(x);
-    }
-  };
-  
-  const handleTouchMove = (e) => {
-    if (sliderRef.current && e.touches[0]) {
-      const rect = sliderRef.current.getBoundingClientRect();
-      const x = Math.max(0, Math.min(100, ((e.touches[0].clientX - rect.left) / rect.width) * 100));
-      setPosition(x);
-    }
-  };
-  
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="relative h-[300px] md:h-[400px] overflow-hidden rounded-xl shadow-xl border-2 border-primary/20 my-12"
-      ref={sliderRef}
-      onMouseMove={handleMouseMove}
-      onTouchMove={handleTouchMove}
-    >
-      <div className="absolute inset-0 z-10">
-        <img 
-          src="/api/placeholder/800/400?text=After:Refined+Logo" 
-          alt="After redesign" 
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <div 
-        className="absolute inset-0 z-20 overflow-hidden"
-        style={{ width: `${position}%` }}
-      >
-        <img 
-          src="/api/placeholder/800/400?text=Before:Original+Concept" 
-          alt="Before redesign" 
-          className="w-[800px] h-full object-cover"
-        />
-      </div>
-      <div 
-        className="absolute top-0 bottom-0 w-1 bg-white z-30 cursor-ew-resize"
-        style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
-      >
-        <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center">
-          <div className="text-primary flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M10 17l-5-5 5-5"/>
-              <path d="M14 17l5-5-5-5"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-      <div className="absolute bottom-4 left-4 z-40 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
-        Slide to compare
-      </div>
-    </motion.div>
-  );
-};
 
 function LogoDesign() {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -714,7 +494,6 @@ function LogoDesign() {
 
   return (
     <PageTransition>
-      <SmoothCursor CustomCursor={LogoDesignCursor} />
       <div className="min-h-screen bg-gradient-to-b from-background to-background/95 relative overflow-hidden">
         <FloatingElements />
         {/* Hero Section with enhanced background */}
@@ -749,7 +528,7 @@ function LogoDesign() {
             >
               <div className="h-full w-full flex items-center justify-center">
                 <svg viewBox="0 0 24 24" width="50%" height="50%" className="text-white/90">
-                  <path fill="currentColor" d="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M10,16.5L16,12L10,7.5V16.5Z" />
+                  <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,20A8,8 0 0,1 20,12A8,8 0 0,1 12,4Z" />
                 </svg>
               </div>
             </motion.div>
@@ -1100,7 +879,7 @@ function LogoDesign() {
                             )}
                             {i % 6 === 1 && (
                               <svg viewBox="0 0 24 24" width="32" height="32" className="text-blue-500">
-                                <path fill="currentColor" d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z" />
+                                <path fill="currentColor" d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,10.5A1.5,1.5 0 0,1 13.5,12A1.5,1.5 0 0,1 12,13.5A1.5,1.5 0 0,1 10.5,12A1.5,1.5 0 0,1 12,10.5Z" />
                               </svg>
                             )}
                             {i % 6 === 2 && (
@@ -1275,8 +1054,8 @@ function LogoDesign() {
               ))}
             </div>
             
-            {/* Note: "View All" button is removed */}
-            <BeforeAfterSlider />
+
+
           </div>
         </section>
 
@@ -1374,9 +1153,9 @@ function LogoDesign() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 text-lg font-bold hover:text-white transition-colors"
+                  className="mt-2 px-4 py-2 bg-primary text-white rounded-full text-sm font-medium"
                 >
-                  View Portfolio
+                  Save Your Design
                 </motion.button>
               </Cover>
             </div>
