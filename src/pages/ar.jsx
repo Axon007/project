@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   Headset, 
   Glasses, 
-  Buildings2, 
+  Building2, // Changed from Buildings2 to Building2
   GraduationCap, 
   PieChart, 
   Gamepad2, 
@@ -175,7 +175,7 @@ function ARVRServices() {
                 color: "from-primary to-purple-500"
               },
               {
-                icon: <Buildings2 className="w-6 h-6" />,
+                icon: <Building2 className="w-6 h-6" />,
                 title: "Enterprise Solutions",
                 description: "Transform business processes with custom AR/VR solutions that solve real-world challenges.",
                 features: [
@@ -398,7 +398,7 @@ function ARVRServices() {
                           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center text-white">
                             {index === 0 && <Headset className="w-8 h-8" />}
                             {index === 1 && <Glasses className="w-8 h-8" />}
-                            {index === 2 && <Buildings2 className="w-8 h-8" />}
+                            {index === 2 && <Building2 className="w-8 h-8" />} {/* Changed from Buildings2 */}
                             {index === 3 && <GraduationCap className="w-8 h-8" />}
                             {index === 4 && <PieChart className="w-8 h-8" />}
                             {index === 5 && <Gamepad2 className="w-8 h-8" />}
