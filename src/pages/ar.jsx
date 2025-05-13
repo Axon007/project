@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Spline from '@splinetool/react-spline';
 import { 
   Headset, 
   Glasses, 
-  Building2, // Changed from Buildings2 to Building2
+  Building2, 
   GraduationCap, 
   PieChart, 
   Gamepad2, 
@@ -27,7 +28,7 @@ function ARVRServices() {
 
   return (
     <div className="bg-background min-h-screen">
-      {/* Hero Section with 3D effect */}
+      {/* Hero Section with 3D model */}
       <section className="relative overflow-hidden pt-24 pb-32">
         {/* 3D Grid background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10"></div>
@@ -37,88 +38,65 @@ function ARVRServices() {
         <div className="absolute right-1/4 bottom-1/4 w-64 h-64 bg-purple-500/30 rounded-full filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center mb-20">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            {/* Left side: Text content */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="mb-6"
+              className="flex-1"
             >
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
-                Immersive Technologies
-              </span>
+              <div className="mb-6">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
+                  Immersive Technologies
+                </span>
+              </div>
+              
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-500"
+              >
+                Transform Reality with AR & VR Solutions
+              </motion.h1>
+              
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="text-xl text-foreground/70 mb-8"
+              >
+                We create immersive experiences that blend digital and physical worlds, 
+                empowering businesses to innovate and engage like never before.
+              </motion.p>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
+                <button className="px-8 py-4 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+                  Schedule a Demo
+                </button>
+                <button className="px-8 py-4 rounded-xl bg-secondary text-foreground font-medium hover:bg-secondary/80 transition-colors flex items-center justify-center gap-2 group">
+                  View Our Work
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </motion.div>
             </motion.div>
             
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl md:text-6xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-500"
+            {/* Right side: Spline 3D Model */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="flex-1 h-[500px] w-full rounded-2xl overflow-hidden shadow-xl"
             >
-              Transform Reality with AR & VR Solutions
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-xl text-foreground/70 mb-12 max-w-3xl mx-auto"
-            >
-              We create immersive experiences that blend digital and physical worlds, 
-              empowering businesses to innovate and engage like never before.
-            </motion.p>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
-              <button className="px-8 py-4 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
-                Schedule a Demo
-              </button>
-              <button className="px-8 py-4 rounded-xl bg-secondary text-foreground font-medium hover:bg-secondary/80 transition-colors flex items-center justify-center gap-2 group">
-                View Our Work
-                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              <Spline scene="https://prod.spline.design/kE8s6G8gbeLSAlRo/scene.splinecode" />
             </motion.div>
           </div>
-          
-          {/* 3D Device Display */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="relative max-w-5xl mx-auto perspective-1000"
-          >
-            <div className="relative">
-              {/* VR Headset Main Visual */}
-              <div className="bg-gradient-to-br from-background via-background to-background/50 p-4 rounded-2xl border border-white/10 shadow-xl transform rotate-x-12 transition-transform mb-6">
-                <img 
-                  src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
-                  alt="VR Experience" 
-                  className="w-full h-auto object-cover rounded-xl shadow-lg"
-                />
-                
-                {/* Floating AR elements */}
-                <div className="absolute -top-8 -right-8 w-40 h-40 bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-sm rounded-2xl p-4 border border-white/10 shadow-lg transform -rotate-6">
-                  <img 
-                    src="https://images.unsplash.com/photo-1626379953822-baec19ab0b0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" 
-                    alt="AR Experience" 
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-                
-                <div className="absolute -bottom-10 -left-10 w-48 h-36 bg-gradient-to-br from-primary/10 to-blue-500/10 backdrop-blur-sm rounded-2xl p-4 border border-white/10 shadow-lg transform rotate-3">
-                  <img 
-                    src="https://images.unsplash.com/photo-1635365349638-c79a0569c814?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" 
-                    alt="AR Overlay" 
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
       
