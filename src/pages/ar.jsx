@@ -13,8 +13,10 @@ import {
   Award,
   Users,
   Code,
-  Activity
-  
+  Activity,
+  ArrowRight,
+  Globe,
+  Sparkles
 } from 'lucide-react';
 
 function ARVRServices() {
