@@ -28,7 +28,7 @@ const SERVICES = [
     title: "Computer Vision",
     href: "/computer-vision",  // This should match the route path in App.jsx
     description: "AR/VR solutions and immersive experiences that transform reality.",
-    icon: <Glasses className="w-5 h-5 text-primary" />
+    icon: <Brain className="w-5 h-5 text-primary" />
   },
   {
     title: "Game Development",
