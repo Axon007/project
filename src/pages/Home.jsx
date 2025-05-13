@@ -1115,110 +1115,6 @@ const ProjectsSection = memo(() => {
   );
 });
 
-/* PROCESS SECTION OPTIMIZATION */
-const ProcessSection = memo(() => {
-  const PROCESS_CARDS = [
-    {
-      id: 1,
-      title: "Contact Us",
-      description: "Reach out and tell us about your project or idea. We'll listen and guide you to the next step.",
-      icon: <Users className="w-7 h-7 text-primary" />,
-    },
-    {
-      id: 2,
-      title: "Share Requirements",
-      description: "Discuss your goals, requirements, and vision with our experts for a tailored solution.",
-      icon: <MessageSquare className="w-7 h-7 text-primary" />,
-    },
-    {
-      id: 3,
-      title: "Set Budget",
-      description: "We’ll propose a plan that fits your needs and budget, ensuring transparency from the start.",
-      icon: <LineChart className="w-7 h-7 text-primary" />,
-    },
-    {
-      id: 4,
-      title: "Development",
-      description: "Our team brings your project to life, keeping you updated at every milestone.",
-      icon: <Code className="w-7 h-7 text-primary" />,
-    },
-    {
-      id: 5,
-      title: "Testing & Delivery",
-      description: "Rigorous testing and final delivery, ensuring quality and your complete satisfaction.",
-      icon: <CheckCircle className="w-7 h-7 text-primary" />,
-    }
-  ];
-
-  const [activeStep, setActiveStep] = useState(0);
-
-  return (
-    <Section id="process" aria-labelledby="process-heading">
-      <SectionHeading
-        eyebrow="Our Process"
-        title="How We Work"
-        description="A transparent, step-by-step approach to ensure your project's success."
-        center={true}
-      />
-
-      {/* Horizontal Stepper */}
-      <div className="w-full max-w-5xl mx-auto mt-16">
-        <div className="flex flex-col items-center">
-          {/* Stepper bar */}
-          <div className="relative w-full flex items-center justify-between mb-12">
-            {PROCESS_CARDS.map((step, idx) => (
-              <div key={step.id} className="flex-1 flex flex-col items-center group">
-                {/* Step circle */}
-                <button
-                  type="button"
-                  onClick={() => setActiveStep(idx)}
-                  className={`relative z-10 flex items-center justify-center w-14 h-14 rounded-full border-2 transition-all duration-300
-                    ${activeStep === idx
-                      ? 'border-primary bg-primary/10 shadow-lg scale-110'
-                      : idx < activeStep
-                        ? 'border-primary bg-primary/20'
-                        : 'border-secondary/30 bg-background'}
-                  `}
-                  aria-current={activeStep === idx ? "step" : undefined}
-                >
-                  <span className="absolute -top-2 -right-2 text-xs bg-primary text-white rounded-full px-2 py-0.5 shadow">{step.id}</span>
-                  {step.icon}
-                </button>
-                {/* Step label */}
-                <span className={`mt-4 text-sm font-semibold transition-colors duration-300
-                  ${activeStep === idx ? 'text-primary' : 'text-foreground/70 group-hover:text-primary'}
-                `}>
-                  {step.title}
-                </span>
-                {/* Progress bar */}
-                {idx < PROCESS_CARDS.length - 1 && (
-                  <div className="absolute left-full top-1/2 w-full h-1 -translate-y-1/2">
-                    <div className={`h-full rounded bg-gradient-to-r from-primary to-secondary transition-all duration-300
-                      ${idx < activeStep ? 'opacity-100' : 'opacity-30'}
-                    `} />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Step Details Card */}
-          <div className="w-full max-w-2xl mx-auto mt-4">
-            <div className="rounded-2xl bg-background/80 border border-primary/10 shadow-xl p-8 text-center transition-all duration-500">
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  {PROCESS_CARDS[activeStep].icon}
-                </div>
-              </div>
-              <h3 className="text-2xl font-bold mb-2 text-primary">{PROCESS_CARDS[activeStep].title}</h3>
-              <p className="text-foreground/70 text-base">{PROCESS_CARDS[activeStep].description}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-});
 
 /* MAIN COMPONENT */
 function Home() {
@@ -1274,8 +1170,6 @@ function Home() {
         {/* SERVICES SECTION */}
         <ServicesSection />
 
-        {/* PROCESS SECTION */}
-        <ProcessSection />
 
        
 
