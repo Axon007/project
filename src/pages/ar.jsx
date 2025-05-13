@@ -22,7 +22,7 @@ import {
 
 function ARVRServices() {
   useEffect(() => {
-    // Scroll to top on page load
+    // Scroll to top on page loadsasa
     window.scrollTo(0, 0);
   }, []);
 
