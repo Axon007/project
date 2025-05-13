@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MoonStar, Sun, User, ArrowUpRight, ChevronDown, Cloud, Shield, Brain, BarChart, Code, Gamepad2, Palette, VideoIcon } from 'lucide-react';
+import { MoonStar, Sun, User, ArrowUpRight, ChevronDown, Cloud, Shield, Brain, BarChart, Code, Gamepad2, Palette, VideoIcon, Glasses } from 'lucide-react';
 
 // Constants moved outside component to prevent recreation on render
 const NAVIGATION_LINKS = [
@@ -23,6 +23,12 @@ const SERVICES = [
     href: "/app-development",
     description: "Native and cross-platform mobile applications for iOS and Android.",
     icon: <Cloud className="w-5 h-5 text-primary" />
+  },
+  {
+    title: "Computer Vision",
+    href: "/computer-vision",  // This should match the route path in App.jsx
+    description: "AR/VR solutions and immersive experiences that transform reality.",
+    icon: <Glasses className="w-5 h-5 text-primary" />
   },
   {
     title: "Game Development",
