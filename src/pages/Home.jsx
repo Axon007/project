@@ -1987,6 +1987,446 @@ const ProcessTimeline = memo(() => {
   );
 });
 
+/* INTERACTIVE SOLUTION FINDER */
+const SolutionFinder = memo(() => {
+  const [activeCategory, setActiveCategory] = useState('business');
+  const [showResults, setShowResults] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const cardRef = useRef(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  // Card tilt effect
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const moveX = (e.clientX - centerX) / (rect.width / 2);
+    const moveY = (e.clientY - centerY) / (rect.height / 2);
+    setMousePosition({ x: moveX * 5, y: moveY * -5 });
+  };
+  
+  const resetMousePosition = () => {
+    setMousePosition({ x: 0, y: 0 });
+  };
+  
+  // Solution finder categories and options
+  const categories = {
+    business: {
+      title: "Business Solutions",
+      icon: <BarChart className="w-5 h-5" />,
+      description: "Find the perfect digital solution tailored to your business needs",
+      color: THEME.accent.blue,
+      options: [
+        {
+          question: "What's your primary business goal?",
+          choices: [
+            { id: "conversion", label: "Increase conversion rates" },
+            { id: "visibility", label: "Improve online visibility" },
+            { id: "automation", label: "Automate business processes" },
+            { id: "analytics", label: "Better data insights" }
+          ]
+        },
+        {
+          question: "What's your timeline?",
+          choices: [
+            { id: "immediate", label: "Immediate (1-2 months)" },
+            { id: "quarter", label: "This quarter (3-6 months)" },
+            { id: "year", label: "This year (6-12 months)" }
+          ]
+        }
+      ]
+    },
+    creative: {
+      title: "Creative Solutions",
+      icon: <Palette className="w-5 h-5" />,
+      description: "Discover creative services to bring your brand vision to life",
+      color: THEME.accent.green,
+      options: [
+        {
+          question: "What's your creative priority?",
+          choices: [
+            { id: "branding", label: "Brand identity & design" },
+            { id: "content", label: "Content creation" },
+            { id: "experience", label: "User experience" },
+            { id: "innovation", label: "Creative innovation" }
+          ]
+        },
+        {
+          question: "What's your brand style?",
+          choices: [
+            { id: "modern", label: "Modern & minimal" },
+            { id: "bold", label: "Bold & vibrant" },
+            { id: "traditional", label: "Traditional & established" },
+            { id: "playful", label: "Playful & approachable" }
+          ]
+        }
+      ]
+    },
+    technical: {
+      title: "Technical Solutions",
+      icon: <Code className="w-5 h-5" />,
+      description: "Explore technical solutions to power your digital infrastructure",
+      color: THEME.accent.orange,
+      options: [
+        {
+          question: "What technical challenge are you facing?",
+          choices: [
+            { id: "performance", label: "Performance optimization" },
+            { id: "scaling", label: "Scaling infrastructure" },
+            { id: "security", label: "Security enhancements" },
+            { id: "integration", label: "System integration" }
+          ]
+        },
+        {
+          question: "What's your technical environment?",
+          choices: [
+            { id: "cloud", label: "Cloud-based" },
+            { id: "onprem", label: "On-premises" },
+            { id: "hybrid", label: "Hybrid infrastructure" }
+          ]
+        }
+      ]
+    }
+  };
+  
+  // Handle option selection
+  const handleOptionSelect = (questionIndex, optionId) => {
+    setSelectedOptions({
+      ...selectedOptions,
+      [questionIndex]: optionId
+    });
+    
+    // If this is the last question, show results
+    if (questionIndex === categories[activeCategory].options.length - 1) {
+      setTimeout(() => {
+        setShowResults(true);
+      }, 500);
+    }
+  };
+  
+  // Reset selections when changing category
+  useEffect(() => {
+    setSelectedOptions({});
+    setShowResults(false);
+  }, [activeCategory]);
+  
+  // Get recommended solutions based on selections
+  const getRecommendedSolutions = () => {
+    const solutions = {
+      business: [
+        {
+          title: "Enterprise Dashboard",
+          description: "Real-time analytics and reporting for business intelligence",
+          icon: <BarChart className="w-6 h-6" />,
+          link: "/services/enterprise-dashboard"
+        },
+        {
+          title: "Marketing Automation",
+          description: "Streamline your marketing efforts with intelligent automation",
+          icon: <MessageSquare className="w-6 h-6" />,
+          link: "/services/marketing-automation"
+        }
+      ],
+      creative: [
+        {
+          title: "Brand Identity Package",
+          description: "Complete visual identity system with logo, colors, and guidelines",
+          icon: <Palette className="w-6 h-6" />,
+          link: "/services/brand-identity"
+        },
+        {
+          title: "UX Design Sprint",
+          description: "Rapid prototyping and user testing to validate your ideas",
+          icon: <Smartphone className="w-6 h-6" />,
+          link: "/services/ux-design"
+        }
+      ],
+      technical: [
+        {
+          title: "Cloud Migration",
+          description: "Seamlessly transition your infrastructure to the cloud",
+          icon: <Code className="w-6 h-6" />,
+          link: "/services/cloud-migration"
+        },
+        {
+          title: "Security Audit",
+          description: "Comprehensive assessment of your digital security posture",
+          icon: <BadgeCheck className="w-6 h-6" />,
+          link: "/services/security-audit"
+        }
+      ]
+    };
+    
+    return solutions[activeCategory];
+  };
+  
+  return (
+    <section className="relative py-20 px-4 overflow-hidden">
+      {/* Background blur elements */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
+            Interactive Solution Finder
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4">
+            Find Your Perfect <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">Solution</span>
+          </h2>
+          <p className="text-foreground/70 max-w-2xl mx-auto">
+            Answer a few quick questions and discover the ideal services tailored to your specific needs
+          </p>
+        </motion.div>
+        
+        {/* Interactive card with glassmorphism effect */}
+        <motion.div
+          ref={cardRef}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="relative max-w-4xl mx-auto"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={resetMousePosition}
+        >
+          <motion.div
+            style={{
+              transform: `perspective(1000px) rotateX(${mousePosition.y}deg) rotateY(${mousePosition.x}deg)`,
+              transition: "transform 0.1s ease"
+            }}
+            className="bg-white/60 backdrop-blur-lg border border-white/20 rounded-2xl shadow-xl overflow-hidden"
+          >
+            {/* Card inner content */}
+            <div className="p-6 md:p-8">
+              {/* Category tabs */}
+              <div className="flex flex-wrap gap-3 mb-8 justify-center">
+                {Object.entries(categories).map(([key, category]) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveCategory(key)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      activeCategory === key
+                        ? 'bg-primary text-white shadow-md' 
+                        : 'bg-secondary/5 hover:bg-secondary/10 text-foreground/70'
+                    }`}
+                  >
+                    <div className="p-1 rounded-full bg-white/20">
+                      {category.icon}
+                    </div>
+                    {category.title}
+                  </button>
+                ))}
+              </div>
+              
+              {/* Description */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCategory}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-center mb-8"
+                >
+                  <p className="text-foreground/80">
+                    {categories[activeCategory].description}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+              
+              {/* Questions and options */}
+              {!showResults ? (
+                <div className="space-y-10 mb-4">
+                  {categories[activeCategory].options.map((option, questionIndex) => (
+                    <div key={questionIndex}>
+                      <h3 className="text-lg font-semibold mb-4">
+                        {option.question}
+                      </h3>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {option.choices.map((choice) => (
+                          <motion.button
+                            key={choice.id}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleOptionSelect(questionIndex, choice.id)}
+                            className={`p-4 rounded-xl border text-left transition-all ${
+                              selectedOptions[questionIndex] === choice.id 
+                                ? `border-2 border-${categories[activeCategory].color} bg-${categories[activeCategory].color}/10 shadow-md`
+                                : 'border-secondary/20 hover:border-primary/30 bg-white/40'
+                            }`}
+                            style={{
+                              borderColor: selectedOptions[questionIndex] === choice.id 
+                                ? categories[activeCategory].color 
+                                : undefined,
+                              backgroundColor: selectedOptions[questionIndex] === choice.id 
+                                ? `${categories[activeCategory].color}10` 
+                                : undefined
+                            }}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span>{choice.label}</span>
+                              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                selectedOptions[questionIndex] === choice.id
+                                  ? `border-${categories[activeCategory].color} bg-${categories[activeCategory].color}`
+                                  : 'border-secondary/40'
+                              }`}
+                              style={{
+                                borderColor: selectedOptions[questionIndex] === choice.id 
+                                  ? categories[activeCategory].color 
+                                  : undefined,
+                                backgroundColor: selectedOptions[questionIndex] === choice.id 
+                                  ? categories[activeCategory].color 
+                                  : undefined
+                              }}
+                              >
+                                {selectedOptions[questionIndex] === choice.id && (
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                              </div>
+                            </div>
+                          </motion.button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-4"
+                >
+                  <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+                      <CheckCircle className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Your Recommended Solutions</h3>
+                    <p className="text-foreground/70">Based on your selections, here are our tailored recommendations</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    {getRecommendedSolutions().map((solution, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.2 }}
+                        className="p-6 rounded-xl border border-primary/20 bg-white/60 backdrop-blur-sm hover:shadow-lg hover:border-primary/40 transition-all"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                            {solution.icon}
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-lg mb-1">{solution.title}</h4>
+                            <p className="text-sm text-foreground/70">{solution.description}</p>
+                          </div>
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-secondary/10">
+                          <a 
+                            href={solution.link}
+                            className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline"
+                          >
+                            Learn more about this solution
+                            <ArrowRight size={16} />
+                          </a>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => {
+                        setSelectedOptions({});
+                        setShowResults(false);
+                      }}
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 font-medium"
+                    >
+                      <ArrowLeft size={16} />
+                      Start over
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+              
+              {/* Progress indicator (only shown before results) */}
+              {!showResults && (
+                <div className="mt-8 pt-6 border-t border-secondary/10">
+                  <div className="flex items-center justify-between text-sm text-foreground/60">
+                    <span>Progress</span>
+                    <span>
+                      {Object.keys(selectedOptions).length} of {categories[activeCategory].options.length} answered
+                    </span>
+                  </div>
+                  <div className="mt-2 bg-secondary/10 rounded-full h-2">
+                    <div 
+                      className="h-full rounded-full transition-all duration-500 ease-out"
+                      style={{ 
+                        width: `${(Object.keys(selectedOptions).length / categories[activeCategory].options.length) * 100}%`,
+                        backgroundColor: categories[activeCategory].color
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Card border glow effect */}
+            <div 
+              className="absolute inset-0 -z-10 opacity-40"
+              style={{
+                background: `radial-gradient(circle at 50% 50%, ${categories[activeCategory].color}40, transparent 70%)`,
+                borderRadius: "inherit"
+              }}
+            ></div>
+          </motion.div>
+          
+          {/* Card shadow */}
+          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 -z-20 blur-xl opacity-30"></div>
+        </motion.div>
+        
+        {/* Quick options */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="mt-12 text-center"
+        >
+          <p className="text-foreground/70 mb-6">Looking for something specific?</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { label: "Schedule a consultation", href: "/contact", icon: <Phone className="w-4 h-4" /> },
+              { label: "View all services", href: "/services", icon: <BarChart className="w-4 h-4" /> },
+              { label: "Chat with an expert", href: "/chat", icon: <MessageCircle className="w-4 h-4" /> }
+            ].map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/5 hover:bg-secondary/10 text-foreground/80 hover:text-foreground transition-colors"
+              >
+                {item.icon}
+                <span className="text-sm font-medium">{item.label}</span>
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+});
+
 /* MAIN COMPONENT */
 function Home() {
   return (
@@ -2236,6 +2676,9 @@ function Home() {
 
         {/* INTERACTIVE PROCESS TIMELINE */}
         <ProcessTimeline />
+
+        {/* INTERACTIVE SOLUTION FINDER */}
+        <SolutionFinder />
       </div>
     </PageTransition>
   );
