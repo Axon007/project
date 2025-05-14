@@ -810,7 +810,7 @@ const HeroSection = () => {
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
             >
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-violet-700 drop-shadow[0_1px_2px_rgba(0,0,0,0.15)]-sm">
-                Jason Tech 
+                Jason Tech Solutions
               </span>
             </motion.h1>
             
@@ -1115,6 +1115,877 @@ const ProjectsSection = memo(() => {
   );
 });
 
+/* DESIGNS SECTION */
+const DesignsSection = memo(() => {
+  const [activeTab, setActiveTab] = useState('ui-ux');
+  const [selectedDesign, setSelectedDesign] = useState(null);
+  
+  // Design categories with consistent structure
+  const designCategories = {
+    'ui-ux': {
+      title: 'UI/UX Design',
+      description: 'Modern interfaces that enhance user experience and drive engagement',
+      designs: [
+        {
+          id: 'ui-1',
+          title: 'Banking Dashboard',
+          preview: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.blue,
+          tools: ['Figma', 'Adobe XD', 'Sketch'],
+          description: 'Reimagined financial management interface with intuitive analytics and transaction tracking'
+        },
+        {
+          id: 'ui-2',
+          title: 'Health App',
+          preview: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.green,
+          tools: ['Figma', 'Protopie', 'Illustrator'],
+          description: 'Wellness tracking application with personalized insights and progress visualization'
+        },
+        {
+          id: 'ui-3',
+          title: 'E-commerce Store',
+          preview: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.orange,
+          tools: ['Figma', 'Adobe XD', 'After Effects'],
+          description: 'High-conversion shopping platform with seamless checkout and personalized recommendations'
+        }
+      ]
+    },
+    'brand': {
+      title: 'Brand Identity',
+      description: 'Cohesive visual systems that communicate brand values and resonate with audiences',
+      designs: [
+        {
+          id: 'brand-1',
+          title: 'Eco Wellness',
+          preview: 'https://images.unsplash.com/photo-1542744094-24638eff58bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.cyan,
+          tools: ['Illustrator', 'Photoshop', 'InDesign'],
+          description: 'Complete visual identity for sustainable wellness brand including logo system and packaging'
+        },
+        {
+          id: 'brand-2',
+          title: 'Tech Startup',
+          preview: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.primary.DEFAULT,
+          tools: ['Illustrator', 'Figma', 'After Effects'],
+          description: 'Dynamic brand system for AI technology company with adaptable visual elements'
+        },
+        {
+          id: 'brand-3',
+          title: 'Urban Cafe',
+          preview: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.yellow,
+          tools: ['Illustrator', 'Photoshop', 'Procreate'],
+          description: 'Artisanal coffee shop branding with hand-drawn elements and signature typography'
+        }
+      ]
+    },
+    'print': {
+      title: 'Print Design',
+      description: 'Tangible brand experiences through thoughtfully crafted physical materials',
+      designs: [
+        {
+          id: 'print-1',
+          title: 'Annual Report',
+          preview: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.secondary.DEFAULT,
+          tools: ['InDesign', 'Illustrator', 'Photoshop'],
+          description: 'Award-winning financial report design with data visualization and editorial layout'
+        },
+        {
+          id: 'print-2',
+          title: 'Event Materials',
+          preview: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.blue,
+          tools: ['InDesign', 'Illustrator', 'Photoshop'],
+          description: 'Comprehensive conference collateral including invitations, programs, and signage'
+        },
+        {
+          id: 'print-3',
+          title: 'Packaging',
+          preview: 'https://images.unsplash.com/photo-1636622433525-127afdf3662d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.green,
+          tools: ['Illustrator', 'Photoshop', 'Dimension'],
+          description: 'Sustainable product packaging with innovative structural design and eco-friendly materials'
+        }
+      ]
+    }
+  };
+
+  // Get current designs based on active tab
+  const currentDesigns = designCategories[activeTab]?.designs || [];
+  
+  // Design detail modal
+  const DesignDetailModal = ({ design, onClose }) => {
+    if (!design) return null;
+    
+    return (
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        onClick={onClose}
+      >
+        <motion.div 
+          initial={{ scale: 0.9, y: 20 }}
+          animate={{ scale: 1, y: 0 }}
+          exit={{ scale: 0.9, y: 20 }}
+          className="bg-background max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="relative">
+            <div className="h-[300px] md:h-[400px] w-full overflow-hidden">
+              <img
+                src={design.preview}
+                alt={design.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            <button 
+              onClick={onClose}
+              className="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-sm transition-colors"
+              aria-label="Close modal"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          
+          <div className="p-6 md:p-8">
+            <div 
+              className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
+              style={{ backgroundColor: `${design.color}20`, color: design.color }}
+            >
+              {designCategories[activeTab].title}
+            </div>
+            
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">{design.title}</h3>
+            <p className="text-foreground/70 mb-6 text-lg">{design.description}</p>
+            
+            <div className="mb-8">
+              <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-3">Design Tools</h4>
+              <div className="flex gap-2 flex-wrap">
+                {design.tools.map((tool, idx) => (
+                  <span key={idx} className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-6 mb-8">
+              <div>
+                <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-3">Project Scope</h4>
+                <ul className="space-y-2">
+                  {['Research', 'Wireframing', 'Visual Design', 'Prototyping'].map((item, idx) => (
+                    <li key={idx} className="flex items-center text-foreground/80">
+                      <CheckCircle className="w-4 h-4 text-primary mr-2" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-3">Deliverables</h4>
+                <ul className="space-y-2">
+                  {['Design System', 'Interactive Prototype', 'Source Files', 'Documentation'].map((item, idx) => (
+                    <li key={idx} className="flex items-center text-foreground/80">
+                      <CheckCircle className="w-4 h-4 text-primary mr-2" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            
+            <div className="flex justify-end">
+              <Button variant="primary" size="lg">
+                Request Similar Design
+                <ArrowRight className="ml-1 w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  };
+
+  const DesignCard = ({ design }) => {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="group cursor-pointer"
+        onClick={() => setSelectedDesign(design)}
+      >
+        <div className="relative overflow-hidden rounded-xl aspect-[4/3] mb-4">
+          {/* Overlay with gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div>
+              <p className="text-white font-medium">{design.title}</p>
+              <div className="flex mt-2 gap-2">
+                {design.tools.slice(0, 2).map((tool, idx) => (
+                  <span key={idx} className="text-xs bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-white">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* Image */}
+          <img 
+            src={design.preview} 
+            alt={design.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+          />
+          
+          {/* Color accent */}
+          <div 
+            className="absolute top-0 right-0 w-24 h-24 opacity-60 rounded-bl-full"
+            style={{ background: `radial-gradient(circle at top right, ${design.color}, transparent 70%)` }}
+          />
+        </div>
+        
+        <h3 className="font-medium text-lg group-hover:text-primary transition-colors">
+          {design.title}
+        </h3>
+        <p className="text-sm text-foreground/60 line-clamp-1">{design.description}</p>
+      </motion.div>
+    );
+  };
+
+  return (
+    <Section id="designs" pattern={true}>
+      <SectionHeading
+        eyebrow="Design Showcase" 
+        title="Creative Design Solutions" 
+        description="Explore our design work across various mediums and industries"
+        center={true}
+      />
+      
+      {/* Category tabs */}
+      <div className="flex justify-center mb-12">
+        <div className="inline-flex bg-secondary/10 p-1 rounded-xl">
+          {Object.entries(designCategories).map(([key, category]) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === key
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'text-foreground/70 hover:text-foreground hover:bg-secondary/5'
+              }`}
+            >
+              {category.title}
+            </button>
+          ))}
+        </div>
+      </div>
+      
+      {/* Description of current category */}
+      <div className="text-center mb-12">
+        <p className="text-lg text-foreground/70 max-w-xl mx-auto">
+          {designCategories[activeTab]?.description}
+        </p>
+      </div>
+      
+      {/* Design grid with exit animations */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {currentDesigns.map((design) => (
+            <DesignCard key={design.id} design={design} />
+          ))}
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Design detail modal */}
+      <AnimatePresence>
+        {selectedDesign && (
+          <DesignDetailModal 
+            design={selectedDesign} 
+            onClose={() => setSelectedDesign(null)} 
+          />
+        )}
+      </AnimatePresence>
+      
+      {/* Contact CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-16 text-center bg-gradient-to-r from-primary/5 to-secondary/5 p-8 rounded-2xl border border-primary/10"
+      >
+        <h3 className="text-2xl font-bold mb-4">Need custom design solutions?</h3>
+        <p className="text-foreground/70 mb-6 max-w-lg mx-auto">
+          Our design team is ready to help bring your vision to life with tailored creative solutions that align with your brand and business objectives.
+        </p>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <Button variant="primary" size="lg" href="/contact">
+            Request a Design Consultation
+            <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Button>
+          <Button variant="secondary" size="lg" href="/portfolio">
+            View Full Portfolio
+          </Button>
+        </div>
+      </motion.div>
+    </Section>
+  );
+});
+
+/* 3D CARD SHOWCASE */
+const ThreeDCardShowcase = memo(() => {
+  const [activeCard, setActiveCard] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - card.left) / card.width - 0.5;  // -0.5 to 0.5
+    const y = (e.clientY - card.top) / card.height - 0.5;  // -0.5 to 0.5
+    setMousePosition({ x, y });
+  };
+  
+  const featuredWorks = [
+    {
+      title: "Immersive 3D Visualization",
+      description: "Interactive product showcase with WebGL and Three.js for a premium automotive brand",
+      image: "https://images.unsplash.com/photo-1543964198-d54e4f2a833d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      color: THEME.accent.blue,
+      tags: ["Three.js", "WebGL", "Animation"]
+    },
+    {
+      title: "AR Product Experience",
+      description: "Augmented reality mobile application enabling virtual product trials before purchase",
+      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      color: THEME.accent.green,
+      tags: ["AR", "Mobile", "3D Modeling"]
+    },
+    {
+      title: "Interactive Data Dashboard",
+      description: "Real-time analytics platform with advanced filtering and customizable visualizations",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      color: THEME.accent.orange,
+      tags: ["Data Viz", "Dashboard", "Real-time"]
+    }
+  ];
+  
+  return (
+    <Section id="featured-work" className="py-24 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading 
+          eyebrow="Featured Work" 
+          title="Innovative Digital Experiences" 
+          description="Pushing the boundaries of what's possible with emerging technologies and creative design"
+          center={true}
+        />
+        
+        <div className="mt-16 md:mt-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left side - 3D interactive card */}
+            <div className="relative h-[500px] w-full">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCard}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0"
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={() => setMousePosition({ x: 0, y: 0 })}
+                >
+                  <div 
+                    className="h-full w-full rounded-2xl overflow-hidden relative group shadow-2xl shadow-black/20"
+                    style={{ 
+                      perspective: '1500px',
+                      transformStyle: 'preserve-3d',
+                    }}
+                  >
+                    <motion.div
+                      className="h-full w-full relative"
+                      style={{ 
+                        transformStyle: 'preserve-3d',
+                        transform: `
+                          rotateY(${mousePosition.x * 20}deg) 
+                          rotateX(${-mousePosition.y * 20}deg)
+                          scale(1.05)
+                        `,
+                        transition: 'transform 0.5s ease-out'
+                      }}
+                    >
+                      {/* Main image */}
+                      <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10">
+                        <div 
+                          className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-primary/30 opacity-70 mix-blend-overlay z-10"
+                        ></div>
+                        <img 
+                          src={featuredWorks[activeCard].image} 
+                          alt={featuredWorks[activeCard].title} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      
+                      {/* Glowing edges */}
+                      <div 
+                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
+                        style={{
+                          background: `linear-gradient(45deg, ${featuredWorks[activeCard].color}00, ${featuredWorks[activeCard].color}40, ${featuredWorks[activeCard].color}00)`,
+                          backgroundSize: '200% 200%',
+                          animation: 'gradient-animation 3s ease infinite',
+                          border: `1px solid ${featuredWorks[activeCard].color}60`,
+                          boxShadow: `0 0 40px ${featuredWorks[activeCard].color}40`,
+                          transform: 'translateZ(20px)'
+                        }}
+                      ></div>
+                      
+                      {/* Content overlay */}
+                      <div 
+                        className="absolute inset-x-0 bottom-0 p-8 text-white z-20"
+                        style={{ transform: 'translateZ(50px)' }}
+                      >
+                        <div className="flex gap-2 mb-4">
+                          {featuredWorks[activeCard].tags.map((tag, index) => (
+                            <span 
+                              key={index} 
+                              className="px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
+                              style={{ 
+                                backgroundColor: `${featuredWorks[activeCard].color}40`,
+                                border: `1px solid ${featuredWorks[activeCard].color}80`
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        <h3 className="text-2xl md:text-3xl font-bold mb-2">{featuredWorks[activeCard].title}</h3>
+                        <p className="text-white/80 max-w-md">{featuredWorks[activeCard].description}</p>
+                        
+                        <div className="mt-6">
+                          <button 
+                            className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-sm font-medium flex items-center gap-2 transition-all"
+                          >
+                            Explore Case Study
+                            <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {/* Floating geometric elements */}
+                      <div 
+                        className="absolute top-8 left-8 w-20 h-20 border border-white/20 rounded-lg opacity-50"
+                        style={{ 
+                          transform: 'translateZ(30px) rotateZ(10deg)',
+                          boxShadow: `0 0 20px ${featuredWorks[activeCard].color}30`
+                        }}
+                      ></div>
+                      
+                      <div 
+                        className="absolute bottom-32 right-16 w-12 h-12 rounded-full opacity-60"
+                        style={{ 
+                          background: `linear-gradient(45deg, ${featuredWorks[activeCard].color}60, transparent)`,
+                          transform: 'translateZ(40px)'
+                        }}
+                      ></div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            
+            {/* Right side - Project details & navigation */}
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
+                  Pushing Boundaries
+                </span>
+                
+                <h3 className="text-3xl md:text-4xl font-bold">
+                  Next-generation digital experiences
+                </h3>
+                
+                <p className="text-foreground/70">
+                  We combine cutting-edge technologies with innovative design approaches to create immersive, 
+                  interactive experiences that captivate users and drive meaningful engagement.
+                </p>
+                
+                <div className="flex flex-wrap gap-3 pt-2">
+                  {["WebGL", "Three.js", "AR/VR", "React Three Fiber", "Motion Graphics"].map((tech, idx) => (
+                    <span key={idx} className="px-3 py-1 bg-secondary/5 border border-secondary/10 rounded-md text-sm text-foreground/70">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <h4 className="text-lg font-medium">Featured Projects</h4>
+                
+                <div className="space-y-3">
+                  {featuredWorks.map((work, index) => (
+                    <div 
+                      key={index}
+                      className={`p-4 rounded-xl cursor-pointer transition-all duration-300 flex items-center gap-4 ${
+                        activeCard === index 
+                          ? 'bg-primary/10 border border-primary/30' 
+                          : 'hover:bg-secondary/5'
+                      }`}
+                      onClick={() => setActiveCard(index)}
+                    >
+                      <div 
+                        className="w-12 h-12 rounded-lg overflow-hidden shrink-0"
+                        style={{ 
+                          boxShadow: activeCard === index ? `0 0 0 2px ${work.color}` : 'none',
+                          transition: 'box-shadow 0.3s ease'
+                        }}
+                      >
+                        <img 
+                          src={work.image} 
+                          alt={work.title} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      
+                      <div>
+                        <h5 className={`font-medium transition-colors ${
+                          activeCard === index ? 'text-primary' : 'text-foreground'
+                        }`}>
+                          {work.title}
+                        </h5>
+                        <p className="text-sm text-foreground/60 line-clamp-1">
+                          {work.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <a 
+                href="/case-studies" 
+                className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
+              >
+                View all case studies
+                <ArrowRight size={16} className="ml-2" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <style jsx global>{`
+        @keyframes gradient-animation {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
+    </Section>
+  );
+});
+
+/* INTERACTIVE PROCESS TIMELINE */
+const ProcessTimeline = memo(() => {
+  const [activeStep, setActiveStep] = useState(1);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const timelineRef = useRef(null);
+  
+  const processSteps = [
+    {
+      step: 1,
+      title: "Discovery & Research",
+      description: "We dive deep into your business needs, market landscape, and user expectations to establish clear project goals.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>,
+      color: THEME.accent.blue,
+      benefits: [
+        "Comprehensive market analysis",
+        "User research & persona development",
+        "Competitive landscape assessment"
+      ]
+    },
+    {
+      step: 2,
+      title: "Strategic Planning",
+      description: "We develop a tailored roadmap that aligns with your business objectives and addresses user needs.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 17 12 22l10-5"/><path d="m2 12 10 5 10-5"/><path d="M12 2 2 7l10 5 10-5-10-5Z"/></svg>,
+      color: THEME.accent.green,
+      benefits: [
+        "Technology stack recommendations",
+        "Feature prioritization framework",
+        "Implementation timeline & milestones"
+      ]
+    },
+    {
+      step: 3,
+      title: "Design & Prototype",
+      description: "We create intuitive, engaging designs and interactive prototypes that bring your vision to life.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="m17 20.66-1-1.73"/><path d="M11 10.27 7 3.34"/><path d="m20.66 17-1.73-1"/><path d="m3.34 7 1.73 1"/><path d="M14 12h8"/><path d="M2 12h2"/><path d="m20.66 7-1.73 1"/><path d="m3.34 17 1.73-1"/><path d="m17 3.34-1 1.73"/><path d="m11 13.73-4 6.93"/></svg>,
+      color: THEME.accent.cyan,
+      benefits: [
+        "User-centered design approach",
+        "Interactive wireframes & mockups",
+        "Usability testing & refinement"
+      ]
+    },
+    {
+      step: 4,
+      title: "Development & Testing",
+      description: "Our engineering team builds your solution using modern technologies and best practices.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>,
+      color: THEME.accent.orange,
+      benefits: [
+        "Agile development methodology",
+        "Comprehensive quality assurance",
+        "Regular progress demonstrations"
+      ]
+    },
+    {
+      step: 5,
+      title: "Deployment & Support",
+      description: "We ensure a smooth launch and provide ongoing support to keep your solution performing optimally.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>,
+      color: THEME.accent.yellow,
+      benefits: [
+        "Seamless deployment process",
+        "Performance monitoring & optimization",
+        "Ongoing maintenance & updates"
+      ]
+    }
+  ];
+  
+  // Handle scroll-based timeline navigation
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!timelineRef.current || isScrolling) return;
+      
+      const timelineRect = timelineRef.current.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const timelineCenter = timelineRect.top + timelineRect.height / 2;
+      
+      // Calculate which step should be active based on scroll position
+      const scrollPercentage = (viewportCenter - timelineRect.top) / timelineRect.height;
+      const clampedPercentage = Math.max(0, Math.min(1, scrollPercentage));
+      const stepIndex = Math.round(clampedPercentage * (processSteps.length - 1)) + 1;
+      
+      if (stepIndex !== activeStep && stepIndex >= 1 && stepIndex <= processSteps.length) {
+        setActiveStep(stepIndex);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [activeStep, isScrolling, processSteps.length]);
+  
+  const handleStepClick = (step) => {
+    setIsScrolling(true);
+    setActiveStep(step);
+    
+    // Reset isScrolling after animation completes
+    setTimeout(() => {
+      setIsScrolling(false);
+    }, 1000);
+  };
+  
+  return (
+    <Section id="our-process" pattern={true} className="py-24">
+      <SectionHeading 
+        eyebrow="Our Process" 
+        title="How We Deliver Excellence" 
+        description="A systematic approach that ensures consistent results and exceptional quality across all projects"
+        center={true}
+      />
+      
+      <div className="mt-20 relative max-w-6xl mx-auto" ref={timelineRef}>
+        {/* Timeline line */}
+        <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-secondary/20 transform -translate-x-1/2"></div>
+        
+        {/* Progress line animating based on active step */}
+        <div 
+          className="absolute top-0 left-1/2 w-0.5 bg-primary transform -translate-x-1/2 transition-all duration-1000 ease-out"
+          style={{ 
+            height: `${(activeStep / processSteps.length) * 100}%`,
+            maxHeight: '100%'
+          }}
+        ></div>
+        
+        {/* Timeline steps */}
+        {processSteps.map((process, index) => {
+          const isActive = activeStep >= process.step;
+          const isPast = activeStep > process.step;
+          const isExactlyActive = activeStep === process.step;
+          
+          return (
+            <div key={index} className="relative mb-24 last:mb-0">
+              {/* Timeline marker */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
+                <div 
+                  className={`
+                    h-14 w-14 rounded-full flex items-center justify-center z-10 
+                    ${isActive 
+                      ? 'bg-primary text-white border-4 border-white shadow-lg shadow-primary/30' 
+                      : 'bg-white border-4 border-secondary/20 text-secondary/40'
+                    }
+                    transition-all duration-500
+                  `}
+                  style={{
+                    transform: isExactlyActive ? 'scale(1.2)' : 'scale(1)'
+                  }}
+                >
+                  <span className="text-lg font-bold">{process.step}</span>
+                </div>
+                
+                {/* Pulsing effect for active step */}
+                {isExactlyActive && (
+                  <div className="absolute inset-0 -z-10">
+                    <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping opacity-75"></div>
+                    <div className="absolute inset-[-8px] rounded-full border-2 border-primary/30"></div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Content card with alternating layout */}
+              <div className={`relative max-w-lg mx-auto md:mx-0 ${
+                index % 2 === 0 
+                  ? 'md:ml-auto md:mr-[calc(50%+2rem)]' 
+                  : 'md:mr-auto md:ml-[calc(50%+2rem)]'
+              }`}>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.5 }}
+                  className={`
+                    rounded-xl p-6 border shadow-lg transform transition-all duration-500 cursor-pointer
+                    ${isActive 
+                      ? 'bg-white border-primary/20 shadow-primary/5' 
+                      : 'bg-secondary/5 border-secondary/20'
+                    }
+                    hover:shadow-xl
+                  `}
+                  onClick={() => handleStepClick(process.step)}
+                >
+                  <div className="flex items-start gap-4">
+                    <div 
+                      className={`p-3 rounded-lg ${
+                        isActive 
+                          ? 'text-white' 
+                          : 'text-secondary/60 bg-secondary/10'
+                      } transition-colors duration-500`}
+                      style={{ 
+                        backgroundColor: isActive ? process.color : undefined 
+                      }}
+                    >
+                      {process.icon}
+                    </div>
+                    
+                    <div>
+                      <h3 className={`text-xl font-bold mb-2 transition-colors duration-500 ${
+                        isActive ? 'text-foreground' : 'text-foreground/60'
+                      }`}>
+                        {process.title}
+                      </h3>
+                      <p className="text-foreground/70 mb-4">{process.description}</p>
+                      
+                      {/* Benefits list with reveal animation */}
+                      <AnimatePresence>
+                        {isExactlyActive && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="mt-4 pt-4 border-t border-secondary/10"
+                          >
+                            <h4 className="font-medium mb-2 text-sm uppercase tracking-wider text-foreground/60">Key Benefits</h4>
+                            <ul className="space-y-2">
+                              {process.benefits.map((benefit, idx) => (
+                                <motion.li 
+                                  key={idx}
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: idx * 0.1 }}
+                                  className="flex items-center gap-2"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                  </svg>
+                                  <span>{benefit}</span>
+                                </motion.li>
+                              ))}
+                            </ul>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                  
+                  {/* Progress indicator for current step */}
+                  {isExactlyActive && (
+                    <div className="mt-4 pt-4 border-t border-secondary/10">
+                      <div className="flex items-center justify-between text-xs text-foreground/60">
+                        <span>Progress</span>
+                        <span>{Math.round((process.step / processSteps.length) * 100)}%</span>
+                      </div>
+                      <div className="mt-1 bg-secondary/10 rounded-full h-1.5 overflow-hidden">
+                        <div
+                          className="h-full bg-primary transition-all duration-1000 ease-out"
+                          style={{ width: `${(process.step / processSteps.length) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      
+      {/* Bottom CTA section */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mt-20 text-center"
+      >
+        <div className="bg-white rounded-2xl border border-primary/20 shadow-xl shadow-primary/5 p-8 max-w-3xl mx-auto">
+          <h3 className="text-2xl font-bold mb-3">Ready to start your project?</h3>
+          <p className="text-foreground/70 mb-6 max-w-lg mx-auto">
+            Our proven process ensures your project will be delivered on-time, on-budget, and exceed expectations.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button variant="primary" size="lg" href="/contact">
+              Schedule a Consultation
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+            <Button variant="secondary" size="lg" href="/case-studies">
+              View Case Studies
+            </Button>
+          </div>
+        </div>
+      </motion.div>
+    </Section>
+  );
+});
 
 /* MAIN COMPONENT */
 function Home() {
@@ -1356,6 +2227,15 @@ function Home() {
             </a>
           </motion.div>
         </Section>
+
+        {/* DESIGNS SECTION */}
+        <DesignsSection />
+
+        {/* 3D CARD SHOWCASE SECTION */}
+        <ThreeDCardShowcase />
+
+        {/* INTERACTIVE PROCESS TIMELINE */}
+        <ProcessTimeline />
       </div>
     </PageTransition>
   );
