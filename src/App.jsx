@@ -11,6 +11,7 @@ import VideoEditing from './pages/VideoEditing';
 import AppDevelopment from './pages/AppDevelopment';
 import ContactUs from './pages/ContactUs';
 import ARVRServices from './pages/ar';
+import Social from './pages/Social';
 
 function AppContent() {
   const location = useLocation();
@@ -59,6 +60,7 @@ function AppContent() {
           <Route path="/video-editing" element={<VideoEditing />} />
           <Route path="/app-development" element={<AppDevelopment />} />
           <Route path="/computer-vision" element={<ARVRServices />} />
+          <Route path="/social" element={<Social />} />
           <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </AnimatePresence>

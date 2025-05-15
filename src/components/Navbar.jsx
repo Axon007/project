@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MoonStar, Sun, User, ArrowUpRight, ChevronDown, Cloud, Shield, Brain, BarChart, Code, Gamepad2, Palette, VideoIcon, Glasses } from 'lucide-react';
+import { MoonStar, Sun, User, ArrowUpRight, ChevronDown, Cloud, Shield, Brain, BarChart, Code, Gamepad2, Palette, VideoIcon, Glasses, Share2 } from 'lucide-react';
 
 // Constants moved outside component to prevent recreation on render
 const NAVIGATION_LINKS = [
@@ -47,6 +47,12 @@ const SERVICES = [
     href: "/video-editing",
     description: "Professional video editing and post-production services.",
     icon: <VideoIcon className="w-5 h-5 text-primary" />
+  },
+  {
+    title: "Social Media",
+    href: "/social",
+    description: "Strategic social media management to grow your brand's online presence.",
+    icon: <Share2 className="w-5 h-5 text-primary" />
   }
 ];
 
