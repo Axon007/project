@@ -1,15 +1,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect, memo, useMemo, useCallback } from "react";
 import PageTransition from '../components/PageTransition';
-import { AuroraBackground } from '../components/AuroraBackground';
+
+
+import { AuroraBackground } from "../components/ui/aurora-background";
 import { GlowingEffect} from '../components/ui/glowing-effect'
 import { Globe } from "@/components/magicui/globe";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
-  VideoIcon, Brush, Lightbulb, ArrowLeft,ArrowDown,  MessageSquare, CheckCircle, Phone, Mail, MessageCircle
+  VideoIcon, Brush, Lightbulb, ArrowLeft,ArrowDown,  MessageSquare, CheckCircle, Phone, Mail, MessageCircle,Smartphone 
 } from "lucide-react";
-import { Smartphone } from "lucide-react";
 import { Link } from "react-router-dom";
 
 /* THEME AND UI CONFIGURATION */
@@ -150,40 +151,6 @@ const Section = ({ children, dark = false, pattern = false, className = "", id =
   </section>
 );
 
-// Universal Card component
-const Card = ({ 
-  children, 
-  className = "", 
-  hoverEffect = true, 
-  gradient = false,
-  border = true,
-  glow = true,
-  onClick = null 
-}) => (
-  <motion.div
-    whileHover={hoverEffect ? { y: -5 } : {}}
-    transition={{ duration: 0.2 }}
-    className={`group relative ${UI.card.base} ${
-      border ? "" : "border-0"
-    } ${className}`}
-    onClick={onClick}
-  >
-    {/* Conditional glow effect */}
-    {glow && (
-      <div className={UI.effects.glow}></div>
-    )}
-    
-    {/* Conditional background gradient */}
-    {gradient && (
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl"></div>
-    )}
-    
-    {/* Card content */}
-    <div className={`${UI.card.padding} relative z-10 h-full flex flex-col`}>
-      {children}
-    </div>
-  </motion.div>
-);
 
 // Update the ServiceCard component for better interactivity and visual appeal
 const ServiceCard = ({ service, index }) => {
@@ -363,173 +330,6 @@ const ServicesSection = memo(() => {
     </Section>
   );
 });
-
-/* PROJECTS LIST COMPONENT */
-const ProjectsList = ({ projects }) => {
-  const [activeProject, setActiveProject] = useState(0);
-  
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <div className="lg:col-span-4 lg:border-r border-secondary/10 lg:pr-8">
-        <nav className="space-y-1" aria-label="Project Navigation">
-          {projects.map((project, index) => (
-            <motion.button
-              key={index}
-              onClick={() => setActiveProject(index)}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.05, duration: 0.4 }}
-              className={`w-full text-left py-4 px-4 rounded-xl flex items-center justify-between group transition-all ${
-                activeProject === index 
-                  ? 'bg-primary/10 text-primary shadow-sm' 
-                  : 'hover:bg-secondary/5'
-              }`}
-            >
-              <div className="flex items-center">
-                <span className={`h-2 w-2 rounded-full mr-3 ${
-                  activeProject === index ? 'bg-primary' : 'bg-secondary/30 group-hover:bg-primary/50'
-                } transition-colors`}></span>
-                <div>
-                  <h3 className={`font-medium ${
-                    activeProject === index ? 'text-primary' : 'text-foreground/80 group-hover:text-primary/80'
-                  } transition-colors`}>
-                    {project.title}
-                  </h3>
-                  <p className="text-xs text-foreground/50 mt-1">{project.category}</p>
-                </div>
-              </div>
-              <ArrowRight
-                className={`w-4 h-4 transform transition-all ${
-                  activeProject === index ? 'text-primary translate-x-0' : 'opacity-0 -translate-x-4 group-hover:opacity-40 group-hover:translate-x-0'
-                }`}
-              />
-            </motion.button>
-          ))}
-        </nav>
-        
-        <div className="hidden lg:block mt-8 pt-8 border-t border-secondary/10">
-          <div className="flex items-center justify-between">
-            <button 
-              onClick={() => setActiveProject(prev => (prev === 0 ? projects.length - 1 : prev - 1))}
-              className="p-2 rounded-full hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
-              aria-label="Previous project"
-            >
-              <ArrowLeft size={20} />
-            </button>
-            <p className="text-sm text-foreground/60">
-              {activeProject + 1} of {projects.length}
-            </p>
-            <button 
-              onClick={() => setActiveProject(prev => (prev === projects.length - 1 ? 0 : prev + 1))}
-              className="p-2 rounded-full hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
-              aria-label="Next project"
-            >
-              <ArrowRight size={20} />
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div className="lg:col-span-8">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeProject}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-            className="rounded-2xl overflow-hidden shadow-xl group relative"
-          >
-            <div className="relative h-[600px] overflow-hidden">
-              <div className="absolute inset-0 w-full h-full">
-                <img 
-                  src={projects[activeProject].image}
-                  alt={projects[activeProject].title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
-              
-              <div className="absolute top-6 left-6 z-20">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/40 text-white backdrop-blur-sm border border-primary/20">
-                  {projects[activeProject].category}
-                </span>
-              </div>
-              
-              {projects[activeProject].featured && (
-                <div className="absolute top-6 right-6 z-20">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/40 text-white backdrop-blur-sm border border-yellow-500/20">
-                    <BadgeCheck className="w-3 h-3 mr-1" />
-                    Featured
-                  </span>
-                </div>
-              )}
-              
-              <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
-                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-primary/90 transition-colors">
-                  <span className="relative">
-                    {projects[activeProject].title}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-                  </span>
-                </h3>
-                
-                <p className="text-white/90 mb-6 max-w-lg text-lg">
-                  {projects[activeProject].description}
-                </p>
-                
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'].slice(0, 3 + Math.floor(Math.random() * 2)).map((tech, i) => (
-                    <span key={i} className="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-md text-sm text-white">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  {projects[activeProject].stats && (
-                    <div className="flex items-center text-primary/90 text-sm bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm">
-                      <BarChart className="w-4 h-4 mr-2" />
-                      {projects[activeProject].stats}
-                    </div>
-                  )}
-                  
-                  <button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center group/btn">
-                    View Project
-                    <ArrowRight size={16} className="ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Mobile Navigation Controls */}
-        <div className="flex items-center justify-between mt-6 lg:hidden">
-          <button 
-            onClick={() => setActiveProject(prev => (prev === 0 ? projects.length - 1 : prev - 1))}
-            className="p-2 rounded-full hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
-            aria-label="Previous project"
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <p className="text-sm text-foreground/60">
-            {activeProject + 1} of {projects.length}
-          </p>
-          <button 
-            onClick={() => setActiveProject(prev => (prev === projects.length - 1 ? 0 : prev + 1))}
-            className="p-2 rounded-full hover:bg-primary/10 text-foreground/60 hover:text-primary transition-colors"
-            aria-label="Next project"
-          >
-            <ArrowRight size={20} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 /* SECTION COMPONENTS */
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
@@ -761,23 +561,6 @@ const TESTIMONIALS = [
   }
 ];
 
-const WHY_CHOOSE_US = [
-  {
-    title: "Expert Team",
-    description: "Senior engineers and consultants with 10+ years of industry experience",
-    icon: <Users className="w-6 h-6 text-primary" />
-  },
-  {
-    title: "Proven Results",
-    description: "Track record of delivering projects on time and exceeding expectations",
-    icon: <Award className="w-6 h-6 text-primary" />
-  },
-  {
-    title: "Future-Proof Solutions",
-    description: "Technology that scales with your business and adapts to changing needs",
-    icon: <Lightbulb className="w-6 h-6 text-primary" />
-  }
-];
 
 const HERO_SERVICES = [
   { title: "Web Development", icon: <Code className="w-4 h-4" /> },
@@ -1529,19 +1312,23 @@ const ProcessTimeline = memo(() => {
       
       const timelineRect = timelineRef.current.getBoundingClientRect();
       const viewportCenter = window.innerHeight / 2;
-      const timelineCenter = timelineRect.top + timelineRect.height / 2;
+      const timelinePosition = timelineRect.top;
+      const timelineHeight = timelineRect.height;
       
-      // Calculate which step should be active based on scroll position
-      const scrollPercentage = (viewportCenter - timelineRect.top) / timelineRect.height;
-      const clampedPercentage = Math.max(0, Math.min(1, scrollPercentage));
-      const stepIndex = Math.round(clampedPercentage * (processSteps.length - 1)) + 1;
-      
-      if (stepIndex !== activeStep && stepIndex >= 1 && stepIndex <= processSteps.length) {
-        setActiveStep(stepIndex);
+      // Only activate scroll detection when timeline is in view
+      if (timelinePosition < viewportCenter && timelinePosition + timelineHeight > 0) {
+        // Calculate which step should be active based on scroll position
+        const scrollProgress = (viewportCenter - timelinePosition) / timelineHeight;
+        const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+        const stepIndex = Math.ceil(clampedProgress * processSteps.length);
+        
+        if (stepIndex !== activeStep && stepIndex >= 1 && stepIndex <= processSteps.length) {
+          setActiveStep(stepIndex);
+        }
       }
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [activeStep, isScrolling, processSteps.length]);
   
@@ -1556,7 +1343,7 @@ const ProcessTimeline = memo(() => {
   };
   
   return (
-    <Section id="our-process" pattern={true} className="py-24">
+    <Section id="our-process" pattern={true} className="py-20 bg-background dark:bg-gray-900">
       <SectionHeading 
         eyebrow="Our Process" 
         title="How We Deliver Excellence" 
@@ -1564,9 +1351,9 @@ const ProcessTimeline = memo(() => {
         center={true}
       />
       
-      <div className="mt-20 relative max-w-6xl mx-auto" ref={timelineRef}>
+      <div className="mt-16 relative max-w-6xl mx-auto" ref={timelineRef}>
         {/* Timeline line */}
-        <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-secondary/20 transform -translate-x-1/2"></div>
+        <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-secondary/20 dark:bg-gray-700 transform -translate-x-1/2"></div>
         
         {/* Progress line animating based on active step */}
         <div 
@@ -1584,15 +1371,15 @@ const ProcessTimeline = memo(() => {
           const isExactlyActive = activeStep === process.step;
           
           return (
-            <div key={index} className="relative mb-24 last:mb-0">
+            <div key={index} className="relative mb-20 last:mb-0">
               {/* Timeline marker */}
               <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
                 <div 
                   className={`
                     h-14 w-14 rounded-full flex items-center justify-center z-10 
                     ${isActive 
-                      ? 'bg-primary text-white border-4 border-white shadow-lg shadow-primary/30' 
-                      : 'bg-white border-4 border-secondary/20 text-secondary/40'
+                      ? 'bg-primary text-white border-4 border-white dark:border-gray-900 shadow-lg shadow-primary/30' 
+                      : 'bg-white dark:bg-gray-800 border-4 border-secondary/20 dark:border-gray-700 text-secondary/40 dark:text-gray-400'
                     }
                     transition-all duration-500
                   `}
@@ -1626,8 +1413,8 @@ const ProcessTimeline = memo(() => {
                   className={`
                     rounded-xl p-6 border shadow-lg transform transition-all duration-500 cursor-pointer
                     ${isActive 
-                      ? 'bg-white border-primary/20 shadow-primary/5' 
-                      : 'bg-secondary/5 border-secondary/20'
+                      ? 'bg-background dark:bg-gray-800 border-primary/20 dark:border-primary/30 shadow-primary/5' 
+                      : 'bg-secondary/5 dark:bg-gray-800/50 border-secondary/20 dark:border-gray-700'
                     }
                     hover:shadow-xl
                   `}
@@ -1638,7 +1425,7 @@ const ProcessTimeline = memo(() => {
                       className={`p-3 rounded-lg ${
                         isActive 
                           ? 'text-white' 
-                          : 'text-secondary/60 bg-secondary/10'
+                          : 'text-secondary/60 dark:text-gray-400 bg-secondary/10 dark:bg-gray-700/50'
                       } transition-colors duration-500`}
                       style={{ 
                         backgroundColor: isActive ? process.color : undefined 
@@ -1649,11 +1436,11 @@ const ProcessTimeline = memo(() => {
                     
                     <div>
                       <h3 className={`text-xl font-bold mb-2 transition-colors duration-500 ${
-                        isActive ? 'text-foreground' : 'text-foreground/60'
+                        isActive ? 'text-foreground dark:text-white' : 'text-foreground/60 dark:text-gray-400'
                       }`}>
                         {process.title}
                       </h3>
-                      <p className="text-foreground/70 mb-4">{process.description}</p>
+                      <p className="text-foreground/70 dark:text-gray-300 mb-4">{process.description}</p>
                       
                       {/* Benefits list with reveal animation */}
                       <AnimatePresence>
@@ -1663,9 +1450,9 @@ const ProcessTimeline = memo(() => {
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="mt-4 pt-4 border-t border-secondary/10"
+                            className="mt-4 pt-4 border-t border-secondary/10 dark:border-gray-700"
                           >
-                            <h4 className="font-medium mb-2 text-sm uppercase tracking-wider text-foreground/60">Key Benefits</h4>
+                            <h4 className="font-medium mb-2 text-sm uppercase tracking-wider text-foreground/60 dark:text-gray-400">Key Benefits</h4>
                             <ul className="space-y-2">
                               {process.benefits.map((benefit, idx) => (
                                 <motion.li 
@@ -1673,7 +1460,7 @@ const ProcessTimeline = memo(() => {
                                   initial={{ opacity: 0, x: -10 }}
                                   animate={{ opacity: 1, x: 0 }}
                                   transition={{ delay: idx * 0.1 }}
-                                  className="flex items-center gap-2"
+                                  className="flex items-center gap-2 dark:text-gray-300"
                                 >
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
                                     <polyline points="20 6 9 17 4 12"></polyline>
@@ -1687,8 +1474,6 @@ const ProcessTimeline = memo(() => {
                       </AnimatePresence>
                     </div>
                   </div>
-                  
-
                 </motion.div>
               </div>
             </div>
@@ -1696,7 +1481,21 @@ const ProcessTimeline = memo(() => {
         })}
       </div>
       
-
+      {/* Navigation controls for mobile */}
+      <div className="mt-12 flex justify-center gap-2 md:hidden">
+        {processSteps.map((step, index) => (
+          <button 
+            key={index}
+            onClick={() => handleStepClick(step.step)}
+            className={`w-3 h-3 rounded-full transition-colors ${
+              activeStep === step.step 
+                ? 'bg-primary' 
+                : 'bg-secondary/30 dark:bg-gray-700'
+            }`}
+            aria-label={`Go to step ${step.step}: ${step.title}`}
+          />
+        ))}
+      </div>
     </Section>
   );
 });
@@ -2175,14 +1974,19 @@ const UpcomingProjectsShowcase = memo(() => {
   ];
   
   return (
-    <Section id="upcoming-projects" className="py-24 overflow-hidden">
+    <Section id="upcoming-projects" className="py-16 overflow-hidden dark:bg-gray-900"> 
       <div className="max-w-7xl mx-auto">
-
+        <SectionHeading 
+          eyebrow="Coming Soon" 
+          title="Upcoming Projects" 
+          description="Get a sneak peek of our innovative solutions currently in development"
+          center={true}
+        />
         
-        <div className="mt-16 md:mt-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="mt-10 md:mt-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             {/* Left side - 3D interactive card */}
-            <div className="relative h-[500px] w-full">
+            <div className="relative h-[450px] w-full">
               <AnimatePresence mode="wait">
                 <motion.div 
                   key={activeProject}
@@ -2233,8 +2037,7 @@ const UpcomingProjectsShowcase = memo(() => {
                           backgroundSize: '200% 200%',
                           animation: 'gradient-animation 3s ease infinite',
                           border: `1px solid ${upcomingProjects[activeProject].color}60`,
-                          boxShadow: `0 0 40px ${upcomingProjects[activeProject].color}40`,
-                          transform: 'translateZ(20px)'
+                          boxShadow: `0 0 40px ${upcomingProjects[activeProject].color}40`
                         }}
                       ></div>
                       
@@ -2243,8 +2046,7 @@ const UpcomingProjectsShowcase = memo(() => {
                         className="absolute top-5 right-5 z-30 px-4 py-2 rounded-full backdrop-blur-md"
                         style={{ 
                           backgroundColor: `${upcomingProjects[activeProject].color}30`,
-                          border: `1px solid ${upcomingProjects[activeProject].color}50`,
-                          transform: 'translateZ(40px)'
+                          border: `1px solid ${upcomingProjects[activeProject].color}50`
                         }}
                       >
                         <div className="flex items-center gap-2">
@@ -2320,24 +2122,24 @@ const UpcomingProjectsShowcase = memo(() => {
             </div>
             
             {/* Right side - Project details & navigation */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 dark:bg-primary/20 px-4 py-1 rounded-full inline-block border border-primary/20 dark:border-primary/40">
                   Innovation Pipeline
                 </span>
                 
-                        <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4">
-            Tomorrow's <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">solutions, today</span>
-          </h2>
+                <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4">
+                  Tomorrow's <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">solutions, today</span>
+                </h2>
                 
-                <p className="text-foreground/70">
+                <p className="text-foreground/70 dark:text-gray-300">
                   We're constantly innovating and developing new projects to address emerging challenges and opportunities. 
                   Here's an exclusive preview of what we're working on behind the scenes.
                 </p>
               </div>
               
               <div className="space-y-4">
-                <h4 className="text-lg font-medium">Upcoming Launches</h4>
+                <h4 className="text-lg font-medium dark:text-white">Upcoming Launches</h4>
                 
                 <div className="space-y-3">
                   {upcomingProjects.map((project, index) => (
@@ -2345,8 +2147,8 @@ const UpcomingProjectsShowcase = memo(() => {
                       key={index}
                       className={`p-4 rounded-xl cursor-pointer transition-all duration-300 flex items-center gap-4 ${
                         activeProject === index 
-                          ? 'bg-primary/10 border border-primary/30' 
-                          : 'hover:bg-secondary/5'
+                          ? 'bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/40' 
+                          : 'hover:bg-secondary/5 dark:hover:bg-gray-800'
                       }`}
                       onClick={() => setActiveProject(index)}
                     >
@@ -2367,23 +2169,21 @@ const UpcomingProjectsShowcase = memo(() => {
                       <div>
                         <div className="flex items-center justify-between">
                           <h5 className={`font-medium transition-colors ${
-                            activeProject === index ? 'text-primary' : 'text-foreground'
+                            activeProject === index ? 'text-primary' : 'text-foreground dark:text-white'
                           }`}>
                             {project.title}
                           </h5>
-                          <span className="text-xs text-foreground/60">
+                          <span className="text-xs text-foreground/60 dark:text-gray-400">
                             {project.date}
                           </span>
                         </div>
-                        <p className="text-sm text-foreground/60 line-clamp-1">
+                        <p className="text-sm text-foreground/60 dark:text-gray-400 line-clamp-1">
                           {project.description}
                         </p>
                       </div>
                     </div>
                   ))}
                 </div>
-                
-
               </div>
             </div>
           </div>
@@ -2410,7 +2210,6 @@ function Home() {
           <div className="absolute inset-0 w-full h-full">
           </div>
           
-          <AuroraBackground className="absolute inset-0" showRadialGradient={true} />
 
           <HeroSection />
 
@@ -2452,21 +2251,10 @@ function Home() {
           </section>
         </div>
 
-         <UpcomingProjectsShowcase />
-
-
-
-        {/* SERVICES SECTION */}
+        <UpcomingProjectsShowcase />
         <ServicesSection />
-         <ProcessTimeline />
-
-
-       
-
-        {/* PROJECTS SECTION */}
+        <ProcessTimeline />
         <ProjectsSection />
-
-
 
         {/* TESTIMONIALS SECTION */}
         <Section>
