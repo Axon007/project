@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import PageTransition from '../components/PageTransition';
-import { AuroraBackground } from '../components/AuroraBackground';
+import { PinContainer } from '../components/ui/3d-pin';
+import { ContainerScroll } from "../components/ui/container-scroll-animation"; 
+
+
 import { 
   Code, Smartphone, Zap, Shield, 
   ArrowRight, Star, Settings,
@@ -16,6 +19,34 @@ const CosmicSphere = () => {
     <div className="absolute right-24 top-40 h-80 w-80 lg:w-96 lg:h-96 blur-3xl rounded-full bg-gradient-to-br from-primary/30 via-purple-600/20 to-blue-600/30 animate-slow-spin hidden lg:block" />
   );
 };
+
+export function HeroScrollDemo() {
+  return (
+    <div className="flex flex-col overflow-hidden">
+      <ContainerScroll
+        titleComponent={
+          <>
+            <h1 className="text-4xl font-semibold text-black dark:text-white">
+              Unleash the power of <br />
+              <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
+                Scroll Animations
+              </span>
+            </h1>
+          </>
+        }
+      >
+        <img
+          src={`/linear.webp`}
+          alt="hero"
+          height={720}
+          width={1400}
+          className="mx-auto rounded-2xl object-cover h-full object-left-top"
+          draggable={false}
+        />
+      </ContainerScroll>
+    </div>
+  );
+}
 
 // Feature card component
 const FeatureCard = ({ icon, title, description }) => {
@@ -215,6 +246,45 @@ function AppDevelopment() {
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-b from-background to-background/95 relative overflow-hidden">
         <CosmicSphere />
+        <section className="relative overflow-hidden">
+  <div className="flex flex-col overflow-hidden">
+    <ContainerScroll
+      titleComponent={
+        <>
+          <h1 className="text-3xl font-semibold text-black dark:text-white">
+            Transform Your Vision Into <br />
+            <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+              Powerful Apps
+            </span>
+          </h1>
+          <p className="text-lg md:text-xl text-foreground/70 max-w-3xl mx-auto mt-6">
+            Cutting-edge mobile solutions that engage users and drive business growth. 
+            From concept to deployment, we bring your ideas to life.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center mt-8">
+            <a 
+              href="#contact" 
+              className="px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group"
+            >
+              Start Your Project
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </a>
+            <a 
+              href="#services" 
+              className="px-6 py-3 border border-primary/30 text-primary rounded-xl font-medium hover:bg-primary/5 transition-all flex items-center justify-center gap-2 group"
+            >
+              Explore Services
+              <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+            </a>
+          </div>
+        </>
+      }
+    >
+
+    </ContainerScroll>
+  </div>
+</section>
+
         
         {/* Hero Section - Stunning App Designs */}
         <section className="relative py-28 md:py-36 px-4 overflow-hidden">
@@ -235,16 +305,6 @@ function AppDevelopment() {
               >
                 <Smartphone className="w-4 h-4 mr-2" /> Premium App Development Studio
               </motion.span>
-              
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-4xl md:text-7xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary bg-size-200 animate-gradient"
-              >
-                Stunning <span className="text-primary"> Digital Experiencesyy</span> Into <br className="hidden md:block" />
-                Digital Experiences
-              </motion.h1>
 
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
@@ -1430,6 +1490,10 @@ function AppDevelopment() {
           </div>
         </section>
 
+        
+
+
+
         {/* App Design Features Section */}
         <section className="py-24 overflow-hidden relative">
           {/* Background elements */}
@@ -1781,6 +1845,7 @@ function AppDevelopment() {
             </motion.div>
           </div>
         </section>
+        
         
       </div>
     </PageTransition>

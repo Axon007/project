@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Spline from '@splinetool/react-spline';
+import { PinContainer } from '../components/ui/3d-pin';
 import { 
   Headset, 
   Glasses, 
@@ -19,6 +20,150 @@ import {
   Globe,
   Sparkles
 } from 'lucide-react';
+
+// Update the existing AnimatedPinDemo function to include more impressive demo pins
+export function AnimatedPinDemo() {
+  return (
+    <div className="pt-16 pb-24 relative overflow-hidden">
+      <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
+        Interactive AR/VR Experiences
+      </h2>
+      
+      <div className="flex flex-wrap justify-center gap-16">
+        {/* AR Try-On Demo */}
+        <div className="relative">
+          <PinContainer
+            title="AR Try-On Experience"
+            href="#ar-demo"
+          >
+            <div className="flex flex-col p-4 tracking-tight text-slate-100/50 w-[20rem] h-[20rem]">
+              <h3 className="max-w-xs !pb-2 !m-0 font-bold text-xl text-slate-100">
+                Virtual Try-On
+              </h3>
+              <div className="text-base !m-0 !p-0 font-normal mb-4">
+                <span className="text-slate-400">
+                  See how products look in your space before buying
+                </span>
+              </div>
+              <div className="flex flex-1 w-full rounded-lg bg-gradient-to-br from-violet-500 via-purple-500 to-blue-500 overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1633544805151-2e8afbb596bc?q=80&w=1000" 
+                  alt="AR Demo" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </PinContainer>
+        </div>
+        
+        {/* VR Training Demo */}
+        <div className="relative">
+          <PinContainer
+            title="VR Training Simulator"
+            href="#vr-demo"
+          >
+            <div className="flex flex-col p-4 tracking-tight text-slate-100/50 w-[20rem] h-[20rem]">
+              <h3 className="max-w-xs !pb-2 !m-0 font-bold text-xl text-slate-100">
+                Interactive Learning
+              </h3>
+              <div className="text-base !m-0 !p-0 font-normal mb-4">
+                <span className="text-slate-400">
+                  Hands-on training in a safe virtual environment
+                </span>
+              </div>
+              <div className="flex flex-1 w-full rounded-lg overflow-hidden">
+                <video 
+                  className="w-full h-full object-cover"
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                >
+                  <source src="https://assets.mixkit.co/videos/preview/mixkit-man-wearing-virtual-glasses-916-large.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </PinContainer>
+        </div>
+        
+        {/* Data Visualization Demo */}
+        <div className="relative">
+          <PinContainer
+            title="3D Data Visualization"
+            href="#data-viz"
+          >
+            <div className="flex flex-col p-4 tracking-tight text-slate-100/50 w-[20rem] h-[20rem]">
+              <h3 className="max-w-xs !pb-2 !m-0 font-bold text-xl text-slate-100">
+                Spatial Analytics
+              </h3>
+              <div className="text-base !m-0 !p-0 font-normal mb-4">
+                <span className="text-slate-400">
+                  Visualize complex data in immersive 3D environments
+                </span>
+              </div>
+              <div className="flex flex-1 w-full rounded-lg bg-[#0f172a] overflow-hidden p-4">
+                <div className="w-full h-full flex items-center justify-center">
+                  <motion.div
+                    animate={{ 
+                      rotateY: 360,
+                      rotateX: [0, 45, 0, -45, 0],
+                    }}
+                    transition={{ 
+                      duration: 20, 
+                      repeat: Infinity, 
+                      ease: "linear",
+                      rotateX: {
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }
+                    }}
+                    className="w-48 h-48 relative"
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-full h-full border-4 border-blue-500/50 rounded-full"></div>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-3/4 h-3/4 border-4 border-purple-500/50 rounded-full"></div>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-1/2 h-1/2 border-4 border-emerald-500/50 rounded-full"></div>
+                    </div>
+                    {[...Array(8)].map((_, i) => {
+                      const angle = (i / 8) * Math.PI * 2;
+                      const x = Math.cos(angle) * 80;
+                      const y = Math.sin(angle) * 80;
+                      
+                      return (
+                        <motion.div
+                          key={i}
+                          className="absolute w-4 h-4 rounded-full bg-primary"
+                          style={{
+                            left: `calc(50% + ${x}px - 8px)`,
+                            top: `calc(50% + ${y}px - 8px)`,
+                          }}
+                          animate={{
+                            scale: [1, 1.5, 1],
+                            opacity: [0.7, 1, 0.7]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            delay: i * 0.3
+                          }}
+                        />
+                      );
+                    })}
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </PinContainer>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function ARVRServices() {
   useEffect(() => {
@@ -113,6 +258,9 @@ function ARVRServices() {
           </div>
         </div>
       </section>
+      
+      {/* ADD THIS - 3D Pin Demo Section */}
+      <AnimatedPinDemo />
       
       {/* Services Section */}
       <section className="py-24" id="services">
@@ -234,68 +382,7 @@ function ARVRServices() {
         </div>
       </section>
       
-      {/* How We Work Section */}
-      <section className="py-24 bg-secondary/5">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
-              Our Process
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
-              How We Bring Your Vision to Life
-            </h2>
-            <p className="text-lg text-foreground/70">
-              Our proven development methodology ensures high-quality AR/VR solutions that achieve your business objectives.
-            </p>
-          </div>
-          
-          <div className="relative max-w-4xl mx-auto">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary via-purple-500 to-blue-500 rounded-full"></div>
-            
-            {[
-              {
-                title: "Discovery & Strategy",
-                description: "We analyze your needs, define objectives, and create a strategic roadmap for your AR/VR project.",
-                icon: <Code className="w-6 h-6" />
-              },
-              {
-                title: "Design & Prototyping",
-                description: "Our designers create the user experience and visual elements, then develop interactive prototypes.",
-                icon: <Activity className="w-6 h-6" />
-              },
-              {
-                title: "Development & Testing",
-                description: "Our development team builds your solution using the latest AR/VR technologies and conducts rigorous testing.",
-                icon: <Users className="w-6 h-6" />
-              },
-              {
-                title: "Deployment & Support",
-                description: "We ensure smooth deployment and provide ongoing support and updates for your AR/VR solution.",
-                icon: <Award className="w-6 h-6" />
-              }
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className={`flex mb-12 relative ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
-              >
-                <div className="w-1/2"></div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center text-white shadow-lg z-10">
-                  {step.icon}
-                </div>
-                <div className="w-1/2 bg-card rounded-xl p-6 shadow-md border border-border">
-                  <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                  <p className="text-foreground/70">{step.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
       
       {/* Technology Capabilities Section */}
       <section className="py-24">
@@ -379,7 +466,7 @@ function ARVRServices() {
                           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center text-white">
                             {index === 0 && <Headset className="w-8 h-8" />}
                             {index === 1 && <Glasses className="w-8 h-8" />}
-                            {index === 2 && <Building2 className="w-8 h-8" />} {/* Changed from Buildings2 */}
+                            {index === 2 && <Building2 className="w-8 h-8" />}
                             {index === 3 && <GraduationCap className="w-8 h-8" />}
                             {index === 4 && <PieChart className="w-8 h-8" />}
                             {index === 5 && <Gamepad2 className="w-8 h-8" />}
@@ -430,6 +517,331 @@ function ARVRServices() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Immersive Experience Section */}
+      <section className="py-24 relative overflow-hidden">
+        {/* Background effects */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2 }}
+          className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"
+        ></motion.div>
+        
+        {/* Fixed particles instead of dynamic ones */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ 
+                opacity: [0, 0.7, 0],
+                y: [i % 2 === 0 ? -10 : 10, i % 2 === 0 ? 10 : -10]
+              }}
+              transition={{ 
+                duration: 8 + (i % 5) * 2,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "linear",
+                delay: i * 0.25
+              }}
+              className="absolute w-2 h-2 rounded-full bg-primary/40"
+              style={{
+                left: `${10 + (i * 5) % 80}%`,
+                top: `${15 + (i * 7) % 70}%`
+              }}
+            />
+          ))}
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-center mb-16"
+          >
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+              <Sparkles className="w-4 h-4 mr-2" /> Immersive Experiences
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
+              Step Into The Future
+            </h2>
+            <p className="text-lg text-foreground/70">
+              Experience how our AR/VR solutions blur the line between digital and physical worlds, creating truly immersive experiences.
+            </p>
+          </motion.div>
+          
+          {/* Interactive Experience Showcase */}
+          <div className="relative my-20">
+            {/* 3D Environment Frame */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="relative rounded-2xl overflow-hidden border border-border shadow-lg h-[600px] bg-gradient-to-br from-background to-secondary/10"
+            >
+              {/* Virtual environment background */}
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1626379953822-baec19dc2b66?q=80&w=2000')] bg-cover bg-center opacity-60"></div>
+              
+              {/* Grid overlay */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.2 }}
+                transition={{ duration: 2, delay: 1 }}
+                className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:20px_20px]"
+              ></motion.div>
+              
+              {/* Interactive hotspots */}
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 group"
+              >
+                <div className="relative">
+                  <div className="animate-ping absolute h-8 w-8 rounded-full bg-primary/40"></div>
+                  <motion.div 
+                    whileHover={{ scale: 1.2 }}
+                    className="relative h-6 w-6 rounded-full bg-primary flex items-center justify-center cursor-pointer"
+                  >
+                    <span className="text-white font-bold">1</span>
+                  </motion.div>
+                </div>
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 bg-card/90 backdrop-blur-sm p-4 rounded-lg shadow-lg border border-border w-64 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <h4 className="font-bold text-sm">Interactive Training</h4>
+                  <p className="text-xs text-foreground/70">Users can interact with virtual objects for hands-on training</p>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                viewport={{ once: true }}
+                className="absolute top-1/3 right-1/3 transform -translate-x-1/2 -translate-y-1/2 group"
+              >
+                <div className="relative">
+                  <div className="animate-ping absolute h-8 w-8 rounded-full bg-purple-500/40 animation-delay-700"></div>
+                  <motion.div 
+                    whileHover={{ scale: 1.2 }}
+                    className="relative h-6 w-6 rounded-full bg-purple-500 flex items-center justify-center cursor-pointer"
+                  >
+                    <span className="text-white font-bold">2</span>
+                  </motion.div>
+                </div>
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 bg-card/90 backdrop-blur-sm p-4 rounded-lg shadow-lg border border-border w-64 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <h4 className="font-bold text-sm">Object Manipulation</h4>
+                  <p className="text-xs text-foreground/70">Grab, rotate, and modify virtual objects with natural hand gestures</p>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                viewport={{ once: true }}
+                className="absolute bottom-1/4 right-1/4 transform -translate-x-1/2 -translate-y-1/2 group"
+              >
+                <div className="relative">
+                  <div className="animate-ping absolute h-8 w-8 rounded-full bg-blue-500/40 animation-delay-1500"></div>
+                  <motion.div 
+                    whileHover={{ scale: 1.2 }}
+                    className="relative h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center cursor-pointer"
+                  >
+                    <span className="text-white font-bold">3</span>
+                  </motion.div>
+                </div>
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 bg-card/90 backdrop-blur-sm p-4 rounded-lg shadow-lg border border-border w-64 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <h4 className="font-bold text-sm">Spatial Awareness</h4>
+                  <p className="text-xs text-foreground/70">Experience environments that adapt to your physical surroundings</p>
+                </div>
+              </motion.div>
+              
+              {/* Floating UI Elements */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true }}
+                className="absolute top-10 right-10 bg-card/80 backdrop-blur-md p-4 rounded-lg border border-border shadow-lg"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div className="w-64 h-20 bg-foreground/10 rounded-md mb-2">
+                  <div className="h-full w-full p-2">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-2 bg-primary/40 rounded-full"></div>
+                      <div className="w-16 h-2 bg-foreground/30 rounded-full"></div>
+                    </div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-12 h-2 bg-foreground/30 rounded-full"></div>
+                      <div className="w-8 h-2 bg-purple-500/40 rounded-full"></div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-10 h-2 bg-foreground/30 rounded-full"></div>
+                      <div className="w-14 h-2 bg-blue-500/40 rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="w-1/2 h-8 bg-primary/20 rounded-md hover:bg-primary/30 transition-colors"></div>
+                  <div className="w-1/2 h-8 bg-purple-500/20 rounded-md hover:bg-purple-500/30 transition-colors"></div>
+                </div>
+              </motion.div>
+              
+              {/* Data visualization chart */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="absolute top-1/3 left-10 bg-card/80 backdrop-blur-md p-4 rounded-lg border border-border shadow-lg"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                    <span className="text-white text-xs">i</span>
+                  </div>
+                  <span className="text-xs font-medium">Spatial Data</span>
+                </div>
+                <div className="flex items-end h-20 gap-1">
+                  {[40, 65, 30, 80, 55, 70, 45, 60].map((height, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ height: 0 }}
+                      whileInView={{ height: `${height}%` }}
+                      transition={{ duration: 1, delay: 0.3 + (i * 0.1) }}
+                      viewport={{ once: true }}
+                      className="w-4 rounded-sm bg-gradient-to-t from-primary/30 to-purple-500/70"
+                    ></motion.div>
+                  ))}
+                </div>
+              </motion.div>
+              
+              {/* VR Headset Overlay */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_65%,rgba(0,0,0,0.7)_100%)]"></div>
+              
+              {/* Scanning effect */}
+              <motion.div
+                initial={{ left: '-100%' }}
+                animate={{ left: '100%' }}
+                transition={{ duration: 3, repeat: Infinity, repeatDelay: 5 }}
+                className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-primary/20 to-transparent pointer-events-none"
+              ></motion.div>
+              
+              {/* Center CTA */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="absolute left-1/2 bottom-10 transform -translate-x-1/2 text-center"
+              >
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-8 py-4 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 flex items-center gap-2 group"
+                >
+                  Experience Demo
+                  <Globe className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                </motion.button>
+              </motion.div>
+            </motion.div>
+            
+            {/* Experience features */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+              {[
+                {
+                  icon: <Headset className="w-6 h-6" />,
+                  title: "Full Immersion",
+                  description: "Step completely into virtual worlds with our 360° environments and spatial audio."
+                },
+                {
+                  icon: <Glasses className="w-6 h-6" />,
+                  title: "Mixed Reality",
+                  description: "Blend digital content with the physical world through advanced AR overlays."
+                },
+                {
+                  icon: <Users className="w-6 h-6" />,
+                  title: "Multi-User Experience",
+                  description: "Collaborate with others in shared virtual spaces regardless of physical location."
+                }
+              ].map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  className="bg-card rounded-xl p-6 border border-border hover:shadow-md transition-all"
+                >
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                  <p className="text-foreground/70">{feature.description}</p>
+                  
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "100%" }}
+                    transition={{ duration: 0.8, delay: index * 0.2 + 0.5 }}
+                    viewport={{ once: true }}
+                    className="h-0.5 bg-gradient-to-r from-primary to-purple-500/50 mt-4"
+                  ></motion.div>
+                </motion.div>
+              ))}
+            </div>
+            
+            {/* Stats & Metrics */}
+            <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[
+                { value: "98%", label: "User Engagement" },
+                { value: "75%", label: "Knowledge Retention" },
+                { value: "3.5x", label: "Training Efficiency" },
+                { value: "64%", label: "Cost Reduction" }
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-card border border-border rounded-xl p-6 text-center relative overflow-hidden group"
+                >
+                  <h3 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500 mb-2">{stat.value}</h3>
+                  <p className="text-foreground/70 text-sm">{stat.label}</p>
+                  
+                  {/* Hover effect */}
+                  <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </motion.div>
+              ))}
+            </div>
+            
+            {/* Call to action */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="mt-16 text-center"
+            >
+              <button className="px-8 py-4 rounded-xl bg-secondary text-foreground font-medium hover:bg-secondary/80 transition-colors flex items-center gap-2 mx-auto group relative overflow-hidden">
+                <Sparkles className="w-5 h-5" />
+                <span>Schedule Your Immersive Demo</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                
+                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/0 via-primary/10 to-secondary/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </button>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -715,26 +1127,6 @@ function ARVRServices() {
         </div>
       </section>
       
-      {/* Newsletter Section */}
-      <section className="py-16 bg-secondary/5">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">Stay Updated on AR/VR Innovations</h2>
-            <p className="text-foreground/70 mb-8">Subscribe to our newsletter for the latest industry trends, technology updates, and exclusive insights.</p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="flex-grow px-6 py-4 rounded-xl bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button className="px-6 py-4 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
-                Subscribe Now
-              </button>
-            </div>
-            <p className="text-sm text-foreground/60 mt-4">We respect your privacy. Unsubscribe at any time.</p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

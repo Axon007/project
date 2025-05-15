@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect, memo, useMemo, useCallback } from "react";
 import PageTransition from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
+import { GlowingEffect} from '../components/ui/glowing-effect'
 import { Globe } from "@/components/magicui/globe";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
@@ -9,7 +10,6 @@ import {
   VideoIcon, Brush, Lightbulb, ArrowLeft,ArrowDown,  MessageSquare, CheckCircle, Phone, Mail, MessageCircle
 } from "lucide-react";
 import { Smartphone } from "lucide-react";
-import FeaturesSectionDemo from '../components/FeaturesSectionDemo';
 import { Link } from "react-router-dom";
 
 /* THEME AND UI CONFIGURATION */
@@ -687,7 +687,7 @@ const PROJECTS = [
     description: "Complete visual identity overhaul for a Fortune 500 financial services company",
     category: "Logo Design",
     image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    stats: "40% increase in brand recognition",
+
     color: THEME.accent.orange
   },
   {
@@ -771,7 +771,7 @@ const HERO_SERVICES = [
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16 md:pb-24" aria-labelledby="hero-heading">
-      {/* Enhanced background with depth layers */}
+
 
       {/* Improved globe with better positioning and effects 
      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
@@ -1426,27 +1426,7 @@ const DesignsSection = memo(() => {
         )}
       </AnimatePresence>
       
-      {/* Contact CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-16 text-center bg-gradient-to-r from-primary/5 to-secondary/5 p-8 rounded-2xl border border-primary/10"
-      >
-        <h3 className="text-2xl font-bold mb-4">Need custom design solutions?</h3>
-        <p className="text-foreground/70 mb-6 max-w-lg mx-auto">
-          Our design team is ready to help bring your vision to life with tailored creative solutions that align with your brand and business objectives.
-        </p>
-        <div className="flex flex-wrap gap-4 justify-center">
-          <Button variant="primary" size="lg" href="/contact">
-            Request a Design Consultation
-            <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button variant="secondary" size="lg" href="/portfolio">
-            View Full Portfolio
-          </Button>
-        </div>
-      </motion.div>
+
     </Section>
   );
 });
@@ -1678,14 +1658,6 @@ const ThreeDCardShowcase = memo(() => {
                   ))}
                 </div>
               </div>
-              
-              <a 
-                href="/case-studies" 
-                className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
-              >
-                View all case studies
-                <ArrowRight size={16} className="ml-2" />
-              </a>
             </div>
           </div>
         </div>
@@ -1937,21 +1909,7 @@ const ProcessTimeline = memo(() => {
                     </div>
                   </div>
                   
-                  {/* Progress indicator for current step */}
-                  {isExactlyActive && (
-                    <div className="mt-4 pt-4 border-t border-secondary/10">
-                      <div className="flex items-center justify-between text-xs text-foreground/60">
-                        <span>Progress</span>
-                        <span>{Math.round((process.step / processSteps.length) * 100)}%</span>
-                      </div>
-                      <div className="mt-1 bg-secondary/10 rounded-full h-1.5 overflow-hidden">
-                        <div
-                          className="h-full bg-primary transition-all duration-1000 ease-out"
-                          style={{ width: `${(process.step / processSteps.length) * 100}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  )}
+
                 </motion.div>
               </div>
             </div>
@@ -1959,30 +1917,7 @@ const ProcessTimeline = memo(() => {
         })}
       </div>
       
-      {/* Bottom CTA section */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mt-20 text-center"
-      >
-        <div className="bg-white rounded-2xl border border-primary/20 shadow-xl shadow-primary/5 p-8 max-w-3xl mx-auto">
-          <h3 className="text-2xl font-bold mb-3">Ready to start your project?</h3>
-          <p className="text-foreground/70 mb-6 max-w-lg mx-auto">
-            Our proven process ensures your project will be delivered on-time, on-budget, and exceed expectations.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button variant="primary" size="lg" href="/contact">
-              Schedule a Consultation
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-            <Button variant="secondary" size="lg" href="/case-studies">
-              View Case Studies
-            </Button>
-          </div>
-        </div>
-      </motion.div>
+
     </Section>
   );
 });
@@ -2478,8 +2413,11 @@ function Home() {
           </section>
         </div>
 
+        <ThreeDCardShowcase />
+
         {/* SERVICES SECTION */}
         <ServicesSection />
+         <ProcessTimeline />
 
 
        
@@ -2487,134 +2425,9 @@ function Home() {
         {/* PROJECTS SECTION */}
         <ProjectsSection />
 
-        {/* WHY CHOOSE US SECTION - REDESIGNED */}
-        <Section className="py-16 md:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-center">
-            {/* Left content */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-5 order-2 lg:order-1"
-            >
-              <div className="relative">
-                {/* Background elements */}
-                <div className="absolute -left-6 -top-6 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
-                <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-secondary/10 rounded-full blur-xl"></div>
-                
-                {/* Main image with floating elements */}
-                <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-primary/20">
-                  <img 
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                    alt="Team collaboration" 
-                    className="w-full h-auto rounded-2xl"
-                    loading="lazy"
-                  />
-                </div>
-                
-                {/* Floating stats cards */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 }}
-                  className="absolute -right-5 -top-10 bg-white shadow-xl rounded-lg p-3 border border-primary/10 z-20"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Users className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-foreground/60">Team Size</p>
-                      <p className="text-lg font-bold text-primary">50+ Experts</p>
-                    </div>
-                  </div>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 }}
-                  className="absolute -left-5 -bottom-8 bg-white shadow-xl rounded-lg p-3 border border-primary/10 z-20"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Award className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-foreground/60">Experience</p>
-                      <p className="text-lg font-bold text-primary">12+ Years</p>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-            
-            {/* Right content */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-7 order-1 lg:order-2"
-            >
-              <motion.span
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
-              >
-                Why Choose Us
-              </motion.span>
-              
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="text-3xl md:text-4xl font-bold mt-4 mb-6"
-              >
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Technology expertise</span> that drives business growth
-              </motion.h2>
-              
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="text-foreground/70 mb-10 text-base md:text-lg"
-              >
-                At Jason Tech Solutions, we combine technical excellence with strategic thinking to deliver solutions 
-                that not only solve today's challenges but position your business for future success.
-              </motion.p>
-              
-              <div className="space-y-8">
-                {WHY_CHOOSE_US.map((item, index) => (
-                  <motion.div 
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                    whileHover={{ x: 5 }}
-                    className="flex gap-5 group"
-                  >
-                    <div className="mt-1 bg-gradient-to-br from-primary/20 to-secondary/20 h-14 w-14 rounded-2xl flex items-center justify-center shrink-0 shadow-md group-hover:shadow-lg group-hover:shadow-primary/10 transition-all" aria-hidden="true">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
-                      <p className="text-foreground/70">{item.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+        
 
-            </motion.div>
-          </div>
-        </Section>
+
 
         {/* TESTIMONIALS SECTION */}
         <Section>
@@ -2668,16 +2481,7 @@ function Home() {
           </motion.div>
         </Section>
 
-        {/* DESIGNS SECTION */}
         <DesignsSection />
-
-        {/* 3D CARD SHOWCASE SECTION */}
-        <ThreeDCardShowcase />
-
-        {/* INTERACTIVE PROCESS TIMELINE */}
-        <ProcessTimeline />
-
-        {/* INTERACTIVE SOLUTION FINDER */}
         <SolutionFinder />
       </div>
     </PageTransition>
