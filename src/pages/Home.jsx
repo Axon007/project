@@ -534,31 +534,52 @@ const ProjectsList = ({ projects }) => {
 /* SECTION COMPONENTS */
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
   <div className={`mb-16 ${center ? 'text-center' : ''}`}>
-    <motion.span
+    {/* Enhanced eyebrow with subtle glow effect */}
+    <motion.div
       {...createMotionProps('fadeIn')}
-      className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
+      className="flex items-center justify-center gap-2"
     >
-      {eyebrow}
-    </motion.span>
-    <motion.h2 
+      <span className="h-0.5 w-6 bg-gradient-to-r from-primary/30 to-primary hidden sm:block"></span>
+      <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1.5 rounded-full inline-block border border-primary/20 shadow-sm shadow-primary/5">
+        {eyebrow}
+      </span>
+      <span className="h-0.5 w-6 bg-gradient-to-r from-primary to-primary/30 hidden sm:block"></span>
+    </motion.div>
+    
+    {/* Enhanced title with stronger gradient effect and highlight */}
+    <motion.div 
       {...createMotionProps('fadeInUp', 0.1)}
-      className="text-4xl md:text-5xl font-bold mt-4 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
+      className="relative max-w-3xl mx-auto mt-5"
     >
-      {title}
-    </motion.h2>
+      <div className="absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 blur-xl opacity-30 -z-10 rounded-full"></div>
+      <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-blue-500 leading-tight">
+        {title}
+      </h2>
+    </motion.div>
+    
+    {/* Enhanced description with better readability */}
     {description && (
       <motion.p
         {...createMotionProps('fadeInUp', 0.2)}
-        className={`text-lg text-foreground/70 max-w-2xl ${center ? 'mx-auto' : ''}`}
+        className={`text-lg text-foreground/70 max-w-2xl ${center ? 'mx-auto mt-5' : 'mt-5'} leading-relaxed`}
       >
         {description}
       </motion.p>
     )}
+    
+    {/* Enhanced visual divider for centered headers */}
     {center && (
       <motion.div
-        {...createMotionProps('fadeInUp', 0.2)}
-        className="h-1 w-20 bg-primary mx-auto rounded-full mt-6"
-      />
+        {...createMotionProps('fadeInUp', 0.3)}
+        className="relative flex justify-center mt-8"
+      >
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-64 border-t border-secondary/20"></div>
+        </div>
+        <div className="relative bg-background px-4">
+          <div className="h-2 w-2 rounded-full bg-primary"></div>
+        </div>
+      </motion.div>
     )}
   </div>
 );
@@ -1431,248 +1452,6 @@ const DesignsSection = memo(() => {
   );
 });
 
-/* 3D CARD SHOWCASE */
-const ThreeDCardShowcase = memo(() => {
-  const [activeCard, setActiveCard] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
-  const handleMouseMove = (e) => {
-    const card = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - card.left) / card.width - 0.5;  // -0.5 to 0.5
-    const y = (e.clientY - card.top) / card.height - 0.5;  // -0.5 to 0.5
-    setMousePosition({ x, y });
-  };
-  
-  const featuredWorks = [
-    {
-      title: "Immersive 3D Visualization",
-      description: "Interactive product showcase with WebGL and Three.js for a premium automotive brand",
-      image: "https://images.unsplash.com/photo-1543964198-d54e4f2a833d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: THEME.accent.blue,
-      tags: ["Three.js", "WebGL", "Animation"]
-    },
-    {
-      title: "AR Product Experience",
-      description: "Augmented reality mobile application enabling virtual product trials before purchase",
-      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: THEME.accent.green,
-      tags: ["AR", "Mobile", "3D Modeling"]
-    },
-    {
-      title: "Interactive Data Dashboard",
-      description: "Real-time analytics platform with advanced filtering and customizable visualizations",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      color: THEME.accent.orange,
-      tags: ["Data Viz", "Dashboard", "Real-time"]
-    }
-  ];
-  
-  return (
-    <Section id="featured-work" className="py-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeading 
-          eyebrow="Featured Work" 
-          title="Innovative Digital Experiences" 
-          description="Pushing the boundaries of what's possible with emerging technologies and creative design"
-          center={true}
-        />
-        
-        <div className="mt-16 md:mt-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left side - 3D interactive card */}
-            <div className="relative h-[500px] w-full">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeCard}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute inset-0"
-                  onMouseMove={handleMouseMove}
-                  onMouseLeave={() => setMousePosition({ x: 0, y: 0 })}
-                >
-                  <div 
-                    className="h-full w-full rounded-2xl overflow-hidden relative group shadow-2xl shadow-black/20"
-                    style={{ 
-                      perspective: '1500px',
-                      transformStyle: 'preserve-3d',
-                    }}
-                  >
-                    <motion.div
-                      className="h-full w-full relative"
-                      style={{ 
-                        transformStyle: 'preserve-3d',
-                        transform: `
-                          rotateY(${mousePosition.x * 20}deg) 
-                          rotateX(${-mousePosition.y * 20}deg)
-                          scale(1.05)
-                        `,
-                        transition: 'transform 0.5s ease-out'
-                      }}
-                    >
-                      {/* Main image */}
-                      <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10">
-                        <div 
-                          className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-primary/30 opacity-70 mix-blend-overlay z-10"
-                        ></div>
-                        <img 
-                          src={featuredWorks[activeCard].image} 
-                          alt={featuredWorks[activeCard].title} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      
-                      {/* Glowing edges */}
-                      <div 
-                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
-                        style={{
-                          background: `linear-gradient(45deg, ${featuredWorks[activeCard].color}00, ${featuredWorks[activeCard].color}40, ${featuredWorks[activeCard].color}00)`,
-                          backgroundSize: '200% 200%',
-                          animation: 'gradient-animation 3s ease infinite',
-                          border: `1px solid ${featuredWorks[activeCard].color}60`,
-                          boxShadow: `0 0 40px ${featuredWorks[activeCard].color}40`,
-                          transform: 'translateZ(20px)'
-                        }}
-                      ></div>
-                      
-                      {/* Content overlay */}
-                      <div 
-                        className="absolute inset-x-0 bottom-0 p-8 text-white z-20"
-                        style={{ transform: 'translateZ(50px)' }}
-                      >
-                        <div className="flex gap-2 mb-4">
-                          {featuredWorks[activeCard].tags.map((tag, index) => (
-                            <span 
-                              key={index} 
-                              className="px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
-                              style={{ 
-                                backgroundColor: `${featuredWorks[activeCard].color}40`,
-                                border: `1px solid ${featuredWorks[activeCard].color}80`
-                              }}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        
-                        <h3 className="text-2xl md:text-3xl font-bold mb-2">{featuredWorks[activeCard].title}</h3>
-                        <p className="text-white/80 max-w-md">{featuredWorks[activeCard].description}</p>
-                        
-                        <div className="mt-6">
-                          <button 
-                            className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-sm font-medium flex items-center gap-2 transition-all"
-                          >
-                            Explore Case Study
-                            <ArrowRight size={16} />
-                          </button>
-                        </div>
-                      </div>
-                      
-                      {/* Floating geometric elements */}
-                      <div 
-                        className="absolute top-8 left-8 w-20 h-20 border border-white/20 rounded-lg opacity-50"
-                        style={{ 
-                          transform: 'translateZ(30px) rotateZ(10deg)',
-                          boxShadow: `0 0 20px ${featuredWorks[activeCard].color}30`
-                        }}
-                      ></div>
-                      
-                      <div 
-                        className="absolute bottom-32 right-16 w-12 h-12 rounded-full opacity-60"
-                        style={{ 
-                          background: `linear-gradient(45deg, ${featuredWorks[activeCard].color}60, transparent)`,
-                          transform: 'translateZ(40px)'
-                        }}
-                      ></div>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            
-            {/* Right side - Project details & navigation */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
-                  Pushing Boundaries
-                </span>
-                
-                <h3 className="text-3xl md:text-4xl font-bold">
-                  Next-generation digital experiences
-                </h3>
-                
-                <p className="text-foreground/70">
-                  We combine cutting-edge technologies with innovative design approaches to create immersive, 
-                  interactive experiences that captivate users and drive meaningful engagement.
-                </p>
-                
-                <div className="flex flex-wrap gap-3 pt-2">
-                  {["WebGL", "Three.js", "AR/VR", "React Three Fiber", "Motion Graphics"].map((tech, idx) => (
-                    <span key={idx} className="px-3 py-1 bg-secondary/5 border border-secondary/10 rounded-md text-sm text-foreground/70">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <h4 className="text-lg font-medium">Featured Projects</h4>
-                
-                <div className="space-y-3">
-                  {featuredWorks.map((work, index) => (
-                    <div 
-                      key={index}
-                      className={`p-4 rounded-xl cursor-pointer transition-all duration-300 flex items-center gap-4 ${
-                        activeCard === index 
-                          ? 'bg-primary/10 border border-primary/30' 
-                          : 'hover:bg-secondary/5'
-                      }`}
-                      onClick={() => setActiveCard(index)}
-                    >
-                      <div 
-                        className="w-12 h-12 rounded-lg overflow-hidden shrink-0"
-                        style={{ 
-                          boxShadow: activeCard === index ? `0 0 0 2px ${work.color}` : 'none',
-                          transition: 'box-shadow 0.3s ease'
-                        }}
-                      >
-                        <img 
-                          src={work.image} 
-                          alt={work.title} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      
-                      <div>
-                        <h5 className={`font-medium transition-colors ${
-                          activeCard === index ? 'text-primary' : 'text-foreground'
-                        }`}>
-                          {work.title}
-                        </h5>
-                        <p className="text-sm text-foreground/60 line-clamp-1">
-                          {work.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <style jsx global>{`
-        @keyframes gradient-animation {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-      `}</style>
-    </Section>
-  );
-});
 
 /* INTERACTIVE PROCESS TIMELINE */
 const ProcessTimeline = memo(() => {
@@ -2362,6 +2141,266 @@ const SolutionFinder = memo(() => {
   );
 });
 
+/* UPCOMING PROJECTS SHOWCASE WITH 3D EFFECT */
+const UpcomingProjectsShowcase = memo(() => {
+  const [activeProject, setActiveProject] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - card.left) / card.width - 0.5;  // -0.5 to 0.5
+    const y = (e.clientY - card.top) / card.height - 0.5;  // -0.5 to 0.5
+    setMousePosition({ x, y });
+  };
+  
+  const upcomingProjects = [
+    {
+      title: "AI-Powered Customer Analytics",
+      description: "Launching soon: Our revolutionary platform that uses machine learning to transform customer data into actionable insights",
+      image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      color: THEME.accent.blue,
+      tags: ["AI", "Analytics", "Machine Learning"],
+      date: "June 2025",
+      status: "Beta phase"
+    },
+    {
+      title: "Immersive VR Training Platform",
+      description: "Experience professional training in virtual environments with real-time feedback and adaptive learning paths",
+      image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      color: THEME.accent.green,
+      tags: ["VR", "Training", "Education"],
+      date: "August 2025",
+      status: "In development"
+    }
+  ];
+  
+  return (
+    <Section id="upcoming-projects" className="py-24 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+
+        
+        <div className="mt-16 md:mt-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left side - 3D interactive card */}
+            <div className="relative h-[500px] w-full">
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={activeProject}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0"
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={() => setMousePosition({ x: 0, y: 0 })}
+                >
+                  <div 
+                    className="h-full w-full rounded-2xl overflow-hidden relative group shadow-2xl shadow-black/20"
+                    style={{ 
+                      perspective: '1500px',
+                      transformStyle: 'preserve-3d',
+                    }}
+                  >
+                    <motion.div
+                      className="h-full w-full relative"
+                      style={{ 
+                        transformStyle: 'preserve-3d',
+                        transform: `
+                          rotateY(${mousePosition.x * 20}deg) 
+                          rotateX(${-mousePosition.y * 20}deg)
+                          scale(1.05)
+                        `,
+                        transition: 'transform 0.5s ease-out'
+                      }}
+                    >
+                      {/* Main image */}
+                      <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10">
+                        <div 
+                          className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-primary/30 opacity-70 mix-blend-overlay z-10"
+                        ></div>
+                        <img 
+                          src={upcomingProjects[activeProject].image} 
+                          alt={upcomingProjects[activeProject].title} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      
+                      {/* Glowing edges */}
+                      <div 
+                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
+                        style={{
+                          background: `linear-gradient(45deg, ${upcomingProjects[activeProject].color}00, ${upcomingProjects[activeProject].color}40, ${upcomingProjects[activeProject].color}00)`,
+                          backgroundSize: '200% 200%',
+                          animation: 'gradient-animation 3s ease infinite',
+                          border: `1px solid ${upcomingProjects[activeProject].color}60`,
+                          boxShadow: `0 0 40px ${upcomingProjects[activeProject].color}40`,
+                          transform: 'translateZ(20px)'
+                        }}
+                      ></div>
+                      
+                      {/* Project status banner */}
+                      <div 
+                        className="absolute top-5 right-5 z-30 px-4 py-2 rounded-full backdrop-blur-md"
+                        style={{ 
+                          backgroundColor: `${upcomingProjects[activeProject].color}30`,
+                          border: `1px solid ${upcomingProjects[activeProject].color}50`,
+                          transform: 'translateZ(40px)'
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" 
+                              style={{ backgroundColor: upcomingProjects[activeProject].color }}></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3" 
+                              style={{ backgroundColor: upcomingProjects[activeProject].color }}></span>
+                          </span>
+                          <span className="text-white text-sm font-medium">{upcomingProjects[activeProject].status}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Content overlay */}
+                      <div 
+                        className="absolute inset-x-0 bottom-0 p-8 text-white z-20"
+                        style={{ transform: 'translateZ(50px)' }}
+                      >
+                        <div className="mb-2">
+                          <span className="text-white/80 text-sm font-medium">
+                            Launching: {upcomingProjects[activeProject].date}
+                          </span>
+                        </div>
+                        
+                        <div className="flex gap-2 mb-4">
+                          {upcomingProjects[activeProject].tags.map((tag, index) => (
+                            <span 
+                              key={index} 
+                              className="px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
+                              style={{ 
+                                backgroundColor: `${upcomingProjects[activeProject].color}40`,
+                                border: `1px solid ${upcomingProjects[activeProject].color}80`
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        <h3 className="text-2xl md:text-3xl font-bold mb-2">{upcomingProjects[activeProject].title}</h3>
+                        <p className="text-white/80 max-w-md">{upcomingProjects[activeProject].description}</p>
+                        
+                        <div className="mt-6">
+                          <button 
+                            className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-sm font-medium flex items-center gap-2 transition-all"
+                          >
+                            Request Early Access
+                            <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {/* Floating geometric elements */}
+                      <div 
+                        className="absolute top-8 left-8 w-16 h-16 border border-white/20 rounded-lg opacity-50"
+                        style={{ 
+                          transform: 'translateZ(30px) rotateZ(10deg)',
+                          boxShadow: `0 0 20px ${upcomingProjects[activeProject].color}30`
+                        }}
+                      ></div>
+                      
+                      <div 
+                        className="absolute bottom-32 right-16 w-10 h-10 rounded-full opacity-60"
+                        style={{ 
+                          background: `linear-gradient(45deg, ${upcomingProjects[activeProject].color}60, transparent)`,
+                          transform: 'translateZ(40px)'
+                        }}
+                      ></div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            
+            {/* Right side - Project details & navigation */}
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
+                  Innovation Pipeline
+                </span>
+                
+                        <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4">
+            Tomorrow's <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">solutions, today</span>
+          </h2>
+                
+                <p className="text-foreground/70">
+                  We're constantly innovating and developing new projects to address emerging challenges and opportunities. 
+                  Here's an exclusive preview of what we're working on behind the scenes.
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <h4 className="text-lg font-medium">Upcoming Launches</h4>
+                
+                <div className="space-y-3">
+                  {upcomingProjects.map((project, index) => (
+                    <div 
+                      key={index}
+                      className={`p-4 rounded-xl cursor-pointer transition-all duration-300 flex items-center gap-4 ${
+                        activeProject === index 
+                          ? 'bg-primary/10 border border-primary/30' 
+                          : 'hover:bg-secondary/5'
+                      }`}
+                      onClick={() => setActiveProject(index)}
+                    >
+                      <div 
+                        className="w-12 h-12 rounded-lg overflow-hidden shrink-0"
+                        style={{ 
+                          boxShadow: activeProject === index ? `0 0 0 2px ${project.color}` : 'none',
+                          transition: 'box-shadow 0.3s ease'
+                        }}
+                      >
+                        <img 
+                          src={project.image} 
+                          alt={project.title} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <h5 className={`font-medium transition-colors ${
+                            activeProject === index ? 'text-primary' : 'text-foreground'
+                          }`}>
+                            {project.title}
+                          </h5>
+                          <span className="text-xs text-foreground/60">
+                            {project.date}
+                          </span>
+                        </div>
+                        <p className="text-sm text-foreground/60 line-clamp-1">
+                          {project.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <style jsx global>{`
+        @keyframes gradient-animation {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
+    </Section>
+  );
+});
+
 /* MAIN COMPONENT */
 function Home() {
   return (
@@ -2413,7 +2452,9 @@ function Home() {
           </section>
         </div>
 
-        <ThreeDCardShowcase />
+         <UpcomingProjectsShowcase />
+
+
 
         {/* SERVICES SECTION */}
         <ServicesSection />
@@ -2424,8 +2465,6 @@ function Home() {
 
         {/* PROJECTS SECTION */}
         <ProjectsSection />
-
-        
 
 
 
