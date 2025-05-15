@@ -83,7 +83,7 @@ const TypingAnimation = ({
   children,
   delay = 0,
   className,
-  duration = 100,
+  duration = 40,
   as: Component = "span",
   showCursor = false,
   onComplete = () => {},

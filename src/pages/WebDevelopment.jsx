@@ -408,87 +408,30 @@ function WebDevelopmentServices() {
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7 }}
               >
-                <Terminal className="shadow-2xl">
-                  <TypingAnimation>
-                    <AnimatedSpan className="text-blue-400" delay={400}>import</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={800}> {'{'} </AnimatedSpan>
-                    <AnimatedSpan className="text-yellow-300" delay={1200}>motion</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={1600}> {'}'}</AnimatedSpan>
-                    <AnimatedSpan className="text-blue-400" delay={2000}> from</AnimatedSpan>
-                    <AnimatedSpan className="text-green-300" delay={2400}> 'framer-motion'</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={2800}>;</AnimatedSpan>
-                    <AnimatedSpan delay={3200}>{"\n\n"}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-400" delay={3600}>const</AnimatedSpan>
-                    <AnimatedSpan className="text-yellow-300" delay={4000}> HeroSection</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={4400}> {`= () => {`}</AnimatedSpan>
-                    <AnimatedSpan delay={4800}>{"\n  "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-400" delay={5200}>return</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={5600}> (</AnimatedSpan>
-                    <AnimatedSpan delay={6000}>{"\n    "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={6400}>&lt;div</AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={6800}> className</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={7200}>=</AnimatedSpan>
-                    <AnimatedSpan className="text-green-300" delay={7600}>"relative h-screen flex items-center"</AnimatedSpan>
-                    <AnimatedSpan className="text-purple-400" delay={8000}>&gt;</AnimatedSpan>
-                    <AnimatedSpan delay={8400}>{"\n      "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={8800}>&lt;motion.h1</AnimatedSpan>
-                    <AnimatedSpan delay={9200}>{"\n        "}</AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={9600}>initial</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={10000}>=&#123;&#123; </AnimatedSpan>
-                    <AnimatedSpan className="text-orange-300" delay={10400}>opacity</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={10800}>: </AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={11200}>0</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={11600}>, </AnimatedSpan>
-                    <AnimatedSpan className="text-orange-300" delay={12000}>y</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={12400}>: </AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={12800}>20</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={13200}> &#125;&#125;</AnimatedSpan>
-                    <AnimatedSpan delay={13600}>{"\n        "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-300" delay={14000}>animate</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={14400}>=&#123;&#123; </AnimatedSpan>
-                    <AnimatedSpan className="text-orange-300" delay={14800}>opacity</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={15200}>: </AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={15600}>1</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={16000}>, </AnimatedSpan>
-                    <AnimatedSpan className="text-orange-300" delay={16400}>y</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={16800}>: </AnimatedSpan>
-                    <AnimatedSpan className="text-blue-300" delay={17200}>0</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={17600}> &#125;&#125;</AnimatedSpan>
-                    <AnimatedSpan delay={18000}>{"\n        "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-300" delay={18400}>className</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={18800}>=</AnimatedSpan>
-                    <AnimatedSpan className="text-green-300" delay={19200}>"text-5xl font-bold"</AnimatedSpan>
-                    <AnimatedSpan delay={19600}>{"\n      "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={20000}>&gt;</AnimatedSpan>
-                    <AnimatedSpan delay={20400}>{"\n        "}</AnimatedSpan>
-                    <AnimatedSpan delay={20800}>Building exceptional web experiences</AnimatedSpan>
-                    <AnimatedSpan delay={21200}>{"\n      "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={21600}>&lt;/motion.h1&gt;</AnimatedSpan>
-                    <AnimatedSpan delay={22000}>{"\n    "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-purple-400" delay={22400}>&lt;/div&gt;</AnimatedSpan>
-                    <AnimatedSpan delay={22800}>{"\n  "}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-foreground" delay={23200}>);</AnimatedSpan>
-                    <AnimatedSpan delay={23600}>{"\n"}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-foreground" delay={24000}>;</AnimatedSpan>
-                    <AnimatedSpan delay={24400}>{"\n\n"}</AnimatedSpan>
-                    
-                    <AnimatedSpan className="text-blue-400" delay={24800}>export</AnimatedSpan>
-                    <AnimatedSpan className="text-blue-400" delay={25200}> default</AnimatedSpan>
-                    <AnimatedSpan className="text-yellow-300" delay={25600}> HeroSection</AnimatedSpan>
-                    <AnimatedSpan className="text-foreground" delay={26000}>;</AnimatedSpan>
-                  </TypingAnimation>
-                </Terminal>
+              <Terminal className="shadow-2xl">
+  <pre className="text-sm leading-relaxed whitespace-pre-wrap text-left">
+    <TypingAnimation duration={50}>
+      <AnimatedSpan className="text-blue-400" delay={200}>$ npm create next-app@latest my-project{"\n\n"}</AnimatedSpan>
+      <AnimatedSpan>Creating a new Next.js app in ./my-project...{"\n\n"}</AnimatedSpan>
+      <AnimatedSpan>✓ Would you like to use TypeScript? Yes{"\n"}</AnimatedSpan>
+      <AnimatedSpan>✓ Would you like to use ESLint? Yes{"\n"}</AnimatedSpan>
+      <AnimatedSpan>✓ Would you like to use Tailwind CSS? Yes{"\n"}</AnimatedSpan>
+      <AnimatedSpan>✓ Would you like to use `src/` directory? Yes{"\n"}</AnimatedSpan>
+      <AnimatedSpan>✓ Would you like to use App Router? Yes{"\n\n"}</AnimatedSpan>
+      <AnimatedSpan>Installing dependencies:{"\n"}</AnimatedSpan>
+      <AnimatedSpan>- react{"\n"}</AnimatedSpan>
+      <AnimatedSpan>- react-dom{"\n"}</AnimatedSpan>
+      <AnimatedSpan>- next{"\n"}</AnimatedSpan>
+      <AnimatedSpan>- typescript{"\n"}</AnimatedSpan>
+      <AnimatedSpan>- @types/react{"\n"}</AnimatedSpan>
+      <AnimatedSpan>- tailwindcss{"\n\n"}</AnimatedSpan>
+      <AnimatedSpan>Success! Created a new project at ./my-project{"\n\n"}</AnimatedSpan>
+      <AnimatedSpan>$ cd my-project && npm run dev{"\n\n"}</AnimatedSpan>
+      <AnimatedSpan>ready - started server on 0.0.0.0:3000, url: http://localhost:3000</AnimatedSpan>
+    </TypingAnimation>
+  </pre>
+</Terminal>
+
               </motion.div>
             </motion.div>
           </div>
@@ -848,53 +791,53 @@ function WebDevelopmentServices() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-violet-500/20 blur-3xl opacity-30 rounded-full"></div>
             <Terminal className="shadow-2xl" title="Web Development Demo">
               <TypingAnimation duration={30}>
-            <span className="text-green-400">$ </span>
-            <span>npm create next-app@latest my-project</span>
-            <span>{"\n\n"}</span>
-            <span className="text-yellow-300">Creating a new Next.js app in ./my-project...</span>
-            <span>{"\n\n"}</span>
-            <span className="text-blue-400">✓ </span>
-            <span>Would you like to use TypeScript? </span>
-            <span className="text-green-400">Yes</span>
-            <span>{"\n"}</span>
-            <span className="text-blue-400">✓ </span>
-            <span>Would you like to use ESLint? </span>
-            <span className="text-green-400">Yes</span>
-            <span>{"\n"}</span>
-            <span className="text-blue-400">✓ </span>
-            <span>Would you like to use Tailwind CSS? </span>
-            <span className="text-green-400">Yes</span>
-            <span>{"\n"}</span>
-            <span className="text-blue-400">✓ </span>
-            <span>Would you like to use `src/` directory? </span>
-            <span className="text-green-400">Yes</span>
-            <span>{"\n"}</span>
-            <span className="text-blue-400">✓ </span>
-            <span>Would you like to use App Router? </span>
-            <span className="text-green-400">Yes</span>
-            <span>{"\n\n"}</span>
-            <span className="text-yellow-300">Installing dependencies:</span>
-            <span>{"\n"}</span>
-            <span>- react</span>
-            <span>{"\n"}</span>
-            <span>- react-dom</span>
-            <span>{"\n"}</span>
-            <span>- next</span>
-            <span>{"\n"}</span>
-            <span>- typescript</span>
-            <span>{"\n"}</span>
-            <span>- @types/react</span>
-            <span>{"\n"}</span>
-            <span>- tailwindcss</span>
-            <span>{"\n\n"}</span>
-            <span className="text-green-400">Success! </span>
-            <span>Created a new project at ./my-project</span>
-            <span>{"\n\n"}</span>
-            <span className="text-green-400">$ </span>
-            <span>cd my-project && npm run dev</span>
-            <span>{"\n\n"}</span>
-            <span className="text-yellow-300">ready</span>
-            <span> - started server on 0.0.0.0:3000, url: http://localhost:3000</span>
+                <AnimatedSpan className="text-green-400" delay={100}>$ </AnimatedSpan>
+                <AnimatedSpan delay={150}>npm create next-app@latest my-project</AnimatedSpan>
+                <AnimatedSpan delay={250}>{"\n\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-yellow-300" delay={350}>Creating a new Next.js app in ./my-project...</AnimatedSpan>
+                <AnimatedSpan delay={450}>{"\n\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-blue-400" delay={550}>✓ </AnimatedSpan>
+                <AnimatedSpan delay={600}>Would you like to use TypeScript? </AnimatedSpan>
+                <AnimatedSpan className="text-green-400" delay={650}>Yes</AnimatedSpan>
+                <AnimatedSpan delay={700}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-blue-400" delay={750}>✓ </AnimatedSpan>
+                <AnimatedSpan delay={800}>Would you like to use ESLint? </AnimatedSpan>
+                <AnimatedSpan className="text-green-400" delay={850}>Yes</AnimatedSpan>
+                <AnimatedSpan delay={900}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-blue-400" delay={950}>✓ </AnimatedSpan>
+                <AnimatedSpan delay={1000}>Would you like to use Tailwind CSS? </AnimatedSpan>
+                <AnimatedSpan className="text-green-400" delay={1050}>Yes</AnimatedSpan>
+                <AnimatedSpan delay={1100}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-blue-400" delay={1150}>✓ </AnimatedSpan>
+                <AnimatedSpan delay={1200}>Would you like to use `src/` directory? </AnimatedSpan>
+                <AnimatedSpan className="text-green-400" delay={1250}>Yes</AnimatedSpan>
+                <AnimatedSpan delay={1300}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-blue-400" delay={1350}>✓ </AnimatedSpan>
+                <AnimatedSpan delay={1400}>Would you like to use App Router? </AnimatedSpan>
+                <AnimatedSpan className="text-green-400" delay={1450}>Yes</AnimatedSpan>
+                <AnimatedSpan delay={1500}>{"\n\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-yellow-300" delay={1550}>Installing dependencies:</AnimatedSpan>
+                <AnimatedSpan delay={1600}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan delay={1650}>- react</AnimatedSpan>
+                <AnimatedSpan delay={1700}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan delay={1750}>- react-dom</AnimatedSpan>
+                <AnimatedSpan delay={1800}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan delay={1850}>- next</AnimatedSpan>
+                <AnimatedSpan delay={1900}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan delay={1950}>- typescript</AnimatedSpan>
+                <AnimatedSpan delay={2000}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan delay={2050}>- @types/react</AnimatedSpan>
+                <AnimatedSpan delay={2100}>{"\n"}</AnimatedSpan>
+                <AnimatedSpan delay={2150}>- tailwindcss</AnimatedSpan>
+                <AnimatedSpan delay={2200}>{"\n\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-green-400" delay={2250}>Success! </AnimatedSpan>
+                <AnimatedSpan delay={2300}>Created a new project at ./my-project</AnimatedSpan>
+                <AnimatedSpan delay={2350}>{"\n\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-green-400" delay={2400}>$ </AnimatedSpan>
+                <AnimatedSpan delay={2450}>cd my-project && npm run dev</AnimatedSpan>
+                <AnimatedSpan delay={2550}>{"\n\n"}</AnimatedSpan>
+                <AnimatedSpan className="text-yellow-300" delay={2650}>ready</AnimatedSpan>
+                <AnimatedSpan delay={2700}> - started server on 0.0.0.0:3000, url: http://localhost:3000</AnimatedSpan>
               </TypingAnimation>
             </Terminal>
           </motion.div>
