@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Terminal, TypingAnimation, AnimatedSpan } from "../components/magicui/terminal";
+import { AnimatePresence } from "framer-motion";
 
 const FEATURED_PROJECTS = [
   {
@@ -737,7 +738,7 @@ function WebDevelopmentServices() {
         </div>
       </section>
  
-        <section className="py-20 px-4 bg-background">
+        {/* <section className="py-20 px-4 bg-background">
           <div className="max-w-7xl mx-auto">
             <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -843,7 +844,7 @@ function WebDevelopmentServices() {
           </motion.div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Code Showcase Section */}
    
@@ -860,129 +861,11 @@ function WebDevelopmentServices() {
             Our Development Process
           </motion.h2>
           
-          <div className="relative">
-            {/* Interactive connecting line with animation */}
-            <motion.div 
-              className="absolute left-1/2 top-0 w-1 bg-gradient-to-b from-primary/5 via-primary to-primary/5 -translate-x-1/2 hidden md:block"
-              initial={{ height: 0 }}
-              whileInView={{ height: "100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-            ></motion.div>
-            
-            {[
-              {
-                step: "1",
-                title: "Discovery & Planning",
-                description: "We start by understanding your business, goals, target audience, and project requirements through consultations and research.",
-                icon: <Users className="w-6 h-6 text-white" />,
-                details: [
-                  "Business objectives analysis",
-                  "Target audience research",
-                  "Competitive landscape review",
-                  "Project scope definition"
-                ]
-              },
-              {
-                step: "2",
-                title: "Design & Prototyping",
-                description: "Our designers create wireframes, mockups and interactive prototypes that align with your brand and optimize for user experience.",
-                icon: <Palette className="w-6 h-6 text-white" />,
-                details: [
-                  "Wireframing & UI mockups",
-                  "User experience design",
-                  "Responsive layout planning",
-                  "Interactive prototypes"
-                ]
-              },
-              {
-                step: "3",
-                title: "Development",
-                description: "Our expert developers build your website or application using clean, efficient code and modern technologies for optimal performance.",
-                icon: <Code className="w-6 h-6 text-white" />,
-                details: [
-                  "Frontend development",
-                  "Backend implementation",
-                  "Database integration",
-                  "API development"
-                ]
-              },
-              {
-                step: "4",
-                title: "Testing & QA",
-                description: "Rigorous testing ensures your website works flawlessly across all devices, browsers, and user scenarios.",
-                icon: <Shield className="w-6 h-6 text-white" />,
-                details: [
-                  "Functionality testing",
-                  "Cross-browser compatibility",
-                  "Mobile responsiveness",
-                  "Performance optimization"
-                ]
-              },
-              {
-                step: "5",
-                title: "Launch & Support",
-                description: "We deploy your site and provide continuous support and maintenance to keep everything running smoothly after launch.",
-                icon: <Rocket className="w-6 h-6 text-white" />,
-                details: [
-                  "Deployment preparation",
-                  "Server configuration",
-                  "Analytics setup",
-                  "Post-launch monitoring"
-                ]
-              }
-            ].map((phase, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                className={`relative mb-20 md:mb-32 ${index % 2 === 0 ? 'md:mr-auto md:ml-0' : 'md:ml-auto md:mr-0'} md:w-5/12`}
-              >
-                <div 
-                  className={`absolute top-0 ${index % 2 === 0 ? 'left-0 md:right-0 md:left-auto' : 'left-0'} w-14 h-14 rounded-full bg-primary flex items-center justify-center text-white font-bold z-10 shadow-lg shadow-primary/30`}
-                >
-                  {phase.icon}
-                </div>
-                
-                <div className="pl-20 md:pl-0 md:pr-0">
-                  <div className="p-6 rounded-2xl bg-secondary/80 backdrop-blur-sm border border-primary/10 hover:border-primary/30 transition-all shadow-lg hover:shadow-xl hover:shadow-primary/5">
-                    <div className="mb-1 text-sm text-primary/80 font-semibold">Step {phase.step}</div>
-                    <h3 className="text-xl font-bold mb-3">{phase.title}</h3>
-                    <p className="text-foreground/70 mb-4">{phase.description}</p>
-                    
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      whileInView={{ height: "auto", opacity: 1 }}
-                      transition={{ duration: 0.3, delay: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <ul className="space-y-2 mb-2">
-                        {phase.details.map((detail, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-foreground/80">
-                            <CheckCircle className="w-4 h-4 text-primary mt-0.5" />
-                            <span>{detail}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  </div>
-                </div>
-                
-                {/* Timeline dot for desktop */}
-                <motion.div 
-                  className="absolute top-7 left-7 md:left-auto md:right-0 w-4 h-4 rounded-full bg-primary z-20 hidden md:block"
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  style={{ [index % 2 === 0 ? 'right' : 'left']: '-8px' }}
-                />
-              </motion.div>
-            ))}
-          </div>
+          <InteractiveProcessTimeline />
         </div>
       </section>
 
-      {/* Portfolio Preview */}
+      {/* Design Showcase Section - Replacing Portfolio Section */}
       <section className="py-20 px-4" id="portfolio">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -994,7 +877,7 @@ function WebDevelopmentServices() {
             >
               <span className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary to-violet-500 opacity-75 blur" />
               <span className="relative text-primary font-medium px-4 py-2 rounded-lg bg-background">
-                Our Latest Work
+                Our Creative Work
               </span>
             </motion.div>
             
@@ -1004,22 +887,20 @@ function WebDevelopmentServices() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-3xl md:text-4xl font-bold mt-6"
             >
-              Featured Projects
+              Design Showcase
             </motion.h2>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg text-foreground/70 max-w-2xl mx-auto mt-4"
+            >
+              Explore our design work across various mediums and industries
+            </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {FEATURED_PROJECTS.map((project, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <ProjectCard project={project} />
-              </motion.div>
-            ))}
-          </div>
+          <DesignShowcase />
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -1071,7 +952,7 @@ function WebDevelopmentServices() {
                     name: "Sarah Johnson",
                     company: "Fashion Retailer",
                     role: "Marketing Director",
-                    image: "https://randomuser.me/api/portraits/women/32.jpg",
+                    image: "https://www.servcorp.co.uk/media/34561/e-commerce-img.jpeg?format=webp&quality=70&width=688",
                     quote: "The team delivered a stunning e-commerce website that exceeded our expectations. Sales have increased by 40% since launch!"
                   },
                   {
@@ -1155,7 +1036,7 @@ function WebDevelopmentServices() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-4" id="testimonials">
+      {/* <section className="py-20 px-4" id="testimonials">
         <div className="max-w-6xl mx-auto">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -1211,7 +1092,7 @@ function WebDevelopmentServices() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Pricing Section */}
       {/* <section className="py-24 px-4" id="pricing">
@@ -1428,7 +1309,7 @@ function WebDevelopmentServices() {
       </section>
 
       {/* Enhanced Contact Section */}
-      <section className="py-24 px-4" id="contact">
+      {/* <section className="py-24 px-4" id="contact">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <motion.div
@@ -1572,7 +1453,7 @@ function WebDevelopmentServices() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> */}
 
 
       {/* Interactive Final CTA Section with Particles */}
@@ -1670,5 +1551,532 @@ function WebDevelopmentServices() {
     </div>
   );
 }
+
+// Interactive Process Timeline Component
+const InteractiveProcessTimeline = () => {
+  const [activeStep, setActiveStep] = useState(1);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const timelineRef = useRef(null);
+  
+  const processSteps = [
+    {
+      step: 1,
+      title: "Discovery & Planning",
+      description: "We start by understanding your business, goals, target audience, and project requirements through consultations and research.",
+      icon: <Users className="w-6 h-6" />,
+      color: "#2563EB", // Blue
+      benefits: [
+        "Business objectives analysis",
+        "Target audience research",
+        "Competitive landscape review",
+        "Project scope definition"
+      ]
+    },
+    {
+      step: 2,
+      title: "Design & Prototyping",
+      description: "Our designers create wireframes, mockups and interactive prototypes that align with your brand and optimize for user experience.",
+      icon: <Palette className="w-6 h-6" />,
+      color: "#10B981", // Green
+      benefits: [
+        "Wireframing & UI mockups",
+        "User experience design",
+        "Responsive layout planning",
+        "Interactive prototypes"
+      ]
+    },
+    {
+      step: 3,
+      title: "Development",
+      description: "Our expert developers build your website or application using clean, efficient code and modern technologies for optimal performance.",
+      icon: <Code className="w-6 h-6" />,
+      color: "#06B6D4", // Cyan
+      benefits: [
+        "Frontend development",
+        "Backend implementation",
+        "Database integration",
+        "API development"
+      ]
+    },
+    {
+      step: 4,
+      title: "Testing & QA",
+      description: "Rigorous testing ensures your website works flawlessly across all devices, browsers, and user scenarios.",
+      icon: <Shield className="w-6 h-6" />,
+      color: "#F97316", // Orange
+      benefits: [
+        "Functionality testing",
+        "Cross-browser compatibility",
+        "Mobile responsiveness",
+        "Performance optimization"
+      ]
+    },
+    {
+      step: 5,
+      title: "Launch & Support",
+      description: "We deploy your site and provide continuous support and maintenance to keep everything running smoothly after launch.",
+      icon: <Rocket className="w-6 h-6" />,
+      color: "#FBBF24", // Yellow
+      benefits: [
+        "Deployment preparation",
+        "Server configuration",
+        "Analytics setup",
+        "Post-launch monitoring"
+      ]
+    }
+  ];
+  
+  // Handle scroll-based timeline navigation
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!timelineRef.current || isScrolling) return;
+      
+      const timelineRect = timelineRef.current.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const timelinePosition = timelineRect.top;
+      const timelineHeight = timelineRect.height;
+      
+      // Only activate scroll detection when timeline is in view
+      if (timelinePosition < viewportCenter && timelinePosition + timelineHeight > 0) {
+        // Calculate which step should be active based on scroll position
+        const scrollProgress = (viewportCenter - timelinePosition) / timelineHeight;
+        const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+        const stepIndex = Math.ceil(clampedProgress * processSteps.length);
+        
+        if (stepIndex !== activeStep && stepIndex >= 1 && stepIndex <= processSteps.length) {
+          setActiveStep(stepIndex);
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [activeStep, isScrolling, processSteps.length]);
+  
+  const handleStepClick = (step) => {
+    setIsScrolling(true);
+    setActiveStep(step);
+    
+    // Reset isScrolling after animation completes
+    setTimeout(() => {
+      setIsScrolling(false);
+    }, 1000);
+  };
+  
+  return (
+    <div className="relative max-w-6xl mx-auto" ref={timelineRef}>
+      {/* Timeline line */}
+      <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-secondary/20 transform -translate-x-1/2"></div>
+      
+      {/* Progress line animating based on active step */}
+      <div 
+        className="absolute top-0 left-1/2 w-0.5 bg-primary transform -translate-x-1/2 transition-all duration-1000 ease-out"
+        style={{ 
+          height: `${(activeStep / processSteps.length) * 100}%`,
+          maxHeight: '100%'
+        }}
+      ></div>
+      
+      {/* Timeline steps */}
+      {processSteps.map((process, index) => {
+        const isActive = activeStep >= process.step;
+        const isPast = activeStep > process.step;
+        const isExactlyActive = activeStep === process.step;
+        
+        return (
+          <div key={index} className="relative mb-20 last:mb-0">
+            {/* Timeline marker */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
+              <div 
+                className={`
+                  h-14 w-14 rounded-full flex items-center justify-center z-10 
+                  ${isActive 
+                    ? 'bg-primary text-white border-4 border-white shadow-lg shadow-primary/30' 
+                    : 'bg-white border-4 border-secondary/20 text-secondary/40'
+                  }
+                  transition-all duration-500
+                `}
+                style={{
+                  transform: isExactlyActive ? 'scale(1.2)' : 'scale(1)'
+                }}
+              >
+                <span className="text-lg font-bold">{process.step}</span>
+              </div>
+              
+              {/* Pulsing effect for active step */}
+              {isExactlyActive && (
+                <div className="absolute inset-0 -z-10">
+                  <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping opacity-75"></div>
+                  <div className="absolute inset-[-8px] rounded-full border-2 border-primary/30"></div>
+                </div>
+              )}
+            </div>
+            
+            {/* Content card with alternating layout */}
+            <div className={`relative max-w-lg mx-auto md:mx-0 ${
+              index % 2 === 0 
+                ? 'md:ml-auto md:mr-[calc(50%+2rem)]' 
+                : 'md:mr-auto md:ml-[calc(50%+2rem)]'
+            }`}>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5 }}
+                className={`
+                  rounded-xl p-6 border shadow-lg transform transition-all duration-500 cursor-pointer
+                  ${isActive 
+                    ? 'bg-background border-primary/20 shadow-primary/5' 
+                    : 'bg-secondary/5 border-secondary/20'
+                  }
+                  hover:shadow-xl
+                `}
+                onClick={() => handleStepClick(process.step)}
+              >
+                <div className="flex items-start gap-4">
+                  <div 
+                    className={`p-3 rounded-lg ${
+                      isActive 
+                        ? 'text-white' 
+                        : 'text-secondary/60 bg-secondary/10'
+                    } transition-colors duration-500`}
+                    style={{ 
+                      backgroundColor: isActive ? process.color : undefined 
+                    }}
+                  >
+                    {process.icon}
+                  </div>
+                  
+                  <div>
+                    <h3 className={`text-xl font-bold mb-2 transition-colors duration-500 ${
+                      isActive ? 'text-foreground' : 'text-foreground/60'
+                    }`}>
+                      {process.title}
+                    </h3>
+                    <p className="text-foreground/70 mb-4">{process.description}</p>
+                    
+                    {/* Benefits list with reveal animation */}
+                    <AnimatePresence>
+                      {isExactlyActive && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-4 pt-4 border-t border-secondary/10"
+                        >
+                          <h4 className="font-medium mb-2 text-sm uppercase tracking-wider text-foreground/60">Key Benefits</h4>
+                          <ul className="space-y-2">
+                            {process.benefits.map((benefit, idx) => (
+                              <motion.li 
+                                key={idx}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="flex items-center gap-2"
+                              >
+                                <CheckCircle className="w-4 h-4 text-primary mt-0.5" />
+                                <span>{benefit}</span>
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        );
+      })}
+      
+      {/* Navigation controls for mobile */}
+      <div className="mt-12 flex justify-center gap-2 md:hidden">
+        {processSteps.map((step, index) => (
+          <button 
+            key={index}
+            onClick={() => handleStepClick(step.step)}
+            className={`w-3 h-3 rounded-full transition-colors ${
+              activeStep === step.step 
+                ? 'bg-primary' 
+                : 'bg-secondary/30'
+            }`}
+            aria-label={`Go to step ${step.step}: ${step.title}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Design Showcase Component
+const DesignShowcase = () => {
+  const [activeTab, setActiveTab] = useState('web');
+  const [selectedDesign, setSelectedDesign] = useState(null);
+
+  // Design categories data
+  const designCategories = {
+    web: {
+      title: "Web Design",
+      description: "Responsive websites with intuitive user interfaces that engage visitors and drive conversions."
+    },
+    mobile: {
+      title: "Mobile UI",
+      description: "User-centered mobile app interfaces designed for seamless navigation and excellent user experience."
+    },
+    brand: {
+      title: "Branding",
+      description: "Strategic brand identities that communicate your values and connect with your target audience."
+    }
+  };
+
+  // Sample design data
+  const designs = [
+    {
+      id: 1,
+      title: "E-Commerce Platform",
+      category: "web",
+      image: "https://www.servcorp.co.uk/media/34561/e-commerce-img.jpeg?format=webp&quality=70&width=688",
+      description: "A modern e-commerce platform designed for optimal user experience and high conversion rates.",
+      client: "Fashion Retailer",
+      technologies: ["Figma", "Adobe XD", "Webflow"],
+      features: [
+        "Intuitive product filtering",
+        "Streamlined checkout process",
+        "Responsive mobile design"
+      ]
+    },
+    {
+      id: 2,
+      title: "Financial Dashboard",
+      category: "web",
+      image: "https://www.servcorp.co.uk/media/34561/e-commerce-img.jpeg?format=webp&quality=70&width=688", 
+      description: "Comprehensive financial dashboard with interactive data visualization and reporting tools.",
+      client: "FinTech Startup",
+      technologies: ["Figma", "Adobe Illustrator", "React"],
+      features: [
+        "Real-time data visualization",
+        "Customizable widgets",
+        "Accessibility compliance"
+      ]
+    },
+    {
+      id: 3,
+      title: "Healthcare Application",
+      category: "web",
+      image: "https://www.servcorp.co.uk/media/34561/e-commerce-img.jpeg?format=webp&quality=70&width=688",
+      description: "Patient-centered healthcare app designed to improve communication between patients and providers.",
+      client: "Healthcare Provider",
+      technologies: ["Sketch", "Principle", "Swift UI"],
+      features: [
+        "Appointment scheduling",
+        "Secure messaging",
+        "Medication reminders"
+      ]
+    },
+    {
+      id: 4,
+      title: "Fitness Tracking App",
+      category: "mobile",
+      image: "/projects/real-estate.jpg",
+      description: "Intuitive fitness tracker that helps users monitor workouts and achieve their fitness goals.",
+      client: "Wellness Company",
+      technologies: ["Figma", "After Effects", "Kotlin"],
+      features: [
+        "Progress visualization",
+        "Workout planning",
+        "Social sharing"
+      ]
+    },
+    {
+      id: 5,
+      title: "Creative Agency Rebrand",
+      category: "brand",
+      image: "/projects/ecommerce.jpg",
+      description: "Complete brand refresh for a creative agency, including logo, color palette, and style guide.",
+      client: "Design Studio",
+      technologies: ["Illustrator", "Photoshop", "InDesign"],
+      features: [
+        "Logo design",
+        "Brand guidelines",
+        "Marketing materials"
+      ]
+    },
+    {
+      id: 6,
+      title: "Sustainable Product Branding",
+      category: "brand",
+      image: "/projects/ai-platform.jpg",
+      description: "Eco-friendly brand identity for a sustainable product line, emphasizing environmental responsibility.",
+      client: "Consumer Goods Company",
+      technologies: ["Illustrator", "Photoshop", "Procreate"],
+      features: [
+        "Sustainable packaging",
+        "Eco-friendly messaging",
+        "Visual identity system"
+      ]
+    }
+  ];
+
+  // Filter designs based on active tab
+  const currentDesigns = designs.filter(design => design.category === activeTab);
+
+  // Design card component
+  const DesignCard = ({ design }) => {
+    return (
+      <motion.div
+        layoutId={`card-container-${design.id}`}
+        whileHover={{ y: -5 }}
+        className="rounded-xl overflow-hidden border border-secondary/20 hover:border-primary/30 transition-all duration-300 cursor-pointer group"
+        onClick={() => setSelectedDesign(design)}
+      >
+        <div className="aspect-video relative overflow-hidden">
+          <img 
+            src={design.image} 
+            alt={design.title} 
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div>
+              <h3 className="text-white text-xl font-bold">{design.title}</h3>
+              <p className="text-white/80 mt-2">{design.client}</p>
+            </div>
+          </div>
+        </div>
+        <div className="p-6">
+          <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{design.title}</h3>
+          <p className="text-foreground/70 text-sm line-clamp-2">{design.description}</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {design.technologies.slice(0, 3).map((tech, idx) => (
+              <span key={idx} className="px-2 py-1 bg-secondary/20 rounded-md text-xs text-foreground/60">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
+
+  // Design detail modal component
+  const DesignDetailModal = ({ design, onClose }) => {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      >
+        <motion.div
+          layoutId={`card-container-${design.id}`}
+          className="bg-background rounded-2xl overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col"
+          onClick={e => e.stopPropagation()}
+        >
+          <div className="relative aspect-video">
+            <img 
+              src={design.image} 
+              alt={design.title} 
+              className="w-full h-full object-cover" 
+            />
+            <button 
+              onClick={onClose} 
+              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+          <div className="p-8 overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-2">{design.title}</h2>
+            <p className="text-primary font-medium mb-6">{design.client}</p>
+            
+            <p className="text-foreground/70 mb-8">{design.description}</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Technologies</h3>
+                <div className="flex flex-wrap gap-2">
+                  {design.technologies.map((tech, idx) => (
+                    <span key={idx} className="px-3 py-1.5 bg-secondary/20 rounded-lg text-sm text-foreground/70">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Key Features</h3>
+                <ul className="space-y-2">
+                  {design.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-foreground/70">
+                      <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  };
+
+  return (
+    <div>
+      {/* Category tabs */}
+      <div className="flex justify-center mb-12">
+        <div className="inline-flex bg-secondary/10 p-1 rounded-xl">
+          {Object.entries(designCategories).map(([key, category]) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === key
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'text-foreground/70 hover:text-foreground hover:bg-secondary/5'
+              }`}
+            >
+              {category.title}
+            </button>
+          ))}
+        </div>
+      </div>
+      
+      {/* Description of current category */}
+      <div className="text-center mb-12">
+        <p className="text-lg text-foreground/70 max-w-xl mx-auto">
+          {designCategories[activeTab]?.description}
+        </p>
+      </div>
+      
+      {/* Design grid with exit animations */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {currentDesigns.map((design) => (
+            <DesignCard key={design.id} design={design} />
+          ))}
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Design detail modal */}
+      <AnimatePresence>
+        {selectedDesign && (
+          <DesignDetailModal 
+            design={selectedDesign} 
+            onClose={() => setSelectedDesign(null)} 
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 export default WebDevelopmentServices;

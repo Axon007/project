@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ExitIntentPopup from './components/ExitIntentPopup';
 import Home from './pages/Home';
 import WebDevelopment from './pages/WebDevelopment';
 import GamingDevServices from './pages/GameDevelopment ';
@@ -65,6 +66,7 @@ function AppContent() {
         </Routes>
       </AnimatePresence>
       <Footer />
+      <ExitIntentPopup />
     </div>
   );
 }
