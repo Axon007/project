@@ -852,71 +852,71 @@ const ProjectsSection = memo(() => {
     setHoveredProject(projectTitle);
   }, []);
 
-  return (
-    <Section id="projects">
-      <SectionHeading 
-        eyebrow="Our Portfolio" 
-        title="Featured Projects" 
-        description="Explore our award-winning work delivered for clients across industries"
-        center={true} 
-      />
+  // return (
+  //   <Section id="projects">
+  //     <SectionHeading 
+  //       eyebrow="Our Portfolio" 
+  //       title="Featured Projects" 
+  //       description="Explore our award-winning work delivered for clients across industries"
+  //       center={true} 
+  //     />
       
-      {/* Static filter tabs with CSS transitions */}
-      <div className="relative mb-16">
-        <div className="flex flex-wrap justify-center gap-2 mb-2">
-          {categories.map((category, index) => {
-            const isActive = activeFilter === category;
-            return (
-              <button
-                key={index}
-                onClick={() => setActiveFilter(category)}
-                className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                  isActive 
-                    ? 'text-white bg-primary' 
-                    : 'text-foreground/70 hover:text-foreground'
-                }`}
-              >
-                <span className="relative z-10">{category}</span>
-              </button>
-            );
-          })}
-        </div>
+  //     {/* Static filter tabs with CSS transitions */}
+  //     <div className="relative mb-16">
+  //       <div className="flex flex-wrap justify-center gap-2 mb-2">
+  //         {categories.map((category, index) => {
+  //           const isActive = activeFilter === category;
+  //           return (
+  //             <button
+  //               key={index}
+  //               onClick={() => setActiveFilter(category)}
+  //               className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+  //                 isActive 
+  //                   ? 'text-white bg-primary' 
+  //                   : 'text-foreground/70 hover:text-foreground'
+  //               }`}
+  //             >
+  //               <span className="relative z-10">{category}</span>
+  //             </button>
+  //           );
+  //         })}
+  //       </div>
         
-        {/* Removed showing results text */}
-        {/* <p className="text-center text-sm text-foreground/50 mt-2">
-          Showing {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
-          {activeFilter !== 'All' ? ` in ${activeFilter}` : ''}
-        </p> */}
-      </div>
+  //       {/* Removed showing results text */}
+  //       {/* <p className="text-center text-sm text-foreground/50 mt-2">
+  //         Showing {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
+  //         {activeFilter !== 'All' ? ` in ${activeFilter}` : ''}
+  //       </p> */}
+  //     </div>
       
-      {/* Optimized grid without AnimatePresence */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        {filteredProjects.map((project, index) => (
-          <ProjectCard 
-            key={project.title}
-            project={project} 
-            isHovered={hoveredProject === project.title}
-            onHoverChange={handleHoverChange}
-          />
-        ))}
-      </div>
+  //     {/* Optimized grid without AnimatePresence */}
+  //     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+  //       {filteredProjects.map((project, index) => (
+  //         <ProjectCard 
+  //           key={project.title}
+  //           project={project} 
+  //           isHovered={hoveredProject === project.title}
+  //           onHoverChange={handleHoverChange}
+  //         />
+  //       ))}
+  //     </div>
       
-      {/* Empty state without animations */}
-      {filteredProjects.length === 0 && (
-        <div className="bg-secondary/5 backdrop-blur-sm border border-secondary/20 rounded-2xl p-12 text-center my-8">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-            <LineChart className="w-10 h-10 text-primary/60" />
-          </div>
-          <p className="text-xl font-medium mb-4">No projects found</p>
-          <p className="text-foreground/60 mb-8 max-w-md mx-auto">
-            We couldn't find any projects in the {activeFilter} category. Try selecting a different category or check back later.
-          </p>
+  //     {/* Empty state without animations */}
+  //     {filteredProjects.length === 0 && (
+  //       <div className="bg-secondary/5 backdrop-blur-sm border border-secondary/20 rounded-2xl p-12 text-center my-8">
+  //         <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
+  //           <LineChart className="w-10 h-10 text-primary/60" />
+  //         </div>
+  //         <p className="text-xl font-medium mb-4">No projects found</p>
+  //         <p className="text-foreground/60 mb-8 max-w-md mx-auto">
+  //           We couldn't find any projects in the {activeFilter} category. Try selecting a different category or check back later.
+  //         </p>
 
-        </div>
-      )}
+  //       </div>
+  //     )}
 
-    </Section>
-  );
+  //   </Section>
+  // );
 });
 
 /* DESIGNS SECTION */
