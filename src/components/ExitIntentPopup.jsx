@@ -12,24 +12,22 @@ const ExitIntentPopup = () => {
   });
 
   useEffect(() => {
+    // Reset the popup shown flag when the component mounts (page loads/refreshes)
+    sessionStorage.setItem('exitPopupShown', 'false');
+    
     const handleMouseLeave = (e) => {
       // Only trigger if the mouse is leaving from the top of the viewport
-      // and hasn't been triggered before
-      if (e.clientY <= 0 && !hasTriggered) {
+      // and hasn't been triggered before in this page session
+      if (e.clientY <= 0 && !hasTriggered && sessionStorage.getItem('exitPopupShown') !== 'true') {
         setIsVisible(true);
         setHasTriggered(true);
-        // Store that it's been shown to prevent multiple popups
-        localStorage.setItem('exitPopupShown', 'true');
+        // Store that it's been shown to prevent multiple popups within the same page view
+        sessionStorage.setItem('exitPopupShown', 'true');
       }
     };
 
-    // Check if popup has been shown before in this session
-    const hasBeenShown = localStorage.getItem('exitPopupShown') === 'true';
-    if (!hasBeenShown) {
-      document.addEventListener('mouseleave', handleMouseLeave);
-    } else {
-      setHasTriggered(true);
-    }
+    // Add event listener for mouse leave
+    document.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
       document.removeEventListener('mouseleave', handleMouseLeave);
