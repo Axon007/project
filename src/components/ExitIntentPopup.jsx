@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Spline from '@splinetool/react-spline';
 
 const ExitIntentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -95,19 +96,22 @@ const ExitIntentPopup = () => {
                     We'd love to keep in touch! Leave your details and we'll reach out with our best offers.
                   </p>
                   <div className="hidden md:block">
-                    <img 
-                      src="/sad-emoji.svg" 
-                      alt="Sad emoji"
-                      className="w-32 h-32 mx-auto"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 15s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>';
-                      }}
-                    />
+                    <div style={{ 
+                      width: '400px', 
+                      height: '400px', 
+                      maxWidth: '100%', 
+                      borderRadius: '20px',
+                      position: 'relative'
+                    }}>
+                      <Spline 
+                        scene="https://prod.spline.design/Aff3Yy6vLtegD6u3/scene.splinecode"
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-              
+         
               {/* Right side - Contact Form */}
               <div className="p-8 md:w-1/2">
                 <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Contact Us</h3>
