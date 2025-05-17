@@ -180,50 +180,56 @@ const TypingAnimation = ({
  * @param {string} props.className - Custom CSS class for styling
  * @param {string} props.animation - Animation type ('fade', 'slide', 'scale')
  * @param {Function} props.onReveal - Callback when content is revealed
+ * @param {React.Ref} ref - Forwarded ref
  */
-const AnimatedSpan = ({
-  children,
-  delay = 0,
-  className,
-  animation = "fade",
-  onReveal = () => {},
-  ...props
-}) => {
-  const [isVisible, setIsVisible] = useState(false);
+const AnimatedSpan = forwardRef(
+  ({
+    children,
+    delay = 0,
+    className,
+    animation = "fade",
+    onReveal = () => {},
+    ...props
+  }, ref) => {
+    const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-      onReveal();
-    }, delay);
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+        onReveal();
+      }, delay);
 
-    return () => clearTimeout(timer);
-  }, [delay, onReveal]);
+      return () => clearTimeout(timer);
+    }, [delay, onReveal]);
 
-  const getAnimationClass = () => {
-    switch (animation) {
-      case "slide":
-        return isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0";
-      case "scale":
-        return isVisible ? "scale-100 opacity-100" : "scale-90 opacity-0";
-      case "fade":
-      default:
-        return isVisible ? "opacity-100" : "opacity-0";
-    }
-  };
+    const getAnimationClass = () => {
+      switch (animation) {
+        case "slide":
+          return isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0";
+        case "scale":
+          return isVisible ? "scale-100 opacity-100" : "scale-90 opacity-0";
+        case "fade":
+        default:
+          return isVisible ? "opacity-100" : "opacity-0";
+      }
+    };
 
-  return (
-    <span
-      className={cn(
-        "inline-block transition-all duration-300",
-        getAnimationClass(),
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </span>
-  );
-};
+    return (
+      <span
+        ref={ref}
+        className={cn(
+          "inline-block transition-all duration-300",
+          getAnimationClass(),
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </span>
+    );
+  }
+);
+
+AnimatedSpan.displayName = "AnimatedSpan";
 
 export { Terminal, TypingAnimation, AnimatedSpan };
