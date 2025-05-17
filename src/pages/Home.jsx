@@ -635,6 +635,7 @@ const HeroSection = () => {
           >
             {HERO_SERVICES.map((service, i) => (
               <motion.div
+                key={i}
                 className="
               px-3.5 py-2 rounded-full border border-primary/20 
     bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm cursor-default
@@ -2190,7 +2191,7 @@ const UpcomingProjectsShowcase = memo(() => {
         </div>
       </div>
       
-      <style jsx global>{`
+      <style jsx="true" global="true">{`
         @keyframes gradient-animation {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
