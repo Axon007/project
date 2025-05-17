@@ -1,18 +1,27 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ExitIntentPopup from './components/ExitIntentPopup';
-import Home from './pages/Home';
-import WebDevelopment from './pages/WebDevelopment';
-import GamingDevServices from './pages/GameDevelopment ';
-import LogoDesign from './pages/LogoDesign';
-import VideoEditing from './pages/VideoEditing';
-import AppDevelopment from './pages/AppDevelopment';
-import ContactUs from './pages/ContactUs';
-import ARVRServices from './pages/ar';
-import Social from './pages/Social';
+
+// Lazy load all page components
+const Home = lazy(() => import('./pages/Home'));
+const WebDevelopment = lazy(() => import('./pages/WebDevelopment'));
+const GamingDevServices = lazy(() => import('./pages/GameDevelopment '));
+const LogoDesign = lazy(() => import('./pages/LogoDesign'));
+const VideoEditing = lazy(() => import('./pages/VideoEditing'));
+const AppDevelopment = lazy(() => import('./pages/AppDevelopment'));
+const ContactUs = lazy(() => import('./pages/ContactUs'));
+const ARVRServices = lazy(() => import('./pages/ar'));
+const Social = lazy(() => import('./pages/Social'));
+
+// Loading component
+const LoadingFallback = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 function AppContent() {
   const location = useLocation();
@@ -53,17 +62,19 @@ function AppContent() {
     <div className="min-h-screen bg-background">
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Home theme={theme} toggleTheme={toggleTheme} />} />
-          <Route path="/web-development" element={<WebDevelopment />} />
-          <Route path="/game-development" element={<GamingDevServices theme={theme} toggleTheme={toggleTheme} />} />
-          <Route path="/logo-design" element={<LogoDesign />} />
-          <Route path="/video-editing" element={<VideoEditing />} />
-          <Route path="/app-development" element={<AppDevelopment />} />
-          <Route path="/computer-vision" element={<ARVRServices />} />
-          <Route path="/social" element={<Social />} />
-          <Route path="/contact" element={<ContactUs />} />
-        </Routes>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home theme={theme} toggleTheme={toggleTheme} />} />
+            <Route path="/web-development" element={<WebDevelopment />} />
+            <Route path="/game-development" element={<GamingDevServices theme={theme} toggleTheme={toggleTheme} />} />
+            <Route path="/logo-design" element={<LogoDesign />} />
+            <Route path="/video-editing" element={<VideoEditing />} />
+            <Route path="/app-development" element={<AppDevelopment />} />
+            <Route path="/computer-vision" element={<ARVRServices />} />
+            <Route path="/social" element={<Social />} />
+            <Route path="/contact" element={<ContactUs />} />
+          </Routes>
+        </Suspense>
       </AnimatePresence>
       <Footer />
       <ExitIntentPopup />
