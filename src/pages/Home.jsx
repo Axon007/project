@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect, memo, useMemo, useCallback } from "react";
 import PageTransition from '../components/PageTransition';
+import { AnimatedTestimonials } from "../components/ui/animated-testimonials";
 
 
 import { AuroraBackground } from "../components/ui/aurora-background";
-import { GlowingEffect} from '../components/ui/glowing-effect'
 import { Globe } from "@/components/magicui/globe";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
@@ -12,6 +12,10 @@ import {
   VideoIcon, Brush, Lightbulb, ArrowLeft,ArrowDown,  MessageSquare, CheckCircle, Phone, Mail, MessageCircle,Smartphone 
 } from "lucide-react";
 import { Link } from "react-router-dom";
+
+
+
+
 
 /* THEME AND UI CONFIGURATION */
 const THEME = {
@@ -334,16 +338,14 @@ const ServicesSection = memo(() => {
 /* SECTION COMPONENTS */
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
   <div className={`mb-16 ${center ? 'text-center' : ''}`}>
-    {/* Enhanced eyebrow with subtle glow effect */}
+    {/* Modified eyebrow to remove the dots/lines */}
     <motion.div
       {...createMotionProps('fadeIn')}
       className="flex items-center justify-center gap-2"
     >
-      <span className="h-0.5 w-6 bg-gradient-to-r from-primary/30 to-primary hidden sm:block"></span>
       <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1.5 rounded-full inline-block border border-primary/20 shadow-sm shadow-primary/5">
         {eyebrow}
       </span>
-      <span className="h-0.5 w-6 bg-gradient-to-r from-primary to-primary/30 hidden sm:block"></span>
     </motion.div>
     
     {/* Enhanced title with stronger gradient effect and highlight */}
@@ -367,7 +369,7 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
       </motion.p>
     )}
     
-    {/* Enhanced visual divider for centered headers */}
+    {/* Removed the additional visual divider for centered headers */}
     {center && (
       <motion.div
         {...createMotionProps('fadeInUp', 0.3)}
@@ -375,9 +377,6 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
       >
         <div className="absolute inset-0 flex items-center">
           <div className="w-64 border-t border-secondary/20"></div>
-        </div>
-        <div className="relative bg-background px-4">
-          <div className="h-2 w-2 rounded-full bg-primary"></div>
         </div>
       </motion.div>
     )}
@@ -2256,42 +2255,54 @@ function Home() {
         <ProcessTimeline />
         <ProjectsSection />
 
+
+        <DesignsSection />
+        <SolutionFinder />
+        
         {/* TESTIMONIALS SECTION */}
-        <Section>
+        <Section id="testimonials">
           <SectionHeading 
             eyebrow="Testimonials" 
             title="What Our Clients Say" 
-            description="Don't just take our word for it. Here's what our clients have to say about their experience working with us."
+            description="Hear from organizations who have experienced transformative results through our solutions"
             center={true} 
           />
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TESTIMONIALS.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: testimonial.delay * 0.5 }}
-                className="p-8 rounded-2xl bg-background/50 backdrop-blur border border-secondary/20 relative group hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/10"
-              >
-                <div className="absolute -top-5 left-8 text-5xl text-primary/20" aria-hidden="true">"</div>
-                <p className="text-foreground/80 mb-6 relative z-10">{testimonial.quote}</p>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                    <img 
-                      src={testimonial.image} 
-                      alt={testimonial.author}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">{testimonial.author}</h4>
-                    <p className="text-sm text-foreground/60">{testimonial.position}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="max-w-6xl mx-auto">
+            <AnimatedTestimonials
+              testimonials={[
+                {
+                  quote: "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
+                  name: "Sarah Chen",
+                  designation: "Product Manager at TechFlow",
+                  src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+                {
+                  quote: "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
+                  name: "Michael Rodriguez",
+                  designation: "CTO at InnovateSphere",
+                  src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+                {
+                  quote: "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
+                  name: "Emily Watson",
+                  designation: "Operations Director at CloudScale",
+                  src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+                {
+                  quote: "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
+                  name: "James Kim",
+                  designation: "Engineering Lead at DataPro",
+                  src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+                {
+                  quote: "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
+                  name: "Lisa Thompson",
+                  designation: "VP of Technology at FutureNet",
+                  src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                },
+              ]}
+            />
           </div>
           
           <motion.div 
@@ -2299,17 +2310,18 @@ function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-8 text-center"
+            className="mt-16 text-center"
           >
-            <a href="#" className="inline-flex items-center text-primary font-medium hover:underline">
-              Read more testimonials
-              <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </a>
+
           </motion.div>
         </Section>
+       
 
-        <DesignsSection />
-        <SolutionFinder />
+        
+        
+
+        
+        
       </div>
     </PageTransition>
   );
