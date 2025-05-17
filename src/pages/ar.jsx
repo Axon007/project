@@ -239,7 +239,7 @@ function ARVRServices() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="flex-1 h-[500px] w-full rounded-2xl overflow-hidden shadow-xl"
             >
-              <Spline scene="https://prod.spline.design/kE8s6G8gbeLSAlRo/scene.splinecode" />
+              <Spline scene="https://prod.spline.design/oddzqlz1GkmVa7es/scene.splinecode" />
             </motion.div>
           </div>
         </div>
