@@ -17,7 +17,8 @@ import {
   Image,
   Video,
   ScanSearch,
-  PieChart
+  PieChart,
+  Table
 } from 'lucide-react';
 
 // AnimatedBeam component from Magic UI
@@ -850,7 +851,7 @@ function ComputerVisionVisualization() {
       
       {/* Main person detection */}
       <motion.div 
-        className="absolute right-[35%] top-1/2 -translate-y-1/2 w-[180px] h-[360px]"
+        className="absolute right-[43%] top-[80%] -translate-y-1/2 w-[100px] h-[300px]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.5 }}
@@ -920,16 +921,16 @@ function ComputerVisionVisualization() {
         transition={{ duration: 0.8, delay: 1 }}
       >
         <motion.div 
-          className="w-full h-full border-2 border-primary rounded-md"
+          className="w-full h-full border-2 border-green-500 rounded-md"
           animate={{ 
-            boxShadow: ['0 0 0 rgba(var(--primary-rgb), 0)', '0 0 8px rgba(var(--primary-rgb), 0.6)', '0 0 0 rgba(var(--primary-rgb), 0)'],
-            borderColor: ['rgba(var(--primary-rgb), 0.7)', 'rgba(var(--primary-rgb), 1)', 'rgba(var(--primary-rgb), 0.7)']
+            boxShadow: ['0 0 0 rgba(34, 197, 94, 0)', '0 0 8px rgba(34, 197, 94, 0.6)', '0 0 0 rgba(34, 197, 94, 0)'],
+            borderColor: ['rgba(34, 197, 94, 0.7)', 'rgba(34, 197, 94, 1)', 'rgba(34, 197, 94, 0.7)']
           }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <div className="absolute -top-8 left-0 bg-primary text-white text-xs px-3 py-1 rounded-md flex items-center gap-2">
-            <Database size={12} />
-            Object
+          <div className="absolute -top-8 left-0 bg-green-500 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2">
+            <Table size={12} />
+            Bench
             <span className="bg-white/20 px-1 rounded">87%</span>
           </div>
         </motion.div>
@@ -959,25 +960,51 @@ function ComputerVisionVisualization() {
       </motion.div>
       
       {/* Data processing overlay */}
-      <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm p-3 rounded-lg border border-white/10 shadow-lg">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-2 h-2 rounded-full bg-green-500" />
-          <span className="text-xs font-medium text-white">Processing Data</span>
-        </div>
-        <div className="flex flex-col gap-1">
-          {[...Array(4)].map((_, i) => (
+      <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm p-2.5 rounded-lg border border-green-500/20 shadow-md" style={{ width: "180px" }}>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5">
             <motion.div 
-              key={i}
-              className="h-1 bg-gradient-to-r from-primary to-transparent"
-              initial={{ width: '20%' }}
-              animate={{ width: ['20%', '80%', '40%', '60%', '20%'] }}
-              transition={{ 
-                duration: 4,
-                repeat: Infinity,
-                delay: i * 0.5,
-                ease: "easeInOut"
-              }}
+              className="w-1.5 h-1.5 rounded-full bg-green-500" 
+              animate={{ scale: [1, 1.3, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
             />
+            <span className="text-xs font-medium text-white">AI Vision</span>
+          </div>
+          <motion.span 
+            className="text-[10px] font-medium text-green-400"
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            LIVE
+          </motion.span>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          {[
+            { label: "Detection", color: "green-500" },
+            { label: "Analysis", color: "blue-400" }
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-1.5">
+              <span className="text-[10px] text-white/80 w-14">{item.label}</span>
+              <div className="h-1 flex-grow bg-gray-800/60 rounded-full overflow-hidden">
+                <motion.div 
+                  className={`h-full bg-${item.color}`}
+                  initial={{ width: "10%" }}
+                  animate={{ width: ["10%", "90%", "30%", "70%", "10%"] }}
+                  transition={{ 
+                    duration: 4 + i, 
+                    repeat: Infinity, 
+                    delay: i * 0.4
+                  }}
+                />
+              </div>
+              <motion.span 
+                className={`text-[9px] font-medium text-${item.color} w-7 text-right`}
+                animate={{ opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+              >
+                {Math.floor(70 + Math.random() * 29)}%
+              </motion.span>
+            </div>
           ))}
         </div>
       </div>
@@ -992,7 +1019,7 @@ function ComputerVisionVisualization() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       
       {/* Analysis metrics */}
-      <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm p-3 rounded-lg border border-white/10 shadow-lg">
+      {/* <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm p-3 rounded-lg border border-white/10 shadow-lg">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs text-white/80">Confidence:</span>
@@ -1025,7 +1052,7 @@ function ComputerVisionVisualization() {
             <span className="text-xs text-purple-500">92%</span>
           </div>
         </div>
-      </div>
+      </div> */}
       
       {/* Floating scan points */}
       {[...Array(15)].map((_, i) => (
