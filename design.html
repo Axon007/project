@@ -6,6 +6,10 @@
     <title>Helping Arms Foundation Newsletter</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
@@ -49,23 +53,23 @@
     <div class="bg-gray-100 py-6">
         <div class="container mx-auto px-4">
             <!-- Header Section -->
-            <div class="bg-[#fce7e5] p-8 rounded-lg text-center mb-4">
+            <div class="bg-[#fce7e5] p-8 rounded-[40px] text-center mb-4">
                 <div class="mb-4">
                     <div class="flex justify-center mb-2">
                         <img src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" alt="Helping Arms Logo" class="w-16 h-16">
                     </div>
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Helping Arms Foundation</h1>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">Helping Arms Foundation</h1>
                     <p class="text-gray-600 mb-4">Established 1997 • Over 25 Years of Service</p>
                     <a href="#" class="btn-primary">Support Our Mission</a>
                 </div>
             </div>
 
             <!-- Story Section -->
-            <div class="bg-white p-6 rounded-lg mb-4 story-container">
+            <div class="bg-white p-6 rounded-[40px] mb-4 story-container">
                 <h2 class="text-xl font-bold mb-4">This is the story of <span class="text-[#e05d44]">Tirupathamma</span></h2>
                 
-                <div class="mb-6">
-                    <img src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" alt="Tirupathamma Story" class="w-full rounded-lg mb-4">
+                <div class="mb-6 rounded-[10px]">
+                    <img src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" alt="Tirupathamma Story" class="w-full rounded-[40px] mb-4">
                 </div>
                 
                 <p class="text-gray-700 mb-4">
@@ -78,9 +82,23 @@
                 
                 <h3 class="text-center font-bold text-gray-500 mb-4">HELPING ARMS</h3>
                 
-                <div class="flex justify-between mb-6">
-                    <img src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" alt="Before" class="w-[48%] rounded-lg">
-                    <img src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" alt="After" class="w-[48%] rounded-lg">
+                <div class="mb-6">
+                    <div id="image-slider" class="flex overflow-x-auto pb-4 scrollbar-hide scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
+                        <div class="flex-shrink-0 w-[85%] mr-4">
+                            <img src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" alt="Before" class="w-full h-auto rounded-[10px]">
+                        </div>
+                        <div class="flex-shrink-0 w-[85%] mr-4">
+                            <img src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" alt="After" class="w-full h-auto rounded-[10px]">
+                        </div>
+                        <div class="flex-shrink-0 w-[85%]">
+                            <img src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" alt="Success" class="w-full h-auto rounded-[10px]">
+                        </div>
+                    </div>
+                    <div id="dots-container" class="flex justify-center mt-2">
+                        <button class="dot w-2 h-2 rounded-full bg-gray-400 mx-1" onclick="scrollToSlide(0)"></button>
+                        <button class="dot w-2 h-2 rounded-full bg-gray-200 mx-1" onclick="scrollToSlide(1)"></button>
+                        <button class="dot w-2 h-2 rounded-full bg-gray-200 mx-1" onclick="scrollToSlide(2)"></button>
+                    </div>
                 </div>
                 
                 <p class="text-gray-700 mb-4">
@@ -100,7 +118,7 @@
                 <div class="mb-6">
                     <div class="stat-container">
                         <div class="stat-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#e05d44]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#8F3E2F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                         </div>
@@ -112,7 +130,7 @@
                     
                     <div class="stat-container">
                         <div class="stat-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#e05d44]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#8F3E2F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                             </svg>
                         </div>
@@ -124,7 +142,7 @@
                     
                     <div class="stat-container">
                         <div class="stat-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#e05d44]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#8F3E2F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
                         </div>
@@ -169,4 +187,40 @@
         </div>
     </div>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.getElementById('image-slider');
+        const dots = document.querySelectorAll('.dot');
+        
+        // Update active dot based on scroll position
+        slider.addEventListener('scroll', function() {
+            const slideWidth = slider.scrollWidth / 3;
+            const scrollPosition = slider.scrollLeft;
+            
+            // Determine which slide is in view
+            const slideIndex = Math.round(scrollPosition / slideWidth);
+            
+            // Update dots
+            dots.forEach((dot, index) => {
+                if (index === slideIndex) {
+                    dot.classList.remove('bg-gray-200');
+                    dot.classList.add('bg-gray-400');
+                } else {
+                    dot.classList.remove('bg-gray-400');
+                    dot.classList.add('bg-gray-200');
+                }
+            });
+        });
+        
+        // Function to scroll to a specific slide when dot is clicked
+        window.scrollToSlide = function(index) {
+            const slideWidth = slider.scrollWidth / 3;
+            slider.scrollTo({
+                left: index * slideWidth,
+                behavior: 'smooth'
+            });
+        };
+    });
+</script>
 </html>
