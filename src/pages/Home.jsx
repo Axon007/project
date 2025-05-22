@@ -1,73 +1,80 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect, memo } from "react";
 import PageTransition from '../components/PageTransition';
-import { Globe } from "@/components/magicui/globe";
+import { Link } from "react-router-dom";
+import { AuroraText } from "@/components/magicui/aurora-text";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
-  VideoIcon, Brush, Lightbulb, ArrowLeft,ArrowDown,  MessageSquare, CheckCircle, Phone, Mail, MessageCircle,Smartphone 
+  VideoIcon, Brush, ArrowLeft, ArrowDown, MessageSquare, CheckCircle, Phone, MessageCircle, Smartphone 
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { AuroraText } from "@/components/magicui/aurora-text";
 
 
 /* THEME AND UI CONFIGURATION */
 const THEME = {
   primary: {
-    DEFAULT: "#0070F3",
+    DEFAULT: "#0070F3", // Apple blue is often #007AFF
     light: "#3291FF",
   },
   secondary: {
     DEFAULT: "#7928CA",
   },
   background: {
-    DEFAULT: "#FCFCFC",
-    muted: "#F5F5F5",
+    DEFAULT: "#FFFFFF", // Pure white for light mode
+    muted: "#F5F5F7",   // Apple's light gray
+    dark: {
+      DEFAULT: "#000000", // Pure black for dark mode
+      card: "#1C1C1E",    // Apple's dark gray for cards
+      muted: "#1D1D1F",   // Apple's slightly lighter dark gray
+    }
   },
   foreground: {
-    DEFAULT: "#18181B",
+    DEFAULT: "#1D1D1F", // Apple's primary text color (light mode)
+    muted: "#86868B",   // Apple's secondary text color (light mode)
+    dark: {
+      DEFAULT: "#FFFFFF",
+      muted: "#A1A1A6",
+    }
   },
   accent: {
-    blue: "#2563EB",
+    blue: "#007AFF", // Standard Apple blue
     cyan: "#06B6D4",
-    green: "#10B981", 
-    yellow: "#FBBF24",
-    orange: "#F97316",
+    green: "#34C759", // Apple green
+    yellow: "#FFCC00", // Apple yellow
+    orange: "#FF9500", // Apple orange
   }
 };
 
 const UI = {
-  // Card patterns - unified
+  // Card patterns - redesigned for Apple aesthetic
   card: {
-    base: "rounded-2xl overflow-hidden border border-secondary/20 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 bg-background/50 backdrop-blur-sm",
-    padding: "p-6 md:p-8",
-    iconContainer: "mb-6 bg-primary/10 w-16 h-16 rounded-xl flex items-center justify-center",
+    base: "rounded-3xl overflow-hidden border border-[#E5E5E7] dark:border-[#2C2C2E] hover:shadow-lg transition-all duration-300 bg-white dark:bg-[#1C1C1E]",
+    padding: "p-6 md:p-8", // Consistent padding
+    iconContainer: "mb-4 bg-[#F5F5F7] dark:bg-[#2C2C2E] w-14 h-14 rounded-xl flex items-center justify-center relative overflow-hidden",
     hover: {
-      transform: "hover:-translate-y-1",
-      glow: "group-hover:opacity-100 opacity-0 transition-opacity duration-300"
+      transform: "hover:-translate-y-1", // More subtle movement
+      shine: "absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
     }
   },
-
   
-  
-  // Typography system - unified
+  // Typography system - refined for Apple clarity
   text: {
     heading: {
       h1: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight",
       h2: "text-2xl sm:text-3xl md:text-4xl font-bold",
       h3: "text-xl md:text-2xl font-bold",
       h4: "text-lg font-semibold",
-      section: "text-4xl md:text-5xl font-bold mt-4 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
+      section: "text-4xl md:text-5xl font-bold mt-3 mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary" // Kept for specific headings
     },
     body: {
-      default: "text-foreground/70",
-      sm: "text-sm text-foreground/70",
-      lg: "text-lg text-foreground/70"
+      default: "text-foreground-muted dark:text-foreground-dark-muted",
+      sm: "text-sm text-foreground-muted dark:text-foreground-dark-muted",
+      lg: "text-lg text-foreground-muted dark:text-foreground-dark-muted"
     },
-    accent: "text-primary"
+    accent: "text-primary dark:text-accent-blue"
   },
   
-  // Gradient patterns - unified
+  // Gradient patterns - reduced for Apple minimalism but kept for specific highlights
   gradients: {
     primary: "bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary",
     hover: "bg-gradient-to-r from-primary/10 to-secondary/10",
@@ -75,33 +82,33 @@ const UI = {
     glow: "bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 blur-sm"
   },
   
-  // Button styles - unified
+  // Button styles - aligned with Apple's rounded buttons
   button: {
-    base: "flex items-center gap-2 font-medium transition-all",
+    base: "flex items-center justify-center gap-2 font-medium transition-all duration-300",
     sizes: {
-      sm: "px-3 py-1.5 text-sm",
-      md: "px-5 py-2.5 text-sm", 
-      lg: "px-6 py-3 text-base"
+      sm: "px-4 py-2 text-sm", // More generous padding
+      md: "px-6 py-3 text-base",
+      lg: "px-8 py-4 text-lg"
     },
     variants: {
-      primary: "bg-primary hover:bg-primary/90 text-white", 
-      secondary: "bg-primary/10 hover:bg-primary/20 text-primary",
-      outline: "border-2 border-primary/30 hover:bg-primary/10 text-primary"
+      primary: "bg-[#0071E3] hover:bg-[#0077ED] text-white shadow-sm hover:shadow-md hover:shadow-[#0071E3]/20", // Apple primary blue button
+      secondary: "bg-primary/10 dark:bg-primary/20 hover:bg-primary/20 dark:hover:bg-primary/30 text-primary dark:text-accent-blue",
+      outline: "border-2 border-primary/30 dark:border-accent-blue/50 hover:bg-primary/10 dark:hover:bg-accent-blue/10 text-primary dark:text-accent-blue"
     },
-    pill: "rounded-full",
-    icon: "group-hover:translate-x-1 transition-transform duration-300"
+    pill: "rounded-full", // Key Apple style
+    icon: "group-hover:translate-x-0.5 transition-transform duration-300" // More subtle icon movement
   },
   
-  // Section & spacing - unified
+  // Section & spacing - standardized for consistency
   section: {
-    padding: "py-16 md:py-24",
-    container: "max-w-7xl mx-auto relative z-10",
-    eyebrow: "text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
+    padding: "py-16 md:py-20", // Standard padding across sections
+    container: "max-w-7xl mx-auto relative z-10 px-4 md:px-6", // Added horizontal padding
+    eyebrow: "text-primary dark:text-accent-blue text-sm font-medium uppercase tracking-wider bg-primary/10 dark:bg-primary/20 px-4 py-1.5 rounded-full inline-block border border-primary/20 dark:border-primary/30 shadow-sm"
   },
   
-  // Effects - unified
+  // Effects - refined for more subtle Apple-like interactions
   effects: {
-    glow: "absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300",
+    shine: "absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700",
     hoverLift: "transition-transform duration-300 hover:-translate-y-1"
   }
 };
@@ -138,13 +145,12 @@ const createMotionProps = (type, delay = 0) => {
 const Section = ({ children, dark = false, pattern = false, className = "", id = null, fullWidth = false }) => (
   <section 
     id={id}
-    className={`py-24 px-4 ${
+    className={`py-16 md:py-20 px-4 ${
       dark ? 'bg-background dark:bg-gray-950' : 
       'bg-background dark:bg-inherit'
     } ${className}`}
     aria-labelledby={id}
   >
-
     <div className={`${fullWidth ? 'w-full' : 'max-w-7xl'} mx-auto relative z-10`}>
       {children}
     </div>
@@ -152,48 +158,42 @@ const Section = ({ children, dark = false, pattern = false, className = "", id =
 );
 
 
-// Update the ServiceCard component for better interactivity and visual appeal
+// Optimized ServiceCard component for better performance and reduced CLS
 const ServiceCard = ({ service, index }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <Link to={service.href} tabIndex={0} className="block focus:outline-none" key={index}>
       <div
-        className={`${UI.card.base} group relative overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className={`${UI.card.base} group relative overflow-hidden hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 transition-all duration-300`}
         tabIndex={-1}
         role="button"
         aria-label={service.title}
+        style={{ minHeight: "320px" }} // Fixed height to reduce CLS
       >
-        {/* Service glow effect */}
+        {/* Service glow effect - simplified */}
         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300"></div>
         
         <div className={`${UI.card.padding} relative z-10 bg-background/95 rounded-2xl h-full flex flex-col`}>
-          {/* Icon with enhanced animation */}
-          <div className={`${UI.card.iconContainer} relative transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/20`}>
-            <motion.div 
-      
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-              className="absolute inset-0 bg-primary/10 rounded-xl" />
+          {/* Icon with simplified animation */}
+          <div className={`${UI.card.iconContainer} relative transition-all duration-300 group-hover:scale-105`}>
+            <div className="absolute inset-0 bg-primary/10 rounded-xl"></div>
             <div className="relative z-10">
               {service.icon}
             </div>
           </div>
           
-          {/* Content with better spacing */}
-          <h3 className={`text-lg md:text-xl ${UI.text.heading} mb-2 md:mb-3 group-hover:text-primary transition-colors`}>
+          {/* Content with optimized spacing */}
+          <h3 className={`text-lg md:text-xl font-bold mb-2 group-hover:text-primary transition-colors`}>
             {service.title}
           </h3>
           
-          <p className={`${UI.text.body} text-sm mb-4 md:mb-6`}>
+          <p className={`${UI.text.body} text-sm mb-3`}>
             {service.description}
           </p>
           
-          {/* Features list with improved bullets */}
+          {/* Features list with improved bullets - more compact */}
           <div className="flex-grow">
-            <h4 className="text-sm font-medium text-primary/80 mb-3">Features:</h4>
-            <ul className="space-y-2">
+            <h4 className="text-sm font-medium text-primary/80 mb-2">Features:</h4>
+            <ul className="space-y-1.5">
               {service.features.map((feature, i) => (
                 <li key={i} className="flex items-center text-sm text-foreground/70">
                   <span className="mr-2 h-1.5 w-1.5 rounded-full bg-primary/70"></span>
@@ -203,16 +203,12 @@ const ServiceCard = ({ service, index }) => {
             </ul>
           </div>
           
-          {/* Bottom CTA with animation */}
-          <div className="mt-6 pt-4 border-t border-secondary/10">
-            <motion.div 
-              className="flex items-center justify-between text-primary font-medium"
-              animate={{ x: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.9 }}
-              transition={{ duration: 0.3 }}
-            >
+          {/* Bottom CTA with simplified animation */}
+          <div className="mt-4 pt-3 border-t border-secondary/10">
+            <div className="flex items-center justify-between text-primary font-medium">
               <span className="text-sm">Learn more</span>
               <ArrowRight size={16} className="ml-2 group-hover:translate-x-1.5 transition-transform" />
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -225,47 +221,35 @@ const ServiceCard = ({ service, index }) => {
 
 /* SECTION COMPONENTS */
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
-  <div className={`mb-16 ${center ? 'text-center' : ''}`}>
-    {/* Modified eyebrow to remove the dots/lines */}
-    <motion.div
-      {...createMotionProps('fadeIn')}
-      className="flex items-center justify-center gap-2"
-    >
+  <div className={`mb-10 md:mb-12 ${center ? 'text-center' : ''}`}>
+    {/* Optimized eyebrow with static element instead of motion for better performance */}
+    <div className="flex items-center justify-center gap-2">
       <span className="text-primary dark:text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 dark:bg-primary/20 px-4 py-1.5 rounded-full inline-block border border-primary/20 dark:border-primary/30 shadow-sm shadow-primary/5">
         {eyebrow}
       </span>
-    </motion.div>
+    </div>
     
-    {/* Enhanced title with stronger gradient effect and highlight */}
-    <motion.div 
-      {...createMotionProps('fadeInUp', 0.1)}
-      className="relative max-w-3xl mx-auto mt-5"
-    >
-      <div className="absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 dark:from-primary/0 dark:via-primary/30 dark:to-secondary/10 blur-xl opacity-30 -z-10 rounded-full"></div>
+    {/* Simplified heading with pre-defined height to reduce CLS */}
+    <div className="relative max-w-3xl mx-auto mt-4" style={{ minHeight: "min(12vw, 80px)" }}>
       <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-blue-500 leading-tight">
         {title}
       </h2>
-    </motion.div>
-      {/* Enhanced description with better readability */}
+    </div>
+    
+    {/* Simplified description */}
     {description && (
-      <motion.p
-        {...createMotionProps('fadeInUp', 0.2)}
-        className={`text-lg text-foreground/70 dark:text-gray-300 max-w-2xl ${center ? 'mx-auto mt-5' : 'mt-5'} leading-relaxed`}
+      <p
+        className={`text-lg text-foreground/70 dark:text-gray-300 max-w-2xl ${center ? 'mx-auto mt-4' : 'mt-4'} leading-relaxed`}
       >
         {description}
-      </motion.p>
+      </p>
     )}
     
-    {/* Removed the additional visual divider for centered headers */}
+    {/* Simplified centered header divider */}
     {center && (
-      <motion.div
-        {...createMotionProps('fadeInUp', 0.3)}
-        className="relative flex justify-center mt-8"
-      >
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-64 border-t border-secondary/20"></div>
-        </div>
-      </motion.div>
+      <div className="relative flex justify-center mt-6">
+        <div className="w-64 border-t border-secondary/20"></div>
+      </div>
     )}
   </div>
 );
@@ -457,20 +441,14 @@ const HERO_SERVICES = [
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
-/* HERO SECTION - REMOVED BACKGROUND PATTERN LINES */
+/* HERO SECTION - OPTIMIZED FOR PERFORMANCE */
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-16 md:pb-24" aria-labelledby="hero-heading">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <div className="w-[min(110vw,110vh)] h-[min(110vw,110vh)] md:w-[800px] md:h-[800px] animate-scale-in" style={{ aspectRatio: '1/1' }}>
-          <Globe />
-        </div>
-      </div>
-
-      <div className="relative z-20 container mx-auto px-4 md:px-6 py-8">
-        <div className="max-w-4xl mx-auto text-center space-y-8 md:space-y-10">
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-16 pb-12 md:pb-20" aria-labelledby="hero-heading">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 py-6">
+        <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
           {/* Label */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-sm shadow-primary/5">
             <span className="flex h-2.5 w-2.5 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
@@ -478,30 +456,31 @@ const HeroSection = () => {
             <span className="text-sm font-semibold text-primary">Enterprise Technology Solutions</span>
           </div>
 
-          {/* Heading */}
-          <div className="space-y-4 animate-slide-in-up">
+          {/* Heading - Preloaded with height to reduce CLS */}
+          <div className="space-y-3">
             <h1
               id="hero-heading"
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
+              style={{ minHeight: "min(15vw, 120px)" }}
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-violet-700 drop-shadow[0_1px_2px_rgba(0,0,0,0.15)]-sm">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-violet-700">
                 <AuroraText>Jason Tech Solutions</AuroraText>
               </span>
             </h1>
 
-            <div className="h-14 flex items-center justify-center">
+            <div className="h-12 flex items-center justify-center">
               <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-foreground/80">
                 We help companies <span className="text-primary relative">transform businesses</span>
               </h2>
             </div>
           </div>
 
-          {/* Service Tags */}
-          <div className="flex flex-wrap justify-center gap-2.5 md:gap-3 px-2 mx-auto max-w-3xl animate-fade-in">
+          {/* Service Tags - More compact */}
+          <div className="flex flex-wrap justify-center gap-2 md:gap-2.5 px-2 mx-auto max-w-3xl">
             {HERO_SERVICES.map((service, i) => (
               <div
                 key={i}
-                className="px-3.5 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm cursor-default dark:bg-neutral-900/80 dark:border-primary/40 dark:backdrop-blur-xl"
+                className="px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md flex items-center gap-2 shadow-sm cursor-default dark:bg-neutral-900/80 dark:border-primary/40 dark:backdrop-blur-xl"
               >
                 <span className="text-primary p-1 bg-primary/10 rounded-full">{service.icon}</span>
                 <span className="text-sm font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
@@ -509,11 +488,11 @@ const HeroSection = () => {
             ))}
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-5 sm:gap-6 justify-center pt-4 animate-slide-in-up">
+          {/* CTA Buttons - More compact */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center pt-3">
             <CTAButton
               primary
-              className="group shadow-xl shadow-primary/20 hover:shadow-primary/40 border-primary backdrop-blur-md"
+              className="group shadow-md shadow-primary/20 hover:shadow-primary/40 border-primary backdrop-blur-md"
             >
               Get Started
               <ArrowRight className="group-hover:translate-x-1.5 transition-transform duration-300" size={18} />
@@ -532,19 +511,19 @@ const HeroSection = () => {
             </CTAButton>
           </div>
 
-          {/* Stats */}
-          <div className="flex flex-wrap gap-12 justify-center pt-6 mt-6 border-t border-secondary/10 py-5 px-8 backdrop-blur-sm bg-white/5 rounded-2xl animate-fade-in">
+          {/* Stats - More compact */}
+          <div className="flex flex-wrap gap-8 justify-center pt-4 mt-4 border-t border-secondary/10 py-4 px-6 backdrop-blur-sm bg-white/5 rounded-2xl">
             {[
               { label: "Projects Delivered", value: "500+", icon: <Award className="w-5 h-5" /> },
               { label: "Client Satisfaction", value: "99%", icon: <BadgeCheck className="w-5 h-5" /> },
               { label: "Team Experts", value: "50+", icon: <Users className="w-5 h-5" /> }
             ].map((stat, i) => (
               <div key={i} className="text-center">
-                <div className="flex items-center justify-center mb-2">
-                  <div className="p-2 rounded-full bg-primary/10 text-primary mr-2">
+                <div className="flex items-center justify-center mb-1">
+                  <div className="p-1.5 rounded-full bg-primary/10 text-primary mr-2">
                     {stat.icon}
                   </div>
-                  <div className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
+                  <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
                 </div>
                 <div className="text-sm text-foreground/70 font-medium dark:text-foreground/80">{stat.label}</div>
               </div>
@@ -1825,7 +1804,7 @@ const UpcomingProjectsShowcase = memo(() => {
         
         <div className="mt-10 md:mt-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Left side - 3D interactive card */}
+            {/* Left side - 3D interactive card - removed shadow */}
             <div className="relative h-[450px] w-full">
               <AnimatePresence mode="wait">
                 <motion.div 
@@ -1839,7 +1818,7 @@ const UpcomingProjectsShowcase = memo(() => {
                   onMouseLeave={() => setMousePosition({ x: 0, y: 0 })}
                 >
                   <div 
-                    className="h-full w-full rounded-2xl overflow-hidden relative group shadow-2xl shadow-black/20"
+                    className="h-full w-full rounded-2xl overflow-hidden relative group"
                     style={{ 
                       perspective: '1500px',
                       transformStyle: 'preserve-3d',
@@ -2102,7 +2081,10 @@ const ServicesSection = () => (
     {/* New featured services in two-column layout */}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
       {/* Computer Vision Service Card */}
-      <div className="group h-full perspective-1000">
+      <Link
+        to="/services/computer-vision"
+        className="group h-full perspective-1000"
+      >
         <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
           {/* Enhanced icon area with subtle float animation */}
           <div className="px-8 pt-8 pb-5 flex justify-start">
@@ -2120,7 +2102,6 @@ const ServicesSection = () => (
           {/* Content with enhanced typography and animations */}
           <div className="px-8 flex-grow flex flex-col">
             <div className="inline-flex items-center mb-2">
-              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-400/10 text-blue-400 mr-2">Featured</span>
               <h3 className="text-xl font-medium text-[#1D1D1F] dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors duration-300">
                 Computer Vision
               </h3>
@@ -2152,8 +2133,7 @@ const ServicesSection = () => (
           <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
             {/* Enhanced Learn More link with smoother transition */}
             <div className="absolute inset-0 px-8 py-6 flex items-center">
-              <Link
-                to="/services/computer-vision"
+              <span
                 className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
               >
                 <span className="inline-block">Learn more</span>
@@ -2170,17 +2150,20 @@ const ServicesSection = () => (
                 </svg>
                 
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
-              </Link>
+              </span>
             </div>
           </div>
 
           {/* SF-style card shine effect on hover */}
           <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
         </div>
-      </div>
+      </Link>
 
       {/* Social Media & Marketing Service Card */}
-      <div className="group h-full perspective-1000">
+      <Link
+        to="/services/marketing-social-media"
+        className="group h-full perspective-1000"
+      >
         <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
           {/* Enhanced icon area with subtle float animation */}
           <div className="px-8 pt-8 pb-5 flex justify-start">
@@ -2198,7 +2181,6 @@ const ServicesSection = () => (
           {/* Content with enhanced typography and animations */}
           <div className="px-8 flex-grow flex flex-col">
             <div className="inline-flex items-center mb-2">
-              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-400/10 text-blue-400 mr-2">Featured</span>
               <h3 className="text-xl font-medium text-[#1D1D1F] dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors duration-300">
                 Marketing & Social Media
               </h3>
@@ -2230,8 +2212,7 @@ const ServicesSection = () => (
           <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
             {/* Enhanced Learn More link with smoother transition */}
             <div className="absolute inset-0 px-8 py-6 flex items-center">
-              <Link
-                to="/services/marketing-social-media"
+              <span
                 className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
               >
                 <span className="inline-block">Learn more</span>
@@ -2248,21 +2229,22 @@ const ServicesSection = () => (
                 </svg>
                 
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
-              </Link>
+              </span>
             </div>
           </div>
 
           {/* SF-style card shine effect on hover */}
           <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
         </div>
-      </div>
+      </Link>
     </div>
 
     {/* Original services in three-column layout */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {SERVICES.map((service) => (
-        <div 
+        <Link 
           key={service.title}
+          to={service.href}
           className="group h-full perspective-1000"
         >
           <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
@@ -2308,8 +2290,7 @@ const ServicesSection = () => (
             <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
               {/* Enhanced Learn More link with smoother transition */}
               <div className="absolute inset-0 px-8 py-6 flex items-center">
-                <Link
-                  to={service.href}
+                <span
                   className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
                 >
                   <span className="inline-block">Learn more</span>
@@ -2327,30 +2308,18 @@ const ServicesSection = () => (
                   
                   {/* SF-style animated underline effect */}
                   <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
-                </Link>
+                </span>
               </div>
             </div>
 
             {/* SF-style card shine effect on hover */}
             <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
     
-    {/* Enhanced Apple-style CTA button with subtle hover effects */}
-    <div className="flex justify-center mt-14">
-      <Link 
-        to="/services" 
-        className="inline-flex items-center px-8 py-4 rounded-full bg-[#0071E3] text-white font-medium hover:bg-[#0077ED] transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-[#0071E3]/20"
-      >
-        <span>View all services</span>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="ml-2 transform transition-transform duration-300 group-hover:translate-x-0.5">
-          <path d="M7 1L13 7L7 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M1 7H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </Link>
-    </div>
+    {/* Enhanced Apple-style CTA button with subtle hover effects - removed */}
 
     {/* Add subtle perspective effect styling */}
     <style jsx global>{`
