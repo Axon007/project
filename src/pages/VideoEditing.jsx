@@ -1,9 +1,9 @@
-"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { 
   motion, useScroll, useTransform, useMotionValueEvent,
   useSpring, useAnimation, useInView 
 } from "framer-motion";
+import { AuroraText } from "../components/magicui/aurora-text";
 import PageTransition from '../components/PageTransition';
 import { 
   Film, Shield, Play, Code, 
@@ -723,12 +723,45 @@ const StickyScroll = ({ content }) => {
   );
 };
 
+const WORKFLOW_STEPS = [
+  {
+    number: "01",
+    title: "Project Briefing",
+    description: "We discuss your vision, goals, timeline and specific requirements for the project.",
+    icon: <Users className="w-6 h-6" />
+  },
+  {
+    number: "02",
+    title: "Content Review",
+    description: "Our editors review your footage to determine the best approach for your project.",
+    icon: <Folders className="w-6 h-6" />
+  },
+  {
+    number: "03",
+    title: "Initial Draft",
+    description: "We create a first cut with basic editing, timing, and sequencing for your review.",
+    icon: <Film className="w-6 h-6" />
+  },
+  {
+    number: "04",
+    title: "Refinement",
+    description: "Based on your feedback, we refine the edit with color grading and effects.",
+    icon: <Sparkles className="w-6 h-6" />
+  },
+  {
+    number: "05",
+    title: "Final Delivery",
+    description: "After final approval, we deliver your video in any format you require.",
+    icon: <CheckCircle2 className="w-6 h-6" />
+  }
+];
+
 function Home() {
   return (
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
         {/* Hero Section - Enhanced with video background and mobile responsiveness */}
-        <section className="relative min-h-[80vh] md:h-screen flex items-center justify-center overflow-hidden" aria-labelledby="hero-heading">
+        <section className="relative min-h-[80vh] md:h-screen flex items-center justify-center overflow-hidden bg-black text-white" aria-labelledby="hero-heading">
           {/* Video Background */}
           <FadeVideo />
 
@@ -742,11 +775,11 @@ function Home() {
               transition={{ duration: 0.6 }}
               className="inline-block mb-6 md:mb-8"
             >
-              <div className="bg-primary/20 text-primary px-4 md:px-6 py-2 rounded-full text-sm font-medium backdrop-blur-md border border-primary/20">
+              <div className="bg-primary/20 text-white px-4 md:px-6 py-2 rounded-full text-sm font-medium backdrop-blur-md border border-primary/20">
                 Professional Video Editing Studio
               </div>
             </motion.div>
-            
+
             {/* Main Heading */}
             <motion.h1 
               id="hero-heading"
@@ -755,86 +788,95 @@ function Home() {
               transition={{ duration: 0.6 }}
               className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 text-white leading-tight"
             >
-              Transform Your <span className="text-primary">Vision</span>{" "}
+              Transform Your <AuroraText>Vision</AuroraText>
+                  <h1 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-7xl">
+    
+    </h1>
+{" "}
               <span className="block mt-1 md:mt-2">Into Reality</span>
             </motion.h1>
             
-            {/* Subheading */}
-            <motion.p 
+ <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-2xl mx-auto mb-8 md:mb-12"
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-2xl mx-auto mb-10 md:mb-16 font-light"
             >
-              Transforming raw footage into compelling visual stories that captivate audiences
+              Transforming raw footage into compelling visual stories that 
+              <span className="font-medium text-white"> captivate audiences</span> and 
+              <span className="font-medium text-white"> deliver results</span>
             </motion.p>
             
-            {/* Primary CTA Buttons */}
+            {/* Enhanced CTA buttons with hover effects */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 md:mb-12"
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-10 md:mb-16"
             >
-              <button className="group relative overflow-hidden rounded-full bg-primary px-6 md:px-8 py-3 md:py-4 w-full sm:w-auto flex items-center justify-center gap-2 text-white font-medium transition-all hover:bg-primary/90 hover:scale-95">
-                <Play className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:scale-110" />
-                <span>Watch Showreel</span>
+              {/* Primary CTA with animated play icon */}
+              <button className="group relative overflow-hidden rounded-full bg-primary text-white px-8 md:px-10 py-3.5 md:py-4.5 w-full sm:w-auto flex items-center justify-center gap-3 font-medium transition-all border border-primary/50 hover:bg-primary/90 hover:scale-[0.98]">
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+                  <Play className="w-5 h-5 text-primary ml-0.5" />
+                </div>
+                <span className="text-base md:text-lg">Watch Showreel</span>
               </button>
               
-              <button className="group relative overflow-hidden rounded-full border-2 border-white/20 px-6 md:px-8 py-3 md:py-4 w-full sm:w-auto text-white font-medium transition-all hover:bg-white/5 hover:scale-95">
-                <span>Start Project</span>
+              {/* Secondary CTA with hover effect */}
+              <button className="group relative overflow-hidden rounded-full bg-white/5 backdrop-blur-md border border-white/10 px-8 md:px-10 py-3.5 md:py-4.5 w-full sm:w-auto text-white font-medium transition-all hover:bg-white/10 hover:scale-[0.98]">
+                <span className="text-base md:text-lg">Start Project</span>
+                <ChevronRight className="w-5 h-5 opacity-70 ml-2 inline-block" />
               </button>
             </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-12"
+                  >
+                    {CERTIFICATIONS.map((cert, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
+                      className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-white bg-black/30 backdrop-blur-sm px-3 md:px-4 py-1 md:py-2 rounded-full border border-white/10 hover:border-primary/20 transition-colors"
+                    >
+                      <div className="text-white">{
+                      React.cloneElement(cert.icon, { 
+                        className: 'w-4 h-4 md:w-6 md:h-6 text-white' 
+                      })
+                      }</div>
+                      <span>{cert.name}</span>
+                    </motion.div>
+                    ))}
+                  </motion.div>
 
-            {/* Certification Badges - Mobile Responsive */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-12"
-            >
-              {CERTIFICATIONS.map((cert, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
-                  className="flex items-center gap-1 md:gap-2 text-xs md:text-sm text-white/80 bg-black/30 backdrop-blur-sm px-3 md:px-4 py-1 md:py-2 rounded-full border border-white/10 hover:border-primary/20 transition-colors"
-                >
-                  <div className="text-primary">{
-                    React.cloneElement(cert.icon, { 
-                      className: 'w-4 h-4 md:w-6 md:h-6' 
-                    })
-                  }</div>
-                  <span>{cert.name}</span>
-                </motion.div>
-              ))}
-            </motion.div>
 
-            {/* Feature Highlights - Mobile Responsive */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-xs md:text-sm text-white/60"
-            >
-              {[
-                { icon: <CheckCircle2 />, text: "24/7 Support" },
-                { icon: <Shield />, text: "Secure Platform" },
-                { icon: <Zap />, text: "Fast Delivery" }
-              ].map((feature, index) => (
-                <div key={index} className="flex items-center gap-1 md:gap-2">
-                  <div className="w-4 h-4 md:w-5 md:h-5 text-primary">{feature.icon}</div>
-                  <span>{feature.text}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+                      <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-xs md:text-sm text-white"
+                      >
+                      {[
+                      { icon: <CheckCircle2 className="text-white" />, text: "24/7 Support" },
+                      { icon: <Shield className="text-white" />, text: "Secure Platform" },
+                      { icon: <Zap className="text-white" />, text: "Fast Delivery" }
+                      ].map((feature, index) => (
+                      <div key={index} className="flex items-center gap-1 md:gap-2">
+                        <div className="w-4 h-4 md:w-5 md:h-5 text-white">{feature.icon}</div>
+                        <span>{feature.text}</span>
+                      </div>
+                      ))}
+                      </motion.div>
+                      </div>
+                    </section>
 
-        {/* Client Logos Section - Improved with better mobile responsiveness */}
-        <section className="py-10 md:py-16 px-4 bg-gradient-to-r from-secondary/10 via-secondary/5 to-secondary/10 border-y border-secondary/20" aria-labelledby="partnerships-heading">
+
+                    {/* Client Logos Section - Improved with better mobile responsiveness */}
+        <section className="py-5 md:py-8 px-4 bg-gradient-to-r from-secondary/10 via-secondary/5 to-secondary/10 border-y border-secondary/20" aria-labelledby="partnerships-heading">
           <div className="max-w-7xl mx-auto">
             <motion.div 
               initial={{ opacity: 0 }}
@@ -863,7 +905,7 @@ function Home() {
         </section>
 
         {/* Core Services Section - Updated for mobile */}
-        <section className="relative py-16 md:py-24 px-4 overflow-hidden" aria-labelledby="services-heading">
+        <section className="relative py-8 md:py-12 px-4 overflow-hidden" aria-labelledby="services-heading">
           {/* Enhanced Background Elements */}
           <div className="absolute inset-0 pointer-events-none">
             {/* Base Gradient */}
@@ -906,7 +948,7 @@ function Home() {
         </section>
 
         {/* Why Choose Us Section - Enhanced with better structure and mobile responsiveness */}
-        <section className="py-16 md:py-24" aria-labelledby="why-choose-us">
+        <section className="py-8 md:py-12" aria-labelledby="why-choose-us">
           <SectionHeading 
             eyebrow="Our Advantage" 
             title="Why Choose Our Editing Services" 
@@ -916,8 +958,290 @@ function Home() {
           <StickyScroll content={WHY_CHOOSE_US_CONTENT} />
         </section>
 
+        <section className="py-8 md:py-12 relative overflow-hidden" aria-labelledby="workflow-heading">
+  {/* Improved film background texture */}
+  <div className="absolute inset-0 bg-noise opacity-[0.03] pointer-events-none"></div>
+  
+  {/* Film reel decorative elements with better visual style */}
+  <div className="absolute inset-0 pointer-events-none">
+    {/* Film sprocket holes on sides - enhanced for desktop */}
+    <div className="hidden md:block">
+      <div className="absolute left-6 top-32 bottom-32 w-6">
+        {[...Array(20)].map((_, i) => (
+          <motion.div 
+            key={`left-${i}`}
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.02, duration: 0.3, type: "spring" }}
+            className="w-6 h-6 rounded-full border-2 border-primary/40 my-8 bg-background/80 shadow-inner"
+          />
+        ))}
+      </div>
+      <div className="absolute right-6 top-32 bottom-32 w-6">
+        {[...Array(20)].map((_, i) => (
+          <motion.div 
+            key={`right-${i}`}
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.02, duration: 0.3, type: "spring" }}
+            className="w-6 h-6 rounded-full border-2 border-primary/40 my-8 bg-background/80 shadow-inner"
+          />
+        ))}
+      </div>
+    </div>
+    
+    {/* Film strip edges */}
+    <div className="absolute left-20 top-0 bottom-0 w-1 bg-gradient-to-r from-primary/20 to-transparent hidden md:block"></div>
+    <div className="absolute right-20 top-0 bottom-0 w-1 bg-gradient-to-l from-primary/20 to-transparent hidden md:block"></div>
+  </div>
+  
+  <div className="relative max-w-7xl mx-auto px-4">
+    <SectionHeading
+      eyebrow="How We Work"
+      title="Our Video Editing Process"
+      subtitle="A streamlined workflow designed to transform your raw footage into perfectly edited content"
+      center={true}
+    />
+    
+    {/* Enhanced Film Strip - Desktop */}
+    <motion.div 
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="hidden md:block mt-16 relative"
+    >
+      {/* Improved film strip background with gradient and grain texture */}
+      <div className="absolute left-0 right-0 h-64 bg-gradient-to-r from-primary/5 via-secondary/20 to-primary/5 rounded-xl overflow-hidden">
+        <div className="absolute inset-0 bg-noise opacity-[0.05]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(79,70,229,0.05),transparent_70%)]"></div>
+      </div>
+      
+      {/* Enhanced top film sprocket holes with staggered animation */}
+      <div className="absolute top-0 left-0 right-0 h-8 flex justify-between px-8">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={`top-${i}`}
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.03, duration: 0.4 }}
+            className="w-6 h-6 rounded-full bg-background border-2 border-primary/40 -mt-3 shadow-inner"
+          />
+        ))}
+      </div>
+      
+      {/* Enhanced bottom film sprocket holes with staggered animation */}
+      <div className="absolute bottom-0 left-0 right-0 h-8 flex justify-between px-8">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={`bottom-${i}`}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.03, duration: 0.4 }}
+            className="w-6 h-6 rounded-full bg-background border-2 border-primary/40 -mb-3 shadow-inner"
+          />
+        ))}
+      </div>
+      
+      {/* Enhanced film frames with sequential reveal */}
+      <div className="flex justify-between py-8 px-10 gap-4">
+        {WORKFLOW_STEPS.map((step, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, margin: "-5%" }}
+            transition={{ delay: 0.2 + index * 0.15, duration: 0.5 }}
+            whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+            className="relative flex-1 bg-secondary/10 backdrop-blur-sm border border-primary/20 rounded-lg overflow-hidden group"
+          >
+            {/* Film grain overlay */}
+            <div className="absolute inset-0 bg-noise opacity-[0.03] group-hover:opacity-[0.05] transition-opacity"></div>
+            
+            {/* Frame exposure light effect */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            {/* Enhanced frame number label */}
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-background px-3 py-1 rounded-full border border-primary/30 shadow-md">
+              <span className="text-primary text-xs font-mono font-bold tracking-wider">{step.number}</span>
+            </div>
+            
+            {/* Frame content with padding adjustment for better spacing */}
+            <div className="p-6 pt-7 flex flex-col items-center h-full justify-between">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <div className="text-primary group-hover:scale-110 transition-transform">
+                  {step.icon}
+                </div>
+              </div>
+              
+              <div className="text-center">
+                <h3 className="text-lg font-bold mb-3 group-hover:text-primary transition-colors">{step.title}</h3>
+                <p className="text-sm text-foreground/70 group-hover:text-foreground/90 transition-colors">{step.description}</p>
+              </div>
+            </div>
+            
+            {/* Enhanced frame corner marks with better styling */}
+            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/40 group-hover:border-primary/60 transition-colors" />
+            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary/40 group-hover:border-primary/60 transition-colors" />
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/40 group-hover:border-primary/60 transition-colors" />
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/40 group-hover:border-primary/60 transition-colors" />
+            
+            {/* Better framing connection with animated arrow */}
+            {index < WORKFLOW_STEPS.length - 1 && (
+              <motion.div 
+                className="absolute top-1/2 -right-6 -translate-y-1/2"
+                animate={{ x: [0, 3, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+              >
+                <ChevronRight className="w-5 h-5 text-primary" />
+              </motion.div>
+            )}
+            
+            {/* Frame number on film strip */}
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-mono text-primary/60 bg-background px-1 rounded">
+              FRAME {step.number}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+    
+    {/* Enhanced Vertical Film Strip - Mobile */}
+    <div className="md:hidden mt-12">
+      <div className="relative mx-auto w-full max-w-sm">
+        {/* Enhanced left film sprocket holes */}
+        <div className="absolute left-0 top-0 bottom-0 w-5 flex flex-col items-center">
+          {WORKFLOW_STEPS.map((_, i) => (
+            <React.Fragment key={`mobile-left-${i}`}>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.3 }}
+                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 + 0.05, duration: 0.3 }}
+                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 + 0.1, duration: 0.3 }}
+                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
+              />
+              {i < WORKFLOW_STEPS.length - 1 && (
+                <div className="h-20" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+        
+        {/* Enhanced right film sprocket holes */}
+        <div className="absolute right-0 top-0 bottom-0 w-5 flex flex-col items-center">
+          {WORKFLOW_STEPS.map((_, i) => (
+            <React.Fragment key={`mobile-right-${i}`}>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.3 }}
+                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 + 0.05, duration: 0.3 }}
+                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 + 0.1, duration: 0.3 }}
+                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
+              />
+              {i < WORKFLOW_STEPS.length - 1 && (
+                <div className="h-20" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+        
+        {/* Enhanced vertical film strip with better film texture */}
+        <div className="mx-8 bg-secondary/5 relative">
+          <div className="absolute inset-0 bg-noise opacity-[0.02]"></div>
+          
+          {WORKFLOW_STEPS.map((step, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ delay: index * 0.2, duration: 0.5 }}
+              className="relative mb-8 last:mb-0"
+            >
+              {/* Enhanced film frame with better styling */}
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="bg-secondary/10 backdrop-blur-sm border border-primary/20 rounded-lg p-5 relative shadow-sm"
+              >
+                {/* Frame grain overlay */}
+                <div className="absolute inset-0 bg-noise opacity-[0.03]"></div>
+                
+                {/* Enhanced frame number */}
+                <div className="absolute -top-3 left-4 bg-background px-2 py-0.5 rounded-full border border-primary/30 shadow-sm">
+                  <span className="text-primary text-xs font-mono font-bold tracking-wider">{step.number}</span>
+                </div>
+                
+                {/* Enhanced content layout */}
+                <div className="flex items-start gap-4 relative z-10">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-inner">
+                    <div className="text-primary">{
+                      React.cloneElement(step.icon, { className: 'w-6 h-6' })
+                    }</div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-base font-bold mb-2">{step.title}</h3>
+                    <p className="text-xs text-foreground/70">{step.description}</p>
+                  </div>
+                </div>
+                
+                {/* Enhanced frame corner marks */}
+                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/40" />
+                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/40" />
+                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary/40" />
+                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/40" />
+              </motion.div>
+              
+              {/* Enhanced film strip connection */}
+              {index < WORKFLOW_STEPS.length - 1 && (
+                <motion.div 
+                  initial={{ height: 0 }}
+                  whileInView={{ height: 40 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: 0.3 }}
+                  className="absolute left-1/2 -translate-x-1/2 w-1 bg-gradient-to-b from-primary/30 to-primary/10 mt-2"
+                />
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
         {/* Testimonials Section - Mobile responsive */}
-        <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-background to-secondary/5">
+        <section className="py-8 md:py-12 px-4 bg-gradient-to-b from-background to-secondary/5">
           <div className="max-w-7xl mx-auto">
             <SectionHeading
               eyebrow="Client Feedback"

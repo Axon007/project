@@ -3,7 +3,6 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ExitIntentPopup from './components/ExitIntentPopup';
 
 // Lazy load all page components
 const Home = lazy(() => import('./pages/Home'));
@@ -77,7 +76,7 @@ function AppContent() {
         </Suspense>
       </AnimatePresence>
       <Footer />
-      <ExitIntentPopup />
+
     </div>
   );
 }

@@ -55,20 +55,7 @@ const FooterWithNewsletter = ({
                 />
               </div>
               
-              <AnimatedSubscribeButton 
-                subscribeStatus={isSubscribed}
-                onClick={handleSubscribe}
-                className="group"
-              >
-                <span className="flex items-center justify-center">
-                  Subscribe to Updates
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </span>
-                <span className="flex items-center justify-center">
-                  Subscribed Successfully
-                  <CheckCircle className="w-4 h-4 ml-2" />
-                </span>
-              </AnimatedSubscribeButton>
+
             </motion.div>
             
             <div className="flex flex-wrap justify-center md:justify-between text-xs text-foreground/50 gap-3">

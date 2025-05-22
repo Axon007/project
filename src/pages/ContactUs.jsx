@@ -2,13 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect, lazy, Suspense, useRef } from "react";
 import PageTransition from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
-import { 
-  Mail, Phone, MapPin, Send, MessageSquare, 
-  Facebook, Twitter, Linkedin, Instagram, Github, 
-  CheckCircle, ArrowRight, Clock
-} from "lucide-react";
 
-// Lazy-loaded section components
 const HeroSection = lazy(() => import('../components/contact/HeroSection'));
 const AlternativeContactSection = lazy(() => import('../components/contact/AlternativeContactSection'));
 const OfficeLocationSection = lazy(() => import('../components/contact/OfficeLocationSection'));

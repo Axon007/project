@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import PageTransition from '../components/PageTransition';
-import { PinContainer } from '../components/ui/3d-pin';
 import { ContainerScroll } from "../components/ui/container-scroll-animation"; 
 
 

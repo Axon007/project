@@ -1,10 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useRef, useEffect, memo, useMemo, useCallback } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import PageTransition from '../components/PageTransition';
-import { AnimatedTestimonials } from "../components/ui/animated-testimonials";
-
-
-import { AuroraBackground } from "../components/ui/aurora-background";
 import { Globe } from "@/components/magicui/globe";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
@@ -12,9 +8,7 @@ import {
   VideoIcon, Brush, Lightbulb, ArrowLeft,ArrowDown,  MessageSquare, CheckCircle, Phone, Mail, MessageCircle,Smartphone 
 } from "lucide-react";
 import { Link } from "react-router-dom";
-
-
-
+import { AuroraText } from "@/components/magicui/aurora-text";
 
 
 /* THEME AND UI CONFIGURATION */
@@ -53,6 +47,8 @@ const UI = {
       glow: "group-hover:opacity-100 opacity-0 transition-opacity duration-300"
     }
   },
+
+  
   
   // Typography system - unified
   text: {
@@ -136,20 +132,20 @@ const createMotionProps = (type, delay = 0) => {
   };
 };
 
+
+
 /* REUSABLE COMPONENTS */
-const Section = ({ children, dark = false, pattern = false, className = "", id = null }) => (
+const Section = ({ children, dark = false, pattern = false, className = "", id = null, fullWidth = false }) => (
   <section 
     id={id}
     className={`py-24 px-4 ${
-      dark ? 'bg-background' : 
-      'bg-background'
+      dark ? 'bg-background dark:bg-gray-950' : 
+      'bg-background dark:bg-inherit'
     } ${className}`}
     aria-labelledby={id}
   >
-    {pattern && (
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-    )}
-    <div className="max-w-7xl mx-auto relative z-10">
+
+    <div className={`${fullWidth ? 'w-full' : 'max-w-7xl'} mx-auto relative z-10`}>
       {children}
     </div>
   </section>
@@ -224,116 +220,8 @@ const ServiceCard = ({ service, index }) => {
   );
 };
 
-// Add this new component for mobile services carousel
-const MobileServiceCarousel = ({ services }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const carouselRef = useRef(null);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!carouselRef.current) return;
-      
-      const scrollPosition = carouselRef.current.scrollLeft;
-      const itemWidth = carouselRef.current.offsetWidth;
-      const newIndex = Math.round(scrollPosition / itemWidth);
-      
-      if (newIndex !== activeIndex) {
-        setActiveIndex(newIndex);
-      }
-    };
-    
-    const carousel = carouselRef.current;
-    if (carousel) {
-      carousel.addEventListener('scroll', handleScroll);
-      return () => carousel.removeEventListener('scroll', handleScroll);
-    }
-  }, [activeIndex]);
-  
-  return (
-    <>
-      <div 
-        ref={carouselRef}
-        className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar -mx-4 px-4 pb-6"
-      >
-        {services.map((service, index) => (
-          <div 
-            key={index} 
-            className="w-full flex-shrink-0 snap-center px-2 first:pl-4 last:pr-4"
-          >
-            <ServiceCard service={service} index={index} />
-          </div>
-        ))}
-      </div>
-      
-      <div className="flex justify-center gap-1.5 mt-4">
-        {services.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              if (carouselRef.current) {
-                carouselRef.current.scrollLeft = index * carouselRef.current.offsetWidth;
-              }
-            }}
-            aria-label={`Go to slide ${index + 1}`}
-            className={`w-2.5 h-2.5 rounded-full transition-colors ${
-              activeIndex === index 
-                ? 'bg-primary' 
-                : 'bg-primary/30'
-            }`}
-          />
-        ))}
-      </div>
-    </>
-  );
-};
 
-// Update the Services Section
-const ServicesSection = memo(() => {
-  const isMobile = useRef(false);
-  const [isClient, setIsClient] = useState(false);
-  
-  useEffect(() => {
-    // Only check device on client side
-    isMobile.current = window.innerWidth < 768;
-    setIsClient(true);
-    
-    const handleResize = () => {
-      isMobile.current = window.innerWidth < 768;
-    };
-    
-    // Add passive flag for better scroll performance
-    window.addEventListener('resize', handleResize, { passive: true });
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  return (
-    <Section id="our-services-section">
-      <SectionHeading 
-        eyebrow="What We Do" 
-        title="Our Services" 
-        description="We deliver cutting-edge solutions tailored to your specific business needs, leveraging the latest technologies and industry best practices."
-        center={true} 
-      />
-      
 
-      
-      {/* Service cards - client-side only rendering for better initial load */}
-      {isClient && (
-        <>
-          {isMobile.current ? (
-            <MobileServiceCarousel services={SERVICES} />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {SERVICES.map((service, index) => (
-                <ServiceCard key={index} service={service} index={index} />
-              ))}
-            </div>
-          )}
-        </>
-      )}
-    </Section>
-  );
-});
 
 /* SECTION COMPONENTS */
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
@@ -343,7 +231,7 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
       {...createMotionProps('fadeIn')}
       className="flex items-center justify-center gap-2"
     >
-      <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1.5 rounded-full inline-block border border-primary/20 shadow-sm shadow-primary/5">
+      <span className="text-primary dark:text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 dark:bg-primary/20 px-4 py-1.5 rounded-full inline-block border border-primary/20 dark:border-primary/30 shadow-sm shadow-primary/5">
         {eyebrow}
       </span>
     </motion.div>
@@ -353,17 +241,16 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
       {...createMotionProps('fadeInUp', 0.1)}
       className="relative max-w-3xl mx-auto mt-5"
     >
-      <div className="absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 blur-xl opacity-30 -z-10 rounded-full"></div>
+      <div className="absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 dark:from-primary/0 dark:via-primary/30 dark:to-secondary/10 blur-xl opacity-30 -z-10 rounded-full"></div>
       <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-blue-500 leading-tight">
         {title}
       </h2>
     </motion.div>
-    
-    {/* Enhanced description with better readability */}
+      {/* Enhanced description with better readability */}
     {description && (
       <motion.p
         {...createMotionProps('fadeInUp', 0.2)}
-        className={`text-lg text-foreground/70 max-w-2xl ${center ? 'mx-auto mt-5' : 'mt-5'} leading-relaxed`}
+        className={`text-lg text-foreground/70 dark:text-gray-300 max-w-2xl ${center ? 'mx-auto mt-5' : 'mt-5'} leading-relaxed`}
       >
         {description}
       </motion.p>
@@ -570,100 +457,69 @@ const HERO_SERVICES = [
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
-/* HERO SECTION */
+/* HERO SECTION - REMOVED BACKGROUND PATTERN LINES */
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16 md:pb-24" aria-labelledby="hero-heading">
-
-
-      {/* Improved globe with better positioning and effects 
-     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <motion.div
-
-          className="w-[min(110vw,110vh)] h-[min(110vw,110vh)] md:w-[800px] md:h-[800px]"
-        >
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-16 md:pb-24" aria-labelledby="hero-heading">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <div className="w-[min(110vw,110vh)] h-[min(110vw,110vh)] md:w-[800px] md:h-[800px] animate-scale-in" style={{ aspectRatio: '1/1' }}>
           <Globe />
-        </motion.div>
-      </div>*/}
+        </div>
+      </div>
 
-      {/* Main content with improved layout */}
       <div className="relative z-20 container mx-auto px-4 md:px-6 py-8">
         <div className="max-w-4xl mx-auto text-center space-y-8 md:space-y-10">
-          {/* Enhanced label with improved design */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5"
-          >
+          {/* Label */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5 animate-fade-in">
             <span className="flex h-2.5 w-2.5 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
             </span>
             <span className="text-sm font-semibold text-primary">Enterprise Technology Solutions</span>
-          </motion.div>
-          
-          {/* Improved heading with better typography */}
-          <div className="space-y-4">
-            <motion.h1 
+          </div>
+
+          {/* Heading */}
+          <div className="space-y-4 animate-slide-in-up">
+            <h1
               id="hero-heading"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
             >
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-violet-700 drop-shadow[0_1px_2px_rgba(0,0,0,0.15)]-sm">
-                Jason Tech Solutions
+                <AuroraText>Jason Tech Solutions</AuroraText>
               </span>
-            </motion.h1>
-            
-            {/* Static typing effect replaced here */}
+            </h1>
+
             <div className="h-14 flex items-center justify-center">
               <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-foreground/80">
                 We help companies <span className="text-primary relative">transform businesses</span>
               </h2>
             </div>
           </div>
-          
-          {/* Service tags - hover effect removed */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-wrap justify-center gap-2.5 md:gap-3 px-2 mx-auto max-w-3xl"
-          >
+
+          {/* Service Tags */}
+          <div className="flex flex-wrap justify-center gap-2.5 md:gap-3 px-2 mx-auto max-w-3xl animate-fade-in">
             {HERO_SERVICES.map((service, i) => (
-              <motion.div
+              <div
                 key={i}
-                className="
-              px-3.5 py-2 rounded-full border border-primary/20 
-    bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm cursor-default
-    dark:bg-neutral-900/80 dark:border-primary/40 dark:backdrop-blur-xl
-  "
+                className="px-3.5 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm cursor-default dark:bg-neutral-900/80 dark:border-primary/40 dark:backdrop-blur-xl"
               >
                 <span className="text-primary p-1 bg-primary/10 rounded-full">{service.icon}</span>
                 <span className="text-sm font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
-          
-          {/* Improved CTA buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-5 sm:gap-6 justify-center pt-4"
-          >
-            <CTAButton 
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-5 sm:gap-6 justify-center pt-4 animate-slide-in-up">
+            <CTAButton
               primary
               className="group shadow-xl shadow-primary/20 hover:shadow-primary/40 border-primary backdrop-blur-md"
             >
               Get Started
-              {/* Keep button hover effect for CTA */}
               <ArrowRight className="group-hover:translate-x-1.5 transition-transform duration-300" size={18} />
             </CTAButton>
-            
-            <CTAButton 
+
+            <CTAButton
               primary={false}
               className="group backdrop-blur-md"
               onClick={() => {
@@ -674,26 +530,16 @@ const HeroSection = () => {
               Our Services
               <ArrowDown className="ml-1 group-hover:translate-x-1 transition-transform duration-300" size={18} />
             </CTAButton>
-          </motion.div>
-          
-          {/* Improved stats with enhanced visuals */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap gap-12 justify-center pt-6 mt-6 border-t border-secondary/10 py-5 px-8 backdrop-blur-sm bg-white/5 rounded-2xl"
-          >
+          </div>
+
+          {/* Stats */}
+          <div className="flex flex-wrap gap-12 justify-center pt-6 mt-6 border-t border-secondary/10 py-5 px-8 backdrop-blur-sm bg-white/5 rounded-2xl animate-fade-in">
             {[
               { label: "Projects Delivered", value: "500+", icon: <Award className="w-5 h-5" /> },
               { label: "Client Satisfaction", value: "99%", icon: <BadgeCheck className="w-5 h-5" /> },
               { label: "Team Experts", value: "50+", icon: <Users className="w-5 h-5" /> }
             ].map((stat, i) => (
-              <motion.div 
-                key={i} 
-                className="text-center"
-                // Removed whileHover for stats
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
+              <div key={i} className="text-center">
                 <div className="flex items-center justify-center mb-2">
                   <div className="p-2 rounded-full bg-primary/10 text-primary mr-2">
                     {stat.icon}
@@ -701,14 +547,15 @@ const HeroSection = () => {
                   <div className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
                 </div>
                 <div className="text-sm text-foreground/70 font-medium dark:text-foreground/80">{stat.label}</div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
+
 
 /* PROJECTS SECTION OPTIMIZATION */
 // Optimized Project Card Component
@@ -738,9 +585,10 @@ const ProjectCard = memo(({ project, isHovered, onHoverChange }) => {
             src={project.image}
             alt={project.title}
             className="w-full h-full object-cover"
-            loading="lazy"
-            width="600"
+            width="600" 
             height="400"
+            style={{ aspectRatio: '3/2' }}
+            loading="lazy"
           />
         </div>
         
@@ -832,92 +680,88 @@ const ProjectCard = memo(({ project, isHovered, onHoverChange }) => {
   );
 });
 
-const ProjectsSection = memo(() => {
-  const [activeFilter, setActiveFilter] = useState('All');
-  const [hoveredProject, setHoveredProject] = useState(null);
-  
-  // Memoize these values to prevent unnecessary rerenders
-  const categories = useMemo(() => ['All', 'Web Development', 'Logo Design', 'Game Development', 'Video Editing', 'UI/UX Design'], []);
-  
-  // Use useMemo to optimize filtering
-  const filteredProjects = useMemo(() => {
-    if (activeFilter === 'All') {
-      return PROJECTS;
-    }
-    return PROJECTS.filter(project => project.category === activeFilter);
-  }, [activeFilter]);
 
-  // Use useCallback for event handlers
-  const handleHoverChange = useCallback((projectTitle) => {
-    setHoveredProject(projectTitle);
-  }, []);
-
-  // return (
-  //   <Section id="projects">
-  //     <SectionHeading 
-  //       eyebrow="Our Portfolio" 
-  //       title="Featured Projects" 
-  //       description="Explore our award-winning work delivered for clients across industries"
-  //       center={true} 
-  //     />
-      
-  //     {/* Static filter tabs with CSS transitions */}
-  //     <div className="relative mb-16">
-  //       <div className="flex flex-wrap justify-center gap-2 mb-2">
-  //         {categories.map((category, index) => {
-  //           const isActive = activeFilter === category;
-  //           return (
-  //             <button
-  //               key={index}
-  //               onClick={() => setActiveFilter(category)}
-  //               className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-  //                 isActive 
-  //                   ? 'text-white bg-primary' 
-  //                   : 'text-foreground/70 hover:text-foreground'
-  //               }`}
-  //             >
-  //               <span className="relative z-10">{category}</span>
-  //             </button>
-  //           );
-  //         })}
-  //       </div>
+// Component to render the content for each project card
+const ProjectContent = ({ project }) => {
+  return (
+    <div className="bg-[#F5F5F7] dark:bg-gray-800 p-8 md:p-14 rounded-3xl mb-4">
+      <div className="max-w-3xl mx-auto">
+        {/* Project description */}
+        <p className="text-gray-600 dark:text-gray-300 text-base md:text-2xl font-sans mb-8">
+          <span className="font-bold text-gray-800 dark:text-white">
+            {project.title}.
+          </span>{" "}
+          {project.description}
+        </p>
         
-  //       {/* Removed showing results text */}
-  //       {/* <p className="text-center text-sm text-foreground/50 mt-2">
-  //         Showing {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
-  //         {activeFilter !== 'All' ? ` in ${activeFilter}` : ''}
-  //       </p> */}
-  //     </div>
-      
-  //     {/* Optimized grid without AnimatePresence */}
-  //     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-  //       {filteredProjects.map((project, index) => (
-  //         <ProjectCard 
-  //           key={project.title}
-  //           project={project} 
-  //           isHovered={hoveredProject === project.title}
-  //           onHoverChange={handleHoverChange}
-  //         />
-  //       ))}
-  //     </div>
-      
-  //     {/* Empty state without animations */}
-  //     {filteredProjects.length === 0 && (
-  //       <div className="bg-secondary/5 backdrop-blur-sm border border-secondary/20 rounded-2xl p-12 text-center my-8">
-  //         <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-  //           <LineChart className="w-10 h-10 text-primary/60" />
-  //         </div>
-  //         <p className="text-xl font-medium mb-4">No projects found</p>
-  //         <p className="text-foreground/60 mb-8 max-w-md mx-auto">
-  //           We couldn't find any projects in the {activeFilter} category. Try selecting a different category or check back later.
-  //         </p>
-
-  //       </div>
-  //     )}
-
-  //   </Section>
-  // );
-});
+        {/* Project details */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Technologies Used</h3>
+            <div className="flex flex-wrap gap-2">
+              {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'].slice(0, 3 + Math.floor(Math.random() * 2)).map((tech, i) => (
+                <span 
+                  key={i} 
+                  className="px-3 py-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full text-sm font-medium"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Key Features</h3>
+            <ul className="space-y-2">
+              {Array(3).fill(0).map((_, i) => (
+                <li key={i} className="flex items-center text-gray-600 dark:text-gray-300">
+                  <svg className="w-5 h-5 mr-2 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  {i === 0 ? 'Responsive design across all devices' : 
+                   i === 1 ? 'Optimized for performance and SEO' : 
+                   'Intuitive user interface and experience'}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        
+        {/* Project showcase */}
+        <div className="relative rounded-xl overflow-hidden shadow-2xl">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-auto object-cover"
+          />
+          
+          {project.featured && (
+            <div className="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              FEATURED PROJECT
+            </div>
+          )}
+          
+          {project.stats && (
+            <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white text-sm px-3 py-1 rounded-full">
+              {project.stats}
+            </div>
+          )}
+        </div>
+        
+        {/* CTA Button */}
+        <div className="mt-8 flex justify-center">
+          <button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 group">
+            View Project Details
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 /* DESIGNS SECTION */
 const DesignsSection = memo(() => {
@@ -1047,6 +891,7 @@ const DesignsSection = memo(() => {
                 alt={design.title}
                 className="w-full h-full object-cover"
               />
+            
             </div>
             
             <button 
@@ -1351,7 +1196,7 @@ const ProcessTimeline = memo(() => {
         center={true}
       />
       
-      <div className="mt-16 relative max-w-6xl mx-auto" ref={timelineRef}>
+      <div className="mt-16 relative max-w-6xl mx-auto min-h-[800px]" ref={timelineRef}>
         {/* Timeline line */}
         <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-secondary/20 dark:bg-gray-700 transform -translate-x-1/2"></div>
         
@@ -1371,9 +1216,9 @@ const ProcessTimeline = memo(() => {
           const isExactlyActive = activeStep === process.step;
           
           return (
-            <div key={index} className="relative mb-20 last:mb-0">
+            <div key={index} className="relative h-[160px] mb-20 last:mb-0">
               {/* Timeline marker */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
+              <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center w-14 h-14">
                 <div 
                   className={`
                     h-14 w-14 rounded-full flex items-center justify-center z-10 
@@ -1974,14 +1819,9 @@ const UpcomingProjectsShowcase = memo(() => {
   ];
   
   return (
-    <Section id="upcoming-projects" className="py-16 overflow-hidden dark:bg-gray-900"> 
+<Section id="upcoming-projects" className="py-3 md:py-6 lg:py-8 overflow-hidden dark:bg-gray-900">
+
       <div className="max-w-7xl mx-auto">
-        <SectionHeading 
-          eyebrow="Coming Soon" 
-          title="Upcoming Projects" 
-          description="Get a sneak peek of our innovative solutions currently in development"
-          center={true}
-        />
         
         <div className="mt-10 md:mt-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -2125,7 +1965,7 @@ const UpcomingProjectsShowcase = memo(() => {
             <div className="space-y-6">
               <div className="space-y-4">
                 <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 dark:bg-primary/20 px-4 py-1 rounded-full inline-block border border-primary/20 dark:border-primary/40">
-                  Innovation Pipeline
+                  Upcoming Projects
                 </span>
                 
                 <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4">
@@ -2200,31 +2040,27 @@ const UpcomingProjectsShowcase = memo(() => {
     </Section>
   );
 });
-
-/* MAIN COMPONENT */
-function Home() {
+const Trusted = memo(() => {
   return (
-    <PageTransition>
-      <div className="min-h-screen">
-        <div className="relative bg-gradient-to-b from-background to-background/95">
-          <div className="absolute inset-0 w-full h-full">
-          </div>
-          
-
-          <HeroSection />
-
-          {/* PARTNERSHIPS SECTION */}
-          <section className="relative py-12 px-4">
-            <div className="relative z-10 max-w-7xl mx-auto">
+              <section className="py-3 md:py-6 lg:py-8 overflow-hidden dark:bg-gray-900">
+            <div className="relative z-10 max-w-7xl mx-auto min-h-[120px]">
               <motion.div 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                style={{ contain: 'paint layout' }}
                 className="text-center mb-8"
               >
-                <h2 id="partnerships-heading" className="text-primary/80 text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
-                  TRUSTED BY INDUSTRY LEADERS
-                </h2>
+                          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5"
+          >
+ 
+            <span className="text-sm font-semibold text-primary"> TRUSTED BY INDUSTRY LEADERS</span>
+          </motion.div>
+                
               </motion.div>
               
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
@@ -2249,80 +2085,294 @@ function Home() {
               </div>
             </div>
           </section>
-        </div>
 
-        <UpcomingProjectsShowcase />
-        <ServicesSection />
-        <ProcessTimeline />
-        <ProjectsSection />
+  );
+});
 
+// ENHANCED SERVICES SECTION WITH PREMIUM APPLE DESIGN LANGUAGE
+const ServicesSection = () => (
+  <Section id="our-services-section" pattern={false}>
+    <SectionHeading
+      eyebrow="Our Services"
+      title="What We Offer"
+      description="Premium digital solutions crafted for your business, using the latest technology and design thinking."
+      center={true}
+    />
 
-        <DesignsSection />
-        <SolutionFinder />
-        
-        {/* TESTIMONIALS SECTION */}
-        <Section id="testimonials">
-          <SectionHeading 
-            eyebrow="Testimonials" 
-            title="What Our Clients Say" 
-            description="Hear from organizations who have experienced transformative results through our solutions"
-            center={true} 
-          />
-          
-          <div className="max-w-6xl mx-auto">
-            <AnimatedTestimonials
-              testimonials={[
-                {
-                  quote: "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
-                  name: "Sarah Chen",
-                  designation: "Product Manager at TechFlow",
-                  src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                },
-                {
-                  quote: "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
-                  name: "Michael Rodriguez",
-                  designation: "CTO at InnovateSphere",
-                  src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                },
-                {
-                  quote: "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
-                  name: "Emily Watson",
-                  designation: "Operations Director at CloudScale",
-                  src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                },
-                {
-                  quote: "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
-                  name: "James Kim",
-                  designation: "Engineering Lead at DataPro",
-                  src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                },
-                {
-                  quote: "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
-                  name: "Lisa Thompson",
-                  designation: "VP of Technology at FutureNet",
-                  src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                },
-              ]}
-            />
+    {/* New featured services in two-column layout */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+      {/* Computer Vision Service Card */}
+      <div className="group h-full perspective-1000">
+        <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
+          {/* Enhanced icon area with subtle float animation */}
+          <div className="px-8 pt-8 pb-5 flex justify-start">
+            <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-[#F5F5F7] dark:bg-[#2C2C2E] relative overflow-hidden group-hover:shadow-md group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-all duration-500">
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/5 dark:to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10 text-primary dark:text-white group-hover:scale-110 transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </div>
+            </div>
           </div>
           
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-16 text-center"
-          >
+          {/* Content with enhanced typography and animations */}
+          <div className="px-8 flex-grow flex flex-col">
+            <div className="inline-flex items-center mb-2">
+              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-400/10 text-blue-400 mr-2">Featured</span>
+              <h3 className="text-xl font-medium text-[#1D1D1F] dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors duration-300">
+                Computer Vision
+              </h3>
+            </div>
+            
+            <p className="text-[#86868B] dark:text-[#A1A1A6] text-base font-normal mb-6 leading-relaxed">
+              Advanced image recognition and processing solutions to automate visual data analysis and extract actionable insights.
+            </p>
+            
+            {/* Enhanced feature pills with staggered hover effects */}
+            <div className="flex-grow">
+              <div className="flex flex-wrap gap-2">
+                {["Object Detection", "Facial Recognition", "Image Classification", "Real-time Processing", "Custom Models"].map((feature, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex px-3 py-1.5 text-xs font-medium rounded-full bg-[#F5F5F7] dark:bg-[#2C2C2E] text-[#6E6E73] dark:text-[#E5E5E7] hover:bg-[#E5E5E7] dark:hover:bg-[#3C3C3E] transition-colors duration-300"
+                    style={{
+                      transitionDelay: `${i * 50}ms`
+                    }}
+                  >
+                    {feature}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* Improved Apple-style link/action area with refined hover animations */}
+          <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
+            {/* Enhanced Learn More link with smoother transition */}
+            <div className="absolute inset-0 px-8 py-6 flex items-center">
+              <Link
+                to="/services/computer-vision"
+                className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
+              >
+                <span className="inline-block">Learn more</span>
+                <svg 
+                  width="13" 
+                  height="13" 
+                  viewBox="0 0 13 13" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="ml-1.5 transform transition-transform duration-300 group-hover/link:translate-x-1"
+                >
+                  <path d="M6.5 1L12 6.5L6.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 6.5H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
+              </Link>
+            </div>
+          </div>
 
-          </motion.div>
-        </Section>
-       
+          {/* SF-style card shine effect on hover */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
+        </div>
+      </div>
 
-        
-        
+      {/* Social Media & Marketing Service Card */}
+      <div className="group h-full perspective-1000">
+        <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
+          {/* Enhanced icon area with subtle float animation */}
+          <div className="px-8 pt-8 pb-5 flex justify-start">
+            <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-[#F5F5F7] dark:bg-[#2C2C2E] relative overflow-hidden group-hover:shadow-md group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-all duration-500">
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/5 dark:to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10 text-primary dark:text-white group-hover:scale-110 transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          {/* Content with enhanced typography and animations */}
+          <div className="px-8 flex-grow flex flex-col">
+            <div className="inline-flex items-center mb-2">
+              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-400/10 text-blue-400 mr-2">Featured</span>
+              <h3 className="text-xl font-medium text-[#1D1D1F] dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors duration-300">
+                Marketing & Social Media
+              </h3>
+            </div>
+            
+            <p className="text-[#86868B] dark:text-[#A1A1A6] text-base font-normal mb-6 leading-relaxed">
+              Comprehensive marketing and social media management services to boost your brand presence and drive customer engagement.
+            </p>
+            
+            {/* Enhanced feature pills with staggered hover effects */}
+            <div className="flex-grow">
+              <div className="flex flex-wrap gap-2">
+                {["Content Creation", "Campaign Management", "Analytics", "Community Building", "Growth Strategy"].map((feature, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex px-3 py-1.5 text-xs font-medium rounded-full bg-[#F5F5F7] dark:bg-[#2C2C2E] text-[#6E6E73] dark:text-[#E5E5E7] hover:bg-[#E5E5E7] dark:hover:bg-[#3C3C3E] transition-colors duration-300"
+                    style={{
+                      transitionDelay: `${i * 50}ms`
+                    }}
+                  >
+                    {feature}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* Improved Apple-style link/action area with refined hover animations */}
+          <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
+            {/* Enhanced Learn More link with smoother transition */}
+            <div className="absolute inset-0 px-8 py-6 flex items-center">
+              <Link
+                to="/services/marketing-social-media"
+                className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
+              >
+                <span className="inline-block">Learn more</span>
+                <svg 
+                  width="13" 
+                  height="13" 
+                  viewBox="0 0 13 13" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="ml-1.5 transform transition-transform duration-300 group-hover/link:translate-x-1"
+                >
+                  <path d="M6.5 1L12 6.5L6.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 6.5H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
+              </Link>
+            </div>
+          </div>
 
-        
-        
+          {/* SF-style card shine effect on hover */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
+        </div>
+      </div>
+    </div>
+
+    {/* Original services in three-column layout */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
+      {SERVICES.map((service) => (
+        <div 
+          key={service.title}
+          className="group h-full perspective-1000"
+        >
+          <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
+            {/* Enhanced icon area with subtle float animation */}
+            <div className="px-8 pt-8 pb-5 flex justify-start">
+              <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-[#F5F5F7] dark:bg-[#2C2C2E] relative overflow-hidden group-hover:shadow-md group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/5 dark:to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative z-10 text-primary dark:text-white group-hover:scale-110 transition-transform duration-500">
+                  {service.icon}
+                </div>
+              </div>
+            </div>
+            
+            {/* Content with enhanced typography and animations */}
+            <div className="px-8 flex-grow flex flex-col">
+              <h3 className="text-xl font-medium text-[#1D1D1F] dark:text-white mb-2 group-hover:text-primary dark:group-hover:text-blue-400 transition-colors duration-300">
+                {service.title}
+              </h3>
+              
+              <p className="text-[#86868B] dark:text-[#A1A1A6] text-base font-normal mb-6 leading-relaxed">
+                {service.description}
+              </p>
+              
+              {/* Enhanced feature pills with staggered hover effects */}
+              <div className="flex-grow">
+                <div className="flex flex-wrap gap-2">
+                  {service.features.map((feature, i) => (
+                    <span
+                      key={i}
+                      className="inline-flex px-3 py-1.5 text-xs font-medium rounded-full bg-[#F5F5F7] dark:bg-[#2C2C2E] text-[#6E6E73] dark:text-[#E5E5E7] hover:bg-[#E5E5E7] dark:hover:bg-[#3C3C3E] transition-colors duration-300"
+                      style={{
+                        transitionDelay: `${i * 50}ms`
+                      }}
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Improved Apple-style link/action area with refined hover animations */}
+            <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
+              {/* Enhanced Learn More link with smoother transition */}
+              <div className="absolute inset-0 px-8 py-6 flex items-center">
+                <Link
+                  to={service.href}
+                  className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
+                >
+                  <span className="inline-block">Learn more</span>
+                  <svg 
+                    width="13" 
+                    height="13" 
+                    viewBox="0 0 13 13" 
+                    fill="none" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="ml-1.5 transform transition-transform duration-300 group-hover/link:translate-x-1"
+                  >
+                    <path d="M6.5 1L12 6.5L6.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M1 6.5H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  
+                  {/* SF-style animated underline effect */}
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
+                </Link>
+              </div>
+            </div>
+
+            {/* SF-style card shine effect on hover */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    {/* Enhanced Apple-style CTA button with subtle hover effects */}
+    <div className="flex justify-center mt-14">
+      <Link 
+        to="/services" 
+        className="inline-flex items-center px-8 py-4 rounded-full bg-[#0071E3] text-white font-medium hover:bg-[#0077ED] transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-[#0071E3]/20"
+      >
+        <span>View all services</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="ml-2 transform transition-transform duration-300 group-hover:translate-x-0.5">
+          <path d="M7 1L13 7L7 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M1 7H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </Link>
+    </div>
+
+    {/* Add subtle perspective effect styling */}
+    <style jsx global>{`
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+    `}</style>
+  </Section>
+);
+
+/* MAIN COMPONENT */
+function Home() {
+  return (
+    <PageTransition>
+      <div className="min-h-screen">
+        <HeroSection />
+        <Trusted />
+        <ServicesSection />
+        <UpcomingProjectsShowcase />
+        <ProcessTimeline />
+        <DesignsSection />
+        <SolutionFinder />
       </div>
     </PageTransition>
   );
