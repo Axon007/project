@@ -50,15 +50,14 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  },
-  build: {
+  },  build: {
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'framer-motion': ['framer-motion'],
           'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          'ui-components': ['./src/components/ui'],
+          'ui-components': ['@/components/ui'],
         }
       }
     },
