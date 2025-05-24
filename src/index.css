@@ -67,6 +67,7 @@
   .theme {
     --animate-aurora: aurora 8s ease-in-out infinite alternate;
     --animate-gradient: gradient 8s linear infinite;
+    --animate-orbit: orbit calc(var(--duration)*1s) linear infinite;
   }
 }
 
@@ -163,6 +164,14 @@
   @keyframes gradient {
   to {
     background-position: var(--bg-size, 300%) 0;
+    }
+  }
+  @keyframes orbit {
+  0% {
+    transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg));
+    }
+  100% {
+    transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc((var(--angle) * -1deg) - 360deg));
     }
   }
 }

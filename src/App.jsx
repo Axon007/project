@@ -14,6 +14,7 @@ const AppDevelopment = lazy(() => import('./pages/AppDevelopment'));
 const ContactUs = lazy(() => import('./pages/ContactUs'));
 const ARVRServices = lazy(() => import('./pages/ar'));
 const Social = lazy(() => import('./pages/Social'));
+const Demo = lazy(() => import('./pages/demo'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -72,6 +73,7 @@ function AppContent() {
             <Route path="/computer-vision" element={<ARVRServices />} />
             <Route path="/social" element={<Social />} />
             <Route path="/contact" element={<ContactUs />} />
+            <Route path="/demo" element={<Demo />} />
           </Routes>
         </Suspense>
       </AnimatePresence>
