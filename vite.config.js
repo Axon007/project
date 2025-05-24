@@ -52,29 +52,24 @@ export default defineConfig({
     },
   },
   build: {
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'framer-motion': ['framer-motion'],
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          'ui-components': ['./src/components/ui'],
+        manualChunks: (id) => {
+          // Vendor chunks
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'react-vendor';
+            if (id.includes('three') || id.includes('@react-three')) return 'three-vendor';
+            if (id.includes('framer-motion')) return 'ui-components';
+            if (id.includes('@splinetool')) return 'spline';
+            if (id.includes('@tsparticles')) return 'particles';
+          }
+          // Feature chunks
+          if (id.includes('src/pages/ar.')) return 'ar';
+          if (id.includes('src/components/magicui')) return 'magic-ui';
+          if (id.includes('src/components/ui')) return 'ui';
         }
       }
-    },
-    chunkSizeWarningLimit: 1000,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
-    cssCodeSplit: true,
-    reportCompressedSize: true,
-    sourcemap: false
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion']
+    }
   }
 })

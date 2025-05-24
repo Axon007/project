@@ -32,6 +32,12 @@ function AppContent() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
+  // Get currentPage from pathname
+  const getCurrentPage = () => {
+    const path = location.pathname.substring(1); // Remove leading slash
+    return path || 'home';
+  };
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e) => {
@@ -42,11 +48,8 @@ function AppContent() {
 
     mediaQuery.addEventListener('change', handleChange);
 
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('theme', theme);
 
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme]);
@@ -59,7 +62,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <Navbar theme={theme} toggleTheme={toggleTheme} currentPage={getCurrentPage()} />
       <AnimatePresence mode="wait">
         <Suspense fallback={<LoadingFallback />}>
           <Routes location={location} key={location.pathname}>
@@ -76,7 +79,6 @@ function AppContent() {
         </Suspense>
       </AnimatePresence>
       <Footer />
-
     </div>
   );
 }

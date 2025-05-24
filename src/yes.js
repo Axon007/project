@@ -1,31 +1,181 @@
+const FEATURED_PROJECTS = [
+  {
+    title: "E-Commerce Platform",
+    description: "A full-featured e-commerce platform with real-time inventory management, payment processing, and admin dashboard.",
+    image: "/projects/ecommerce.jpg",
+    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+    demo: "https://demo.example.com",
+    github: "https://github.com/example/project"
+  },
+  {
+    title: "AI Content Platform",
+    description: "Content management system powered by AI for automated content generation and optimization.",
+    image: "/projects/ai-platform.jpg",
+    technologies: ["Next.js", "OpenAI", "PostgreSQL", "AWS"],
+    demo: "https://demo.example.com",
+    github: "https://github.com/example/project"
+  },
+  {
+    title: "Real Estate Dashboard",
+    description: "Interactive dashboard for real estate analytics with advanced filtering and 3D property tours.",
+    image: "/projects/real-estate.jpg",
+    technologies: ["React", "Three.js", "Express", "Redis"],
+    demo: "https://demo.example.com",
+    github: "https://github.com/example/project"
+  }
+];
+
+
+
+function ProjectCard({ project }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="group relative overflow-hidden rounded-xl aspect-video bg-background/80"
+    >
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+        <div className="p-6 w-full">
+          <h3 className="text-lg font-semibold text-white mb-2">{project.title}</h3>
+          <p className="text-white/80 text-sm">{project.description}</p>
+        </div>
+      </div>
+      <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+    </motion.div>
+  );
+}
+
+
+      {/* PROJECTS: Immersive gallery */}
+      <section className="py-32 px-6 bg-gradient-to-b from-white to-gray-100 dark:from-black dark:to-gray-950 relative" id="projects">
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 dark:opacity-15"></div>
+        
+        <div className="max-w-7xl mx-auto relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-20"
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary/30 text-primary text-xs font-medium mb-6">
+                <Rocket size={12} className="text-primary" />
+                CASE STUDIES
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">Our Latest Projects</h2>
+              <p className="max-w-2xl text-gray-600 dark:text-gray-400 text-lg">
+                Explore our most recent work delivering exceptional digital experiences
+              </p>
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="md:col-span-8"
+            >
+              <div className="group h-[500px] relative overflow-hidden rounded-2xl">
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                <img 
+                  src={FEATURED_PROJECTS[0].image} 
+                  alt={FEATURED_PROJECTS[0].title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://images.unsplash.com/photo-1626908013351-800ddd734b8a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80";
+                  }}
+                />
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <span className="inline-block px-3 py-1 rounded-full bg-primary/20 backdrop-blur-sm text-primary text-xs font-medium mb-3">
+                      {FEATURED_PROJECTS[0].technologies[0]}
+                    </span>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-3">{FEATURED_PROJECTS[0].title}</h3>
+                  <p className="text-white/80 mb-6 max-w-xl transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-100">
+                    {FEATURED_PROJECTS[0].description}
+                  </p>
+                  <div className="flex gap-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-150">
+                    <Link 
+                      to={FEATURED_PROJECTS[0].demo} 
+                      className="px-4 py-2 bg-white text-black rounded-lg font-medium hover:bg-primary hover:text-white transition-colors"
+                    >
+                      View Project
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+            
+            <div className="md:col-span-4 grid gap-8">
+              {FEATURED_PROJECTS.slice(1, 3).map((project, index) => (
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.1 * (index + 1) }}
+                  className="group relative overflow-hidden rounded-2xl aspect-[4/3]"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80`;
+                    }}
+                  />
+                  <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                    <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                    <p className="text-white/70 text-sm mb-4 max-w-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {project.description}
+                    </p>
+                    <div className="transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <Link 
+                        to={project.demo} 
+                        className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:gap-2 transition-all"
+                      >
+                        Explore Project <ArrowRight size={14} />
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="mt-12 text-center">
+            <Link
+              to="/projects"
+              className="group inline-flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm tracking-wide transition-colors"
+            >
+              VIEW ALL PROJECTS 
+              <span className="transform group-hover:translate-x-1 transition-transform">
+                <ArrowRight size={14} />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+
+the code 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Meteors } from "../components/ui/meteor-effect";
-import { Code, Palette, Globe, Users, Rocket, Smartphone, ArrowUpRight, CheckCircle, Shield, Clock, BadgeCheck, Cpu, Database, LayoutGrid, Gauge, BarChart } from "lucide-react";
+import { Code, Palette, Globe, Users, Rocket, Smartphone, ArrowUpRight, CheckCircle, Shield, Clock, BadgeCheck, Cpu, Database, LayoutGrid, Gauge,BarChart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Terminal, TypingAnimation, AnimatedSpan } from "../components/magicui/terminal";
 import { AnimatePresence } from "framer-motion";
-import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
-
-const features = [
-  {
-    name: 'Responsive Web Design',
-    description:
-      'All our websites are fully responsive, ensuring perfect display and functionality across all devices, from mobile phones to large desktop screens.',
-    icon: CloudArrowUpIcon,
-  },
-  {
-    name: 'Advanced Security',
-    description: 'We implement robust security measures including SSL certificates, regular updates, and secure authentication to protect your website and user data.',
-    icon: LockClosedIcon,
-  },
-  {
-    name: 'Performance Optimization',
-    description: 'Our development process includes thorough optimization for speed and performance to ensure fast loading times and smooth user experience.',
-    icon: ServerIcon,
-  },
-];
 
 
 
@@ -779,65 +929,95 @@ function WebDevelopmentServices() {
       window.removeEventListener('resize', setCanvasDimensions);
     };
   }, []);
+
   return (
-    <div className="min-h-screen">      {/* Hero Section with Feature Overview */}
-      <div className="overflow-hidden bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-10 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-          <div className="lg:pt-8 lg:pr-10">
-            <div className="hidden sm:mb-10 sm:flex sm:justify-start">
- <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Announcing our next round of funding.{' '}
-              <a href="#" className="font-semibold text-indigo-600">
-                <span aria-hidden="true" className="absolute inset-0" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
+    <div className="min-h-screen">
+      {/* Hero Section with Interactive Sphere and Canvas Background */}
+      <div className="relative h-[90vh] flex items-center justify-center overflow-hidden">
+        <canvas ref={canvasRef} className="absolute inset-0 z-0 bg-background"></canvas>
+        
+        <motion.div 
+          ref={techSphereRef}
+          className="absolute top-0 right-0 w-full h-full pointer-events-none z-10"
+          style={{ opacity: 0.7 }}
+        />
+        
+        <motion.div 
+          className="relative z-20 text-center px-4 max-w-4xl mx-auto"
+          style={{ opacity: heroOpacity, y: heroY }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-6"
+          >
+            <span className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium">
+              Expert Web Solutions
+            </span>
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-violet-500 leading-tight"
+          >
+            Web Development <br className="hidden md:block" /> 
+            <span className="text-foreground">That Drives Results</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y:20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl text-foreground/80 max-w-2xl mx-auto mb-8"
+          >
+            We create custom, high-performance websites and web applications 
+            that help businesses transform their digital presence.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-wrap gap-4 justify-center"
+          >
+            <a 
+              href="#contact" 
+              className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2 hover:translate-y-[-2px]"
+            >
+              Start Your Project
+              <ArrowUpRight className="w-5 h-5" />
+            </a>
+            <a 
+              href="#services" 
+              className="bg-background border border-primary/30 text-foreground px-8 py-4 rounded-full text-lg font-medium hover:bg-primary/5 transition-colors hover:translate-y-[-2px]"
+            >
+              Explore Services
+            </a>
+          </motion.div>
+        </motion.div>
+        
+        {/* Stats Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="absolute bottom-10 left-0 right-0 z-10"
+        >
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
+            {[
+              { value: "150+", label: "Projects Completed" },
+              { value: "98%", label: "Client Satisfaction" },
+              { value: "5+", label: "Years Experience" },
+              { value: "24/7", label: "Support" }
+            ].map((stat, index) => (
+              <div key={index} className="bg-background/40 backdrop-blur-md rounded-xl p-4 text-center border border-white/10">
+                <div className="text-2xl md:text-3xl font-bold text-primary">{stat.value}</div>
+                <div className="text-sm text-foreground/70">{stat.label}</div>
+              </div>
+            ))}
           </div>
-          <div className="text-left">
-                  <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
-              Crafting Digital Experiences That Drive Results
-            </h1>       
-                        <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
-              Custom web development solutions that transform your vision into powerful, scalable, and user-friendly websites designed to grow your business and engage your audience.
-
-            </p>
-            
-            {/* Feature list with improved visuals */}            <div className="mt-10 grid grid-cols-1 gap-y-8 text-sm">
-              {features.map((feature, index) => (
-                <div key={feature.name} className="space-y-3">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100">
-                    <feature.icon className="size-4 text-indigo-700" aria-hidden="true" />
-                    <span className="font-semibold text-indigo-700">{feature.name}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="mt-12 flex items-center gap-x-6">
-              <a
-                href="#contact"
-                className="rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-500 transition-colors duration-200"
-              >
-                Schedule a consultation
-              </a>
-              <a href="#services" className="text-sm font-medium text-indigo-700 flex items-center gap-1 hover:gap-2 transition-all duration-200">
-                Explore services <span aria-hidden="true" className="transition-transform duration-200">→</span>
-              </a>
-            </div>
-          </div>
-
-          </div>
-          <img
-            alt="Product screenshot"
-            src="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
-            width={1080}
-            height={1442}
-            className="w-3xl max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-228 md:-ml-4 lg:-ml-0"
-          />
-        </div>
+        </motion.div>
       </div>
-    </div>
             {/* App Analytics Dashboard Showcase */}
       <section className="py-24 px-4 relative">
         <div className="max-w-7xl mx-auto">

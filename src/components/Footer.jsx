@@ -19,53 +19,12 @@ const FooterWithNewsletter = ({
   };
 
   return (
+    
     <footer className="bg-background border-t border-secondary/10">
+      
       {/* Newsletter Section - Mobile optimized */}
-      <div className="max-w-7xl mx-auto pt-12 md:pt-24 pb-8 px-4 sm:px-6 lg:px-8 border-b border-secondary/10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
-          <div className="space-y-4 md:space-y-6">
-            <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-              {newsletterBadge}
-            </span>
-            <h3 className="text-2xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-              {newsletterTitle}
-            </h3>
-            <p className="text-foreground/70 text-sm md:text-base max-w-md">
-              {newsletterSubtitle}
-            </p>
-          </div>
+      
 
-          <div className="w-full space-y-4 md:space-y-6">
-            <motion.div 
-              className="flex flex-col gap-3 md:gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                  <Mail size={18} />
-                </div>
-                <input
-                  type="email"
-                  placeholder="Your business email"
-                  aria-label="Email address for newsletter"
-                  className="w-full px-4 py-3 md:py-3.5 pl-10 rounded-xl border border-gray-200 bg-gray-50/50 focus:outline-none focus:border-primary/30 focus:ring-2 focus:ring-primary/20 transition-all text-sm md:text-base"
-                />
-              </div>
-              
-
-            </motion.div>
-            
-            <div className="flex flex-wrap justify-center md:justify-between text-xs text-foreground/50 gap-3">
-              <span className="flex items-center"><CheckCircle size={12} className="mr-1 text-primary/80" /> Enterprise solutions</span>
-              <span className="flex items-center"><CheckCircle size={12} className="mr-1 text-primary/80" /> Weekly insights</span>
-              <span className="flex items-center"><CheckCircle size={12} className="mr-1 text-primary/80" /> No spam policy</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Footer Links Section - Mobile optimized */}
       <div className="max-w-7xl mx-auto py-10 md:py-16 px-4 sm:px-6 lg:px-8">
