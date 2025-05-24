@@ -48,12 +48,12 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		},
-  		animation: {
+  		},  		animation: {
   			'meteor-effect': 'meteor 5s linear infinite',
   			spotlight: 'spotlight 2s ease .75s 1 forwards',
   			aurora: 'aurora 60s linear infinite',
-  			globe: 'globe 60s linear infinite'
+  			globe: 'globe 60s linear infinite',
+  			ripple: 'ripple 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite'
   		},
   		keyframes: {
   			meteor: {
@@ -90,9 +90,21 @@ export default {
   			globe: {
   				'0%': {
   					transform: 'rotate(0deg)'
+  				},  				'100%': {
+  					transform: 'rotate(360deg)'
+  				}
+  			},
+  			ripple: {
+  				'0%': {
+  					transform: 'scale(0)',
+  					opacity: 0.4
+  				},
+  				'50%': {
+  					opacity: 0.2
   				},
   				'100%': {
-  					transform: 'rotate(360deg)'
+  					transform: 'scale(8)',
+  					opacity: 0
   				}
   			}
   		},

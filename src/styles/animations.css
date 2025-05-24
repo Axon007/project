@@ -11,6 +11,24 @@
   }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
 @keyframes ping-slow {
   0% {
     transform: scale(0.95);
@@ -137,6 +155,10 @@
   animation-delay: 1s;
 }
 
+.animation-delay-1500 {
+  animation-delay: 1.5s;
+}
+
 .animation-delay-2000 {
   animation-delay: 2s;
 }
@@ -161,11 +183,183 @@
   animation: float-5 7s ease-in-out infinite 2s;
 }
 
-/* Add this to your base styles to enable the radial gradient background */
-.bg-radial-gradient {
-  background-image: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to));
+/* Enhanced Services Section Animations */
+
+/* Animation delay utilities */
+.animation-delay-1000 {
+  animation-delay: 1000ms;
 }
 
-.shadow-glow-md {
-  box-shadow: 0 0 15px 5px rgba(0, 112, 243, 0.15);
+.animation-delay-1500 {
+  animation-delay: 1500ms;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2000ms;
+}
+
+/* Enhanced hover animations for service cards */
+@keyframes service-card-hover {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-6px) scale(1.02);
+  }
+}
+
+@keyframes icon-pulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1) rotate(3deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes feature-pill-hover {
+  0% {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+  100% {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Dark mode specific animations */
+@media (prefers-color-scheme: dark) {
+  @keyframes dark-glow {
+    0%, 100% {
+      box-shadow: 
+        0 0 20px rgba(59, 130, 246, 0.1),
+        0 0 40px rgba(147, 51, 234, 0.05);
+    }
+    50% {
+      box-shadow: 
+        0 0 30px rgba(59, 130, 246, 0.2),
+        0 0 60px rgba(147, 51, 234, 0.1);
+    }
+  }
+  
+  .dark-mode-glow:hover {
+    animation: dark-glow 2s ease-in-out infinite;
+  }
+}
+
+/* Enhanced backdrop blur effects */
+.enhanced-backdrop-blur {
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* Improved gradient transitions */
+.gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Service card perspective effects */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Enhanced shine effect */
+@keyframes card-shine {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) skewX(-15deg);
+    opacity: 0;
+  }
+}
+
+.card-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: translateX(-100%) skewX(-15deg);
+  transition: transform 0.6s;
+}
+
+.card-shine:hover::before {
+  animation: card-shine 0.8s ease-out;
+}
+
+/* Dark mode card shine */
+@media (prefers-color-scheme: dark) {
+  .card-shine::before {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+  }
+}
+
+/* Improved focus states for accessibility */
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-ring:focus {
+  outline: 2px solid rgb(59, 130, 246);
+  outline-offset: 2px;
+}
+
+/* Dark mode focus ring */
+@media (prefers-color-scheme: dark) {
+  .focus-ring:focus {
+    outline-color: rgb(96, 165, 250);
+  }
+}
+
+/* Enhanced transition utilities */
+.transition-all-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-transform-smooth {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-colors-smooth {
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

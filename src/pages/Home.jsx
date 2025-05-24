@@ -1,36 +1,39 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useState, useRef, useEffect, memo } from "react";
 import PageTransition from '../components/PageTransition';
 import { Link } from "react-router-dom";
 import { AuroraText } from "@/components/magicui/aurora-text";
+import { Meteors } from "../components/ui/meteor-effect";
+import * as THREE from "three";
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
-  VideoIcon, Brush, ArrowLeft, ArrowDown, MessageSquare, CheckCircle, Phone, MessageCircle, Smartphone 
+  VideoIcon, Brush, ArrowLeft, ArrowDown, MessageSquare, CheckCircle, Phone, MessageCircle, Smartphone, ArrowUpRight,
+  Globe, Database, Shield, Gauge
 } from "lucide-react";
 
 
 /* THEME AND UI CONFIGURATION */
 const THEME = {
   primary: {
-    DEFAULT: "#0070F3", // Apple blue is often #007AFF
+    DEFAULT: "#0070F3", 
     light: "#3291FF",
   },
   secondary: {
     DEFAULT: "#7928CA",
   },
   background: {
-    DEFAULT: "#FFFFFF", // Pure white for light mode
-    muted: "#F5F5F7",   // Apple's light gray
+    DEFAULT: "#FFFFFF",
+    muted: "#F5F5F7",   
     dark: {
-      DEFAULT: "#000000", // Pure black for dark mode
-      card: "#1C1C1E",    // Apple's dark gray for cards
-      muted: "#1D1D1F",   // Apple's slightly lighter dark gray
+      DEFAULT: "#000000", 
+      card: "#1C1C1E",  
+      muted: "#1D1D1F",  
     }
   },
   foreground: {
-    DEFAULT: "#1D1D1F", // Apple's primary text color (light mode)
-    muted: "#86868B",   // Apple's secondary text color (light mode)
+    DEFAULT: "#1D1D1F", 
+    muted: "#86868B",   
     dark: {
       DEFAULT: "#FFFFFF",
       muted: "#A1A1A6",
@@ -46,18 +49,16 @@ const THEME = {
 };
 
 const UI = {
-  // Card patterns - redesigned for Apple aesthetic
   card: {
     base: "rounded-3xl overflow-hidden border border-[#E5E5E7] dark:border-[#2C2C2E] hover:shadow-lg transition-all duration-300 bg-white dark:bg-[#1C1C1E]",
     padding: "p-6 md:p-8", // Consistent padding
     iconContainer: "mb-4 bg-[#F5F5F7] dark:bg-[#2C2C2E] w-14 h-14 rounded-xl flex items-center justify-center relative overflow-hidden",
     hover: {
-      transform: "hover:-translate-y-1", // More subtle movement
+      transform: "hover:-translate-y-1", 
       shine: "absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
     }
   },
   
-  // Typography system - refined for Apple clarity
   text: {
     heading: {
       h1: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight",
@@ -74,7 +75,6 @@ const UI = {
     accent: "text-primary dark:text-accent-blue"
   },
   
-  // Gradient patterns - reduced for Apple minimalism but kept for specific highlights
   gradients: {
     primary: "bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary",
     hover: "bg-gradient-to-r from-primary/10 to-secondary/10",
@@ -82,11 +82,10 @@ const UI = {
     glow: "bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 blur-sm"
   },
   
-  // Button styles - aligned with Apple's rounded buttons
   button: {
     base: "flex items-center justify-center gap-2 font-medium transition-all duration-300",
     sizes: {
-      sm: "px-4 py-2 text-sm", // More generous padding
+      sm: "px-4 py-2 text-sm",
       md: "px-6 py-3 text-base",
       lg: "px-8 py-4 text-lg"
     },
@@ -95,13 +94,12 @@ const UI = {
       secondary: "bg-primary/10 dark:bg-primary/20 hover:bg-primary/20 dark:hover:bg-primary/30 text-primary dark:text-accent-blue",
       outline: "border-2 border-primary/30 dark:border-accent-blue/50 hover:bg-primary/10 dark:hover:bg-accent-blue/10 text-primary dark:text-accent-blue"
     },
-    pill: "rounded-full", // Key Apple style
+    pill: "rounded-full",
     icon: "group-hover:translate-x-0.5 transition-transform duration-300" // More subtle icon movement
   },
   
-  // Section & spacing - standardized for consistency
   section: {
-    padding: "py-16 md:py-20", // Standard padding across sections
+    padding: "py-16 md:py-20", 
     container: "max-w-7xl mx-auto relative z-10 px-4 md:px-6", // Added horizontal padding
     eyebrow: "text-primary dark:text-accent-blue text-sm font-medium uppercase tracking-wider bg-primary/10 dark:bg-primary/20 px-4 py-1.5 rounded-full inline-block border border-primary/20 dark:border-primary/30 shadow-sm"
   },
@@ -113,108 +111,26 @@ const UI = {
   }
 };
 
-/* ANIMATIONS */
-const animations = {
-  fadeIn: {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    transition: { duration: 0.5 }
-  },
-  fadeInUp: {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
-  }
-};
-
-const createMotionProps = (type, delay = 0) => {
-  const base = animations[type];
-  return {
-    ...base,
-    viewport: { once: true },
-    transition: { 
-      ...base.transition, 
-      delay: delay 
-    }
-  };
-};
-
 
 
 /* REUSABLE COMPONENTS */
 const Section = ({ children, dark = false, pattern = false, className = "", id = null, fullWidth = false }) => (
   <section 
     id={id}
-    className={`py-16 md:py-20 px-4 ${
+    className={`${UI.section.padding} px-4 ${
       dark ? 'bg-background dark:bg-gray-950' : 
       'bg-background dark:bg-inherit'
     } ${className}`}
     aria-labelledby={id}
   >
-    <div className={`${fullWidth ? 'w-full' : 'max-w-7xl'} mx-auto relative z-10`}>
+    <div className={`${fullWidth ? 'w-full' : UI.section.container.split(' ')[0]} mx-auto relative z-10`}>
       {children}
     </div>
   </section>
 );
 
 
-// Optimized ServiceCard component for better performance and reduced CLS
-const ServiceCard = ({ service, index }) => {
-  return (
-    <Link to={service.href} tabIndex={0} className="block focus:outline-none" key={index}>
-      <div
-        className={`${UI.card.base} group relative overflow-hidden hover:-translate-y-1 hover:shadow-md hover:shadow-primary/10 transition-all duration-300`}
-        tabIndex={-1}
-        role="button"
-        aria-label={service.title}
-        style={{ minHeight: "320px" }} // Fixed height to reduce CLS
-      >
-        {/* Service glow effect - simplified */}
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300"></div>
-        
-        <div className={`${UI.card.padding} relative z-10 bg-background/95 rounded-2xl h-full flex flex-col`}>
-          {/* Icon with simplified animation */}
-          <div className={`${UI.card.iconContainer} relative transition-all duration-300 group-hover:scale-105`}>
-            <div className="absolute inset-0 bg-primary/10 rounded-xl"></div>
-            <div className="relative z-10">
-              {service.icon}
-            </div>
-          </div>
-          
-          {/* Content with optimized spacing */}
-          <h3 className={`text-lg md:text-xl font-bold mb-2 group-hover:text-primary transition-colors`}>
-            {service.title}
-          </h3>
-          
-          <p className={`${UI.text.body} text-sm mb-3`}>
-            {service.description}
-          </p>
-          
-          {/* Features list with improved bullets - more compact */}
-          <div className="flex-grow">
-            <h4 className="text-sm font-medium text-primary/80 mb-2">Features:</h4>
-            <ul className="space-y-1.5">
-              {service.features.map((feature, i) => (
-                <li key={i} className="flex items-center text-sm text-foreground/70">
-                  <span className="mr-2 h-1.5 w-1.5 rounded-full bg-primary/70"></span>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          {/* Bottom CTA with simplified animation */}
-          <div className="mt-4 pt-3 border-t border-secondary/10">
-            <div className="flex items-center justify-between text-primary font-medium">
-              <span className="text-sm">Learn more</span>
-              <ArrowRight size={16} className="ml-2 group-hover:translate-x-1.5 transition-transform" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-};
+
 
 
 
@@ -254,54 +170,8 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
   </div>
 );
 
-const CTAButton = ({ primary = true, children, className = "", small = false, onClick = null }) => (
-  <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary/70'} ${primary ? 'bg-primary' : 'bg-transparent'} 
-    ${small ? 'px-4 py-2 text-sm' : 'px-8 py-4 text-lg'} font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`} onClick={onClick}>
-    <span className={`relative z-10 transition-colors ${primary ? 'text-background group-hover:text-primary' : 'text-primary group-hover:text-background'} flex items-center justify-center gap-2`}>
-      {children}
-    </span>
-    <div className={`absolute inset-0 z-0 ${primary ? 'bg-background' : 'bg-primary'} translate-y-full transition-transform duration-300 group-hover:translate-y-0`} />
-  </button>
-);
 
-// Universal Button component
-const Button = ({ 
-  children, 
-  variant = "primary", 
-  size = "md", 
-  pill = true,
-  href = null,
-  className = "",
-  onClick = null
-}) => {
-  const buttonClasses = `
-    ${UI.button.base}
-    ${UI.button.variants[variant]}
-    ${UI.button.sizes[size]}
-    ${pill ? UI.button.pill : "rounded-lg"}
-    ${className}
-  `;
-  
-  const content = (
-    <span className="flex items-center justify-center gap-2 group">
-      {children}
-    </span>
-  );
-  
-  if (href) {
-    return (
-      <a href={href} className={buttonClasses}>
-        {content}
-      </a>
-    );
-  }
-  
-  return (
-    <button onClick={onClick} className={buttonClasses}>
-      {content}
-    </button>
-  );
-};
+
 
 /* CONSTANTS AND DATA */
 const COMPANY_LOGOS = [
@@ -313,99 +183,7 @@ const COMPANY_LOGOS = [
   'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg'
 ];
 
-const SERVICES = [
-  {
-    title: "Web Development",
-    description: "Custom websites and web applications built with modern technologies and best practices for optimal performance",
-    icon: <Code className="w-10 h-10 text-primary" />,
-    features: ["Responsive Design", "SEO Optimization", "Performance Tuning", "Custom Solutions"],
-    href: "/web-development",
-    delay: 0
-  },
-  {
-    title: "Game Development",
-    description: "Engaging and immersive gaming experiences across multiple platforms using cutting-edge game engines",
-    icon: <Gamepad2 className="w-10 h-10 text-primary" />,
-    features: ["Unity & Unreal Engine", "Mobile Games", "Cross-platform", "3D/2D Games"],
-    href: "/game-development",
-    delay: 0.2
-  },
-  {
-    title: "Logo Design",
-    description: "Professional branding solutions with unique and memorable logo designs that capture your brand essence",
-    icon: <Palette className="w-10 h-10 text-primary" />,
-    features: ["Brand Identity", "Vector Graphics", "Color Theory", "Scalable Designs"],
-    href: "/logo-design",
-    delay: 0.4
-  },
-  {
-    title: "Video Editing",
-    description: "Professional video editing services that transform raw footage into compelling visual stories",
-    icon: <VideoIcon className="w-10 h-10 text-primary" />,
-    features: ["Color Grading", "Motion Graphics", "Audio Mixing", "Post-Production"],
-    href: "/video-editing",
-    delay: 0.6
-  },
-  {
-    title: "UI/UX Design",
-    description: "User-centered design solutions that create intuitive, engaging, and effective digital experiences",
-    icon: <Brush className="w-10 h-10 text-primary" />,
-    features: ["User Research", "Wireframing", "Prototype Testing", "Interaction Design"],
-    href: "/ui-ux-design",
-    delay: 0.8
-  },
-  {
-    title: "Mobile App Development",
-    description: "Native and cross-platform mobile applications that deliver seamless user experiences across devices",
-    icon: <Smartphone className="w-10 h-10 text-primary" />,
-    features: ["iOS & Android", "React Native", "Flutter", "App Store Optimization"],
-    href: "/mobile-app-development",
-    delay: 1.0
-  }
-];
 
-const PROJECTS = [
-  {
-    title: "E-commerce Platform",
-    description: "A full-featured online shopping platform with advanced product filtering and secure checkout",
-    category: "Web Development",
-    image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    featured: true,
-    color: THEME.accent.blue
-  },
-  {
-    title: "Corporate Rebrand",
-    description: "Complete visual identity overhaul for a Fortune 500 financial services company",
-    category: "Logo Design",
-    image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-
-    color: THEME.accent.orange
-  },
-  {
-    title: "Mobile RPG Game",
-    description: "Fantasy role-playing game with immersive 3D environments and strategic combat",
-    category: "Game Development",
-    image: "https://images.unsplash.com/photo-1614294148960-9aa740632a87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    featured: true,
-    color: THEME.accent.green
-  },
-  {
-    title: "Promotional Video Series",
-    description: "Award-winning product launch videos featuring cinematic visuals and compelling storytelling",
-    category: "Video Editing",
-    image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    stats: "2M+ views",
-    color: THEME.accent.cyan
-  },
-  {
-    title: "Banking App Redesign",
-    description: "User experience transformation resulting in 40% increase in mobile transactions",
-    category: "UI/UX Design",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    stats: "85% user satisfaction",
-    color: THEME.secondary.DEFAULT
-  }
-];
 
 const TESTIMONIALS = [
   {
@@ -441,308 +219,13 @@ const HERO_SERVICES = [
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
-/* HERO SECTION - OPTIMIZED FOR PERFORMANCE */
-const HeroSection = () => {
-  return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-16 pb-12 md:pb-20" aria-labelledby="hero-heading">
-      <div className="relative z-10 container mx-auto px-4 md:px-6 py-6">
-        <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
-          {/* Label */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-sm shadow-primary/5">
-            <span className="flex h-2.5 w-2.5 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
-            </span>
-            <span className="text-sm font-semibold text-primary">Enterprise Technology Solutions</span>
-          </div>
-
-          {/* Heading - Preloaded with height to reduce CLS */}
-          <div className="space-y-3">
-            <h1
-              id="hero-heading"
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
-              style={{ minHeight: "min(15vw, 120px)" }}
-            >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-violet-700">
-                <AuroraText>Jason Tech Solutions</AuroraText>
-              </span>
-            </h1>
-
-            <div className="h-12 flex items-center justify-center">
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-foreground/80">
-                We help companies <span className="text-primary relative">transform businesses</span>
-              </h2>
-            </div>
-          </div>
-
-          {/* Service Tags - More compact */}
-          <div className="flex flex-wrap justify-center gap-2 md:gap-2.5 px-2 mx-auto max-w-3xl">
-            {HERO_SERVICES.map((service, i) => (
-              <div
-                key={i}
-                className="px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md flex items-center gap-2 shadow-sm cursor-default dark:bg-neutral-900/80 dark:border-primary/40 dark:backdrop-blur-xl"
-              >
-                <span className="text-primary p-1 bg-primary/10 rounded-full">{service.icon}</span>
-                <span className="text-sm font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Buttons - More compact */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center pt-3">
-            <CTAButton
-              primary
-              className="group shadow-md shadow-primary/20 hover:shadow-primary/40 border-primary backdrop-blur-md"
-            >
-              Get Started
-              <ArrowRight className="group-hover:translate-x-1.5 transition-transform duration-300" size={18} />
-            </CTAButton>
-
-            <CTAButton
-              primary={false}
-              className="group backdrop-blur-md"
-              onClick={() => {
-                const section = document.getElementById('our-services-section');
-                if (section) section.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Our Services
-              <ArrowDown className="ml-1 group-hover:translate-x-1 transition-transform duration-300" size={18} />
-            </CTAButton>
-          </div>
-
-          {/* Stats - More compact */}
-          <div className="flex flex-wrap gap-8 justify-center pt-4 mt-4 border-t border-secondary/10 py-4 px-6 backdrop-blur-sm bg-white/5 rounded-2xl">
-            {[
-              { label: "Projects Delivered", value: "500+", icon: <Award className="w-5 h-5" /> },
-              { label: "Client Satisfaction", value: "99%", icon: <BadgeCheck className="w-5 h-5" /> },
-              { label: "Team Experts", value: "50+", icon: <Users className="w-5 h-5" /> }
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="flex items-center justify-center mb-1">
-                  <div className="p-1.5 rounded-full bg-primary/10 text-primary mr-2">
-                    {stat.icon}
-                  </div>
-                  <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
-                </div>
-                <div className="text-sm text-foreground/70 font-medium dark:text-foreground/80">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 
-/* PROJECTS SECTION OPTIMIZATION */
-// Optimized Project Card Component
-const ProjectCard = memo(({ project, isHovered, onHoverChange }) => {
-  return (
-    <div
-      className="group relative overflow-hidden rounded-2xl border border-secondary/20 hover:border-primary/50 transition-all duration-300"
-      style={{ height: '470px' }} // Unified height for all cards
-      onMouseEnter={() => onHoverChange(project.title)}
-      onMouseLeave={() => onHoverChange(null)}
-    >
-      <div className="relative w-full h-full overflow-hidden">
-        {/* Background gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent z-10"></div>
-        
-        {/* Project image with CSS transforms instead of motion */}
-        <div
-          className="absolute inset-0 w-full h-full transition-transform"
-          style={{ 
-            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-            transition: 'transform 0.8s cubic-bezier(0.33, 1, 0.68, 1)',
-            willChange: 'transform'
-          }}
-        >
-          <img 
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover"
-            width="600" 
-            height="400"
-            style={{ aspectRatio: '3/2' }}
-            loading="lazy"
-          />
-        </div>
-        
-        {/* Content container - static positioning with CSS transitions */}
-        <div className="absolute z-20 bottom-0 w-full p-6 transition-all duration-500">
-          <div className="space-y-2 mb-4">
-            <div className="flex flex-wrap gap-2 items-center justify-between">
-              <span 
-                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm shadow-lg shadow-black/20"
-                style={{ backgroundColor: `${project.color}70` }}
-              >
-                {project.category.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
-              </span>
-              
-              {project.featured && (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/50 text-white backdrop-blur-sm shadow-lg">
-                  <BadgeCheck className="w-3 h-3 mr-1" />
-                  Featured
-                </span>
-              )}
-            </div>
-          </div>
-          
-          <div className="transform transition-all duration-500">
-            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 group-hover:text-primary/90 transition-colors">
-              <span className="relative inline-block">
-                {project.title.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
-                <span 
-                  className="absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300"
-                  style={{ width: isHovered ? '100%' : '0%' }}
-                />
-              </span>
-            </h3>
-            
-            <p 
-              className="text-white/80 mb-6 max-w-lg line-clamp-2 transition-all duration-300"
-              style={{ 
-                opacity: isHovered ? 1 : 0.8,
-                transform: `translateY(${isHovered ? 0 : 5}px)`
-              }}
-            >
-              {project.description}
-            </p>
-            
-            <div className="flex flex-wrap gap-2 mb-6">
-              {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'].slice(0, 3 + Math.floor(Math.random() * 2)).map((tech, i) => (
-                <span 
-                  key={i} 
-                  className="px-2 py-1 bg-white/10 backdrop-blur-sm border border-white/10 rounded-md text-xs text-white/90 transition-all duration-300"
-                  style={{ 
-                    opacity: isHovered ? 1 : 0.6,
-                    transform: `translateY(${isHovered ? 0 : 5}px)`,
-                    transitionDelay: `${0.1 + (i * 0.05)}s`
-                  }}
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-            
-            <div 
-              className="flex items-center justify-between transition-all duration-300"
-              style={{ 
-                opacity: isHovered ? 1 : 0.8,
-                transform: `translateY(${isHovered ? 0 : 5}px)`
-              }}
-            >
-              {project.stats && (
-                <div className="flex items-center text-primary/90 text-sm bg-black/40 px-4 py-2 rounded-full backdrop-blur-sm border border-white/5">
-                  <BarChart className="w-4 h-4 mr-2" />
-                  {project.stats}
-                </div>
-              )}
-              
-              <button className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-full font-medium transition-all flex items-center group/btn">
-                View Project
-                <ArrowRight size={16} className="ml-2 group-hover/btn:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <div 
-          className="absolute top-0 right-0 w-32 h-32 opacity-60 rounded-bl-full z-10 transition-opacity duration-300 group-hover:opacity-80"
-          style={{ background: `radial-gradient(circle at top right, ${project.color}, transparent 70%)` }}
-        />
-      </div>
-    </div>
-  );
-});
 
 
-// Component to render the content for each project card
-const ProjectContent = ({ project }) => {
-  return (
-    <div className="bg-[#F5F5F7] dark:bg-gray-800 p-8 md:p-14 rounded-3xl mb-4">
-      <div className="max-w-3xl mx-auto">
-        {/* Project description */}
-        <p className="text-gray-600 dark:text-gray-300 text-base md:text-2xl font-sans mb-8">
-          <span className="font-bold text-gray-800 dark:text-white">
-            {project.title}.
-          </span>{" "}
-          {project.description}
-        </p>
-        
-        {/* Project details */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Technologies Used</h3>
-            <div className="flex flex-wrap gap-2">
-              {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'].slice(0, 3 + Math.floor(Math.random() * 2)).map((tech, i) => (
-                <span 
-                  key={i} 
-                  className="px-3 py-1 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-full text-sm font-medium"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Key Features</h3>
-            <ul className="space-y-2">
-              {Array(3).fill(0).map((_, i) => (
-                <li key={i} className="flex items-center text-gray-600 dark:text-gray-300">
-                  <svg className="w-5 h-5 mr-2 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  {i === 0 ? 'Responsive design across all devices' : 
-                   i === 1 ? 'Optimized for performance and SEO' : 
-                   'Intuitive user interface and experience'}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        
-        {/* Project showcase */}
-        <div className="relative rounded-xl overflow-hidden shadow-2xl">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-auto object-cover"
-          />
-          
-          {project.featured && (
-            <div className="absolute top-4 right-4 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              FEATURED PROJECT
-            </div>
-          )}
-          
-          {project.stats && (
-            <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white text-sm px-3 py-1 rounded-full">
-              {project.stats}
-            </div>
-          )}
-        </div>
-        
-        {/* CTA Button */}
-        <div className="mt-8 flex justify-center">
-          <button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 group">
-            View Project Details
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-/* DESIGNS SECTION */
+
+/* Project */
 const DesignsSection = memo(() => {
   const [activeTab, setActiveTab] = useState('ui-ux');
   const [selectedDesign, setSelectedDesign] = useState(null);
@@ -1060,7 +543,7 @@ const DesignsSection = memo(() => {
 });
 
 
-/* INTERACTIVE PROCESS TIMELINE */
+/*TIMELINE */
 const ProcessTimeline = memo(() => {
   const [activeStep, setActiveStep] = useState(1);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -1324,447 +807,8 @@ const ProcessTimeline = memo(() => {
   );
 });
 
-/* INTERACTIVE SOLUTION FINDER */
-const SolutionFinder = memo(() => {
-  const [activeCategory, setActiveCategory] = useState('business');
-  const [showResults, setShowResults] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState({});
-  const cardRef = useRef(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
-  // Card tilt effect
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const moveX = (e.clientX - centerX) / (rect.width / 2);
-    const moveY = (e.clientY - centerY) / (rect.height / 2);
-    setMousePosition({ x: moveX * 5, y: moveY * -5 });
-  };
-  
-  const resetMousePosition = () => {
-    setMousePosition({ x: 0, y: 0 });
-  };
-  
-  // Solution finder categories and options
-  const categories = {
-    business: {
-      title: "Business Solutions",
-      icon: <BarChart className="w-5 h-5" />,
-      description: "Find the perfect digital solution tailored to your business needs",
-      color: THEME.accent.blue,
-      options: [
-        {
-          question: "What's your primary business goal?",
-          choices: [
-            { id: "conversion", label: "Increase conversion rates" },
-            { id: "visibility", label: "Improve online visibility" },
-            { id: "automation", label: "Automate business processes" },
-            { id: "analytics", label: "Better data insights" }
-          ]
-        },
-        {
-          question: "What's your timeline?",
-          choices: [
-            { id: "immediate", label: "Immediate (1-2 months)" },
-            { id: "quarter", label: "This quarter (3-6 months)" },
-            { id: "year", label: "This year (6-12 months)" }
-          ]
-        }
-      ]
-    },
-    creative: {
-      title: "Creative Solutions",
-      icon: <Palette className="w-5 h-5" />,
-      description: "Discover creative services to bring your brand vision to life",
-      color: THEME.accent.green,
-      options: [
-        {
-          question: "What's your creative priority?",
-          choices: [
-            { id: "branding", label: "Brand identity & design" },
-            { id: "content", label: "Content creation" },
-            { id: "experience", label: "User experience" },
-            { id: "innovation", label: "Creative innovation" }
-          ]
-        },
-        {
-          question: "What's your brand style?",
-          choices: [
-            { id: "modern", label: "Modern & minimal" },
-            { id: "bold", label: "Bold & vibrant" },
-            { id: "traditional", label: "Traditional & established" },
-            { id: "playful", label: "Playful & approachable" }
-          ]
-        }
-      ]
-    },
-    technical: {
-      title: "Technical Solutions",
-      icon: <Code className="w-5 h-5" />,
-      description: "Explore technical solutions to power your digital infrastructure",
-      color: THEME.accent.orange,
-      options: [
-        {
-          question: "What technical challenge are you facing?",
-          choices: [
-            { id: "performance", label: "Performance optimization" },
-            { id: "scaling", label: "Scaling infrastructure" },
-            { id: "security", label: "Security enhancements" },
-            { id: "integration", label: "System integration" }
-          ]
-        },
-        {
-          question: "What's your technical environment?",
-          choices: [
-            { id: "cloud", label: "Cloud-based" },
-            { id: "onprem", label: "On-premises" },
-            { id: "hybrid", label: "Hybrid infrastructure" }
-          ]
-        }
-      ]
-    }
-  };
-  
-  // Handle option selection
-  const handleOptionSelect = (questionIndex, optionId) => {
-    setSelectedOptions({
-      ...selectedOptions,
-      [questionIndex]: optionId
-    });
-    
-    // If this is the last question, show results
-    if (questionIndex === categories[activeCategory].options.length - 1) {
-      setTimeout(() => {
-        setShowResults(true);
-      }, 500);
-    }
-  };
-  
-  // Reset selections when changing category
-  useEffect(() => {
-    setSelectedOptions({});
-    setShowResults(false);
-  }, [activeCategory]);
-  
-  // Get recommended solutions based on selections
-  const getRecommendedSolutions = () => {
-    const solutions = {
-      business: [
-        {
-          title: "Enterprise Dashboard",
-          description: "Real-time analytics and reporting for business intelligence",
-          icon: <BarChart className="w-6 h-6" />,
-          link: "/services/enterprise-dashboard"
-        },
-        {
-          title: "Marketing Automation",
-          description: "Streamline your marketing efforts with intelligent automation",
-          icon: <MessageSquare className="w-6 h-6" />,
-          link: "/services/marketing-automation"
-        }
-      ],
-      creative: [
-        {
-          title: "Brand Identity Package",
-          description: "Complete visual identity system with logo, colors, and guidelines",
-          icon: <Palette className="w-6 h-6" />,
-          link: "/services/brand-identity"
-        },
-        {
-          title: "UX Design Sprint",
-          description: "Rapid prototyping and user testing to validate your ideas",
-          icon: <Smartphone className="w-6 h-6" />,
-          link: "/services/ux-design"
-        }
-      ],
-      technical: [
-        {
-          title: "Cloud Migration",
-          description: "Seamlessly transition your infrastructure to the cloud",
-          icon: <Code className="w-6 h-6" />,
-          link: "/services/cloud-migration"
-        },
-        {
-          title: "Security Audit",
-          description: "Comprehensive assessment of your digital security posture",
-          icon: <BadgeCheck className="w-6 h-6" />,
-          link: "/services/security-audit"
-        }
-      ]
-    };
-    
-    return solutions[activeCategory];
-  };
-  
-  return (
-    <section className="relative py-20 px-4 overflow-hidden">
-      {/* Background blur elements */}
-      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
-      
-      <div className="max-w-6xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
-            Interactive Solution Finder
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4">
-            Find Your Perfect <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">Solution</span>
-          </h2>
-          <p className="text-foreground/70 max-w-2xl mx-auto">
-            Answer a few quick questions and discover the ideal services tailored to your specific needs
-          </p>
-        </motion.div>
-        
-        {/* Interactive card with glassmorphism effect */}
-        <motion.div
-          ref={cardRef}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="relative max-w-4xl mx-auto"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={resetMousePosition}
-        >
-          <motion.div
-            style={{
-              transform: `perspective(1000px) rotateX(${mousePosition.y}deg) rotateY(${mousePosition.x}deg)`,
-              transition: "transform 0.1s ease"
-            }}
-            className="bg-white/60 backdrop-blur-lg border border-white/20 rounded-2xl shadow-xl overflow-hidden"
-          >
-            {/* Card inner content */}
-            <div className="p-6 md:p-8">
-              {/* Category tabs */}
-              <div className="flex flex-wrap gap-3 mb-8 justify-center">
-                {Object.entries(categories).map(([key, category]) => (
-                  <button
-                    key={key}
-                    onClick={() => setActiveCategory(key)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                      activeCategory === key
-                        ? 'bg-primary text-white shadow-md' 
-                        : 'bg-secondary/5 hover:bg-secondary/10 text-foreground/70'
-                    }`}
-                  >
-                    <div className="p-1 rounded-full bg-white/20">
-                      {category.icon}
-                    </div>
-                    {category.title}
-                  </button>
-                ))}
-              </div>
-              
-              {/* Description */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeCategory}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-center mb-8"
-                >
-                  <p className="text-foreground/80">
-                    {categories[activeCategory].description}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-              
-              {/* Questions and options */}
-              {!showResults ? (
-                <div className="space-y-10 mb-4">
-                  {categories[activeCategory].options.map((option, questionIndex) => (
-                    <div key={questionIndex}>
-                      <h3 className="text-lg font-semibold mb-4">
-                        {option.question}
-                      </h3>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {option.choices.map((choice) => (
-                          <motion.button
-                            key={choice.id}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => handleOptionSelect(questionIndex, choice.id)}
-                            className={`p-4 rounded-xl border text-left transition-all ${
-                              selectedOptions[questionIndex] === choice.id 
-                                ? `border-2 border-${categories[activeCategory].color} bg-${categories[activeCategory].color}/10 shadow-md`
-                                : 'border-secondary/20 hover:border-primary/30 bg-white/40'
-                            }`}
-                            style={{
-                              borderColor: selectedOptions[questionIndex] === choice.id 
-                                ? categories[activeCategory].color 
-                                : undefined,
-                              backgroundColor: selectedOptions[questionIndex] === choice.id 
-                                ? `${categories[activeCategory].color}10` 
-                                : undefined
-                            }}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span>{choice.label}</span>
-                              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                                selectedOptions[questionIndex] === choice.id
-                                  ? `border-${categories[activeCategory].color} bg-${categories[activeCategory].color}`
-                                  : 'border-secondary/40'
-                              }`}
-                              style={{
-                                borderColor: selectedOptions[questionIndex] === choice.id 
-                                  ? categories[activeCategory].color 
-                                  : undefined,
-                                backgroundColor: selectedOptions[questionIndex] === choice.id 
-                                  ? categories[activeCategory].color 
-                                  : undefined
-                              }}
-                              >
-                                {selectedOptions[questionIndex] === choice.id && (
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                  </svg>
-                                )}
-                              </div>
-                            </div>
-                          </motion.button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-4"
-                >
-                  <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                      <CheckCircle className="w-8 h-8 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">Your Recommended Solutions</h3>
-                    <p className="text-foreground/70">Based on your selections, here are our tailored recommendations</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    {getRecommendedSolutions().map((solution, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.2 }}
-                        className="p-6 rounded-xl border border-primary/20 bg-white/60 backdrop-blur-sm hover:shadow-lg hover:border-primary/40 transition-all"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                            {solution.icon}
-                          </div>
-                          <div>
-                            <h4 className="font-medium text-lg mb-1">{solution.title}</h4>
-                            <p className="text-sm text-foreground/70">{solution.description}</p>
-                          </div>
-                        </div>
-                        <div className="mt-4 pt-4 border-t border-secondary/10">
-                          <a 
-                            href={solution.link}
-                            className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline"
-                          >
-                            Learn more about this solution
-                            <ArrowRight size={16} />
-                          </a>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                  
-                  <div className="flex justify-center">
-                    <button
-                      onClick={() => {
-                        setSelectedOptions({});
-                        setShowResults(false);
-                      }}
-                      className="flex items-center gap-2 text-primary hover:text-primary/80 font-medium"
-                    >
-                      <ArrowLeft size={16} />
-                      Start over
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-              
-              {/* Progress indicator (only shown before results) */}
-              {!showResults && (
-                <div className="mt-8 pt-6 border-t border-secondary/10">
-                  <div className="flex items-center justify-between text-sm text-foreground/60">
-                    <span>Progress</span>
-                    <span>
-                      {Object.keys(selectedOptions).length} of {categories[activeCategory].options.length} answered
-                    </span>
-                  </div>
-                  <div className="mt-2 bg-secondary/10 rounded-full h-2">
-                    <div 
-                      className="h-full rounded-full transition-all duration-500 ease-out"
-                      style={{ 
-                        width: `${(Object.keys(selectedOptions).length / categories[activeCategory].options.length) * 100}%`,
-                        backgroundColor: categories[activeCategory].color
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            {/* Card border glow effect */}
-            <div 
-              className="absolute inset-0 -z-10 opacity-40"
-              style={{
-                background: `radial-gradient(circle at 50% 50%, ${categories[activeCategory].color}40, transparent 70%)`,
-                borderRadius: "inherit"
-              }}
-            ></div>
-          </motion.div>
-          
-          {/* Card shadow */}
-          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 -z-20 blur-xl opacity-30"></div>
-        </motion.div>
-        
-        {/* Quick options */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mt-12 text-center"
-        >
-          <p className="text-foreground/70 mb-6">Looking for something specific?</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              { label: "Schedule a consultation", href: "/contact", icon: <Phone className="w-4 h-4" /> },
-              { label: "View all services", href: "/services", icon: <BarChart className="w-4 h-4" /> },
-              { label: "Chat with an expert", href: "/chat", icon: <MessageCircle className="w-4 h-4" /> }
-            ].map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/5 hover:bg-secondary/10 text-foreground/80 hover:text-foreground transition-colors"
-              >
-                {item.icon}
-                <span className="text-sm font-medium">{item.label}</span>
-              </a>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-});
 
-/* UPCOMING PROJECTS SHOWCASE WITH 3D EFFECT */
+/* Upcoming */
 const UpcomingProjectsShowcase = memo(() => {
   const [activeProject, setActiveProject] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -2068,280 +1112,737 @@ const Trusted = memo(() => {
   );
 });
 
-// ENHANCED SERVICES SECTION WITH PREMIUM APPLE DESIGN LANGUAGE
-const ServicesSection = () => (
-  <Section id="our-services-section" pattern={false}>
-    <SectionHeading
-      eyebrow="Our Services"
-      title="What We Offer"
-      description="Premium digital solutions crafted for your business, using the latest technology and design thinking."
-      center={true}
-    />
+// ENHANCED SERVICES SECTION WITH REDESIGNED DARK MODE ADAPTATION
+// Modular components for better code organization
+const ServiceCard = ({ service, isFeatured = false, className = "" }) => {
+  const cardClasses = `
+    group h-full perspective-1000 
+    ${className}
+  `;
 
-    {/* New featured services in two-column layout */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-      {/* Computer Vision Service Card */}
-      <Link
-        to="/services/computer-vision"
-        className="group h-full perspective-1000"
-      >
-        <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
-          {/* Enhanced icon area with subtle float animation */}
-          <div className="px-8 pt-8 pb-5 flex justify-start">
-            <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-[#F5F5F7] dark:bg-[#2C2C2E] relative overflow-hidden group-hover:shadow-md group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-all duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/5 dark:to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative z-10 text-primary dark:text-white group-hover:scale-110 transition-transform duration-500">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-              </div>
-            </div>
-          </div>
-          
-          {/* Content with enhanced typography and animations */}
-          <div className="px-8 flex-grow flex flex-col">
-            <div className="inline-flex items-center mb-2">
-              <h3 className="text-xl font-medium text-[#1D1D1F] dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors duration-300">
-                Computer Vision
-              </h3>
-            </div>
-            
-            <p className="text-[#86868B] dark:text-[#A1A1A6] text-base font-normal mb-6 leading-relaxed">
-              Advanced image recognition and processing solutions to automate visual data analysis and extract actionable insights.
-            </p>
-            
-            {/* Enhanced feature pills with staggered hover effects */}
-            <div className="flex-grow">
-              <div className="flex flex-wrap gap-2">
-                {["Object Detection", "Facial Recognition", "Image Classification", "Real-time Processing", "Custom Models"].map((feature, i) => (
-                  <span
-                    key={i}
-                    className="inline-flex px-3 py-1.5 text-xs font-medium rounded-full bg-[#F5F5F7] dark:bg-[#2C2C2E] text-[#6E6E73] dark:text-[#E5E5E7] hover:bg-[#E5E5E7] dark:hover:bg-[#3C3C3E] transition-colors duration-300"
-                    style={{
-                      transitionDelay: `${i * 50}ms`
-                    }}
-                  >
-                    {feature}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          {/* Improved Apple-style link/action area with refined hover animations */}
-          <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
-            {/* Enhanced Learn More link with smoother transition */}
-            <div className="absolute inset-0 px-8 py-6 flex items-center">
-              <span
-                className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
-              >
-                <span className="inline-block">Learn more</span>
-                <svg 
-                  width="13" 
-                  height="13" 
-                  viewBox="0 0 13 13" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="ml-1.5 transform transition-transform duration-300 group-hover/link:translate-x-1"
-                >
-                  <path d="M6.5 1L12 6.5L6.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M1 6.5H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
-              </span>
-            </div>
-          </div>
+  const containerClasses = `
+    h-full flex flex-col 
+    bg-white/80 dark:bg-[#1C1C1E]/95 
+    backdrop-blur-sm
+    rounded-3xl overflow-hidden 
+    shadow-sm hover:shadow-xl dark:hover:shadow-2xl dark:hover:shadow-black/20
+    transition-all duration-700 ease-out
+    border border-[#E5E5E7]/60 dark:border-[#2C2C2E]/80 
+    hover:border-[#D1D1D6] dark:hover:border-[#3A3A3C]
+    transform hover:translate-y-[-6px] hover:scale-[1.02]
+    ${isFeatured ? 'min-h-[420px]' : 'min-h-[380px]'}
+  `;
 
-          {/* SF-style card shine effect on hover */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
+  return (
+    <Link to={service.href} className={cardClasses}>
+      <div className={containerClasses}>
+        {/* Enhanced icon area with improved dark mode */}
+        <div className="px-8 pt-8 pb-5 flex justify-start">
+          <div className="
+            w-16 h-16 flex items-center justify-center 
+            rounded-2xl 
+            bg-gradient-to-br from-[#F5F5F7] to-[#ECECEC] 
+            dark:from-[#2C2C2E] dark:to-[#1F1F21]
+            relative overflow-hidden 
+            group-hover:shadow-lg 
+            group-hover:from-primary/15 group-hover:to-primary/25
+            dark:group-hover:from-blue-500/20 dark:group-hover:to-blue-600/30
+            transition-all duration-700 ease-out
+            group-hover:scale-110 group-hover:rotate-3
+          ">
+            <div className="
+              absolute inset-0 
+              bg-gradient-to-br from-transparent via-white/20 to-primary/10 
+              dark:from-transparent dark:via-white/5 dark:to-blue-400/15
+              opacity-0 group-hover:opacity-100 
+              transition-opacity duration-700
+            "></div>
+            <div className="
+              relative z-10 
+              text-primary dark:text-blue-400 
+              group-hover:text-primary dark:group-hover:text-blue-300
+              transition-all duration-500
+              drop-shadow-sm
+            ">
+              {service.icon}
+            </div>
+          </div>
         </div>
-      </Link>
-
-      {/* Social Media & Marketing Service Card */}
-      <Link
-        to="/services/marketing-social-media"
-        className="group h-full perspective-1000"
-      >
-        <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
-          {/* Enhanced icon area with subtle float animation */}
-          <div className="px-8 pt-8 pb-5 flex justify-start">
-            <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-[#F5F5F7] dark:bg-[#2C2C2E] relative overflow-hidden group-hover:shadow-md group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-all duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/5 dark:to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative z-10 text-primary dark:text-white group-hover:scale-110 transition-transform duration-500">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
+        
+        {/* Enhanced content with better typography hierarchy */}
+        <div className="px-8 flex-grow flex flex-col">
+          <h3 className="
+            text-xl font-semibold 
+            text-[#1D1D1F] dark:text-[#F2F2F7] 
+            mb-3 
+            group-hover:text-primary dark:group-hover:text-blue-300
+            transition-colors duration-500
+            leading-tight
+          ">
+            {service.title}
+          </h3>
           
-          {/* Content with enhanced typography and animations */}
-          <div className="px-8 flex-grow flex flex-col">
-            <div className="inline-flex items-center mb-2">
-              <h3 className="text-xl font-medium text-[#1D1D1F] dark:text-white group-hover:text-primary dark:group-hover:text-blue-400 transition-colors duration-300">
-                Marketing & Social Media
-              </h3>
-            </div>
-            
-            <p className="text-[#86868B] dark:text-[#A1A1A6] text-base font-normal mb-6 leading-relaxed">
-              Comprehensive marketing and social media management services to boost your brand presence and drive customer engagement.
-            </p>
-            
-            {/* Enhanced feature pills with staggered hover effects */}
-            <div className="flex-grow">
-              <div className="flex flex-wrap gap-2">
-                {["Content Creation", "Campaign Management", "Analytics", "Community Building", "Growth Strategy"].map((feature, i) => (
-                  <span
-                    key={i}
-                    className="inline-flex px-3 py-1.5 text-xs font-medium rounded-full bg-[#F5F5F7] dark:bg-[#2C2C2E] text-[#6E6E73] dark:text-[#E5E5E7] hover:bg-[#E5E5E7] dark:hover:bg-[#3C3C3E] transition-colors duration-300"
-                    style={{
-                      transitionDelay: `${i * 50}ms`
-                    }}
-                  >
-                    {feature}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+          <p className="
+            text-[#86868B] dark:text-[#98989D] 
+            text-base font-normal 
+            mb-6 leading-relaxed
+            group-hover:text-[#666666] dark:group-hover:text-[#AEAEB2]
+            transition-colors duration-500
+          ">
+            {service.description}
+          </p>
           
-          {/* Improved Apple-style link/action area with refined hover animations */}
-          <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
-            {/* Enhanced Learn More link with smoother transition */}
-            <div className="absolute inset-0 px-8 py-6 flex items-center">
-              <span
-                className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
-              >
-                <span className="inline-block">Learn more</span>
-                <svg 
-                  width="13" 
-                  height="13" 
-                  viewBox="0 0 13 13" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="ml-1.5 transform transition-transform duration-300 group-hover/link:translate-x-1"
-                >
-                  <path d="M6.5 1L12 6.5L6.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M1 6.5H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
-              </span>
-            </div>
-          </div>
-
-          {/* SF-style card shine effect on hover */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
-        </div>
-      </Link>
-    </div>
-
-    {/* Original services in three-column layout */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      {SERVICES.map((service) => (
-        <Link 
-          key={service.title}
-          to={service.href}
-          className="group h-full perspective-1000"
-        >
-          <div className="h-full flex flex-col bg-white dark:bg-[#1C1C1E] rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-[#E5E5E7] dark:border-[#2C2C2E] transform hover:translate-y-[-4px]">
-            {/* Enhanced icon area with subtle float animation */}
-            <div className="px-8 pt-8 pb-5 flex justify-start">
-              <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-[#F5F5F7] dark:bg-[#2C2C2E] relative overflow-hidden group-hover:shadow-md group-hover:bg-primary/10 dark:group-hover:bg-primary/20 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/5 dark:to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative z-10 text-primary dark:text-white group-hover:scale-110 transition-transform duration-500">
-                  {service.icon}
-                </div>
-              </div>
-            </div>
-            
-            {/* Content with enhanced typography and animations */}
-            <div className="px-8 flex-grow flex flex-col">
-              <h3 className="text-xl font-medium text-[#1D1D1F] dark:text-white mb-2 group-hover:text-primary dark:group-hover:text-blue-400 transition-colors duration-300">
-                {service.title}
-              </h3>
-              
-              <p className="text-[#86868B] dark:text-[#A1A1A6] text-base font-normal mb-6 leading-relaxed">
-                {service.description}
-              </p>
-              
-              {/* Enhanced feature pills with staggered hover effects */}
-              <div className="flex-grow">
-                <div className="flex flex-wrap gap-2">
-                  {service.features.map((feature, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex px-3 py-1.5 text-xs font-medium rounded-full bg-[#F5F5F7] dark:bg-[#2C2C2E] text-[#6E6E73] dark:text-[#E5E5E7] hover:bg-[#E5E5E7] dark:hover:bg-[#3C3C3E] transition-colors duration-300"
-                      style={{
-                        transitionDelay: `${i * 50}ms`
-                      }}
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            {/* Improved Apple-style link/action area with refined hover animations */}
-            <div className="px-8 py-6 mt-4 border-t border-[#F5F5F7] dark:border-[#2C2C2E] relative h-14">
-              {/* Enhanced Learn More link with smoother transition */}
-              <div className="absolute inset-0 px-8 py-6 flex items-center">
+          {/* Enhanced feature pills with improved dark mode */}
+          <div className="flex-grow">
+            <div className="flex flex-wrap gap-2.5">
+              {service.features.map((feature, i) => (
                 <span
-                  className="relative group/link inline-flex items-center text-primary dark:text-blue-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform translate-x-[-8px] group-hover:translate-x-0"
+                  key={i}
+                  className="
+                    inline-flex px-3.5 py-2 
+                    text-xs font-medium 
+                    rounded-full 
+                    bg-[#F5F5F7]/80 dark:bg-[#2C2C2E]/80
+                    text-[#6E6E73] dark:text-[#E5E5E7] 
+                    border border-[#E5E5E7]/50 dark:border-[#3A3A3C]/50
+                    hover:bg-[#E5E5E7] dark:hover:bg-[#3A3A3C]
+                    hover:border-[#D1D1D6] dark:hover:border-[#48484A]
+                    hover:text-[#1D1D1F] dark:hover:text-[#F2F2F7]
+                    hover:shadow-sm
+                    transition-all duration-400 ease-out
+                    backdrop-blur-sm
+                  "
+                  style={{
+                    transitionDelay: `${i * 75}ms`
+                  }}
                 >
-                  <span className="inline-block">Learn more</span>
-                  <svg 
-                    width="13" 
-                    height="13" 
-                    viewBox="0 0 13 13" 
-                    fill="none" 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="ml-1.5 transform transition-transform duration-300 group-hover/link:translate-x-1"
-                  >
-                    <path d="M6.5 1L12 6.5L6.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M1 6.5H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  
-                  {/* SF-style animated underline effect */}
-                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary/10 dark:bg-blue-400/10 origin-left scale-x-0 group-hover/link:scale-x-100 transition-transform duration-500 ease-out"></div>
+                  {feature}
                 </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        {/* Enhanced Apple-style action area */}
+        <div className="
+          px-8 py-6 mt-4 
+          border-t border-[#F5F5F7]/60 dark:border-[#2C2C2E]/60 
+          relative 
+          min-h-[64px]
+          bg-gradient-to-r from-transparent via-[#FAFAFA]/50 to-transparent
+          dark:from-transparent dark:via-[#1A1A1C]/50 dark:to-transparent
+        ">
+          <div className="flex items-center h-full">
+            <span className="
+              relative group/link 
+              inline-flex items-center 
+              text-primary dark:text-blue-400 
+              font-medium text-sm 
+              opacity-0 group-hover:opacity-100 
+              transition-all duration-700 ease-out 
+              transform translate-x-[-12px] group-hover:translate-x-0
+              hover:text-primary/80 dark:hover:text-blue-300
+            ">
+              <span className="inline-block">Learn more</span>
+              <svg 
+                width="14" 
+                height="14" 
+                viewBox="0 0 13 13" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="
+                  ml-2 transform 
+                  transition-transform duration-400 
+                  group-hover/link:translate-x-1.5 group-hover/link:scale-110
+                "
+              >
+                <path d="M6.5 1L12 6.5L6.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M1 6.5H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              
+              <div className="
+                absolute bottom-0 left-0 w-full h-0.5 
+                bg-gradient-to-r from-primary/20 to-primary/40
+                dark:from-blue-400/20 dark:to-blue-400/40
+                origin-left scale-x-0 group-hover/link:scale-x-100 
+                transition-transform duration-600 ease-out
+              "></div>
+            </span>
+          </div>
+        </div>
+
+        {/* Enhanced shine effect with better dark mode support */}
+        <div className="
+          absolute inset-0 
+          bg-gradient-to-tr 
+          from-white/0 via-white/40 to-white/0 
+          dark:from-white/0 dark:via-white/8 dark:to-white/0
+          opacity-0 group-hover:opacity-100 
+          transition-opacity duration-1000 
+          pointer-events-none
+          mix-blend-overlay dark:mix-blend-soft-light
+        "></div>
+        
+        {/* Subtle glow effect for dark mode */}
+        <div className="
+          absolute inset-0 
+          bg-gradient-to-br from-blue-400/0 via-blue-400/5 to-purple-400/5
+          dark:from-blue-400/0 dark:via-blue-400/10 dark:to-purple-400/10
+          opacity-0 group-hover:opacity-100 
+          transition-opacity duration-1000 
+          pointer-events-none
+          blur-xl
+        "></div>
+      </div>
+    </Link>
+  );
+};
+
+// Enhanced Services Section with Interactive Cards
+const ServicesSection = () => (
+  <section className="py-24 px-4" id="services">
+    <div className="max-w-7xl mx-auto">
+      <div className="text-center mb-16">
+        <span className="px-4 py-1.5 bg-primary/5 text-primary rounded-full text-sm font-medium">
+          Our Expertise
+        </span>
+        <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6">
+          Comprehensive Digital Services
+        </h2>
+        <p className="text-xl text-foreground/70 max-w-3xl mx-auto">
+          From concept to deployment, we offer end-to-end digital solutions tailored to your business needs
+        </p>
+      </div>
+
+      {/* Featured Services - 2 columns */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        {[          {
+            title: "Web Development",
+            description: "Custom websites and web applications built with modern technologies and best practices for optimal performance and user experience. Our expert team delivers responsive, SEO-friendly solutions.",
+            icon: <Code className="w-10 h-10 text-primary" />,
+            features: ["Responsive Design", "SEO Optimization", "Performance Tuning", "Custom CMS", "E-commerce Solutions"],
+            gradient: "from-primary/5 to-violet-500/5",
+            featured: true,
+            href: "/web-development"
+          },
+          {
+            title: "Computer Vision",
+            description: "Advanced image recognition and processing solutions to automate visual data analysis with cutting-edge AI technology. Transform how your business interprets and leverages visual information.",
+            icon: <Globe className="w-10 h-10 text-primary" />,
+            features: ["Object Detection", "Facial Recognition", "Image Classification", "Real-time Processing", "Custom AI Models"],
+            gradient: "from-violet-500/5 to-purple-500/5",
+            featured: true,
+            href: "/services/computer-vision"
+          },        ].map((service, index) => (
+          <Link 
+            to={service.href}
+            key={index}
+            className={`group relative overflow-hidden rounded-3xl p-6 hover:bg-primary/5 transition-all duration-300 border border-transparent hover:border-primary/20 bg-gradient-to-br ${service.gradient} cursor-pointer h-[360px]`}
+          >
+            {/* Ripple effect animation */}
+            <span className="absolute inset-0 w-full h-full">
+              <span className="ripple-effect absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-primary/10 opacity-0 group-hover:animate-ripple pointer-events-none"></span>
+            </span>
+            
+            <div className="absolute top-0 left-0 w-full h-full bg-secondary/5 dark:bg-gray-900/95 opacity-90 group-hover:opacity-95 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-6 p-3 rounded-xl bg-primary/5 w-fit backdrop-blur-sm">
+                {service.icon}
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{service.title}</h3>
+              <p className="text-foreground/70 mb-6">{service.description}</p>
+              <ul className="space-y-2 mb-8">
+                {service.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-sm text-foreground/60">
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              
+              {/* Learn more button that appears on hover */}
+              <div className="absolute bottom-8 right-8 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary font-medium">
+                  Learn more
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </div>
+          </Link>
+        ))}
+      </div>
 
-            {/* SF-style card shine effect on hover */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/30 dark:via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
-          </div>
-        </Link>
-      ))}
+      {/* Regular Services - 3 columns */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[          {
+            title: "Game Development",
+            description: "Engaging and immersive gaming experiences across multiple platforms using cutting-edge game engines",
+            icon: <Gamepad2 className="w-8 h-8 text-primary" />,
+            features: ["Unity & Unreal Engine", "Mobile Games", "Cross-platform"],
+            gradient: "from-purple-500/5 to-blue-500/5",
+            href: "/game-development"
+          },
+          {
+            title: "Mobile App Development",
+            description: "Native and cross-platform mobile applications that deliver seamless user experiences across devices",
+            icon: <Smartphone className="w-8 h-8 text-primary" />,
+            features: ["iOS & Android", "React Native", "Flutter"],
+            gradient: "from-indigo-500/5 to-cyan-500/5",
+            href: "/mobile-app-development"
+          },
+          {
+            title: "UI/UX Design",
+            description: "User-centered design solutions that create intuitive, engaging, and effective digital experiences",
+            icon: <Brush className="w-8 h-8 text-primary" />,
+            features: ["User Research", "Wireframing", "Prototype Testing"],
+            gradient: "from-blue-500/5 to-teal-500/5",
+            href: "/ui-ux-design"
+          },
+          {
+            title: "Logo Design",
+            description: "Professional branding solutions with unique and memorable logo designs that capture your brand essence",
+            icon: <Palette className="w-8 h-8 text-primary" />,
+            features: ["Brand Identity", "Vector Graphics", "Color Theory"],
+            gradient: "from-green-500/5 to-emerald-500/5",
+            href: "/logo-design"
+          },
+          {
+            title: "Video Editing",
+            description: "Professional video editing services that transform raw footage into compelling visual stories",
+            icon: <VideoIcon className="w-8 h-8 text-primary" />,
+            features: ["Color Grading", "Motion Graphics", "Audio Mixing"],
+            gradient: "from-orange-500/5 to-pink-500/5",
+            href: "/video-editing"
+          },
+          {
+            title: "Marketing & Social Media",
+            description: "Comprehensive digital marketing and social media management services to boost your brand presence",
+            icon: <Database className="w-8 h-8 text-primary" />,
+            features: ["Content Strategy", "Campaign Management", "Analytics & Insights"],
+            gradient: "from-pink-500/5 to-rose-500/5",
+            href: "/services/marketing-social-media"          },].map((service, index) => (
+          <Link 
+            to={service.href}
+            key={index}
+            className={`group relative overflow-hidden rounded-3xl p-8 hover:bg-primary/5 transition-all duration-300 border border-transparent hover:border-primary/20 bg-gradient-to-br ${service.gradient} cursor-pointer`}
+          >
+            {/* Ripple effect animation */}
+            <span className="absolute inset-0 w-full h-full">
+              <span className="ripple-effect absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-primary/10 opacity-0 group-hover:animate-ripple pointer-events-none"></span>
+            </span>
+            
+            <div className="absolute top-0 left-0 w-full h-full bg-secondary/5 dark:bg-gray-900/95 opacity-90 group-hover:opacity-95 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-6 p-3 rounded-xl bg-primary/5 w-fit backdrop-blur-sm">
+                {service.icon}
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{service.title}</h3>
+              <p className="text-foreground/70 mb-6">{service.description}</p>
+              <ul className="space-y-2 mb-8">
+                {service.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-sm text-foreground/60">
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              
+              {/* Learn more button that appears on hover */}
+              <div className="absolute bottom-8 right-8 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary font-medium">
+                  Learn more
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
-    
-    {/* Enhanced Apple-style CTA button with subtle hover effects - removed */}
-
-    {/* Add subtle perspective effect styling */}
-    <style jsx global>{`
-      .perspective-1000 {
-        perspective: 1000px;
-      }
-    `}</style>
-  </Section>
+  </section>
 );
 
 /* MAIN COMPONENT */
-function Home() {
+function Home({ theme, toggleTheme }) {
+  const canvasRef = useRef(null);
+  const techSphereRef = useRef(null);
+  const { scrollYProgress } = useScroll();
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
+  
+  // Add interactive 3D technology sphere
+  useEffect(() => {
+    if (!techSphereRef.current) return;
+    
+    const container = techSphereRef.current;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    
+    // Create scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    camera.position.z = 400;
+    
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+    
+    // Create sphere
+    const geometry = new THREE.SphereGeometry(150, 32, 32);
+    const material = new THREE.MeshBasicMaterial({
+      color: 0x7b61ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.6
+    });
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+    
+    // Add technology icons around the sphere (simplified for this example)
+    const iconCount = 20;
+    const iconGeometry = new THREE.BoxGeometry(10, 10, 10);
+    const iconMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    
+    const icons = [];
+    for (let i = 0; i < iconCount; i++) {
+      const icon = new THREE.Mesh(iconGeometry, iconMaterial);
+      const phi = Math.acos(-1 + (2 * i) / iconCount);
+      const theta = Math.sqrt(iconCount * Math.PI) * phi;
+      
+      icon.position.x = 180 * Math.sin(phi) * Math.cos(theta);
+      icon.position.y = 180 * Math.sin(phi) * Math.sin(theta);
+      icon.position.z = 180 * Math.cos(phi);
+      
+      icons.push(icon);
+      scene.add(icon);
+    }
+    
+    // Animate the sphere
+    const animate = () => {
+      requestAnimationFrame(animate);
+      
+      sphere.rotation.x += 0.002;
+      sphere.rotation.y += 0.003;
+      
+      // Make icons stay in place relative to the camera
+      icons.forEach(icon => {
+        icon.lookAt(camera.position);
+      });
+      
+      renderer.render(scene, camera);
+    };
+    
+    animate();
+    
+    // Handle window resize
+    const handleResize = () => {
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+      
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+      
+      renderer.setSize(newWidth, newHeight);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      container.removeChild(renderer.domElement);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas dimensions
+    const setCanvasDimensions = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight * 0.7; // 70vh
+    };
+    
+    setCanvasDimensions();
+    window.addEventListener('resize', setCanvasDimensions);
+    
+    // Create particles
+    const particlesArray = [];
+    const numberOfParticles = 100;
+    
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+        this.color = `rgba(123, 97, 255, ${Math.random() * 0.5})`; // Primary color with varying opacity
+      }
+      
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        
+        if (this.x > canvas.width || this.x < 0) {
+          this.speedX = -this.speedX;
+        }
+        if (this.y > canvas.height || this.y < 0) {
+          this.speedY = -this.speedY;
+        }
+      }
+      
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    
+    const init = () => {
+      for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+      }
+    };
+    
+    const connectParticles = () => {
+      for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+          const dx = particlesArray[a].x - particlesArray[b].x;
+          const dy = particlesArray[a].y - particlesArray[b].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 100) {
+            ctx.strokeStyle = `rgba(123, 97, 255, ${0.1 - (distance/100) * 0.1})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    };
+    
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+      }
+      
+      connectParticles();
+      requestAnimationFrame(animate);
+    };
+    
+    init();
+    animate();
+    
+    return () => {
+      window.removeEventListener('resize', setCanvasDimensions);
+    };
+  }, []);
+
   return (
     <PageTransition>
       <div className="min-h-screen">
-        <HeroSection />
+        {/* Hero Section with Interactive Sphere and Canvas Background */}
+        <div className="relative h-[90vh] flex items-center justify-center overflow-hidden">
+          <canvas ref={canvasRef} className="absolute inset-0 z-0 bg-background"></canvas>
+          
+          <motion.div 
+            ref={techSphereRef}
+            className="absolute top-0 right-0 w-full h-full pointer-events-none z-10"
+            style={{ opacity: 0.7 }}
+          />
+          
+          <motion.div 
+            className="relative z-20 text-center px-4 max-w-4xl mx-auto"
+            style={{ opacity: heroOpacity, y: heroY }}
+          >
+ <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5 animate-fade-in">
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+            </span>
+            <span className="text-sm font-semibold text-primary">Enterprise Technology Solutions</span>
+          </div>
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-violet-500 leading-tight"
+            >
+             Jason Tech Solutions<br className="hidden md:block" /> 
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y:20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-xl text-foreground/80 max-w-2xl mx-auto mb-8"
+            >
+              We create custom, high-performance websites and web applications 
+              that help businesses transform their digital presence.
+            </motion.p>
+<div className="flex flex-wrap justify-center gap-2.5 md:gap-3 px-2 mx-auto max-w-3xl animate-fade-in mb-8">
+  {HERO_SERVICES.map((service, i) => (
+    <div
+      key={i}
+      className="px-3.5 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm cursor-default dark:bg-neutral-900/80 dark:border-primary/40 dark:backdrop-blur-xl"
+    >
+      <span className="text-primary p-1 bg-primary/10 rounded-full">{service.icon}</span>
+      <span className="text-sm font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
+    </div>
+  ))}
+</div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-wrap gap-4 justify-center"
+            >
+              <a 
+                href="#contact" 
+                className="bg-primary text-primary-foreground px-8 py-4 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2 hover:translate-y-[-2px]"
+              >
+                Start Your Project
+                <ArrowUpRight className="w-5 h-5" />
+              </a>
+              <a 
+                href="#services" 
+                className="bg-background border border-primary/30 text-foreground px-8 py-4 rounded-full text-lg font-medium hover:bg-primary/5 transition-colors hover:translate-y-[-2px]"
+              >
+                Explore Services
+              </a>
+            </motion.div>
+          </motion.div>
+          
+          {/* Stats Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="absolute bottom-10 left-0 right-0 z-10"
+          >
+            <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
+              {[
+                { value: "150+", label: "Projects Completed" },
+                { value: "98%", label: "Client Satisfaction" },
+                { value: "5+", label: "Years Experience" },
+                { value: "24/7", label: "Support" }              ].map((stat, index) => (
+                <div key={index} className="bg-background/40 backdrop-blur-md rounded-xl p-4 text-center border border-gray-300/5">
+                  <div className="text-2xl md:text-3xl font-bold text-primary">{stat.value}</div>
+                  <div className="text-sm text-foreground/70">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+        
         <Trusted />
         <ServicesSection />
         <UpcomingProjectsShowcase />
-        <ProcessTimeline />
         <DesignsSection />
-        <SolutionFinder />
+
+
+        <ProcessTimeline />
+        
+              <section className="py-24 px-4">
+                <div className="max-w-5xl mx-auto text-center">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative p-12 md:p-16 rounded-3xl overflow-hidden"
+                  >
+                    {/* Animated background with gradient and particles */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-violet-500/20 to-primary/10"></div>
+                    <Meteors number={15} />
+                    
+                    <div className="absolute inset-0 flex items-center justify-center opacity-5">
+                      <svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                        <path d="M200,0 Q400,0 500,200 Q400,400 200,400 Q0,400 100,200 Q0,0 200,0 Z" fill="url(#grad1)" />
+                        <defs>
+                          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#7b61ff" />
+                            <stop offset="100%" stopColor="#8b5cf6" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
+                    
+                    <div className="relative z-10">
+                      <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <span className="inline-block px-4 py-1.5 bg-primary text-white rounded-full text-sm font-medium mb-6">
+                          Let's Build Something Amazing
+                        </span>
+                      </motion.div>
+                      
+                      <motion.h2 
+                        className="text-3xl md:text-5xl font-bold mb-6"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                      >
+                        Ready to Start Your Web Project?
+                      </motion.h2>
+                      
+                      <motion.p 
+                        className="text-xl text-foreground/80 mb-10 max-w-2xl mx-auto"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                      >
+                        Let's collaborate to create a website that elevates your brand, engages your audience, and drives business growth.
+                      </motion.p>
+                      
+                      <motion.div 
+                        className="flex flex-wrap gap-6 justify-center"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                      >
+                        <motion.a 
+                          href="#contact" 
+                          className="relative bg-primary text-white px-8 py-4 rounded-full text-lg font-semibold overflow-hidden group"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-violet-600 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                          <span className="relative flex items-center gap-2">
+                            Start Your Project
+                            <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                          </span>
+                        </motion.a>
+                        
+                        <motion.a 
+                          href="tel:+1234567890" 
+                          className="relative px-8 py-4 rounded-full text-lg font-semibold overflow-hidden group bg-background border border-primary/20"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <span className="absolute inset-0 w-full h-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                          <span className="relative flex items-center gap-2">
+                            Schedule a Call
+                            <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                          </span>
+                        </motion.a>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                </div>
+              </section>
+              
+      
       </div>
     </PageTransition>
   );

@@ -475,6 +475,619 @@ function VideoEditorPreview({ isActive, content, activeStep }) {
   );
 }
 
+const IntegrationsSection = () => {
+  const integrations = [
+    {
+      name: "Microsoft Outlook",
+      description: "Email & schedule management",
+      logo: "/images/outlook-logo.png",
+      color: THEME_ACCENT.tertiary
+    },
+    {
+      name: "Microsoft Teams",
+      description: "Team collaboration & planning",
+      logo: "/images/teams-logo.png",
+      color: THEME_ACCENT.primary
+    },
+    {
+      name: "Google Workspace",
+      description: "Document creation & sharing",
+      logo: "/images/google-workspace-logo.png",
+      color: THEME_ACCENT.secondary
+    },
+    {
+      name: "Slack",
+      description: "Team communication hub",
+      logo: "/images/slack-logo.png",
+      color: THEME_ACCENT.accent
+    },
+    {
+      name: "Asana",
+      description: "Project & task management",
+      logo: "/images/asana-logo.png",
+      color: THEME_ACCENT.primary
+    }
+  ];
+
+  return (
+    <div className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-zinc-900 to-black relative overflow-hidden">
+      {/* Y2K-inspired diagonal patterns */}
+      <div className="absolute inset-0 overflow-hidden opacity-30 mix-blend-overlay pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-[120%] bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.15),transparent_45%)]"></div>
+        <div className="absolute top-[10%] left-[30%] w-[70%] h-[60%] rotate-[-35deg] bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(236,72,153,0.1)_10px,rgba(236,72,153,0.1)_20px)]"></div>
+        <div className="absolute bottom-0 right-0 w-[80%] h-[70%] rotate-12 bg-[repeating-linear-gradient(-45deg,transparent,transparent_10px,rgba(59,130,246,0.1)_10px,rgba(59,130,246,0.1)_20px)]"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Asymmetrical header with retro elements */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 relative">
+          <div className="md:w-2/3">
+            {/* Glitchy, pixelated tag */}
+            <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 bg-orange-500 text-white font-mono text-sm uppercase tracking-wider border-2 border-dashed border-orange-300 rotate-2 shadow-[5px_5px_0px_#000] dark:shadow-[5px_5px_0px_#222]">
+              <div className="flex gap-1 mr-2">
+                {[1,2,3].map((i) => (
+                  <div key={i} className="w-1.5 h-1.5 bg-white rounded-sm"></div>
+                ))}
+              </div>
+              Social_Ecosystem.exe
+            </div>
+            
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl md:text-5xl font-black mb-6 text-white"
+            >
+              Unify your <br/>
+              <div className="relative inline-block">
+                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-violet-500 to-cyan-500 italic">
+                  s o c i a l &nbsp; e m p i r e
+                </span>
+                <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-r from-pink-500/30 via-violet-500/30 to-cyan-500/30 -rotate-1"></div>
+              </div>
+            </motion.h2>
+          </div>
+          
+          <motion.p
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="md:w-1/3 text-base md:text-lg text-zinc-400 md:text-right mt-4 md:mt-0 border-l-4 border-pink-500 pl-4 md:mb-2"
+          >
+            Cross-platform magic that slays.<br/>
+            Sync all your content across the platforms where your audience actually hangs.
+          </motion.p>
+
+          {/* Decorative elements */}
+          <div className="absolute right-0 top-0 -mt-10 hidden md:block">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-20">
+              <circle cx="60" cy="60" r="55" stroke="url(#circleGradient)" strokeWidth="2" strokeDasharray="4 4"/>
+              <defs>
+                <linearGradient id="circleGradient" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#EC4899"/>
+                  <stop offset="1" stopColor="#3B82F6"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+
+        {/* Y2K inspired integration showcase */}
+        <div className="relative mb-20">
+          <div className="flex flex-col items-center">
+            {/* Main integration with embedded chatbox */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="w-full max-w-2xl mb-16"
+            >
+              <div className="relative bg-gradient-to-r from-violet-600/20 to-pink-600/20 p-1 rounded-lg">
+                <div className="bg-zinc-800 rounded-md p-6">
+                  {/* Mock OS-style window */}
+                  <div className="flex justify-between items-center border-b border-zinc-700 pb-3 mb-5">
+                    <div className="flex items-center gap-3">
+                      <div className="flex gap-1.5">
+                        <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                        <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                      </div>
+                      <span className="text-sm text-zinc-400 font-mono">integration_assistant.jsx</span>
+                    </div>
+                    <div className="text-xs text-zinc-500 font-mono">running...</div>
+                  </div>
+                  
+                  {/* Chat-like integration interface */}
+                  <div className="space-y-4">
+                    <div className="flex justify-start">
+                      <div className="bg-zinc-700 text-white text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%]">
+                        <div className="font-medium mb-1">Integration Assistant</div>
+                        Which team collaboration tool do you want to connect?
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-end">
+                      <div className="bg-violet-600 text-white text-sm rounded-2xl rounded-br-none px-4 py-2 max-w-[80%]">
+                        Slack
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-start">
+                      <div className="bg-zinc-700 text-white text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%]">
+                        <div className="mb-2">Connecting to Slack...</div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 bg-[#4A154B] rounded-md flex items-center justify-center">
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M2.08 5.83C2.08 6.42 1.58 6.92 0.99 6.92C0.4 6.92 0 6.42 0 5.83C0 5.24 0.5 4.74 1.09 4.74H2.08V5.83Z" fill="white"/>
+                              <path d="M2.58 5.83C2.58 5.24 3.08 4.74 3.67 4.74C4.26 4.74 4.76 5.24 4.76 5.83V8.51C4.76 9.1 4.26 9.6 3.67 9.6C3.08 9.6 2.58 9.1 2.58 8.51V5.83Z" fill="white"/>
+                              <path d="M3.67 2C3.08 2 2.58 1.5 2.58 0.91C2.58 0.32 3.08 0 3.67 0C4.26 0 4.76 0.5 4.76 1.09V2H3.67Z" fill="white"/>
+                              <path d="M3.67 2.48C4.26 2.48 4.76 2.98 4.76 3.57C4.76 4.16 4.26 4.66 3.67 4.66H0.991C0.401 4.66 0 4.16 0 3.57C0 2.98 0.5 2.48 1.09 2.48H3.67Z" fill="white"/>
+                              <path d="M7.43 3.57C7.43 2.98 7.93 2.48 8.52 2.48C9.11 2.48 9.61 2.98 9.61 3.57C9.61 4.16 9.11 4.66 8.52 4.66H7.43V3.57Z" fill="white"/>
+                              <path d="M6.93 3.57C6.93 4.16 6.43 4.66 5.84 4.66C5.25 4.66 4.75 4.16 4.75 3.57V0.91C4.75 0.32 5.25 0 5.84 0C6.43 0 6.93 0.5 6.93 1.09V3.57Z" fill="white"/>
+                              <path d="M5.84 7.32C6.43 7.32 6.93 7.82 6.93 8.41C6.93 9 6.43 9.5 5.84 9.5C5.25 9.5 4.75 9 4.75 8.41V7.32H5.84Z" fill="white"/>
+                              <path d="M5.84 6.92C5.25 6.92 4.75 6.42 4.75 5.83C4.75 5.24 5.25 4.74 5.84 4.74H8.42C9.01 4.74 9.51 5.24 9.51 5.83C9.51 6.42 9.01 6.92 8.42 6.92H5.84Z" fill="white"/>
+                            </svg>
+                          </div>
+                          <div className="h-1.5 w-40 bg-zinc-700 overflow-hidden rounded-full">
+                            <motion.div 
+                              className="h-full bg-green-400"
+                              initial={{ width: 0 }}
+                              animate={{ width: '100%' }}
+                              transition={{ duration: 1.5 }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-start">
+                      <div className="bg-zinc-700 text-white text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%]">
+                        <div className="font-medium text-green-400 flex items-center gap-2">
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          Connected Successfully
+                        </div>
+                        <div className="mt-2">
+                          <div className="text-xs text-zinc-400 mb-1">What would you like to enable?</div>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-xs flex items-center gap-1">
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M9 7H7V9H9V7Z" fill="currentColor"/>
+                                <path d="M9 11H7V13H9V11Z" fill="currentColor"/>
+                                <path d="M9 15H7V17H9V15Z" fill="currentColor"/>
+                                <path d="M13 7H11V9H13V7Z" fill="currentColor"/>
+                                <path d="M13 11H11V13H13V11Z" fill="currentColor"/>
+                                <path d="M13 15H11V17H13V15Z" fill="currentColor"/>
+                                <path d="M17 7H15V9H17V7Z" fill="currentColor"/>
+                                <path d="M17 11H15V13H17V11Z" fill="currentColor"/>
+                                <path d="M17 15H15V17H17V15Z" fill="currentColor"/>
+                              </svg>
+                              Content Calendar
+                            </div>
+                            <div className="bg-violet-600/30 border border-violet-500/50 rounded px-2 py-1 text-xs flex items-center gap-1">
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M12 7V12L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                              Auto Scheduling
+                            </div>
+                            <div className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-xs flex items-center gap-1">
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M22 6L12 13L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                              Channel Alerts
+                            </div>
+                            <div className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-xs flex items-center gap-1">
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 11L12 14L22 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M21 12V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                              Task Sync
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Terminal-inspired prompt */}
+                  <div className="mt-6 bg-zinc-900 p-2 rounded flex items-center font-mono text-sm">
+                    <span className="text-green-400 mr-2">❯</span>
+                    <div className="text-white flex-1">enable --integration slack --features auto-scheduling</div>
+                    <motion.div 
+                      animate={{ opacity: [0, 1, 0] }}
+                      transition={{ repeat: Infinity, duration: 1 }}
+                      className="h-4 w-2 bg-white"
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+            
+            {/* Floating integration bubbles in chaotic orbital pattern */}
+            <div className="relative w-full max-w-4xl aspect-[16/9]">
+              {/* Central hub */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+              >
+                <div className="bg-gradient-to-br from-violet-600 to-pink-600 p-[2px] rounded-full">
+                  <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-black flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <div className="font-bold text-lg md:text-xl">Your</div>
+                      <div className="text-xs md:text-sm text-violet-300">Content</div>
+                      <div className="text-xs md:text-sm text-pink-300">Ecosystem</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+              
+              {/* Floating integration bubbles */}
+              {integrations.map((integration, i) => {
+                // Create randomized orbital positions
+                const angle = ((i * (360 / integrations.length)) + Math.random() * 20) % 360;
+                const radius = 35 + (i % 2) * 15; // Alternating orbital distance
+                const delay = 0.2 + (i * 0.1);
+                const xPos = Math.cos((angle * Math.PI) / 180) * radius;
+                const yPos = Math.sin((angle * Math.PI) / 180) * radius;
+                
+                return (
+                  <motion.div
+                    key={integration.name}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay }}
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                    style={{
+                      left: `calc(50% + ${xPos}%)`,
+                      top: `calc(50% + ${yPos}%)`,
+                    }}
+                  >
+                    <div 
+                      className="relative group"
+                      style={{ zIndex: integrations.length - i }}
+                    >
+                      {/* Tool bubble */}
+                      <div className="bg-gradient-to-br p-[1.5px] rounded-lg rotate-3 group-hover:rotate-0 transition-transform duration-300"
+                           style={{ backgroundImage: `linear-gradient(to bottom right, ${integration.color}, ${THEME_ACCENT.accent})` }}>
+                        <div className="bg-zinc-900 rounded-lg p-3 backdrop-blur-sm">
+                          <div className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-lg flex items-center justify-center mb-2"
+                               style={{ backgroundColor: `${integration.color}20` }}>
+                            {/* Placeholder logo from first letter if image fails */}
+                            <div className="text-xl md:text-2xl font-bold" style={{ color: integration.color }}>
+                              {integration.name.charAt(0)}
+                            </div>
+                          </div>
+                          <div className="text-white text-xs md:text-sm text-center font-medium">
+                            {integration.name.split(" ")[0]}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Connection line */}
+                      <svg 
+                        className="absolute top-1/2 left-1/2 -z-10 group-hover:opacity-100 opacity-50 transition-opacity" 
+                        width="100" 
+                        height="100" 
+                        viewBox="0 0 100 100"
+                        style={{
+                          position: 'absolute',
+                          width: '100px',
+                          height: '100px',
+                          top: '50%',
+                          left: '50%',
+                          transform: `rotate(${angle+180}deg)`,
+                          transformOrigin: '0 0',
+                        }}
+                      >
+                        <line 
+                          x1="0" 
+                          y1="0" 
+                          x2={Math.sqrt(Math.pow(xPos, 2) + Math.pow(yPos, 2)) * 3} 
+                          y2="0" 
+                          stroke={`url(#gradient-${i})`} 
+                          strokeWidth="1.5" 
+                          strokeDasharray="2 2"
+                        />
+                        <defs>
+                          <linearGradient id={`gradient-${i}`} gradientTransform="rotate(0)">
+                            <stop offset="0%" stopColor={integration.color} stopOpacity="0.8" />
+                            <stop offset="100%" stopColor={THEME_ACCENT.accent} stopOpacity="0" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Split asymmetrical cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 -mt-8">
+          {[
+            {
+              title: "One-Click Sync",
+              description: "Connect your workflow tools in seconds with zero coding or technical setup",
+              icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 4L12 13.5L9 10.5L2 16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M22 10V4H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M7 21C9.20914 21 11 19.2091 11 17C11 14.7909 9.20914 13 7 13C4.79086 13 3 14.7909 3 17C3 19.2091 4.79086 21 7 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>),
+              style: "md:col-span-1 rotate-1",
+              color: THEME_ACCENT.primary,
+              boxStyle: "border-2 border-violet-500 bg-violet-500/10",
+              buttonStyle: "border-violet-500 text-violet-400 hover:bg-violet-500/20"
+            },
+            {
+              title: "Customizable Automations",
+              description: "Create your own workflows with triggers and actions between platforms",
+              icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M14.3101 8L19.0001 17L5.00012 17L9.69012 8L14.3101 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>),
+              style: "md:col-span-2 -rotate-1",
+              color: THEME_ACCENT.secondary,
+              boxStyle: "border-2 border-pink-500 bg-pink-500/10",
+              buttonStyle: "border-pink-500 text-pink-400 hover:bg-pink-500/20"
+            },
+            {
+              title: "Multi-Platform Publishing",
+              description: "Create content once and publish everywhere with smart adaptation for each platform",
+              icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 6.65685 16.3431 8 18 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M8.59 13.51L15.42 17.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M15.41 6.51L8.59 10.49" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>),
+              style: "md:col-span-2 rotate-1",
+              color: THEME_ACCENT.tertiary,
+              boxStyle: "border-2 border-blue-500 bg-blue-500/10",
+              buttonStyle: "border-blue-500 text-blue-400 hover:bg-blue-500/20"
+            },
+            {
+              title: "Real-Time Notifications",
+              description: "Get instant alerts and updates across all your connected platforms",
+              icon: (<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M13.73 21C13.5542 21.3031 13.3019 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>),
+              style: "md:col-span-1 -rotate-1",
+              color: THEME_ACCENT.accent,
+              boxStyle: "border-2 border-emerald-500 bg-emerald-500/10",
+              buttonStyle: "border-emerald-500 text-emerald-400 hover:bg-emerald-500/20"
+            },
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 + (index * 0.1) }}
+              className={`group relative ${feature.style}`}
+            >
+              <div className={`rounded-xl p-5 ${feature.boxStyle}`}>
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="p-2 rounded-lg bg-black/40" style={{ color: feature.color }}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-lg font-bold text-white">{feature.title}</h3>
+                </div>
+                
+                <p className="text-zinc-300 mb-4 ml-14">{feature.description}</p>
+                
+                <div className="mt-4 ml-14">
+                  <button className={`px-4 py-1 rounded-full text-sm font-medium border ${feature.buttonStyle} transition-colors flex items-center gap-1.5 group-hover:gap-2`}>
+                    Learn More 
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform">
+                      <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* API Section - Code block with Y2K aesthetic */}
+        <div className="mt-16">
+          <div className="relative mx-auto max-w-4xl p-1 rounded-lg bg-gradient-to-r from-violet-500 via-pink-500 to-blue-500">
+            <div className="grid grid-cols-1 md:grid-cols-2 rounded-lg overflow-hidden">
+              {/* Left panel */}
+              <div className="bg-black p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-violet-500/20 to-transparent rounded-full blur-xl"></div>
+                
+                <div className="relative z-10">
+                  <div className="mb-6">
+                    <div className="inline-flex items-center px-2 py-1 rounded-md bg-zinc-800 font-mono text-xs text-zinc-400 mb-3">
+                      <span className="flex w-2 h-2 rounded-full bg-green-400 mr-2"></span>
+                      API access
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">Developer API</h3>
+                    <p className="text-zinc-400">
+                      Build your own custom integrations with our <span className="text-violet-400">RESTful API</span> and webhooks.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2.5 mb-6">
+                    {[
+                      "OAuth 2.0 authentication",
+                      "Webhooks for real-time updates", 
+                      "Comprehensive documentation",
+                      "Rate limit: 10,000 req/day"
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="#EC4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M22 4L12 14.01L9 11.01" stroke="#EC4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="text-sm text-zinc-300">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="inline-block relative">
+                    <button className="bg-gradient-to-r from-violet-500 to-pink-500 hover:from-violet-600 hover:to-pink-600 transition-colors text-white rounded-md px-4 py-2 font-medium text-sm flex items-center gap-2">
+                      View API Documentation
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                    
+                    {/* Y2K web design element */}
+                    <div className="absolute -bottom-2 -right-2 w-full h-full border-2 border-pink-300 rounded-md -z-10"></div>
+                  </div>
+                </div>
+                
+                {/* Retro design elements */}
+                <div className="absolute bottom-3 left-3">
+                  <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-20">
+                    <circle cx="30" cy="30" r="20" stroke="#EC4899" strokeWidth="1"/>
+                    <circle cx="30" cy="30" r="15" stroke="#EC4899" strokeWidth="0.5"/>
+                    <circle cx="30" cy="30" r="25" stroke="#EC4899" strokeWidth="0.5"/>
+                  </svg>
+                </div>
+              </div>
+              
+              {/* Right panel - Code example */}
+              <div className="bg-zinc-900 p-6 font-mono text-sm">
+                <div className="flex items-center justify-between mb-3 text-xs text-zinc-500">
+                  <div>api_example.js</div>
+                  <div className="flex items-center">
+                    <span className="px-1.5 py-0.5 bg-zinc-800 rounded mr-2">JavaScript</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 16H6C5.46957 16 4.96086 15.7893 4.58579 15.4142C4.21071 15.0391 4 14.5304 4 14V6C4 5.46957 4.21071 4.96086 4.58579 4.58579C4.96086 4.21071 5.46957 4 6 4H14C14.5304 4 15.0391 4.21071 15.4142 4.58579C15.7893 4.96086 16 5.46957 16 6V8" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M10 14H18C19.1046 14 20 14.8954 20 16V18C20 19.1046 19.1046 20 18 20H10C8.89543 20 8 19.1046 8 18V16C8 14.8954 8.89543 14 10 14Z" stroke="#EC4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div className="bg-zinc-950 rounded p-4 text-green-400 overflow-x-auto">
+                  <div className="text-zinc-500">// Authentication</div>
+                  <div className="mt-2">const API_KEY = <span className="text-yellow-300">"YOUR_API_KEY"</span>;</div>
+                  <br/>
+                  <div className="text-zinc-500">// Post to multiple platforms</div>
+                  <div>async <span className="text-pink-400">function</span> <span className="text-blue-400">postToAllPlatforms</span>() {'{'}</div>
+                  <div className="ml-4">const response = await fetch(<span className="text-yellow-300">'https://api.example.com/v1/publish'</span>, {'{'}</div>
+                  <div className="ml-8">method: <span className="text-yellow-300">'POST'</span>,</div>
+                  <div className="ml-8">headers: {'{'}</div>
+                  <div className="ml-12"><span className="text-cyan-300">'Authorization'</span>: <span className="text-yellow-300">`Bearer ${'{'}API_KEY{'}'}`</span>,</div>
+                  <div className="ml-12"><span className="text-cyan-300">'Content-Type'</span>: <span className="text-yellow-300">'application/json'</span></div>
+                  <div className="ml-8">{'}'},</div>
+                  <div className="ml-8">body: <span className="text-blue-400">JSON.stringify</span>({'{'}</div>
+                  <div className="ml-12">content: <span className="text-yellow-300">"Check out our new product!"</span>,</div>
+                  <div className="ml-12">media: [<span className="text-yellow-300">"https://example.com/image.jpg"</span>],</div>
+                  <div className="ml-12">platforms: [<span className="text-yellow-300">"instagram"</span>, <span className="text-yellow-300">"twitter"</span>, <span className="text-yellow-300">"tiktok"</span>],</div>
+                  <div className="ml-12">scheduledFor: <span className="text-yellow-300">"2023-10-15T10:00:00Z"</span></div>
+                  <div className="ml-8">{'}'})</div>
+                  <div className="ml-4">{'}'})</div>
+                  <br/>
+                  <div className="ml-4">return response.<span className="text-blue-400">json</span>();</div>
+                  <div>{'}'}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Staggered CTA */}
+        <div className="mt-20 max-w-4xl mx-auto relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-pink-600/20 rounded-xl blur-xl transform rotate-3"></div>
+          
+          <div className="relative bg-black border border-zinc-800 rounded-xl p-8 md:p-10 overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-violet-600/10 to-pink-600/10 rounded-full blur-3xl transform translate-x-1/4 -translate-y-1/4"></div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <div className="inline-flex items-center px-3 py-1 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-300 text-sm mb-4">
+                  <svg className="w-3.5 h-3.5 mr-1.5 text-pink-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16 12L10 8V16L16 12Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Let's Get Connected
+                </div>
+                
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                  Start integrating<br/>your tools today
+                </h3>
+                
+                <p className="text-zinc-400 mb-6">
+                  Connect all your favorite tools and create a seamless workflow in minutes. No coding required.
+                </p>
+                
+                <button className="bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-700 hover:to-pink-700 text-white font-medium px-6 py-3 rounded-lg flex items-center gap-2 shadow-lg shadow-pink-900/20 transition-all duration-300">
+                  Start Free Integration
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+              
+              <div className="relative">
+                {/* Integration stats with Y2K-inspired design */}
+                <div className="transform -rotate-2">
+                  <div className="bg-zinc-800/80 border-2 border-zinc-700 backdrop-blur-sm rounded-lg p-5">
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="text-zinc-300 font-medium">Integration Stats</div>
+                      <div className="text-xs text-zinc-500 font-mono">ACTIVE</div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {[
+                        { label: "Connected Apps", value: "12", icon: "📱" },
+                        { label: "Automations", value: "24", icon: "⚡" },
+                        { label: "Weekly Posts", value: "38", icon: "📊" }
+                      ].map((stat, i) => (
+                        <div key={i} className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-md flex items-center justify-center bg-black">{stat.icon}</div>
+                            <span className="text-zinc-400">{stat.label}</span>
+                          </div>
+                          <div className="text-xl font-bold text-white">{stat.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-4 pt-4 border-t border-zinc-700/50">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                        <span className="text-xs text-green-400">All systems operational</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Decorative stickers */}
+                <div className="absolute -top-4 -right-4 transform rotate-12 z-10">
+                  <div className="bg-pink-600 text-white text-xs font-bold uppercase px-3 py-1 rounded-full tracking-wider shadow-lg">New!</div>
+                </div>
+                
+                <div className="absolute -bottom-2 -left-2 transform -rotate-6 z-10">
+                  <div className="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded shadow-lg">
+                    100% No-code
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Update the StickyScroll component
 const StickyScroll = ({ content }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -793,7 +1406,7 @@ function Home() {
     
     </h1>
 {" "}
-              <span className="block mt-1 md:mt-2">Into Reality</span>
+              <span className="block mt-1 md:mt-2">Into <AuroraText>Reality</AuroraText></span>
             </motion.h1>
             
  <motion.p 
