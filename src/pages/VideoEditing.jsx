@@ -10,7 +10,8 @@ import {
   Users, Award, Globe, BarChart, Building2, 
   BadgeCheck, Lock, Tv, Sparkles, 
   Zap, CheckCircle2, Video, ChevronRight, 
-  Camera, Headphones, MonitorPlay, Folders
+  Camera, Headphones, MonitorPlay, Folders,
+  Check, VideoIcon // add missing icons
 } from "lucide-react";
 
 // Constants reorganized for better structure
@@ -25,7 +26,7 @@ const COMPANY_LOGOS = [
 const CERTIFICATIONS = [
   { name: 'Adobe Premier Pro', icon: <Play className="w-6 h-6" /> },
   { name: 'Final Cut Pro', icon: <Film className="w-6 h-6" /> },
-  { name: 'DaVinci Resolve', icon: <Video className="w-6 h-6" /> },
+  { name: 'DaVinci Resolve', icon: <VideoIcon className="w-6 h-6" /> },
   { name: 'Avid Media Composer', icon: <BadgeCheck className="w-6 h-6" /> }
 ];
 
@@ -1369,6 +1370,256 @@ const WORKFLOW_STEPS = [
   }
 ];
 
+// THEME_ACCENT for accent colors and gradients
+const THEME_ACCENT = {
+  primary: "#8B5CF6",
+  secondary: "#EC4899",
+  tertiary: "#3B82F6",
+  accent: "#10B981",
+  gradient: "linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #3B82F6 100%)"
+};
+
+// PLATFORMS for PlatformsSection
+const PLATFORMS = {
+  Premiere: {
+    name: "Premiere Pro",
+    icon: <Play className="w-7 h-7" />,
+    color: "#A259FF",
+    secondaryColor: "#0056D2",
+    features: [
+      "Industry-standard editing",
+      "Multi-cam & proxy workflows",
+      "Advanced color grading",
+      "Seamless Adobe integration"
+    ],
+    image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
+  },
+  FinalCut: {
+    name: "Final Cut Pro",
+    icon: <Film className="w-7 h-7" />,
+    color: "#FF5C57",
+    secondaryColor: "#FFD600",
+    features: [
+      "Magnetic timeline",
+      "Real-time effects",
+      "Optimized for Mac",
+      "HDR & 360° video"
+    ],
+    image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+  },
+  DaVinci: {
+    name: "DaVinci Resolve",
+    icon: <VideoIcon className="w-7 h-7" />,
+    color: "#00B4D8",
+    secondaryColor: "#FFD166",
+    features: [
+      "Hollywood-grade color",
+      "Fusion VFX & Fairlight audio",
+      "Collaborative workflow",
+      "Free & Studio versions"
+    ],
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+  }
+};
+
+// WORKFLOW for WorkflowSection
+const WORKFLOW = [
+  {
+    number: 1,
+    title: "Brief & Vision",
+    description: "We discuss your goals, style, and project requirements.",
+    icon: <Users />
+  },
+  {
+    number: 2,
+    title: "Content Review",
+    description: "Our editors analyze your footage and assets.",
+    icon: <Folders />
+  },
+  {
+    number: 3,
+    title: "First Cut",
+    description: "We deliver an initial edit for your feedback.",
+    icon: <Film />
+  },
+  {
+    number: 4,
+    title: "Refinement",
+    description: "We polish, color grade, and add effects.",
+    icon: <Sparkles />
+  },
+  {
+    number: 5,
+    title: "Final Delivery",
+    description: "You receive your video in any format you need.",
+    icon: <BadgeCheck />
+  }
+];
+
+// PlatformsSection component
+const PlatformsSection = () => {
+  const [active, setActive] = useState('Premiere');
+  const current = PLATFORMS[active];
+  return (
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-zinc-950 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="inline-flex items-center justify-center px-4 py-1.5 mb-6 text-sm font-medium uppercase tracking-wider text-pink-700 dark:text-pink-300 bg-pink-50 dark:bg-pink-900/30 rounded-full border border-pink-200 dark:border-pink-800/30"
+        >
+          Platform Mastery
+        </motion.div>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white"
+        >
+          We Master <span className="text-transparent bg-clip-text" style={{ backgroundImage: THEME_ACCENT.gradient }}>Every Tool</span>
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-xl text-gray-600 dark:text-zinc-300"
+        >
+          Deep expertise in the world's leading editing platforms
+        </motion.p>
+      </div>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex flex-wrap justify-center gap-4 mb-12"
+        >
+          {Object.keys(PLATFORMS).map((key) => (
+            <button
+              key={key}
+              onClick={() => setActive(key)}
+              className={`relative px-5 py-3 rounded-xl flex items-center gap-3 transition-all duration-300 ${
+                active === key
+                  ? 'bg-white dark:bg-zinc-800 shadow-lg border-2 border-transparent'
+                  : 'bg-gray-100 dark:bg-zinc-900 border-2 border-gray-100 dark:border-zinc-800 opacity-70 hover:opacity-100'
+              }`}
+            >
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: `${active === key ? current.color : '#d1d5db'}30` }}
+              >
+                <div className="text-gray-700 dark:text-gray-300" style={{ color: active === key ? current.color : undefined }}>
+                  {PLATFORMS[key].icon}
+                </div>
+              </div>
+              <span className={`font-medium ${active === key ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-400'}`}>{PLATFORMS[key].name}</span>
+              {active === key && (
+                <motion.div
+                  layoutId="platformIndicator"
+                  className="absolute -bottom-1 left-3 right-3 h-0.5"
+                  style={{ background: `linear-gradient(to right, ${current.color}, ${current.secondaryColor})` }}
+                />
+              )}
+            </button>
+          ))}
+        </motion.div>
+        <motion.div
+          key={active}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+        >
+          {/* Platform image */}
+          <div className="overflow-hidden rounded-2xl">
+            <div className="relative h-full min-h-[300px]">
+              <div className="absolute inset-0 bg-gradient-to-br" style={{ background: `linear-gradient(to bottom right, ${current.color}80, ${current.secondaryColor}80)` }}></div>
+              <img src={current.image} alt={current.name} className="absolute inset-0 w-full h-full object-cover mix-blend-overlay" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>{current.icon}</div>
+                  <h3 className="text-2xl font-bold">{current.name} Mastery</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Platform features */}
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-8 border border-gray-200 dark:border-zinc-800 shadow-lg flex flex-col justify-center">
+            <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-4">What We Do Best</h3>
+            <ul className="space-y-4 mb-8">
+              {current.features.map((feature, i) => (
+                <li key={i} className="flex gap-3 items-center">
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: `linear-gradient(to bottom right, ${current.color}, ${current.secondaryColor})` }}>
+                    <Check size={12} className="text-white" />
+                  </div>
+                  <span className="text-gray-700 dark:text-zinc-300">{feature}</span>
+                </li>
+              ))}
+            </ul>
+            <button className="w-full py-3 rounded-xl font-medium text-white flex items-center justify-center gap-1.5" style={{ background: `linear-gradient(to right, ${current.color}, ${current.secondaryColor})` }}>
+              See {current.name} Work <ChevronRight size={16} />
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+// WorkflowSection component
+const WorkflowSection = () => {
+  const [active, setActive] = useState(1);
+  return (
+    <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-black overflow-hidden">
+      <div className="max-w-4xl mx-auto text-center mb-16">
+        <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 text-sm font-medium uppercase tracking-wider text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 rounded-full border border-blue-200 dark:border-blue-800/30">
+          Our Process
+        </div>
+        <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+          How We Edit <span className="text-transparent bg-clip-text" style={{ backgroundImage: THEME_ACCENT.gradient }}>Your Story</span>
+        </h2>
+        <p className="text-xl text-gray-600 dark:text-zinc-300">
+          A proven workflow for stunning results
+        </p>
+      </div>
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+          {WORKFLOW.map((step) => (
+            <motion.div
+              key={step.number}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: step.number * 0.1 }}
+              className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 flex flex-col items-center ${
+                active === step.number
+                  ? "bg-gradient-to-r from-violet-600 to-blue-600 text-white dark:from-violet-500 dark:to-blue-500"
+                  : "bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 border border-gray-200 dark:border-zinc-800"
+              }`}
+              onClick={() => setActive(step.number)}
+            >
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-lg font-bold mb-4 ${
+                active === step.number
+                  ? "bg-white text-violet-600"
+                  : "bg-gray-100 dark:bg-zinc-800 text-gray-900 dark:text-white"
+              }`}>
+                {step.icon}
+              </div>
+              <h3 className="text-lg font-bold mb-2 text-center">{step.title}</h3>
+              <p className={`text-sm text-center ${active !== step.number ? "text-gray-600 dark:text-zinc-400" : ""}`}>{step.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 function Home() {
   return (
     <PageTransition>
@@ -1560,6 +1811,9 @@ function Home() {
           </div>
         </section>
 
+        <PlatformsSection />
+        <WorkflowSection />
+
         {/* Why Choose Us Section - Enhanced with better structure and mobile responsiveness */}
         <section className="py-8 md:py-12" aria-labelledby="why-choose-us">
           <SectionHeading 
@@ -1610,247 +1864,7 @@ function Home() {
     <div className="absolute right-20 top-0 bottom-0 w-1 bg-gradient-to-l from-primary/20 to-transparent hidden md:block"></div>
   </div>
   
-  <div className="relative max-w-7xl mx-auto px-4">
-    <SectionHeading
-      eyebrow="How We Work"
-      title="Our Video Editing Process"
-      subtitle="A streamlined workflow designed to transform your raw footage into perfectly edited content"
-      center={true}
-    />
-    
-    {/* Enhanced Film Strip - Desktop */}
-    <motion.div 
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className="hidden md:block mt-16 relative"
-    >
-      {/* Improved film strip background with gradient and grain texture */}
-      <div className="absolute left-0 right-0 h-64 bg-gradient-to-r from-primary/5 via-secondary/20 to-primary/5 rounded-xl overflow-hidden">
-        <div className="absolute inset-0 bg-noise opacity-[0.05]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(79,70,229,0.05),transparent_70%)]"></div>
-      </div>
-      
-      {/* Enhanced top film sprocket holes with staggered animation */}
-      <div className="absolute top-0 left-0 right-0 h-8 flex justify-between px-8">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={`top-${i}`}
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.03, duration: 0.4 }}
-            className="w-6 h-6 rounded-full bg-background border-2 border-primary/40 -mt-3 shadow-inner"
-          />
-        ))}
-      </div>
-      
-      {/* Enhanced bottom film sprocket holes with staggered animation */}
-      <div className="absolute bottom-0 left-0 right-0 h-8 flex justify-between px-8">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={`bottom-${i}`}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.03, duration: 0.4 }}
-            className="w-6 h-6 rounded-full bg-background border-2 border-primary/40 -mb-3 shadow-inner"
-          />
-        ))}
-      </div>
-      
-      {/* Enhanced film frames with sequential reveal */}
-      <div className="flex justify-between py-8 px-10 gap-4">
-        {WORKFLOW_STEPS.map((step, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, margin: "-5%" }}
-            transition={{ delay: 0.2 + index * 0.15, duration: 0.5 }}
-            whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
-            className="relative flex-1 bg-secondary/10 backdrop-blur-sm border border-primary/20 rounded-lg overflow-hidden group"
-          >
-            {/* Film grain overlay */}
-            <div className="absolute inset-0 bg-noise opacity-[0.03] group-hover:opacity-[0.05] transition-opacity"></div>
-            
-            {/* Frame exposure light effect */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            {/* Enhanced frame number label */}
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-background px-3 py-1 rounded-full border border-primary/30 shadow-md">
-              <span className="text-primary text-xs font-mono font-bold tracking-wider">{step.number}</span>
-            </div>
-            
-            {/* Frame content with padding adjustment for better spacing */}
-            <div className="p-6 pt-7 flex flex-col items-center h-full justify-between">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <div className="text-primary group-hover:scale-110 transition-transform">
-                  {step.icon}
-                </div>
-              </div>
-              
-              <div className="text-center">
-                <h3 className="text-lg font-bold mb-3 group-hover:text-primary transition-colors">{step.title}</h3>
-                <p className="text-sm text-foreground/70 group-hover:text-foreground/90 transition-colors">{step.description}</p>
-              </div>
-            </div>
-            
-            {/* Enhanced frame corner marks with better styling */}
-            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/40 group-hover:border-primary/60 transition-colors" />
-            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary/40 group-hover:border-primary/60 transition-colors" />
-            <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary/40 group-hover:border-primary/60 transition-colors" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/40 group-hover:border-primary/60 transition-colors" />
-            
-            {/* Better framing connection with animated arrow */}
-            {index < WORKFLOW_STEPS.length - 1 && (
-              <motion.div 
-                className="absolute top-1/2 -right-6 -translate-y-1/2"
-                animate={{ x: [0, 3, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-              >
-                <ChevronRight className="w-5 h-5 text-primary" />
-              </motion.div>
-            )}
-            
-            {/* Frame number on film strip */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-mono text-primary/60 bg-background px-1 rounded">
-              FRAME {step.number}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
-    
-    {/* Enhanced Vertical Film Strip - Mobile */}
-    <div className="md:hidden mt-12">
-      <div className="relative mx-auto w-full max-w-sm">
-        {/* Enhanced left film sprocket holes */}
-        <div className="absolute left-0 top-0 bottom-0 w-5 flex flex-col items-center">
-          {WORKFLOW_STEPS.map((_, i) => (
-            <React.Fragment key={`mobile-left-${i}`}>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.3 }}
-                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
-              />
-              <motion.div 
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 + 0.05, duration: 0.3 }}
-                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
-              />
-              <motion.div 
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 + 0.1, duration: 0.3 }}
-                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
-              />
-              {i < WORKFLOW_STEPS.length - 1 && (
-                <div className="h-20" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-        
-        {/* Enhanced right film sprocket holes */}
-        <div className="absolute right-0 top-0 bottom-0 w-5 flex flex-col items-center">
-          {WORKFLOW_STEPS.map((_, i) => (
-            <React.Fragment key={`mobile-right-${i}`}>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.3 }}
-                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
-              />
-              <motion.div 
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 + 0.05, duration: 0.3 }}
-                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
-              />
-              <motion.div 
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 + 0.1, duration: 0.3 }}
-                className="w-4 h-4 rounded-full bg-background border border-primary/40 shadow-inner my-4" 
-              />
-              {i < WORKFLOW_STEPS.length - 1 && (
-                <div className="h-20" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-        
-        {/* Enhanced vertical film strip with better film texture */}
-        <div className="mx-8 bg-secondary/5 relative">
-          <div className="absolute inset-0 bg-noise opacity-[0.02]"></div>
-          
-          {WORKFLOW_STEPS.map((step, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ delay: index * 0.2, duration: 0.5 }}
-              className="relative mb-8 last:mb-0"
-            >
-              {/* Enhanced film frame with better styling */}
-              <motion.div 
-                whileHover={{ scale: 1.02 }}
-                className="bg-secondary/10 backdrop-blur-sm border border-primary/20 rounded-lg p-5 relative shadow-sm"
-              >
-                {/* Frame grain overlay */}
-                <div className="absolute inset-0 bg-noise opacity-[0.03]"></div>
-                
-                {/* Enhanced frame number */}
-                <div className="absolute -top-3 left-4 bg-background px-2 py-0.5 rounded-full border border-primary/30 shadow-sm">
-                  <span className="text-primary text-xs font-mono font-bold tracking-wider">{step.number}</span>
-                </div>
-                
-                {/* Enhanced content layout */}
-                <div className="flex items-start gap-4 relative z-10">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-inner">
-                    <div className="text-primary">{
-                      React.cloneElement(step.icon, { className: 'w-6 h-6' })
-                    }</div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-base font-bold mb-2">{step.title}</h3>
-                    <p className="text-xs text-foreground/70">{step.description}</p>
-                  </div>
-                </div>
-                
-                {/* Enhanced frame corner marks */}
-                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/40" />
-                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/40" />
-                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary/40" />
-                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/40" />
-              </motion.div>
-              
-              {/* Enhanced film strip connection */}
-              {index < WORKFLOW_STEPS.length - 1 && (
-                <motion.div 
-                  initial={{ height: 0 }}
-                  whileInView={{ height: 40 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
-                  className="absolute left-1/2 -translate-x-1/2 w-1 bg-gradient-to-b from-primary/30 to-primary/10 mt-2"
-                />
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
+
 </section>
 
         {/* Testimonials Section - Mobile responsive */}
@@ -1891,6 +1905,10 @@ function Home() {
             </div>
           </div>
         </section>
+
+        {/* PlatformsSection component */}
+   
+        {/* <IntegrationsSection /> */}
       </div>
     </PageTransition>
   );
