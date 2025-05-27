@@ -6,7 +6,7 @@ import { MoonStar, Sun, User, ArrowUpRight, ChevronDown, Cloud, Shield, Brain, B
 // Constants moved outside component to prevent recreation on render
 const NAVIGATION_LINKS = [
   { name: 'Services', path: '#', hasDropdown: true },
-  { name: 'Demo', path: '/demo' },
+
   { name: 'Contact', path: '/contact' },
   { name: 'Blog', path: '/blog' }
 ];
