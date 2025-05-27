@@ -38,22 +38,22 @@ const SocialHeroSection = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-white to-violet-50 dark:from-black dark:to-violet-950 min-h-screen flex items-center">
+    <div className="relative overflow-hidden bg-gradient-to-b from-white to-violet-50 dark:from-black dark:to-violet-950 min-h-screen flex flex-col items-center justify-center px-4 sm:px-0">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated gradient blob - adjusted for light/dark mode */}
-        <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] rounded-full bg-gradient-to-r from-violet-300/40 via-pink-300/40 to-blue-300/40 dark:from-violet-600/40 dark:via-pink-500/40 dark:to-blue-500/40 blur-3xl animate-blob"></div>
-        <div className="absolute top-60 -left-20 w-[30rem] h-[30rem] rounded-full bg-gradient-to-r from-blue-300/40 via-emerald-300/40 to-violet-300/40 dark:from-blue-600/40 dark:via-emerald-500/40 dark:to-violet-500/40 blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-20 right-60 w-[35rem] h-[35rem] rounded-full bg-gradient-to-r from-pink-300/40 via-violet-300/40 to-blue-300/40 dark:from-pink-600/40 dark:via-violet-500/40 dark:to-blue-500/40 blur-3xl animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] rounded-full bg-gradient-to-r from-violet-300/40 via-pink-300/40 to-blue-300/40 dark:from-violet-600/40 dark:via-pink-500/40 dark:to-blue-500/40 blur-3xl animate-blob hidden sm:block"></div>
+        <div className="absolute top-60 -left-20 w-[30rem] h-[30rem] rounded-full bg-gradient-to-r from-blue-300/40 via-emerald-300/40 to-violet-300/40 dark:from-blue-600/40 dark:via-emerald-500/40 dark:to-violet-500/40 blur-3xl animate-blob animation-delay-2000 hidden sm:block"></div>
+        <div className="absolute bottom-20 right-60 w-[35rem] h-[35rem] rounded-full bg-gradient-to-r from-pink-300/40 via-violet-300/40 to-blue-300/40 dark:from-pink-600/40 dark:via-violet-500/40 dark:to-blue-500/40 blur-3xl animate-blob animation-delay-4000 hidden sm:block"></div>
       </div>
 
       {/* Noise overlay */}
       <div className="absolute inset-0 bg-noise opacity-[0.03]"></div>
 
-      {/* Interactive floating elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Interactive floating elements - hide on mobile */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
         <motion.div 
-          className="absolute left-[15%] top-[20%]"
+          className="absolute left-[35%] top-[20%]"
           style={{ transform: calculateTransform(-20) }}
         >
           <div className="relative w-16 h-16 rounded-xl bg-white dark:bg-zinc-900 shadow-xl flex items-center justify-center rotate-12">
@@ -61,7 +61,6 @@ const SocialHeroSection = () => {
             <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-pink-500 border-2 border-white dark:border-zinc-900"></div>
           </div>
         </motion.div>
-        
         <motion.div 
           className="absolute right-[25%] top-[30%]"
           style={{ transform: calculateTransform(-15) }}
@@ -71,9 +70,8 @@ const SocialHeroSection = () => {
             <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-violet-500 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-[8px] text-white font-bold">3</div>
           </div>
         </motion.div>
-        
         <motion.div 
-          className="absolute left-[10%] bottom-[30%]"
+          className="absolute left-[5%] bottom-[30%]"
           style={{ transform: calculateTransform(-25) }}
         >
           <div className="relative w-20 h-20 rounded-2xl bg-white dark:bg-zinc-900 shadow-xl p-3">
@@ -89,7 +87,6 @@ const SocialHeroSection = () => {
             </div>
           </div>
         </motion.div>
-        
         <motion.div 
           className="absolute right-[20%] bottom-[20%]"
           style={{ transform: calculateTransform(-10) }}
@@ -98,7 +95,6 @@ const SocialHeroSection = () => {
             <BarChart4 className="w-5 h-5 text-white" />
           </div>
         </motion.div>
-        
         <motion.div 
           className="absolute right-[33%] top-[15%]"
           style={{ transform: calculateTransform(-30) }}
@@ -109,14 +105,14 @@ const SocialHeroSection = () => {
         </motion.div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto pt-24 pb-32 px-6 md:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto pt-20 pb-20 sm:pt-24 sm:pb-32 px-2 sm:px-6 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-3 mb-4 sm:mb-6">
               <div className="px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-300 text-xs font-medium border border-violet-200 dark:border-violet-500/30">
                 #SocialMediaReimagined
               </div>
@@ -125,7 +121,7 @@ const SocialHeroSection = () => {
               </div>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
               Transform Your <br />
               <div className="mt-2 relative inline-flex flex-col">
                 <div className="flex items-center">
@@ -136,41 +132,41 @@ const SocialHeroSection = () => {
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.3, duration: 0.4 }}
-                    className="ml-4 text-yellow-400 transform rotate-12"
+                    className="ml-2 sm:ml-4 text-yellow-400 transform rotate-12"
                   >
-                    <Sparkles size={40} className="fill-yellow-400 stroke-yellow-500" />
+                    <Sparkles size={28} className="fill-yellow-400 stroke-yellow-500 sm:w-10 sm:h-10" />
                   </motion.div>
                 </div>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
                   transition={{ delay: 0.8, duration: 0.8 }}
-                  className="h-3 bg-gradient-to-r from-violet-500 via-pink-500 to-blue-500 rounded-full mt-1 opacity-70"
+                  className="h-2 sm:h-3 bg-gradient-to-r from-violet-500 via-pink-500 to-blue-500 rounded-full mt-1 opacity-70"
                 />
               </div>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-600 dark:text-zinc-300 my-8 max-w-lg leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-zinc-300 my-6 sm:my-8 max-w-lg leading-relaxed">
               We create scroll-stopping content and data-driven strategies that resonate with today's audience. No cap.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <button className="group px-8 py-4 rounded-xl font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-violet-300/30 dark:shadow-violet-900/30">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-10">
+              <button className="group px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-violet-300/30 dark:shadow-violet-900/30 text-base sm:text-lg">
                 Start Your Journey
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
               
-              <button className="px-8 py-4 rounded-xl font-medium border border-violet-200 dark:border-violet-800 text-violet-600 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-900/30 transition-all duration-300 backdrop-blur-sm">
+              <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-medium border border-violet-200 dark:border-violet-800 text-violet-600 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-900/30 transition-all duration-300 backdrop-blur-sm text-base sm:text-lg">
                 View Our Work
               </button>
             </div>
             
             <div className="flex items-center">
-              <div className="flex -space-x-4 mr-5">
+              <div className="flex -space-x-4 mr-3 sm:mr-5">
                 {[1, 2, 3, 4].map((num) => (
                   <div 
                     key={num}
-                    className="w-10 h-10 rounded-full border-2 border-white dark:border-zinc-900 overflow-hidden shadow-md"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-zinc-900 overflow-hidden shadow-md"
                   >
                     <img 
                       src={`https://randomuser.me/api/portraits/women/${num + 10}.jpg`}
@@ -179,7 +175,7 @@ const SocialHeroSection = () => {
                     />
                   </div>
                 ))}
-                <div className="w-10 h-10 rounded-full bg-violet-100 dark:bg-violet-800 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-xs font-bold text-violet-600 dark:text-violet-300">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-violet-100 dark:bg-violet-800 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-xs font-bold text-violet-600 dark:text-violet-300">
                   +5K
                 </div>
               </div>
@@ -187,11 +183,11 @@ const SocialHeroSection = () => {
               <div>
                 <div className="flex items-center gap-1 mb-1">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} size={14} className="text-yellow-400 fill-yellow-400" />
+                    <Star key={star} size={12} className="text-yellow-400 fill-yellow-400 sm:w-3.5 sm:h-3.5" />
                   ))}
-                  <span className="ml-1.5 text-sm font-medium text-gray-700 dark:text-zinc-300">4.9/5</span>
+                  <span className="ml-1 text-xs sm:ml-1.5 sm:text-sm font-medium text-gray-700 dark:text-zinc-300">4.9/5</span>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-zinc-400">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400">
                   From <span className="font-medium">200+</span> satisfied brands
                 </p>
               </div>
@@ -350,7 +346,7 @@ const SocialHeroSection = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white dark:from-black to-transparent"></div>
+      <div className="absolute bottom-0 inset-x-0 h-16 sm:h-24 bg-gradient-to-t from-white dark:from-black to-transparent"></div>
     </div>
   );
 };

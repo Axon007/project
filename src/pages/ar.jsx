@@ -18,8 +18,12 @@ import {
   Video,
   ScanSearch,
   PieChart,
-  Table
+  Table,
+  File,
+  Settings,
+  Search
 } from 'lucide-react';
+import { OrbitingCircles } from "@/components/magicui/orbiting-circles";
 
 // AnimatedBeam component from Magic UI
 export const AnimatedBeam = ({ 
@@ -213,183 +217,53 @@ export const BorderBeam = ({
   );
 };
 
-// AI Vision Network component with animated beams
-function AIVisionNetwork() {
-  const containerRef = useRef(null);
-  const centerNodeRef = useRef(null);
-  const node1Ref = useRef(null);
-  const node2Ref = useRef(null);
-  const node3Ref = useRef(null);
-  const node4Ref = useRef(null);
-  const node5Ref = useRef(null);
-  const node6Ref = useRef(null);
-
-  return (
-    <div className="relative h-[550px] w-full overflow-hidden my-16" ref={containerRef}>
-      {/* Center AI Node */}
-      <div 
-        ref={centerNodeRef}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
-      >
-        <div className="flex items-center justify-center w-28 h-28 bg-gradient-to-br from-primary/90 to-purple-600/90 rounded-full shadow-lg border border-white/10">
-          <BrainCircuit className="w-14 h-14 text-white" />
-        </div>
-      </div>
-
-      {/* Surrounding Nodes */}
-      <div 
-        ref={node1Ref}
-        className="absolute left-1/4 top-1/4 z-10"
-      >
-        <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500/90 to-cyan-400/90 rounded-full shadow-lg border border-white/10">
-          <Camera className="w-8 h-8 text-white" />
-        </div>
-      </div>
-
-      <div 
-        ref={node2Ref}
-        className="absolute right-1/4 top-1/4 z-10"
-      >
-        <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500/90 to-pink-400/90 rounded-full shadow-lg border border-white/10">
-          <Eye className="w-8 h-8 text-white" />
-        </div>
-      </div>
-
-      <div 
-        ref={node3Ref}
-        className="absolute right-1/4 bottom-1/4 z-10"
-      >
-        <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-500/90 to-orange-400/90 rounded-full shadow-lg border border-white/10">
-          <Database className="w-8 h-8 text-white" />
-        </div>
-      </div>
-
-      <div 
-        ref={node4Ref}
-        className="absolute left-1/4 bottom-1/4 z-10"
-      >
-        <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500/90 to-green-400/90 rounded-full shadow-lg border border-white/10">
-          <Cpu className="w-8 h-8 text-white" />
-        </div>
-      </div>
-
-      <div 
-        ref={node5Ref}
-        className="absolute left-1/2 top-1/6 -translate-x-1/2 z-10"
-      >
-        <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500/90 to-pink-400/90 rounded-full shadow-lg border border-white/10">
-          <FileCode className="w-8 h-8 text-white" />
-        </div>
-      </div>
-
-      <div 
-        ref={node6Ref}
-        className="absolute left-1/2 bottom-1/6 -translate-x-1/2 z-10"
-      >
-        <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500/90 to-blue-400/90 rounded-full shadow-lg border border-white/10">
-          <ScanSearch className="w-8 h-8 text-white" />
-        </div>
-      </div>
-
-      {/* Animated beams connecting nodes */}
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={node1Ref}
-        toRef={centerNodeRef}
-        curvature={-20}
-        delay={0.5}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={node2Ref}
-        toRef={centerNodeRef}
-        curvature={20}
-        delay={1}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={node3Ref}
-        toRef={centerNodeRef}
-        curvature={-20}
-        delay={1.5}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={node4Ref}
-        toRef={centerNodeRef}
-        curvature={20}
-        delay={2}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={node5Ref}
-        toRef={centerNodeRef}
-        curvature={0}
-        delay={2.5}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={node6Ref}
-        toRef={centerNodeRef}
-        curvature={0}
-        delay={3}
-      />
-
-      {/* Bi-directional beams */}
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={centerNodeRef}
-        toRef={node1Ref}
-        curvature={-20}
-        delay={1}
-        reverse={true}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={centerNodeRef}
-        toRef={node2Ref}
-        curvature={20}
-        delay={1.5}
-        reverse={true}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={centerNodeRef}
-        toRef={node3Ref}
-        curvature={-20}
-        delay={2}
-        reverse={true}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={centerNodeRef}
-        toRef={node4Ref}
-        curvature={20}
-        delay={2.5}
-        reverse={true}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={centerNodeRef}
-        toRef={node5Ref}
-        curvature={0}
-        delay={3}
-        reverse={true}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={centerNodeRef}
-        toRef={node6Ref}
-        curvature={0}
-        delay={3.5}
-        reverse={true}
-      />
-
-      {/* Background grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10"></div>
-    </div>
-  );
-}
+// Computer Vision SVGs
+const SvgCamera = (props) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" {...props}>
+    <rect x="4" y="9" width="24" height="16" rx="3" fill="#6366F1"/>
+    <circle cx="16" cy="17" r="5" fill="#A21CAF"/>
+    <rect x="10" y="5" width="4" height="4" rx="1" fill="#6366F1"/>
+  </svg>
+);
+const SvgEye = (props) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" {...props}>
+    <ellipse cx="16" cy="16" rx="12" ry="7" fill="#F59E42"/>
+    <circle cx="16" cy="16" r="3.5" fill="#312E81"/>
+  </svg>
+);
+const SvgNeural = (props) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" {...props}>
+    <circle cx="16" cy="16" r="12" fill="#10B981"/>
+    <circle cx="16" cy="16" r="5" fill="#fff"/>
+    <circle cx="8" cy="16" r="2" fill="#fff"/>
+    <circle cx="24" cy="16" r="2" fill="#fff"/>
+    <circle cx="16" cy="8" r="2" fill="#fff"/>
+    <circle cx="16" cy="24" r="2" fill="#fff"/>
+    <line x1="16" y1="8" x2="16" y2="24" stroke="#fff" strokeWidth="1.5"/>
+    <line x1="8" y1="16" x2="24" y2="16" stroke="#fff" strokeWidth="1.5"/>
+  </svg>
+);
+const SvgImage = (props) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" {...props}>
+    <rect x="6" y="10" width="20" height="12" rx="2" fill="#F472B6"/>
+    <circle cx="11" cy="15" r="2" fill="#fff"/>
+    <path d="M10 22l4-5 4 3 4-6 4 8" stroke="#fff" strokeWidth="1.5" fill="none"/>
+  </svg>
+);
+const SvgBoundingBox = (props) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" {...props}>
+    <rect x="7" y="7" width="18" height="18" rx="3" fill="#FBBF24" stroke="#fff" strokeWidth="2"/>
+    <rect x="12" y="12" width="8" height="8" rx="2" fill="#fff"/>
+  </svg>
+);
+const SvgFace = (props) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" {...props}>
+    <ellipse cx="16" cy="18" rx="8" ry="10" fill="#60A5FA"/>
+    <ellipse cx="13" cy="18" rx="1.5" ry="2" fill="#fff"/>
+    <ellipse cx="19" cy="18" rx="1.5" ry="2" fill="#fff"/>
+    <path d="M13 23c1.5 1 4.5 1 6 0" stroke="#fff" strokeWidth="1.5" fill="none"/>
+  </svg>
+);
 
 function ComputerVisionPage() {
   const [splineError, setSplineError] = useState(false);
@@ -495,7 +369,24 @@ function ComputerVisionPage() {
       </section>
       
       {/* Animated AI Network Visualization */}
-      <AIVisionNetwork />
+      <div className="relative overflow-hidden h-[500px] w-full my-16">
+        <OrbitingCircles>
+          <SvgCamera />
+          <SvgEye />
+          <SvgNeural />
+          <SvgImage />
+          <SvgBoundingBox />
+          <SvgFace />
+        </OrbitingCircles>
+        <OrbitingCircles radius={100} reverse duration={16}>
+          <SvgCamera />
+          <SvgEye />
+          <SvgNeural />
+          <SvgImage />
+          <SvgBoundingBox />
+          <SvgFace />
+        </OrbitingCircles>
+      </div>
       
       {/* Services Section */}
       <section className="py-24" id="services">
