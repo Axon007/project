@@ -1,7 +1,11 @@
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useState, useRef, useEffect, memo } from "react";
 import PageTransition from '../components/PageTransition';
+import { Ripple } from "@/components/magicui/ripple";
 import { Link } from "react-router-dom";
+import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
+import { AuroraBackground } from "@/components/AuroraBackground";
+
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { Meteors } from "../components/ui/meteor-effect";
 import * as THREE from "three";
@@ -117,13 +121,13 @@ const UI = {
 const Section = ({ children, dark = false, pattern = false, className = "", id = null, fullWidth = false }) => (
   <section 
     id={id}
-    className={`${UI.section.padding} px-4 ${
+    className={`py-16 md:py-20 px-4 ${
       dark ? 'bg-background dark:bg-gray-950' : 
       'bg-background dark:bg-inherit'
     } ${className}`}
     aria-labelledby={id}
   >
-    <div className={`${fullWidth ? 'w-full' : UI.section.container.split(' ')[0]} mx-auto relative z-10`}>
+    <div className={`${fullWidth ? 'w-full' : 'max-w-7xl'} mx-auto relative z-10`}>
       {children}
     </div>
   </section>
@@ -1654,7 +1658,7 @@ function Home({ theme, toggleTheme }) {
         {/* Hero Section with Interactive Sphere and Canvas Background */}
         <div className="relative h-[90vh] flex items-center justify-center overflow-hidden">
           <canvas ref={canvasRef} className="absolute inset-0 z-0 bg-background"></canvas>
-          
+
           <motion.div 
             ref={techSphereRef}
             className="absolute top-0 right-0 w-full h-full pointer-events-none z-10"
@@ -1672,14 +1676,12 @@ function Home({ theme, toggleTheme }) {
             </span>
             <span className="text-sm font-semibold text-primary">Enterprise Technology Solutions</span>
           </div>
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-violet-500 leading-tight"
-            >
-             Jason Tech Solutions<br className="hidden md:block" /> 
-            </motion.h1>
+  <AuroraText
+    colors={["#7F00FF", "#E0E0E0", "#9B5DE5", "#BEBEBE"]} // violet + grey gradient
+    className="text-5xl md:text-7xl font-bold mb-6 leading-tight"   speed={0.5}
+  >
+    Jason Tech Solutions
+  </AuroraText>
             <motion.p 
               initial={{ opacity: 0, y:20 }}
               animate={{ opacity: 1, y: 0 }}

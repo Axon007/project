@@ -67,6 +67,7 @@
   .theme {
     --animate-aurora: aurora 8s ease-in-out infinite alternate;
     --animate-gradient: gradient 8s linear infinite;
+    --animate-ripple: ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite;
   }
 }
 
@@ -163,6 +164,14 @@
   @keyframes gradient {
   to {
     background-position: var(--bg-size, 300%) 0;
+    }
+  }
+  @keyframes ripple {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
     }
   }
 }

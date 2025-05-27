@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
 import PageTransition from '../components/PageTransition';
 import { ContainerScroll } from "../components/ui/container-scroll-animation"; 
 
-
+import Iphone15Pro from "@/components/magicui/iphone-15-pro";
 import { 
   Code, Smartphone, Zap, Shield, 
   ArrowRight, Star, Settings,
@@ -246,165 +245,164 @@ function AppDevelopment() {
       <div className="min-h-screen bg-gradient-to-b from-background to-background/95 relative overflow-hidden">
         <CosmicSphere />
           {/* Hero Section - Stunning App Designs */}
-        <section className="relative overflow-hidden bg-white py-16 md:py-24">
-  <div className="flex flex-col overflow-hidden">
-    <ContainerScroll
-      titleComponent={
-        <>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-              {/* Left side - Content */}
-              <div className="w-full md:w-1/2 max-w-2xl">
-                <div className="mb-4">
-                  <span className="inline-block px-3 py-1 text-sm bg-gray-100 text-gray-800 rounded-full">
-                    App Development
-                  </span>
-                </div>
-                
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  <span className="text-gray-400">The</span> <span className="text-gray-500">Mobile</span> <br />
-                  <span className="text-black text-5xl md:text-6xl lg:text-7xl">Journey</span> <br />
-                  <span className="text-black text-5xl md:text-6xl lg:text-7xl">Starts Here</span>
-                </h1>
-
-                <div className="mt-10 flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <img 
-                      src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=150&h=150&fit=crop"
-                      alt="Developer profile" 
-                      className="w-14 h-14 rounded-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Davis Morgan</h3>
-                    <p className="text-gray-500 text-sm">
-                      Mobile development expert and<br />
-                      Lead Architect
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right side - Phone mockup */}
-              <div className="w-full md:w-1/2 mt-12 md:mt-0 flex justify-center">
-                <div className="relative w-[280px] md:w-[320px]">
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-100 to-blue-100 rounded-3xl transform rotate-6 shadow-lg"></div>
-                  
-                  <div className="relative bg-white rounded-3xl overflow-hidden border-8 border-black shadow-xl">
-                    <div className="absolute top-0 left-0 right-0 h-6 bg-black flex items-center justify-center">
-                      <div className="w-16 h-1 bg-gray-600 rounded-full"></div>
-                    </div>
-                    
-                    <div className="pt-8 pb-2 px-4">
-                      <div className="flex items-center mb-4 mt-2">
-                        <div className="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center font-bold text-lg">
-                          🎯
-                        </div>
-                        <div className="ml-3">
-                          <div className="text-lg font-medium">Hey, <span className="text-black">Janet!</span></div>
-                        </div>
-                        <div className="ml-auto">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-gray-100 p-4 rounded-2xl mb-4">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="text-sm text-gray-600">Beginner</div>
-                          <div className="text-sm text-gray-600">Progress</div>
-                        </div>
-                        
-                        <div className="flex items-center">
-                          <div className="mr-4">
-                            <img 
-                              src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=100&h=120&fit=crop"
-                              alt="Workout avatar" 
-                              className="w-24 h-32 object-cover rounded-xl"
-                            />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="text-lg font-bold mb-1">5-Day<br />Strength<br />Boost</h3>
-                            <button className="mt-2 bg-black text-white text-sm py-2 px-4 rounded-full w-full">
-                              Get Started
-                            </button>
-                          </div>
-                          <div className="ml-4 flex items-end h-24">
-                            {[3,4,2,5,3,4].map((height, i) => (
-                              <div 
-                                key={i} 
-                                className="w-2 mx-0.5 bg-green-400 rounded-full"
-                                style={{height: `${height * 6}px`}}
-                              ></div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom feature indicators */}
-            <div className="mt-12 md:mt-20 grid grid-cols-2 md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-2xl p-4 shadow-sm flex items-center">
-                <div className="w-10 h-10 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mr-4">
-                  🔥
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Calories</p>
-                  <p className="font-bold">180 kcal</p>
-                </div>
-              </div>
-              
-              <div className="bg-white rounded-2xl p-4 shadow-sm flex items-center">
-                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-                  <img 
-                    src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=48&h=48&fit=crop"
-                    alt="Workout" 
-                    className="w-8 h-8 object-cover rounded-full"
-                  />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Leg Workouts</p>
-                  <p className="font-bold">1h 30 min</p>
-                </div>
-              </div>
-              
-              <div className="col-span-2 md:col-span-1 bg-white rounded-2xl p-4 shadow-sm flex items-center">
-                <div className="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mr-4">
-                  🏆
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Full body</p>
-                  <p className="font-bold">Workout focus</p>
-                </div>
-                <div className="ml-auto">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Workout thumbnails */}
-            <div className="absolute top-1/3 right-8 hidden lg:flex space-x-3">
-              {[1,2,3].map((img, i) => (
-                <div key={i} className="w-16 h-16 bg-gray-200 rounded-xl shadow-sm overflow-hidden">
-                  <img 
-                    src={`https://images.unsplash.com/photo-156${8602471 + i * 1000}?w=64&h=64&fit=crop`}
-                    alt={`Workout thumbnail ${i+1}`} 
-                    className="w-full h-full object-cover"
-                  />
+        
+<section className="relative min-h-[90vh] flex items-center overflow-hidden">
+  {/* Background elements */}
+  <div className="absolute inset-0 bg-grid-pattern opacity-5 -z-10"></div>
+  <div className="absolute top-0 right-0 w-[45vw] h-[45vw] max-w-[800px] max-h-[800px] bg-primary/20 rounded-full filter blur-[120px] opacity-70 -z-10"></div>
+  <div className="absolute bottom-10 left-10 w-[30vw] h-[30vw] max-w-[600px] max-h-[600px] bg-blue-500/20 rounded-full filter blur-[100px] opacity-60 -z-10"></div>
+  
+  {/* Animated floating particles */}
+  <div className="particle-container absolute inset-0 -z-5">
+    {[...Array(20)].map((_, i) => (
+      <div 
+        key={i}
+        className="absolute rounded-full bg-primary/30 animate-float"
+        style={{
+          width: `${Math.random() * 10 + 5}px`,
+          height: `${Math.random() * 10 + 5}px`,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          animationDuration: `${Math.random() * 20 + 15}s`,
+          animationDelay: `${Math.random() * 5}s`,
+        }}
+      />
+    ))}
+  </div>
+  
+  <div className="container mx-auto px-4 md:px-6 z-10 pt-20">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Left side - Hero content */}
+      <div className="max-w-2xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span className="text-sm font-medium text-primary">Next-Gen Mobile Development</span>
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+            Transform Ideas Into{" "}
+            <span className="relative">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-500">
+                Revolutionary Apps
+              </span>
+              <svg className="absolute -bottom-2 w-full" viewBox="0 0 418 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 11C139.333 -1.66666 275.333 -1.66667 416 11" stroke="url(#paint0_linear)" strokeWidth="3" strokeLinecap="round"/>
+                <defs>
+                  <linearGradient id="paint0_linear" x1="209" y1="11" x2="209" y2="12" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#6D28D9"/>
+                    <stop offset="1" stopColor="#3B82F6"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </span>
+          </h1>
+          
+          <p className="text-xl text-foreground/70 mb-8 max-w-lg">
+            We craft cutting-edge mobile experiences that engage users and drive business growth. 
+            From concept to launch, our expert team brings your vision to life.
+          </p>
+          
+          <div className="flex flex-wrap gap-4">
+            <a 
+              href="#contact" 
+              className="px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group"
+            >
+              Start Your Project
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </a>
+            <a 
+              href="#services" 
+              className="px-8 py-4 border border-primary/30 text-primary rounded-xl font-medium hover:bg-primary/5 transition-all flex items-center justify-center gap-2 group"
+            >
+              Explore Services
+              <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+            </a>
+          </div>
+          
+          {/* Trust indicators */}
+          <div className="mt-12">
+            <p className="text-sm text-foreground/60 mb-4 flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-primary" /> 
+              Trusted by 200+ businesses worldwide
+            </p>
+            <div className="flex flex-wrap items-center gap-6">
+              {[1, 2, 3, 4].map((logo, index) => (
+                <div key={index} className="opacity-70 hover:opacity-100 transition-opacity">
+                  {/* Replace with actual logos */}
+                  <div className="h-8 bg-foreground/20 w-20 rounded"></div>
                 </div>
               ))}
             </div>
           </div>
-        </>
-      }
-    >
-      {/* Your container scroll content */}
-    </ContainerScroll>
+        </motion.div>
+      </div>
+      
+      {/* Right side - App Mockups */}
+      <div className="relative h-[600px] hidden lg:block">
+         <div className="relative">
+      <Iphone15Pro
+        className="size-full"
+        src="https://via.placeholder.com/430x880"
+      />
+    </div>
+
+      </div>
+    </div>
+    
+    {/* Bottom section - Key features */}
+    <div className="mt-16 lg:mt-24">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {[
+          { number: "98%", label: "Client satisfaction" },
+          { number: "500+", label: "Projects delivered" },
+          { number: "25M+", label: "App downloads" },
+          { number: "15+", label: "Industry awards" },
+        ].map((stat, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
+            className="text-center p-4 rounded-xl backdrop-blur-sm bg-secondary/5 border border-secondary/10"
+          >
+            <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+              {stat.number}
+            </div>
+            <div className="text-sm text-foreground/70 mt-1">{stat.label}</div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
   </div>
+  
+  {/* Custom scroll indicator */}
+  <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+    <div className="w-8 h-12 rounded-full border-2 border-primary/30 flex items-center justify-center">
+      <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+    </div>
+  </div>
+  
+  <style jsx="true">{`
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    
+    .animate-float {
+      animation: float linear infinite;
+    }
+  `}</style>
 </section>
+
 
 
         
@@ -1293,6 +1291,7 @@ function AppDevelopment() {
 
           </div>
         </section>
+        
 
         
 
@@ -1504,211 +1503,3 @@ function AppDevelopment() {
 
 export default AppDevelopment;
 
-/* REDESIGNED HERO SECTION */
-<section className="relative min-h-[90vh] flex items-center overflow-hidden">
-  {/* Background elements */}
-  <div className="absolute inset-0 bg-grid-pattern opacity-5 -z-10"></div>
-  <div className="absolute top-0 right-0 w-[45vw] h-[45vw] max-w-[800px] max-h-[800px] bg-primary/20 rounded-full filter blur-[120px] opacity-70 -z-10"></div>
-  <div className="absolute bottom-10 left-10 w-[30vw] h-[30vw] max-w-[600px] max-h-[600px] bg-blue-500/20 rounded-full filter blur-[100px] opacity-60 -z-10"></div>
-  
-  {/* Animated floating particles */}
-  <div className="particle-container absolute inset-0 -z-5">
-    {[...Array(20)].map((_, i) => (
-      <div 
-        key={i}
-        className="absolute rounded-full bg-primary/30 animate-float"
-        style={{
-          width: `${Math.random() * 10 + 5}px`,
-          height: `${Math.random() * 10 + 5}px`,
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          animationDuration: `${Math.random() * 20 + 15}s`,
-          animationDelay: `${Math.random() * 5}s`,
-        }}
-      />
-    ))}
-  </div>
-  
-  <div className="container mx-auto px-4 md:px-6 z-10 pt-20">
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      {/* Left side - Hero content */}
-      <div className="max-w-2xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <span className="text-sm font-medium text-primary">Next-Gen Mobile Development</span>
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-            Transform Ideas Into{" "}
-            <span className="relative">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-500">
-                Revolutionary Apps
-              </span>
-              <svg className="absolute -bottom-2 w-full" viewBox="0 0 418 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 11C139.333 -1.66666 275.333 -1.66667 416 11" stroke="url(#paint0_linear)" strokeWidth="3" strokeLinecap="round"/>
-                <defs>
-                  <linearGradient id="paint0_linear" x1="209" y1="11" x2="209" y2="12" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#6D28D9"/>
-                    <stop offset="1" stopColor="#3B82F6"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
-          </h1>
-          
-          <p className="text-xl text-foreground/70 mb-8 max-w-lg">
-            We craft cutting-edge mobile experiences that engage users and drive business growth. 
-            From concept to launch, our expert team brings your vision to life.
-          </p>
-          
-          <div className="flex flex-wrap gap-4">
-            <a 
-              href="#contact" 
-              className="px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group"
-            >
-              Start Your Project
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a 
-              href="#services" 
-              className="px-8 py-4 border border-primary/30 text-primary rounded-xl font-medium hover:bg-primary/5 transition-all flex items-center justify-center gap-2 group"
-            >
-              Explore Services
-              <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-            </a>
-          </div>
-          
-          {/* Trust indicators */}
-          <div className="mt-12">
-            <p className="text-sm text-foreground/60 mb-4 flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-primary" /> 
-              Trusted by 200+ businesses worldwide
-            </p>
-            <div className="flex flex-wrap items-center gap-6">
-              {[1, 2, 3, 4].map((logo, index) => (
-                <div key={index} className="opacity-70 hover:opacity-100 transition-opacity">
-                  {/* Replace with actual logos */}
-                  <div className="h-8 bg-foreground/20 w-20 rounded"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-      
-      {/* Right side - App Mockups */}
-      <div className="relative h-[600px] hidden lg:block">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="relative h-full"
-        >
-          {/* Main app mockup */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[280px] h-[580px] bg-gray-900 rounded-[40px] border-[8px] border-gray-800 shadow-xl z-30 overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=500&h=1000&fit=crop" 
-                alt="App Interface" 
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-x-0 top-0 h-6 bg-black/20 backdrop-blur-md flex items-center justify-center">
-                <div className="w-20 h-1.5 bg-gray-300/80 rounded-full"></div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Secondary phone mockup */}
-          <div className="absolute top-1/3 -right-10 w-[240px] h-[500px] bg-gray-900 rounded-[36px] border-[8px] border-gray-800 shadow-xl z-20 overflow-hidden transform rotate-12">
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=1000&fit=crop" 
-                alt="App Interface" 
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          </div>
-          
-          {/* Tertiary phone mockup */}
-          <div className="absolute top-1/3 -left-10 w-[220px] h-[460px] bg-gray-900 rounded-[32px] border-[8px] border-gray-800 shadow-xl z-10 overflow-hidden transform -rotate-12">
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=500&h=1000&fit=crop" 
-                alt="App Interface" 
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          </div>
-          
-          {/* Floating UI Elements */}
-          <div className="absolute top-20 left-10 w-20 h-20 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl rotate-6 z-40">
-            <div className="w-full h-3 bg-primary/30 rounded-full mb-2"></div>
-            <div className="w-3/4 h-3 bg-primary/30 rounded-full mb-2"></div>
-            <div className="w-1/2 h-3 bg-primary/30 rounded-full"></div>
-          </div>
-          
-          <div className="absolute bottom-32 right-10 w-24 h-24 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl -rotate-3 z-40">
-            <div className="w-8 h-8 bg-primary/20 rounded-full mb-2"></div>
-            <div className="w-full h-2.5 bg-primary/30 rounded-full mb-2"></div>
-            <div className="w-3/4 h-2.5 bg-primary/30 rounded-full"></div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-    
-    {/* Bottom section - Key features */}
-    <div className="mt-16 lg:mt-24">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {[
-          { number: "98%", label: "Client satisfaction" },
-          { number: "500+", label: "Projects delivered" },
-          { number: "25M+", label: "App downloads" },
-          { number: "15+", label: "Industry awards" },
-        ].map((stat, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-            className="text-center p-4 rounded-xl backdrop-blur-sm bg-secondary/5 border border-secondary/10"
-          >
-            <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-              {stat.number}
-            </div>
-            <div className="text-sm text-foreground/70 mt-1">{stat.label}</div>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  </div>
-  
-  {/* Custom scroll indicator */}
-  <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-    <div className="w-8 h-12 rounded-full border-2 border-primary/30 flex items-center justify-center">
-      <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
-    </div>
-  </div>
-  
-  <style jsx="true">{`
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(10deg); }
-      100% { transform: translateY(0) rotate(0deg); }
-    }
-    
-    .animate-float {
-      animation: float linear infinite;
-    }
-  `}</style>
-</section>
