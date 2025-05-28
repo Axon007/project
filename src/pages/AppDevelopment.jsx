@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import PageTransition from '../components/PageTransition';
 import { ContainerScroll } from "../components/ui/container-scroll-animation"; 
+import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
 
 import Iphone15Pro from "@/components/magicui/iphone-15-pro";
 import { 
@@ -8,7 +9,7 @@ import {
   ArrowRight, Star, Settings,
   Layers, BarChart, Users, 
   CheckCircle, ArrowUpRight,
-  Layout, Download
+  Layout
 } from "lucide-react";
 
 // Component to create the animated cosmic sphere
@@ -244,9 +245,7 @@ function AppDevelopment() {
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-b from-background to-background/95 relative overflow-hidden">
         <CosmicSphere />
-          {/* Hero Section - Stunning App Designs */}
-        
-<section className="relative min-h-[90vh] flex items-center overflow-hidden">
+          {/* Hero Section - Stunning App Designs */}        <section className="relative min-h-screen flex flex-col overflow-hidden">
   {/* Background elements */}
   <div className="absolute inset-0 bg-grid-pattern opacity-5 -z-10"></div>
   <div className="absolute top-0 right-0 w-[45vw] h-[45vw] max-w-[800px] max-h-[800px] bg-primary/20 rounded-full filter blur-[120px] opacity-70 -z-10"></div>
@@ -270,125 +269,458 @@ function AppDevelopment() {
     ))}
   </div>
   
-  <div className="container mx-auto px-4 md:px-6 z-10 pt-20">
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      {/* Left side - Hero content */}
-      <div className="max-w-2xl">
+  {/* Top Half - Header Content */}
+  <div className="container mx-auto px-4 md:px-6 z-10 pt-20 flex-1 flex items-center justify-center">
+    <div className="text-center max-w-4xl">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 backdrop-blur-sm shadow-sm"
+        >
+          <span className="relative flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+          </span>
+          <span className="text-sm font-medium text-primary">Next-Gen Mobile Development</span>
+          <span className="px-2 py-0.5 bg-primary/20 text-xs font-semibold rounded-full text-primary ml-1">2025</span>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <span className="text-sm font-medium text-primary">Next-Gen Mobile Development</span>
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-            Transform Ideas Into{" "}
-            <span className="relative">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-500">
-                Revolutionary Apps
+          <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 dark:text-white sm:text-7xl mb-8 relative">
+            <span className="inline-block">Crafting Digital</span>{" "}
+            <span className="inline-block relative">
+              <span className="relative z-10 inline-block">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-500">
+                  Experiences
+                </span>
+                <svg className="absolute -bottom-2 w-full" viewBox="0 0 418 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 11C139.333 -1.66666 275.333 -1.66667 416 11" stroke="url(#paint0_linear)" strokeWidth="3" strokeLinecap="round">
+                    <animate attributeName="stroke-dasharray" from="0,500" to="500,0" dur="2s" begin="0s" fill="freeze" />
+                  </path>
+                  <defs>
+                    <linearGradient id="paint0_linear" x1="209" y1="11" x2="209" y2="12" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#6D28D9"/>
+                      <stop offset="1" stopColor="#3B82F6"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
               </span>
-              <svg className="absolute -bottom-2 w-full" viewBox="0 0 418 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 11C139.333 -1.66666 275.333 -1.66667 416 11" stroke="url(#paint0_linear)" strokeWidth="3" strokeLinecap="round"/>
-                <defs>
-                  <linearGradient id="paint0_linear" x1="209" y1="11" x2="209" y2="12" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#6D28D9"/>
-                    <stop offset="1" stopColor="#3B82F6"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
+            </span>{" "}
+            <span className="inline-block mt-2 sm:mt-0">That Drive <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-primary">Results</span></span>
           </h1>
+        </motion.div>
+        
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="text-lg text-foreground/70 mb-10 max-w-2xl mx-auto leading-relaxed"
+        >
+          We craft cutting-edge mobile experiences that engage users and drive business growth. 
+          From concept to launch, our expert team brings your <span className="text-primary font-medium">vision to life</span>.
+        </motion.p>
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="flex flex-wrap gap-4 justify-center"
+        >
+          <a 
+            href="#contact" 
+            className="px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group"
+          >
+            Start Your Project
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </a>
           
-          <p className="text-xl text-foreground/70 mb-8 max-w-lg">
-            We craft cutting-edge mobile experiences that engage users and drive business growth. 
-            From concept to launch, our expert team brings your vision to life.
-          </p>
-          
-          <div className="flex flex-wrap gap-4">
-            <a 
-              href="#contact" 
-              className="px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group"
-            >
-              Start Your Project
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a 
-              href="#services" 
-              className="px-8 py-4 border border-primary/30 text-primary rounded-xl font-medium hover:bg-primary/5 transition-all flex items-center justify-center gap-2 group"
-            >
-              Explore Services
-              <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-            </a>
-          </div>
-          
-          {/* Trust indicators */}
-          <div className="mt-12">
-            <p className="text-sm text-foreground/60 mb-4 flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-primary" /> 
-              Trusted by 200+ businesses worldwide
-            </p>
-            <div className="flex flex-wrap items-center gap-6">
-              {[1, 2, 3, 4].map((logo, index) => (
-                <div key={index} className="opacity-70 hover:opacity-100 transition-opacity">
-                  {/* Replace with actual logos */}
-                  <div className="h-8 bg-foreground/20 w-20 rounded"></div>
-                </div>
-              ))}
+          <a 
+            href="#portfolio" 
+            className="px-8 py-4 bg-secondary/10 backdrop-blur-sm border border-secondary/20 text-foreground rounded-xl font-medium hover:bg-secondary/20 transition-all flex items-center justify-center gap-2 group"
+          >
+            View Our Work
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </a>
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
+          className="flex justify-center gap-8 mt-12"
+        >
+          {[
+            { name: "Trusted by 500+", value: "Companies" },
+            { name: "4.9 / 5.0", value: "Customer Rating" },
+            { name: "25M+", value: "App Downloads" },
+          ].map((stat, index) => (
+            <div key={index} className="text-center">
             </div>
-          </div>
+          ))}
+        </motion.div>
+        
+
+      </motion.div>
+    </div>
+  </div>  {/* Bottom Half - iPhone Component with Background Image */}
+  <div className="flex-1 flex items-center justify-center pb-20 relative">
+    {/* Enhanced background with multiple layers */}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.2, delay: 0.2 }}
+      className="absolute inset-0 flex items-center justify-center overflow-hidden"
+      style={{ zIndex: 1 }}
+    >
+      {/* Main dashboard background */}
+      <div className="relative">
+        <motion.img
+          initial={{ y: 20, opacity: 0.4 }}
+          animate={{ y: 0, opacity: 0.7 }}
+          transition={{ 
+            duration: 1.5,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut"
+          }}
+          src="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
+          alt="Project Development Dashboard"
+          className="w-[1080px] max-h-[720px] rounded-xl object-cover shadow-lg"
+        />
+        
+        {/* Glossy overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent rounded-xl backdrop-blur-[2px]"></div>
+        
+        {/* Code snippets floating around */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="absolute -left-20 top-1/4 w-60 bg-secondary/10 backdrop-blur-lg border border-white/10 p-4 rounded-lg shadow-xl rotate-[-6deg]"
+        >
+          <div className="h-3 w-3/4 bg-primary/30 rounded-full mb-2"></div>
+          <div className="h-3 w-1/2 bg-primary/20 rounded-full mb-2"></div>
+          <div className="h-3 w-5/6 bg-primary/30 rounded-full mb-2"></div>
+          <div className="h-3 w-2/3 bg-primary/20 rounded-full"></div>
+        </motion.div>
+          
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 1 }}
+          className="absolute -right-16 bottom-1/4 w-56 bg-secondary/10 backdrop-blur-lg border border-white/10 p-4 rounded-lg shadow-xl rotate-[8deg]"
+        >
+          <div className="h-3 w-1/2 bg-blue-500/30 rounded-full mb-2"></div>
+          <div className="h-3 w-3/4 bg-blue-500/20 rounded-full mb-2"></div>
+          <div className="h-3 w-3/5 bg-blue-500/30 rounded-full"></div>
         </motion.div>
       </div>
-      
-      {/* Right side - App Mockups */}
-      <div className="relative h-[600px] hidden lg:block">
-         <div className="relative">
-      <Iphone15Pro
-        className="size-full"
-        src="https://via.placeholder.com/430x880"
-      />
-    </div>
+    </motion.div>
 
+    {/* iPhone Component in front with enhanced animations */}
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.5 }}
+      className="relative"
+      style={{ zIndex: 2 }}
+    >      {/* Enhanced light effect behind the phone */}
+      <div className="absolute inset-0 -z-10">
+        <motion.div 
+          className="absolute inset-0 bg-gradient-radial from-primary/30 via-blue-500/20 to-transparent filter blur-3xl rounded-full"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 0.7, 0.5],
+          }}
+          transition={{ 
+            duration: 8, 
+            repeat: Infinity, 
+            repeatType: "reverse",
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute inset-0 bg-gradient-radial from-purple-500/20 via-primary/20 to-transparent filter blur-3xl rounded-full"
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.4, 0.6, 0.4],
+          }}
+          transition={{ 
+            duration: 10, 
+            repeat: Infinity, 
+            repeatType: "reverse",
+            ease: "easeInOut"
+          }}
+        />
       </div>
-    </div>
-    
-    {/* Bottom section - Key features */}
-    <div className="mt-16 lg:mt-24">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {[
-          { number: "98%", label: "Client satisfaction" },
-          { number: "500+", label: "Projects delivered" },
-          { number: "25M+", label: "App downloads" },
-          { number: "15+", label: "Industry awards" },
-        ].map((stat, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-            className="text-center p-4 rounded-xl backdrop-blur-sm bg-secondary/5 border border-secondary/10"
+        
+      <motion.div
+        animate={{ 
+          y: [0, -10, 0],
+          rotateZ: [0, 1, 0, -1, 0],
+        }}
+        transition={{ 
+          y: {
+            duration: 4, 
+            repeat: Infinity, 
+            repeatType: "loop",
+            ease: "easeInOut"
+          },
+          rotateZ: {
+            duration: 10,
+            repeat: Infinity,
+            repeatType: "loop",
+            ease: "easeInOut"
+          }
+        }}
+        className="drop-shadow-2xl filter relative"
+      >
+        {/* Interactive buttons overlay */}
+        <div className="absolute -right-12 top-1/4 z-10 flex flex-col gap-6">
+          <motion.div 
+            whileHover={{ scale: 1.1, backgroundColor: 'rgba(var(--primary), 0.3)' }} 
+            whileTap={{ scale: 0.95 }}
+            className="w-10 h-10 bg-primary/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-white/20 shadow-lg"
           >
-            <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-              {stat.number}
-            </div>
-            <div className="text-sm text-foreground/70 mt-1">{stat.label}</div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
           </motion.div>
-        ))}
-      </div>
-    </div>
+          
+          <motion.div 
+            whileHover={{ scale: 1.1, backgroundColor: 'rgba(59, 130, 246, 0.3)' }} 
+            whileTap={{ scale: 0.95 }}
+            className="w-10 h-10 bg-blue-500/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-white/20 shadow-lg"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><circle cx="12" cy="12" r="10"></circle><path d="m16 12-4-4v8z"></path></svg>
+          </motion.div>
+          
+          <motion.div 
+            whileHover={{ scale: 1.1, backgroundColor: 'rgba(139, 92, 246, 0.3)' }} 
+            whileTap={{ scale: 0.95 }}
+            className="w-10 h-10 bg-violet-500/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-white/20 shadow-lg"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect width="7" height="5" x="7" y="7" rx="1"></rect><rect width="7" height="5" x="10" y="12" rx="1"></rect></svg>
+          </motion.div>
+        </div>
+
+        <div className="relative border-[3px] border-black rounded-[70px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(99,102,241,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
+          <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-black/0 z-10 rounded-[70px]"></div>
+          
+          {/* Subtle reflection effect */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: [0, 0.07, 0],
+              x: ["-100%", "100%"]
+            }}
+            transition={{ 
+              duration: 3,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+              delay: 2
+            }}
+            className="absolute inset-0 z-20 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 rounded-[70px]"
+          />
+          
+          <Iphone15Pro
+            className="w-[300px] h-[600px] md:w-[350px] md:h-[700px] drop-shadow-[0_15px_25px_rgba(0,0,0,0.6)] group-hover:scale-[1.01] transition-transform duration-500"
+            src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=430&h=880&fit=crop&crop=center"
+            alt="App Development Screen"
+          />
+        </div>
+      </motion.div>
+        {/* Enhanced interactive elements around iPhone */}
+      <motion.div 
+        className="absolute -top-6 -left-6 w-12 h-12 bg-gradient-to-br from-primary/30 to-blue-500/30 rounded-full cursor-pointer"
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.6, 1, 0.6],
+          boxShadow: ["0 0 0px rgba(99,102,241,0.2)", "0 0 20px rgba(99,102,241,0.4)", "0 0 0px rgba(99,102,241,0.2)"]
+        }}
+        transition={{ 
+          duration: 3,
+          repeat: Infinity,
+          repeatType: "loop"
+        }}
+        whileHover={{ 
+          scale: 1.3, 
+          opacity: 0.9, 
+          background: "radial-gradient(circle, rgba(99,102,241,0.4) 0%, rgba(59,130,246,0.3) 100%)"
+        }}
+      />
+      
+      <motion.div 
+        className="absolute -bottom-8 -right-8 w-16 h-16 bg-gradient-to-tr from-blue-500/30 to-violet-500/30 rounded-full cursor-pointer"
+        animate={{ 
+          scale: [1, 1.3, 1],
+          opacity: [0.7, 1, 0.7],
+          boxShadow: ["0 0 0px rgba(59,130,246,0.2)", "0 0 25px rgba(59,130,246,0.4)", "0 0 0px rgba(59,130,246,0.2)"]
+        }}
+        transition={{ 
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "loop",
+          delay: 1
+        }}
+        whileHover={{ 
+          scale: 1.4, 
+          opacity: 0.9,
+          background: "radial-gradient(circle, rgba(59,130,246,0.4) 0%, rgba(139,92,246,0.3) 100%)"
+        }}
+      />
+      
+      <motion.div 
+        className="absolute top-1/3 -left-10 w-8 h-8 bg-gradient-to-bl from-purple-500/30 to-pink-500/30 rounded-full cursor-pointer"
+        animate={{ 
+          scale: [1, 1.5, 1],
+          opacity: [0.6, 0.9, 0.6],
+          boxShadow: ["0 0 0px rgba(139,92,246,0.2)", "0 0 15px rgba(139,92,246,0.4)", "0 0 0px rgba(139,92,246,0.2)"]
+        }}
+        transition={{ 
+          duration: 2.5,
+          repeat: Infinity,
+          repeatType: "loop",
+          delay: 0.5
+        }}
+        whileHover={{ 
+          scale: 1.6, 
+          opacity: 0.9,
+          background: "radial-gradient(circle, rgba(139,92,246,0.4) 0%, rgba(244,114,182,0.3) 100%)"
+        }}
+      />
+      
+      <motion.div 
+        className="absolute top-2/3 -right-12 w-10 h-10 bg-gradient-to-tl from-green-500/30 to-emerald-500/30 rounded-full cursor-pointer"
+        animate={{ 
+          scale: [1, 1.4, 1],
+          opacity: [0.7, 1, 0.7],
+          boxShadow: ["0 0 0px rgba(34,197,94,0.2)", "0 0 20px rgba(34,197,94,0.4)", "0 0 0px rgba(34,197,94,0.2)"]
+        }}
+        transition={{ 
+          duration: 3.5,
+          repeat: Infinity,
+          repeatType: "loop",
+          delay: 1.5
+        }}
+        whileHover={{ 
+          scale: 1.5, 
+          opacity: 0.9,
+          background: "radial-gradient(circle, rgba(34,197,94,0.4) 0%, rgba(16,185,129,0.3) 100%)"
+        }}
+      />
+      
+      {/* Add floating code snippets/UI elements that appear on hover */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, x: -20 }}
+        whileInView={{ opacity: 1, scale: 1, x: 0 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="absolute -left-32 top-20 hidden md:block"
+      >
+        <motion.div 
+          className="w-24 h-24 bg-white/5 backdrop-blur-md rounded-lg shadow-lg border border-white/10 p-3 flex flex-col justify-between cursor-pointer"
+          whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)" }}
+        >
+          <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path><path d="M14 15l3-3-3-3"></path></svg>
+          </div>
+          <div>
+            <div className="h-1.5 w-12 bg-white/20 rounded-full mb-1.5"></div>
+            <div className="h-1.5 w-8 bg-white/15 rounded-full"></div>
+          </div>
+        </motion.div>
+      </motion.div>
+      
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, x: 20 }}
+        whileInView={{ opacity: 1, scale: 1, x: 0 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        className="absolute -right-28 bottom-32 hidden md:block"
+      >
+        <motion.div 
+          className="w-28 h-16 bg-white/5 backdrop-blur-md rounded-lg shadow-lg border border-white/10 p-3 flex items-center gap-3 cursor-pointer"
+          whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)" }}
+        >
+          <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500"><path d="M12 17.8 5.8 21 7 14.1 2 9.3l7-1L12 2l3 6.3 7 1-5 4.8 1.2 6.9-6.2-3.2Z"></path></svg>
+          </div>
+          <div>
+            <div className="h-1.5 w-10 bg-white/20 rounded-full mb-1.5"></div>
+            <div className="h-1.5 w-8 bg-white/15 rounded-full"></div>
+          </div>
+        </motion.div>
+      </motion.div>
+      
+      <motion.div 
+        className="absolute top-2/3 -right-12 w-10 h-10 bg-green-500/20 rounded-full"
+        animate={{ 
+          scale: [1, 1.4, 1],
+          opacity: [0.7, 1, 0.7]
+        }}
+        transition={{ 
+          duration: 3.5,
+          repeat: Infinity,
+          repeatType: "loop",
+          delay: 1.5
+        }}
+      />
+    </motion.div>
   </div>
   
-  {/* Custom scroll indicator */}
-  <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-    <div className="w-8 h-12 rounded-full border-2 border-primary/30 flex items-center justify-center">
-      <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+
+<div className="mt-20 px-10"> {/* Added px-10 for side padding */}
+  <div className="p-8 rounded-2xl bg-secondary/5 border border-gray-300 backdrop-blur-sm"> {/* Updated border */}
+    <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+      <div className="max-w-lg">
+        <h3 className="text-2xl font-bold mb-3">Transform Your App Experience</h3>
+        <p className="text-foreground/70 mb-6">
+          Our micro-interaction design system adds polish to your application, creating memorable experiences that users love.
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm border border-gray-200"> {/* Optional: border for each badge */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Improved Engagement
+          </div>
+          <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm border border-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Reduced Friction
+          </div>
+          <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm border border-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Higher Retention
+          </div>
+        </div>
+      </div>
+      
+      <div className="rounded-xl overflow-hidden shadow-lg border border-gray-300"> {/* Added grey border here */}
+        <video 
+          width="320" 
+          height="240" 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="w-full h-auto"
+          poster="https://placehold.co/320x240/2a2a3c/FFFFFF/png?text=Micro-interactions+Demo"
+        >
+          <source src="your-interaction-demo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </div>
   </div>
+</div>
+
   
   <style jsx="true">{`
     @keyframes float {
@@ -430,8 +762,7 @@ function AppDevelopment() {
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><circle cx="12" cy="12" r="10"></circle><path d="m16.24 7.76-8.48 8.48"></path><path d="m7.76 7.76 8.48 8.48"></path></svg>
         Modern Interface Design
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
         Neuomorphic Design Language
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -517,8 +848,7 @@ function AppDevelopment() {
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6 backdrop-blur-md">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M21 9V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h4"></path><path d="M16 16h6"></path><path d="M19 13v6"></path></svg>
         Next-Gen UI
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-violet-500">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-violet-500">
         Glassmorphic UI Components
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -675,8 +1005,7 @@ function AppDevelopment() {
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
         Engaging Features
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
         Micro-interactions That Delight
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -741,48 +1070,7 @@ function AppDevelopment() {
       ))}
     </div>
     
-    <div className="mt-20">
-      <div className="p-8 rounded-2xl bg-secondary/5 border border-secondary/10 backdrop-blur-sm">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="max-w-lg">
-            <h3 className="text-2xl font-bold mb-3">Transform Your App Experience</h3>
-            <p className="text-foreground/70 mb-6">
-              Our micro-interaction design system adds polish to your application, creating memorable experiences that users love.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Improved Engagement
-              </div>
-              <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Reduced Friction
-              </div>
-              <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Higher Retention
-              </div>
-            </div>
-          </div>
-          
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <video 
-              width="320" 
-              height="240" 
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              className="w-full h-auto"
-              poster="https://placehold.co/320x240/2a2a3c/FFFFFF/png?text=Micro-interactions+Demo"
-            >
-              <source src="your-interaction-demo.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
-      </div>
-    </div>
+
   </div>
 </section>
 
@@ -792,8 +1080,7 @@ function AppDevelopment() {
     <div className="text-center mb-12">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <Code className="w-4 h-4 mr-2" /> Technology Stack
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
         Built With Cutting-Edge Technologies
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -835,8 +1122,7 @@ function AppDevelopment() {
     <div className="text-center mb-20">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <Layout className="w-4 h-4 mr-2" /> Design Excellence
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
         App Design That Captivates Users
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -925,8 +1211,7 @@ function AppDevelopment() {
     <div className="text-center mb-16">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <Zap className="w-4 h-4 mr-2" /> Interactive Features
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
         Rich Interactive Experiences
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -1002,8 +1287,7 @@ function AppDevelopment() {
     <div className="text-center mb-16">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <ArrowUpRight className="w-4 h-4 mr-2" /> Launch Strategy
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
         App Store Optimization
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -1105,8 +1389,7 @@ function AppDevelopment() {
     <div className="text-center mb-12">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <CheckCircle className="w-4 h-4 mr-2" /> Success Stories
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
         Case Studies
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -1177,8 +1460,7 @@ function AppDevelopment() {
     <div className="text-center mb-12">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <Star className="w-4 h-4 mr-2" /> Testimonials
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
         What Our Clients Say
       </h2>
       <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
@@ -1238,8 +1520,7 @@ function AppDevelopment() {
     <div className="text-center mb-12">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <Layout className="w-4 h-4 mr-2" /> FAQ
-      </span>
-      <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
         Frequently Asked Questions
       </h2>
       <p className="text-lg text-foreground/70">
@@ -1315,8 +1596,7 @@ function AppDevelopment() {
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
                 <Layout className="w-4 h-4 mr-2" /> Design Features
               </span>
-              
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+                <h2 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
                 Powerful Design Tools
               </h2>
               
@@ -1410,8 +1690,7 @@ function AppDevelopment() {
         {/* Features Grid - Why Choose Us */}
         <section className="py-20 px-4 relative">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+            <div className="text-center mb-12">              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
                 Why Choose Us
               </h2>
               <p className="text-lg text-foreground/70">
@@ -1430,8 +1709,7 @@ function AppDevelopment() {
         {/* Services Section */}
         <section id="services" className="py-20 px-4 relative bg-secondary/5">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
+            <div className="text-center mb-12">              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
                 Our Services
               </h2>
               <p className="text-lg text-foreground/70">
