@@ -174,7 +174,6 @@ const NavLink = memo(({ name, path, hasDropdown, handleMouseEnter, handleMouseLe
 function Navbar({ theme, toggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [showServicesDropdown, setShowServicesDropdown] = useState(false);
 
   // Memoized handlers to prevent recreation on each render
@@ -202,8 +201,6 @@ function Navbar({ theme, toggleTheme }) {
   // Scroll handler with cleanup
   useEffect(() => {
     const handleScroll = () => {
-      const progress = Math.min(window.scrollY / 50, 1);
-      setScrollProgress(progress);
       setIsScrolled(window.scrollY > 50);
     };
 
@@ -239,37 +236,26 @@ function Navbar({ theme, toggleTheme }) {
   );
   
   // Computed values for styling
-  const bgOpacity = showServicesDropdown ? 1 : (0.95 + scrollProgress * 0.05);
-  const borderOpacity = 0.1 + scrollProgress * 0.1;
-  const borderRadius = isScrolled ? 16 : 0;
-  const horizontalPadding = isScrolled ? '1.5rem' : '2rem';
-  const containerMaxWidth = isScrolled ? 'max-w-6xl' : 'max-w-full';
-  const containerMargin = isScrolled ? 'mx-4 sm:mx-8' : 'mx-0';
-  const topPosition = 4 * scrollProgress;
-  const blurAmount = showServicesDropdown ? 16 : 8;
+  const bgOpacity = showServicesDropdown ? 1 : (isScrolled ? 0.95 : 1);
+  const borderOpacity = isScrolled ? 0.1 : 0;
+  const horizontalPadding = '2rem';
+  const blurAmount = showServicesDropdown ? 16 : (isScrolled ? 8 : 0);
 
   // Computed background style
-  const navbarStyle = {
-    top: `${topPosition}px`,
-  };
-
   const containerStyle = {
     backgroundColor: showServicesDropdown 
       ? theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'
       : `rgba(var(--background-rgb), ${bgOpacity})`,
     backdropFilter: isScrolled ? `blur(${blurAmount}px)` : 'none',
     WebkitBackdropFilter: isScrolled ? `blur(${blurAmount}px)` : 'none',
-    borderRadius: `${borderRadius}px`,
     padding: `${isScrolled ? '0.75rem' : '1.25rem'} ${horizontalPadding}`,
-    border: isScrolled 
-      ? `1px solid ${theme === 'light' 
-          ? `rgba(0, 0, 0, ${borderOpacity})` 
-          : `rgba(255, 255, 255, ${borderOpacity})`}`
-      : 'none',
+    borderBottom: `1px solid ${theme === 'light' 
+        ? `rgba(0, 0, 0, ${borderOpacity})` 
+        : `rgba(255, 255, 255, ${borderOpacity})`}`,
     transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
     boxShadow: showServicesDropdown 
       ? (theme === 'light' ? '0 8px 30px rgba(0, 0, 0, 0.1)' : '0 8px 30px rgba(0, 0, 0, 0.3)') 
-      : 'none'
+      : (isScrolled ? (theme === 'light' ? '0 2px 10px rgba(0, 0, 0, 0.05)' : '0 2px 10px rgba(0, 0, 0, 0.2)') : 'none')
   };
 
   return (
@@ -285,24 +271,16 @@ function Navbar({ theme, toggleTheme }) {
         initial="initial"
         animate="visible"
         variants={navbarVariants}
-        className="fixed z-50 transition-all duration-500 ease-in-out transform-gpu w-full flex justify-center"
-        style={navbarStyle}
+        className="fixed top-0 z-50 transition-all duration-500 ease-in-out transform-gpu w-full flex justify-center"
       >
         <motion.div
-          className={`flex flex-col w-full ${containerMaxWidth} ${containerMargin} overflow-hidden ${
+          className={`flex flex-col w-full overflow-hidden ${
             isOpen ? "h-screen md:h-auto" : "h-auto"
           }`}
           style={containerStyle}
         >
           <motion.div 
-            className="flex justify-between items-center w-full relative z-50"
-            animate={{
-              scale: 0.95 + (1 - scrollProgress) * 0.05,
-            }}
-            transition={{
-              duration: 0.3,
-              ease: "easeInOut"
-            }}
+            className="flex justify-between items-center w-full relative z-50 max-w-6xl mx-auto"
           >
             {/* Left Section with Logo & Burger */}
             <div className="flex items-center gap-4">
