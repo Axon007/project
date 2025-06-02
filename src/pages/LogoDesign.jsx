@@ -31,7 +31,6 @@ const UI = {
   }
 };
 
-// Portfolio samples
 const LOGO_PORTFOLIO = [
   { 
     image: "/api/placeholder/400/320", 

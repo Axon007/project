@@ -1,11 +1,7 @@
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useState, useRef, useEffect, memo } from "react";
 import PageTransition from '../components/PageTransition';
-import { Ripple } from "@/components/magicui/ripple";
 import { Link } from "react-router-dom";
-import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
-import { AuroraBackground } from "@/components/AuroraBackground";
-
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { Meteors } from "../components/ui/meteor-effect";
 import * as THREE from "three";
@@ -133,12 +129,6 @@ const Section = ({ children, dark = false, pattern = false, className = "", id =
   </section>
 );
 
-
-
-
-
-
-
 /* SECTION COMPONENTS */
 const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
   <div className={`mb-10 md:mb-12 ${center ? 'text-center' : ''}`}>
@@ -174,9 +164,6 @@ const SectionHeading = ({ eyebrow, title, center = false, description = null }) 
   </div>
 );
 
-
-
-
 /* CONSTANTS AND DATA */
 const COMPANY_LOGOS = [
   'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
@@ -186,7 +173,6 @@ const COMPANY_LOGOS = [
   'https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg',
   'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg'
 ];
-
 
 
 const TESTIMONIALS = [
@@ -222,11 +208,6 @@ const HERO_SERVICES = [
   { title: "UI/UX Design", icon: <Brush className="w-4 h-4" /> },
   { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
-
-
-
-
-
 
 
 /* Project */
@@ -1843,8 +1824,6 @@ function Home({ theme, toggleTheme }) {
                   </motion.div>
                 </div>
               </section>
-              
-      
       </div>
     </PageTransition>
   );
