@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Spline from '@splinetool/react-spline';
 import { 
   Gamepad, Code, Layers, Cpu, Trophy, CheckCircle, Star,
   Globe, Briefcase, ArrowRight, Download, Users, Clock, Server,
@@ -232,17 +234,36 @@ const KEY_FEATURES = [
 ];
 
 const GamingDevServices = ({ theme, toggleTheme }) => {
+  const [scrollY, setScrollY] = useState(0);
+  const [activeProject, setActiveProject] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+  const [splineLoaded, setSplineLoaded] = useState(false);
+  
+  // For parallax effects
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   
   // References for scroll animations and video
   const servicesRef = useRef(null);
   const projectsRef = useRef(null);
   const videoRef = useRef(null);
+  const splineContainerRef = useRef(null);
   
   // Derive darkMode from theme prop
   const darkMode = theme === 'dark';
+
+  // Memoized scroll handler for better performance
+  const handleScroll = useCallback(() => {
+    setScrollY(window.scrollY);
+  }, []);
+  
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
   
   // Video controls
   const togglePlay = () => {
@@ -261,6 +282,11 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
     }
+  };
+
+  // Handle Spline load event
+  const handleSplineLoad = () => {
+    setSplineLoaded(true);
   };
   
   // Handle video visibility based on browser tab focus
@@ -329,19 +355,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
     }
   }, []);
     return (
-    <div className={`${darkMode ? 'bg-gray-950 text-white' : 'bg-gray-50 text-gray-900'} min-h-screen relative transition-colors duration-300`}>
-      {/* Add animation styles */}
-      <style>{animationStyles}</style>{/* Simple gradient background */}
-      <div className={`fixed inset-0 bg-gradient-to-br ${colorMode.mainBg} transition-colors duration-300`} />
-        {/* Interactive Welcome Banner */}
-      <div className={`fixed top-0 left-0 right-0 z-40 py-2 px-4 md:px-8 text-center ${darkMode ? 'bg-blue-900/30 text-blue-100' : 'bg-blue-600/70 text-white'} backdrop-blur-sm transition-colors duration-300 shadow-md`}>
-        <div className="flex items-center justify-center">
-          <Gamepad className="mr-2 h-4 w-4" />
-          <span className={`text-sm font-bold ${showCursor ? 'cursor' : ''}`}>
-            {typewriterText}
-          </span>
-        </div>
-      </div>
+    <div className={`min-h-screen ${colorMode.bg} ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 relative overflow-hidden`}>
 
       {/* Theme Toggle Button */}
       <button 
@@ -362,144 +376,112 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
       
       {/* Content Container */}
       <div className="relative z-10">
-        {/* Hero Section with Gaming Video Background */}
+        {/* New Hero Section with 3D Car Model */}
         <section className="min-h-screen relative overflow-hidden">
-          {/* Video Background */}
-          <div className="absolute inset-0 z-0 w-full h-full bg-black">
-            <video 
-              ref={videoRef}
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              className={`w-full h-full object-cover ${colorMode.videoBg} transition-opacity duration-300`}
-              poster="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80"
-            >
-              <source src="https://assets.mixkit.co/videos/preview/mixkit-scrolling-through-a-cyberpunk-city-during-the-night-42654-large.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            
-            {/* Video Controls */}
-            <div className="absolute bottom-6 right-6 flex items-center gap-3 z-10">
-              <button 
-                onClick={togglePlay}
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors"
-              >
-                {isVideoPlaying ? <Pause size={18} /> : <Play size={18} />}
-              </button>
-              <button 
-                onClick={toggleMute}
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors"
-              >
-                {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-              </button>
-            </div>
-          </div>
-            {/* Gaming-themed overlay with grid lines and neon effects */}
-          <div className="absolute inset-0 z-0 opacity-30 transition-opacity duration-300">
-            {/* Cyber grid pattern */}
-            <div 
-              className="w-full h-full transition-all duration-300" 
-              style={{
-                backgroundImage: `
-                  linear-gradient(to right, ${darkMode ? 'rgba(59, 130, 246, 0.1)' : 'rgba(37, 99, 235, 0.15)'} 1px, transparent 1px),
-                  linear-gradient(to bottom, ${darkMode ? 'rgba(59, 130, 246, 0.1)' : 'rgba(37, 99, 235, 0.15)'} 1px, transparent 1px)
-                `,
-                backgroundSize: '40px 40px'
-              }}
+          {/* 3D Car Model with Spline - keeping as background */}
+          <div 
+            ref={splineContainerRef}
+            className="absolute inset-0 z-0 w-full h-full"
+          >
+            <Spline 
+              scene="https://prod.spline.design/voZUbzjk4ne1Svzq/scene.splinecode"
+              onLoad={handleSplineLoad}
+              className="w-full h-full"
             />
             
-            {/* Animated neon glow */}
-            <div className={`absolute top-1/4 left-1/4 w-96 h-96 ${darkMode ? 'bg-blue-500/20' : 'bg-blue-500/30'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`}></div>
-            <div className={`absolute bottom-1/3 right-1/4 w-64 h-64 ${darkMode ? 'bg-purple-500/20' : 'bg-purple-500/30'} rounded-full filter blur-[60px] animate-pulse transition-colors duration-300`} style={{animationDelay: '1s'}}></div>
+            {/* Loading indicator */}
+            {!splineLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center z-50">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full border-4 border-t-transparent border-b-transparent border-blue-400 animate-spin"></div>
+                  <p className="mt-4 text-white">Loading 3D Experience...</p>
+                </div>
+              </div>
+            )}
           </div>
-            {/* Gradient Overlay for better text visibility */}
-          <div className={`absolute inset-0 bg-gradient-to-t ${darkMode ? 'from-gray-950/90 via-gray-950/50 to-transparent' : 'from-transparent via-transparent to-transparent'} z-0 transition-colors duration-300`}></div>
           
-          {/* Interactive particles effect */}
-          <div className="absolute inset-0 z-0 pointer-events-none">
-            {Array.from({length: 12}).map((_, i) => (
-              <div 
-                key={i} 
-                className={`absolute w-1 h-1 rounded-full ${darkMode ? 'bg-blue-400' : 'bg-blue-600'} transition-colors duration-300`}
-                style={{
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                  opacity: 0.6,
-                  animation: `float ${3 + Math.random() * 4}s linear infinite, pulse ${2 + Math.random() * 2}s infinite`,
-                  animationDelay: `${i * 0.5}s`
-                }}
-              ></div>
-            ))}
-          </div>
-            {/* Hero content with gaming-themed styling */}
-          <div className="relative z-20 flex flex-col justify-center items-start h-screen px-6 md:px-16 lg:px-24">
-            <div className="max-w-3xl">
-              {/* Gaming-themed interactive badge with glow effect */}
-              <div 
-                className={`inline-flex items-center mb-8 px-4 py-1.5 rounded-lg ${darkMode ? 'bg-blue-600/20 border-blue-500/30' : 'bg-blue-500/20 border-blue-600/40'} border shadow-[0_0_15px_rgba(59,130,246,0.5)] animate-pulse hover:scale-105 transition-all duration-300 cursor-pointer`}
-                onClick={() => window.open('https://example.com/elite-game-development', '_blank')}
+          {/* Hero content with improved design */}
+          <div className="relative z-20 flex flex-col justify-center items-start h-screen px-6 md:px-16 lg:px-24 pointer-events-none">
+            <div className="max-w-2xl">
+              {/* Animated tag/badge */}
+              <motion.div 
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="inline-flex items-center mb-8 px-4 py-1.5 rounded-full backdrop-blur-md bg-blue-600/20 border border-blue-500/30"
               >
-                <Gamepad className={`w-4 h-4 mr-2 ${darkMode ? 'text-blue-300' : 'text-blue-600'} transition-colors duration-300`} />
-                <p className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-800'} transition-colors duration-300`}>ELITE GAME DEVELOPMENT</p>
-              </div>
+                <span className="w-2 h-2 rounded-full animate-pulse bg-blue-400 mr-2"></span>
+                <p className="text-sm font-medium text-white">Interactive Game Development</p>
+              </motion.div>
               
-              {/* Main headline with cyberpunk/gaming styling */}
-              <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-[1.1] tracking-tight">
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 pb-2 hover:scale-[1.02] transition-transform duration-300 origin-left cursor-default">
-                  LEVEL UP
+              {/* Main headline with improved gradient */}
+              <motion.h1 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-5xl md:text-7xl font-bold mb-6 leading-[1.1]"
+              >
+                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-indigo-400 to-purple-500">
+                  Racing Into The
                 </span>
-                <span className={`block ${darkMode ? 'text-white' : 'text-gray-900'} relative transition-colors duration-300 hover:translate-x-1 transition-transform duration-300 cursor-default`}>
-                  YOUR GAME DEV
-                  <span className="absolute -bottom-2 left-0 w-1/3 h-1 bg-gradient-to-r from-blue-500 to-transparent"></span>
+                <span className="block mt-2 text-white">
+                  Gaming Future
                 </span>
-              </h1>
+              </motion.h1>
               
-              {/* Description text with futuristic styling */}
-              <p className={`mb-10 text-xl leading-relaxed max-w-xl backdrop-blur-sm ${darkMode ? 'text-blue-100/90 bg-black/10 border-blue-500' : 'text-gray-800 bg-white/20 border-blue-600'} p-4 border-l-4 rounded-r-lg transition-colors duration-300 transform hover:translate-x-1 hover:shadow-lg transition-all duration-300`}>
-                From concept to launch, we create next-gen gaming experiences 
-                with cutting-edge technology and immersive gameplay that captivates players.
-              </p>
-                {/* Gaming-themed action buttons */}
-              <div className="flex flex-wrap gap-5">
-                <button 
-                  className={`group relative px-8 py-4 ${darkMode ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'} rounded-md font-medium text-lg flex items-center gap-3 overflow-hidden shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all hover:shadow-[0_0_25px_rgba(37,99,235,0.7)] transform hover:scale-105 active:scale-95`}
+              {/* Description text with improved backdrop */}
+              <motion.p 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="mb-10 text-xl leading-relaxed max-w-lg text-gray-100 backdrop-blur-sm bg-black/20 rounded-xl py-3 px-5"
+              >
+                Interact with our 3D model and experience the next level of gaming development. We create immersive experiences that push boundaries.
+              </motion.p>
+              
+              {/* Action buttons with consistent styling */}
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="flex flex-wrap gap-5 pointer-events-auto"
+              >
+                <motion.button 
+                  whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.5)" }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full font-medium text-lg shadow-xl shadow-blue-900/30 text-white flex items-center gap-3 overflow-hidden"
                 >
-                  <span className="relative z-10">LAUNCH YOUR GAME</span>
-                  <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-                  
-                  {/* Animated button effect */}
-                  <span className={`absolute inset-0 w-full h-full bg-gradient-to-r ${darkMode ? 'from-blue-600 to-indigo-600' : 'from-blue-500 to-indigo-500'} opacity-0 group-hover:opacity-100 transition-opacity`}></span>
-                  <span className="absolute -inset-1 rounded-lg bg-gradient-to-r from-blue-600 via-transparent to-indigo-600 group-hover:opacity-100 blur-md transition-all opacity-0 group-hover:animate-pulse"></span>
-                </button>
+                  <span className="relative z-10">Start Your Game Project</span>
+                  <ArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </motion.button>
                 
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => scrollToSection(servicesRef)}
-                  className={`flex items-center gap-3 px-7 py-4 backdrop-blur-sm ${darkMode ? 'bg-black/30 border-blue-500/50 hover:border-blue-400 text-white' : 'bg-white/30 border-blue-400/50 hover:border-blue-500 text-gray-800'} border-2 rounded-md font-medium group hover:shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all transform hover:-translate-y-1 active:translate-y-0`}
+                  className="flex items-center gap-3 px-7 py-4 border rounded-full font-medium transition-colors border-blue-500/30 hover:bg-blue-500/20 backdrop-blur-sm text-white"
                 >
-                  <Gamepad className={`w-5 h-5 ${darkMode ? 'text-blue-300' : 'text-blue-600'} group-hover:animate-bounce transition-colors duration-300`} />
-                  EXPLORE SERVICES
-                </button>
-              </div>
+                  <Gamepad className="w-5 h-5" />
+                  Explore Our Services
+                </motion.button>
+              </motion.div>
               
-              {/* Stats bar - gaming achievement style with hover effects */}
-              <div className="mt-12 flex flex-wrap gap-8">
-                {STATS.map((stat, index) => (
-                  <div 
-                    key={index}
-                    className={`flex items-center gap-2 cursor-pointer group transform hover:scale-110 transition-all duration-300 p-2 rounded-lg ${darkMode ? 'hover:bg-blue-900/20' : 'hover:bg-blue-100/50'}`}
-                  >
-                    <div className={`w-2 h-10 ${index === 0 ? 'bg-blue-500' : index === 1 ? 'bg-purple-500' : index === 2 ? 'bg-cyan-500' : 'bg-amber-500'} rounded-full shadow-[0_0_10px_rgba(59,130,246,0.7)] group-hover:h-12 transition-all duration-300`}></div>
-                    <div>
-                      <div className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 group-hover:text-blue-600`}>{stat.value}</div>
-                      <div className={`text-xs ${darkMode ? 'text-blue-200' : 'text-blue-700'} transition-colors duration-300`}>{stat.label}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {/* Interactive tip with improved backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
+                className="mt-10 inline-flex items-center text-sm backdrop-blur-md bg-blue-900/20 rounded-full px-5 py-2 border border-blue-800/30"
+              >
+                <span className="text-blue-300 mr-2">💡</span>
+                <span className="text-gray-200">Tip: Click and drag to interact with the 3D model</span>
+              </motion.div>
             </div>
           </div>
-        </section>        {/* Gaming-themed Key Features Section */}
+        </section>
+
+        {/* Gaming-themed Key Features Section */}
         <section className={`py-24 px-4 md:px-8 relative ${darkMode ? '' : 'bg-gray-100/70'} transition-colors duration-300`} ref={servicesRef}>
           {/* Interactive background elements */}
           {darkMode && (
@@ -660,7 +642,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                     </h3>
                     <div className={`absolute -bottom-2 left-0 h-0.5 w-16 bg-gradient-to-r from-${service.color}-500 to-transparent group-hover:w-32 transition-all duration-500`}></div>
                   </div>
-                    <p className={`mb-6 ${darkMode ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-600 group-hover:text-gray-800'} transition-colors mt-4`}>
+                    <p className={`mb-6 ${darkMode ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-600 group-hover:text-gray-900'} transition-colors mt-4`}>
                     {service.description}
                   </p>
                     {/* Features with gaming-style checkmarks */}
@@ -1122,7 +1104,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                   onClick={() => window.open('https://example.com/gameplay-demo', '_blank')}
                 >
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300">VIEW GAMEPLAY</span>
-                  <span className="absolute -inset-1 rounded-lg bg-gradient-to-r from-blue-600/0 via-blue-600/0 to-purple-600/0 group-hover:from-blue-600/10 group-hover:via-blue-600/5 group-hover:to-purple-600/10 blur-md transition-all opacity-0 group-hover:opacity-100"></span>
+                  <span className="absolute -inset-1 rounded-lg bg-gradient-to-r from-blue-600/0 via-blue-600/0 to-purple-600/0 group-hover:from-blue-600/10 group-hover:via-blue-600/5 group_hover:to-purple-600/10 blur-md transition-all opacity-0 group-hover:opacity-100"></span>
                 </button>
               </div>
               
