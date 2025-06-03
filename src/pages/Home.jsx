@@ -1734,8 +1734,7 @@ function Home({ theme, toggleTheme }) {
 
 
         <ProcessTimeline />
-        
-              <section className="py-24 px-4">
+                      <section className="py-24 px-4">
                 <div className="max-w-5xl mx-auto text-center">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -1824,6 +1823,8 @@ function Home({ theme, toggleTheme }) {
                   </motion.div>
                 </div>
               </section>
+        
+
       </div>
     </PageTransition>
   );

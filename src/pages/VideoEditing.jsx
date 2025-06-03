@@ -14,13 +14,12 @@ import {
   Check, VideoIcon // add missing icons
 } from "lucide-react";
 
-// Constants reorganized for better structure
 const COMPANY_LOGOS = [
   'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png', // Instagram
   'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1200px-Amazon_logo.svg.png', // Amazon
-  'https://www.hbo.com/favicon.ico', // HBO
+  'https://www.hbo.com/favicon.ico', 
   'https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg', // YouTube
-  'https://i.vimeocdn.com/favicon/vimeo.ico', // Vimeo
+  'https://i.vimeocdn.com/favicon/vimeo.ico', 
 ];
 
 const CERTIFICATIONS = [
@@ -87,7 +86,6 @@ const TESTIMONIALS = [
 ];
 
 
-// First, update the WHY_CHOOSE_US_CONTENT array with mobile responsive considerations
 const WHY_CHOOSE_US_CONTENT = [
   {
     title: "Professional Video Editing",

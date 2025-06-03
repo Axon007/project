@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import PageTransition from '../components/PageTransition';
 import { ContainerScroll } from "../components/ui/container-scroll-animation"; 
-import { NeonGradientCard } from "@/components/magicui/neon-gradient-card";
-
 import Iphone15Pro from "@/components/magicui/iphone-15-pro";
 import { 
   Code, Smartphone, Zap, Shield, 
@@ -12,7 +10,6 @@ import {
   Layout
 } from "lucide-react";
 
-// Component to create the animated cosmic sphere
 const CosmicSphere = () => {
   return (
     <div className="absolute right-24 top-40 h-80 w-80 lg:w-96 lg:h-96 blur-3xl rounded-full bg-gradient-to-br from-primary/30 via-purple-600/20 to-blue-600/30 animate-slow-spin hidden lg:block" />
@@ -251,24 +248,7 @@ function AppDevelopment() {
   <div className="absolute top-0 right-0 w-[45vw] h-[45vw] max-w-[800px] max-h-[800px] bg-primary/20 rounded-full filter blur-[120px] opacity-70 -z-10"></div>
   <div className="absolute bottom-10 left-10 w-[30vw] h-[30vw] max-w-[600px] max-h-[600px] bg-blue-500/20 rounded-full filter blur-[100px] opacity-60 -z-10"></div>
   
-  {/* Animated floating particles */}
-  <div className="particle-container absolute inset-0 -z-5">
-    {[...Array(20)].map((_, i) => (
-      <div 
-        key={i}
-        className="absolute rounded-full bg-primary/30 animate-float"
-        style={{
-          width: `${Math.random() * 10 + 5}px`,
-          height: `${Math.random() * 10 + 5}px`,
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          animationDuration: `${Math.random() * 20 + 15}s`,
-          animationDelay: `${Math.random() * 5}s`,
-        }}
-      />
-    ))}
-  </div>
-  
+
   {/* Top Half - Header Content */}
   <div className="container mx-auto px-4 md:px-6 z-10 pt-20 flex-1 flex items-center justify-center">
     <div className="text-center max-w-4xl">
@@ -280,13 +260,13 @@ function AppDevelopment() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 backdrop-blur-sm shadow-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 backdrop-blur-sm shadow-sm"
         >
           <span className="relative flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
           </span>
-          <span className="text-sm font-medium text-primary">Next-Gen Mobile Development</span>
+          <span className="text-sm font-medium text-primary">Next-Generation App Development</span>
           <span className="px-2 py-0.5 bg-primary/20 text-xs font-semibold rounded-full text-primary ml-1">2025</span>
         </motion.div>
 
@@ -295,12 +275,12 @@ function AppDevelopment() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 dark:text-white sm:text-7xl mb-8 relative">
-            <span className="inline-block">Crafting Digital</span>{" "}
+          <h1 className="text-5xl font-bold tracking-tight text-balance text-light-800 dark:text-white sm:text-7xl mb-8 relative leading-tight">
+            <span className="inline-block">Transforming Ideas Into</span>{" "}
             <span className="inline-block relative">
               <span className="relative z-10 inline-block">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-500">
-                  Experiences
+                  Exceptional
                 </span>
                 <svg className="absolute -bottom-2 w-full" viewBox="0 0 418 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M2 11C139.333 -1.66666 275.333 -1.66667 416 11" stroke="url(#paint0_linear)" strokeWidth="3" strokeLinecap="round">
@@ -315,7 +295,7 @@ function AppDevelopment() {
                 </svg>
               </span>
             </span>{" "}
-            <span className="inline-block mt-2 sm:mt-0">That Drive <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-primary">Results</span></span>
+            <span className="inline-block mt-2 sm:mt-0">Mobile <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-primary">Experiences</span></span>
           </h1>
         </motion.div>
         
@@ -323,36 +303,36 @@ function AppDevelopment() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-lg text-foreground/70 mb-10 max-w-2xl mx-auto leading-relaxed"
+          className="text-lg text-foreground/70 mb-12 max-w-3xl mx-auto leading-relaxed"
         >
-          We craft cutting-edge mobile experiences that engage users and drive business growth. 
-          From concept to launch, our expert team brings your <span className="text-primary font-medium">vision to life</span>.
+          We design and build cutting-edge mobile applications that deliver <span className="text-primary font-medium">seamless user experiences</span> and drive measurable business growth.
         </motion.p>
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="flex flex-wrap gap-4 justify-center"
-        >
-          <a 
-            href="#contact" 
-            className="px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group"
-          >
-            Start Your Project
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </a>
-          
-          <a 
-            href="#portfolio" 
-            className="px-8 py-4 bg-secondary/10 backdrop-blur-sm border border-secondary/20 text-foreground rounded-xl font-medium hover:bg-secondary/20 transition-all flex items-center justify-center gap-2 group"
-          >
-            View Our Work
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
-              <path d="m9 18 6-6-6-6"/>
-            </svg>
-          </a>
-        </motion.div>
+<motion.div 
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.7 }}
+  className="flex flex-wrap gap-4 justify-center"
+>
+<a 
+  href="#contact" 
+  className="px-8 py-4 bg-white text-black dark:text-black rounded-xl font-medium hover:bg-gray-100 transition-all hover:shadow-lg hover:shadow-black/10 flex items-center justify-center gap-2 group"
+>
+  Start Your Project
+  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+</a>
+
+  
+  <a 
+    href="#portfolio" 
+    className="px-8 py-4 bg-secondary/10 backdrop-blur-sm border border-secondary/20 text-foreground rounded-xl font-medium hover:bg-secondary/20 transition-all flex items-center justify-center gap-2 group"
+  >
+    View Our Work
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
+      <path d="m9 18 6-6-6-6"/>
+    </svg>
+  </a>
+</motion.div>
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -541,25 +521,7 @@ function AppDevelopment() {
         </div>
       </motion.div>
         {/* Enhanced interactive elements around iPhone */}
-      <motion.div 
-        className="absolute -top-6 -left-6 w-12 h-12 bg-gradient-to-br from-primary/30 to-blue-500/30 rounded-full cursor-pointer"
-        animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.6, 1, 0.6],
-          boxShadow: ["0 0 0px rgba(99,102,241,0.2)", "0 0 20px rgba(99,102,241,0.4)", "0 0 0px rgba(99,102,241,0.2)"]
-        }}
-        transition={{ 
-          duration: 3,
-          repeat: Infinity,
-          repeatType: "loop"
-        }}
-        whileHover={{ 
-          scale: 1.3, 
-          opacity: 0.9, 
-          background: "radial-gradient(circle, rgba(99,102,241,0.4) 0%, rgba(59,130,246,0.3) 100%)"
-        }}
-      />
-      
+
       <motion.div 
         className="absolute -bottom-8 -right-8 w-16 h-16 bg-gradient-to-tr from-blue-500/30 to-violet-500/30 rounded-full cursor-pointer"
         animate={{ 
@@ -620,47 +582,53 @@ function AppDevelopment() {
         }}
       />
       
-      {/* Add floating code snippets/UI elements that appear on hover */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8, x: -20 }}
-        whileInView={{ opacity: 1, scale: 1, x: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="absolute -left-32 top-20 hidden md:block"
-      >
-        <motion.div 
-          className="w-24 h-24 bg-white/5 backdrop-blur-md rounded-lg shadow-lg border border-white/10 p-3 flex flex-col justify-between cursor-pointer"
-          whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)" }}
-        >
-          <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path><path d="M14 15l3-3-3-3"></path></svg>
-          </div>
-          <div>
-            <div className="h-1.5 w-12 bg-white/20 rounded-full mb-1.5"></div>
-            <div className="h-1.5 w-8 bg-white/15 rounded-full"></div>
-          </div>
-        </motion.div>
-      </motion.div>
-      
-      <motion.div
+
+<motion.div
         initial={{ opacity: 0, scale: 0.8, x: 20 }}
         whileInView={{ opacity: 1, scale: 1, x: 0 }}
         transition={{ delay: 0.7, duration: 0.5 }}
-        className="absolute -right-28 bottom-32 hidden md:block"
+        className="absolute -right-32 bottom-[-120px] hidden md:block w-[30rem] z-10" // Reduced width from 70rem to 30rem and positioned lower
       >
-        <motion.div 
-          className="w-28 h-16 bg-white/5 backdrop-blur-md rounded-lg shadow-lg border border-white/10 p-3 flex items-center gap-3 cursor-pointer"
-          whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1)" }}
+
+{/* Content container */}
+  <div className="p-6 md:p-8 rounded-2xl bg-secondary/5 border border-gray-300 backdrop-blur-sm shadow-xl"> {/* Reduced padding */}
+    <div className="flex flex-col md:flex-row items-center justify-between gap-6"> {/* Reduced gap */}
+      <div className="max-w-xs"> {/* Reduced text container width */}
+        <h3 className="text-xl font-bold mb-2">Transform Your App Experience</h3> {/* Reduced heading size */}
+        <p className="text-foreground/70 mb-4 text-sm"> {/* Smaller text and margin */}
+          Our micro-interaction design system adds polish to your application, creating memorable experiences users love.
+        </p>
+        <div className="flex flex-wrap gap-2"> {/* Reduced gap between tags */}
+          <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs border border-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Improved Engagement
+          </div>
+          <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs border border-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Higher Retention
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-xl overflow-hidden shadow-lg border border-gray-300 w-36"> {/* Reduced video container size */}
+        <video 
+          width="144" 
+          height="108" 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="w-full h-auto"
+          poster="https://placehold.co/144x108/2a2a3c/FFFFFF/png?text=Micro-Demo"
         >
-          <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500"><path d="M12 17.8 5.8 21 7 14.1 2 9.3l7-1L12 2l3 6.3 7 1-5 4.8 1.2 6.9-6.2-3.2Z"></path></svg>
-          </div>
-          <div>
-            <div className="h-1.5 w-10 bg-white/20 rounded-full mb-1.5"></div>
-            <div className="h-1.5 w-8 bg-white/15 rounded-full"></div>
-          </div>
-        </motion.div>
+          <source src="your-interaction-demo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
       </motion.div>
-      
       <motion.div 
         className="absolute top-2/3 -right-12 w-10 h-10 bg-green-500/20 rounded-full"
         animate={{ 
@@ -678,61 +646,10 @@ function AppDevelopment() {
   </div>
   
 
-<div className="mt-20 px-10"> {/* Added px-10 for side padding */}
-  <div className="p-8 rounded-2xl bg-secondary/5 border border-gray-300 backdrop-blur-sm"> {/* Updated border */}
-    <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-      <div className="max-w-lg">
-        <h3 className="text-2xl font-bold mb-3">Transform Your App Experience</h3>
-        <p className="text-foreground/70 mb-6">
-          Our micro-interaction design system adds polish to your application, creating memorable experiences that users love.
-        </p>
-        <div className="flex flex-wrap gap-4">
-          <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm border border-gray-200"> {/* Optional: border for each badge */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Improved Engagement
-          </div>
-          <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm border border-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Reduced Friction
-          </div>
-          <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm border border-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Higher Retention
-          </div>
-        </div>
-      </div>
-      
-      <div className="rounded-xl overflow-hidden shadow-lg border border-gray-300"> {/* Added grey border here */}
-        <video 
-          width="320" 
-          height="240" 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="w-full h-auto"
-          poster="https://placehold.co/320x240/2a2a3c/FFFFFF/png?text=Micro-interactions+Demo"
-        >
-          <source src="your-interaction-demo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    </div>
-  </div>
-</div>
 
-  
-  <style jsx="true">{`
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(10deg); }
-      100% { transform: translateY(0) rotate(0deg); }
-    }
-    
-    .animate-float {
-      animation: float linear infinite;
-    }
-  `}</style>
+
+
+
 </section>
 
 
@@ -845,7 +762,7 @@ function AppDevelopment() {
   
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-16 relative z-10">
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6 backdrop-blur-md">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M21 9V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h4"></path><path d="M16 16h6"></path><path d="M19 13v6"></path></svg>
         Next-Gen UI
       </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-violet-500">
@@ -1238,7 +1155,7 @@ function AppDevelopment() {
         },
         {
           title: "Smart Forms",
-          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"></path><line x1="9" y1="9" x2="10" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line></svg>,
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2H6"></path><line x1="9" y1="9" x2="10" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line></svg>,
           description: "Intelligent forms with real-time validation and contextual input assistance."
         }
       ].map((feature, index) => (
@@ -1269,7 +1186,7 @@ function AppDevelopment() {
         </div>
         <a 
           href="#demo" 
-          className="px-8 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group whitespace-nowrap"
+          className="px-8 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group"
         >
           Watch Demo
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 group-hover:translate-x-1 transition-transform"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -1463,7 +1380,7 @@ function AppDevelopment() {
       </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
         What Our Clients Say
       </h2>
-      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+      <p className="text-lg text-foreground/70">
         Real feedback from businesses we've helped achieve their app development goals.
       </p>
     </div>
@@ -1654,36 +1571,7 @@ function AppDevelopment() {
               </div>
             </div>
             
-            {/* Design Templates Preview */}
-            <div className="mt-20 text-center">
-              <h3 className="text-2xl font-bold mb-8">
-                Choose from 100+ design templates
-              </h3>
-              
-              <div className="flex flex-wrap justify-center gap-4 mb-12">
-                {[
-                  { color: "primary", label: "E-commerce" },
-                  { color: "primary", label: "Social Media" },
-                  { color: "primary", label: "Fitness" },
-                  { color: "primary", label: "Food Delivery" },
-                  { color: "primary", label: "Travel" },
-                  { color: "primary", label: "Finance" },
-                ].map((category, index) => (
-                  <motion.button
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm"
-                  >
-                    {category.label}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
+
           </div>
         </section>
 
@@ -1720,27 +1608,6 @@ function AppDevelopment() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
               {services.map((service, index) => (
                 <ServiceCard key={index} {...service} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Rest of the sections remain unchanged */}
-        {/* Pricing Section */}
-        <section className="py-20 px-4 relative">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-                Pricing Plans
-              </h2>
-              <p className="text-lg text-foreground/70">
-                Choose the perfect plan for your app development needs
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-              {pricing.map((plan, index) => (
-                <PriceCard key={index} {...plan} />
               ))}
             </div>
           </div>
