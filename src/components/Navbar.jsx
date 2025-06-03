@@ -4,10 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MoonStar, Sun, Menu, X, ArrowUpRight, ChevronDown, Code, Cloud, Brain, Gamepad2, Palette, VideoIcon, Share2 } from 'lucide-react';
 
 const NAVIGATION_LINKS = [
+
   { name: 'Services', path: '#', hasDropdown: true },
-  { name: 'Consulting', path: '/consulting' },
-  { name: 'Contact', path: '/contact' },
-  { name: 'Blog', path: '/blog' }
+  { name: 'About', path: '/about' },
+  { name: 'Contact', path: '/contact' },  
 ];
 
 const SERVICES = [

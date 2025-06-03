@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 
 // Lazy load all page components
 const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
 const WebDevelopment = lazy(() => import('./pages/WebDevelopment'));
 const GamingDevServices = lazy(() => import('./pages/GameDevelopment '));
 const LogoDesign = lazy(() => import('./pages/LogoDesign'));
@@ -67,6 +68,7 @@ function AppContent() {
         <Suspense fallback={<LoadingFallback />}>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home theme={theme} toggleTheme={toggleTheme} />} />
+            <Route path="/about" element={<About />} />
             <Route path="/web-development" element={<WebDevelopment />} />
             <Route path="/game-development" element={<GamingDevServices theme={theme} toggleTheme={toggleTheme} />} />
             <Route path="/logo-design" element={<LogoDesign />} />
