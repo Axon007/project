@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, memo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Spline from '@splinetool/react-spline';
 import { 
@@ -469,6 +469,63 @@ const SvgFace = (props) => (
   </svg>
 );
 
+// Constants for company logos
+const COMPANY_LOGOS = [
+  'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg'
+];
+
+// Trusted by companies section
+const Trusted = memo(() => {
+  return (
+    <section className="py-3 md:py-6 lg:py-8 overflow-hidden dark:bg-gray-900">
+      <div className="relative z-10 max-w-7xl mx-auto min-h-[120px]">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          style={{ contain: 'paint layout' }}
+          className="text-center mb-8"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5"
+          >
+            <span className="text-sm font-semibold text-primary"> TRUSTED BY INDUSTRY LEADERS</span>
+          </motion.div>
+        </motion.div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
+          {COMPANY_LOGOS.map((logo, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.4 }}
+              className="flex items-center justify-center"
+            >
+              <div className="p-4 w-full flex justify-center">
+                <img 
+                  src={logo} 
+                  alt={`Partner company ${index + 1}`} 
+                  className="h-12 opacity-80" 
+                />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+});
+
 function ComputerVisionPage() {
   const [splineError, setSplineError] = useState(false);
   
@@ -558,39 +615,370 @@ function ComputerVisionPage() {
         </div>
       </section>
       
-      {/* Client Logos */}
-      <section className="py-16 bg-secondary/5">
+      {/* Trusted by Companies */}
+      <Trusted />
+      
+       
+      {/* Implementation Process Stepper */}
+      <section className="py-24">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <span className="text-foreground/60 font-medium">Trusted by innovation leaders</span>
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+              Implementation Process
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
+              Your Journey to Vision Intelligence
+            </h2>
+            <p className="text-lg text-foreground/70">
+              Follow our proven step-by-step process to implement cutting-edge computer vision solutions for your business.
+            </p>
           </div>
-          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-10 w-32 bg-foreground/10 rounded-lg filter grayscale hover:grayscale-0 transition-all"></div>
-            ))}
-          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="bg-card rounded-3xl border border-border p-8 shadow-xl relative overflow-hidden"
+          >
+            <BorderBeam size={120} duration={10} />
+            
+            <Stepper 
+              initialStep={1}
+              onFinalStepCompleted={() => console.log('Implementation process completed!')}
+              contentClassName="bg-gradient-to-br from-secondary/10 to-primary/5 rounded-2xl p-8 border border-border/30"
+              footerClassName="mt-8"
+            >
+              <Step>
+                <div className="space-y-6">
+                  <div className="text-center mb-8">
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                      <Search className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Requirements Analysis</h3>
+                    <p className="text-foreground/70">Understanding your specific computer vision needs and objectives</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
+                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <Eye className="w-4 h-4 text-primary" />
+                          </div>
+                          Discovery Phase
+                        </h4>
+                        <ul className="space-y-3">
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Business objectives assessment and alignment</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Current system evaluation and integration points</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Technical requirements and constraints analysis</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Performance expectations and success metrics</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-xl p-6 border border-blue-200/30 dark:border-blue-800/30">
+                        <div className="text-center">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                            <BrainCircuit className="w-8 h-8 text-white" />
+                          </div>
+                          <h5 className="font-semibold mb-2">Smart Analysis</h5>
+                          <p className="text-sm text-foreground/70">
+                            We conduct comprehensive analysis to ensure the perfect solution fit for your unique requirements.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-card rounded-xl p-4 border border-border/30">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-foreground/60">Timeline</span>
+                          <span className="font-medium text-primary">1-2 weeks</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Step>
+
+              <Step>
+                <div className="space-y-6">
+                  <div className="text-center mb-8">
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                      <Code className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Solution Design</h3>
+                    <p className="text-foreground/70">Architecting your custom computer vision system for optimal performance</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
+                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                            <Cpu className="w-4 h-4 text-blue-500" />
+                          </div>
+                          Architecture Planning
+                        </h4>
+                        <ul className="space-y-3">
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">AI model selection and customization strategy</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Infrastructure design and scalability planning</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Integration strategy and API design</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Performance optimization and resource allocation</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 rounded-xl p-6 border border-cyan-200/30 dark:border-cyan-800/30">
+                        <div className="text-center">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+                            <Settings className="w-8 h-8 text-white" />
+                          </div>
+                          <h5 className="font-semibold mb-2">Intelligent Design</h5>
+                          <p className="text-sm text-foreground/70">
+                            Custom architecture tailored to your specific use case and performance requirements.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-card rounded-xl p-4 border border-border/30">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-foreground/60">Timeline</span>
+                          <span className="font-medium text-blue-500">2-3 weeks</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Step>
+
+              <Step>
+                <div className="space-y-6">
+                  <div className="text-center mb-8">
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                      <Database className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Development & Training</h3>
+                    <p className="text-foreground/70">Building and training your advanced vision models with cutting-edge techniques</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
+                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                            <BrainCircuit className="w-4 h-4 text-purple-500" />
+                          </div>
+                          Model Development
+                        </h4>
+                        <ul className="space-y-3">
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Custom dataset preparation and augmentation</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Advanced neural network training and optimization</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Model validation and accuracy benchmarking</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Performance fine-tuning and optimization</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl p-6 border border-purple-200/30 dark:border-purple-800/30">
+                        <div className="text-center">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                            <Activity className="w-8 h-8 text-white" />
+                          </div>
+                          <h5 className="font-semibold mb-2">Advanced Training</h5>
+                          <p className="text-sm text-foreground/70">
+                            State-of-the-art machine learning pipelines with continuous validation and improvement.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-card rounded-xl p-4 border border-border/30">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-foreground/60">Timeline</span>
+                          <span className="font-medium text-purple-500">4-6 weeks</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Step>
+
+              <Step>
+                <div className="space-y-6">
+                  <div className="text-center mb-8">
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                      <Eye className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Integration & Testing</h3>
+                    <p className="text-foreground/70">Seamless integration with comprehensive testing and validation</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
+                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
+                            <Activity className="w-4 h-4 text-green-500" />
+                          </div>
+                          System Integration
+                        </h4>
+                        <ul className="space-y-3">
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">API development and comprehensive documentation</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Real-time processing implementation and optimization</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Comprehensive testing and quality assurance</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Security audit and compliance verification</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl p-6 border border-green-200/30 dark:border-green-800/30">
+                        <div className="text-center">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                            <CheckCircle className="w-8 h-8 text-white" />
+                          </div>
+                          <h5 className="font-semibold mb-2">Quality Assurance</h5>
+                          <p className="text-sm text-foreground/70">
+                            Rigorous testing ensures reliability, security, and optimal performance in production.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-card rounded-xl p-4 border border-border/30">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-foreground/60">Timeline</span>
+                          <span className="font-medium text-green-500">2-3 weeks</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Step>
+
+              <Step>
+                <div className="space-y-6">
+                  <div className="text-center mb-8">
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                      <ArrowRight className="w-10 h-10 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Deployment & Support</h3>
+                    <p className="text-foreground/70">Going live with continuous monitoring and optimization support</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
+                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                            <PieChart className="w-4 h-4 text-amber-500" />
+                          </div>
+                          Launch & Maintenance
+                        </h4>
+                        <ul className="space-y-3">
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Production deployment with monitoring systems</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Team training and comprehensive knowledge transfer</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">Continuous model improvement and optimization</span>
+                          </li>
+                          <li className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">24/7 technical support and maintenance</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-xl p-6 border border-amber-200/30 dark:border-amber-800/30">
+                        <div className="text-center">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                            <Database className="w-8 h-8 text-white" />
+                          </div>
+                          <h5 className="font-semibold mb-2">Ongoing Success</h5>
+                          <p className="text-sm text-foreground/70">
+                            Complete support ecosystem for long-term success and continuous improvement.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-card rounded-xl p-4 border border-border/30">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-foreground/60">Timeline</span>
+                          <span className="font-medium text-amber-500">Ongoing</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-8 text-center">
+                    <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-purple-500 text-white rounded-xl font-medium shadow-lg">
+                      <CheckCircle className="w-5 h-5" />
+                      Your Computer Vision Solution is Live!
+                    </div>
+                  </div>
+                </div>
+              </Step>
+            </Stepper>
+          </motion.div>
         </div>
       </section>
-      
-      {/* Animated AI Network Visualization */}
-      <div className="relative overflow-hidden h-[500px] w-full my-16">
-        <OrbitingCircles>
-          <SvgCamera />
-          <SvgEye />
-          <SvgNeural />
-          <SvgImage />
-          <SvgBoundingBox />
-          <SvgFace />
-        </OrbitingCircles>
-        <OrbitingCircles radius={100} reverse duration={16}>
-          <SvgCamera />
-          <SvgEye />
-          <SvgNeural />
-          <SvgImage />
-          <SvgBoundingBox />
-          <SvgFace />
-        </OrbitingCircles>
-      </div>
       
       {/* Services Section */}
       <section className="py-24" id="services">
@@ -971,8 +1359,68 @@ function ComputerVisionPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-32">
+
+      
+       {/* Enhanced CTA Section */}
+       <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-cyan-500/10" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <BlurFade delay={0.1}>
+              <h2 className="text-4xl md:text-6xl font-black mb-8">
+                <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                  Ready to Transform
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent">
+                  Your Vision?
+                </span>
+              </h2>
+            </BlurFade>
+            
+            <BlurFade delay={0.2}>
+              <p className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed">
+                Join thousands of companies already using our AI vision platform to unlock insights from their visual data.
+              </p>
+            </BlurFade>
+            
+            <BlurFade delay={0.3}>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <ShimmerButton className="shadow-2xl">
+                  Start Your Free Trial
+                </ShimmerButton>
+                
+                <button className="group inline-flex items-center px-8 py-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-foreground font-medium hover:bg-white/10 transition-all duration-300">
+                  Schedule Demo
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </BlurFade>
+            
+            <BlurFade delay={0.4}>
+              <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>14-day free trial</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>No credit card required</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>Full feature access</span>
+                </div>
+              </div>
+            </BlurFade>
+          </div>
+        </div>
+      </section>
+
+        {/* Testimonials Section */}
+        <section className="py-32">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center mb-20">
             <BlurFade delay={0.1}>
@@ -1056,537 +1504,6 @@ function ComputerVisionPage() {
               ))}
             </div>
           </BlurFade>
-        </div>
-      </section>
-
-      {/* Enhanced CTA Section */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-cyan-500/10" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <BlurFade delay={0.1}>
-              <h2 className="text-4xl md:text-6xl font-black mb-8">
-                <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                  Ready to Transform
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent">
-                  Your Vision?
-                </span>
-              </h2>
-            </BlurFade>
-            
-            <BlurFade delay={0.2}>
-              <p className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed">
-                Join thousands of companies already using our AI vision platform to unlock insights from their visual data.
-              </p>
-            </BlurFade>
-            
-            <BlurFade delay={0.3}>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <ShimmerButton className="shadow-2xl">
-                  Start Your Free Trial
-                </ShimmerButton>
-                
-                <button className="group inline-flex items-center px-8 py-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-foreground font-medium hover:bg-white/10 transition-all duration-300">
-                  Schedule Demo
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </BlurFade>
-            
-            <BlurFade delay={0.4}>
-              <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>14-day free trial</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>No credit card required</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Full feature access</span>
-                </div>
-              </div>
-            </BlurFade>
-          </div>
-        </div>
-      </section>
-      
-      {/* How It Works Section */}
-  
-      
-      {/* Implementation Process Stepper */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
-              Implementation Process
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
-              Your Journey to Vision Intelligence
-            </h2>
-            <p className="text-lg text-foreground/70">
-              Follow our proven step-by-step process to implement cutting-edge computer vision solutions for your business.
-            </p>
-          </div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="bg-card rounded-3xl border border-border p-8 shadow-xl relative overflow-hidden"
-          >
-            <BorderBeam size={120} duration={10} />
-            
-            <Stepper 
-              initialStep={1}
-              onFinalStepCompleted={() => console.log('Implementation process completed!')}
-              contentClassName="bg-gradient-to-br from-secondary/10 to-primary/5 rounded-2xl p-8 border border-border/30"
-              footerClassName="mt-8"
-            >
-              <Step>
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
-                      <Search className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">Requirements Analysis</h3>
-                    <p className="text-foreground/70">Understanding your specific computer vision needs and objectives</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
-                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                            <Eye className="w-4 h-4 text-primary" />
-                          </div>
-                          Discovery Phase
-                        </h4>
-                        <ul className="space-y-3">
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Business objectives assessment and alignment</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Current system evaluation and integration points</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Technical requirements and constraints analysis</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Performance expectations and success metrics</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-xl p-6 border border-blue-200/30 dark:border-blue-800/30">
-                        <div className="text-center">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                            <BrainCircuit className="w-8 h-8 text-white" />
-                          </div>
-                          <h5 className="font-semibold mb-2">Smart Analysis</h5>
-                          <p className="text-sm text-foreground/70">
-                            We conduct comprehensive analysis to ensure the perfect solution fit for your unique requirements.
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-card rounded-xl p-4 border border-border/30">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-foreground/60">Timeline</span>
-                          <span className="font-medium text-primary">1-2 weeks</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Step>
-
-              <Step>
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-                      <Code className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">Solution Design</h3>
-                    <p className="text-foreground/70">Architecting your custom computer vision system for optimal performance</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
-                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                            <Cpu className="w-4 h-4 text-blue-500" />
-                          </div>
-                          Architecture Planning
-                        </h4>
-                        <ul className="space-y-3">
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">AI model selection and customization strategy</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Infrastructure design and scalability planning</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Integration strategy and API design</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Performance optimization and resource allocation</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      <div className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 rounded-xl p-6 border border-cyan-200/30 dark:border-cyan-800/30">
-                        <div className="text-center">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-                            <Settings className="w-8 h-8 text-white" />
-                          </div>
-                          <h5 className="font-semibold mb-2">Intelligent Design</h5>
-                          <p className="text-sm text-foreground/70">
-                            Custom architecture tailored to your specific use case and performance requirements.
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-card rounded-xl p-4 border border-border/30">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-foreground/60">Timeline</span>
-                          <span className="font-medium text-blue-500">2-3 weeks</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Step>
-
-              <Step>
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                      <Database className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">Development & Training</h3>
-                    <p className="text-foreground/70">Building and training your advanced vision models with cutting-edge techniques</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
-                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                            <BrainCircuit className="w-4 h-4 text-purple-500" />
-                          </div>
-                          Model Development
-                        </h4>
-                        <ul className="space-y-3">
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Custom dataset preparation and augmentation</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Advanced neural network training and optimization</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Model validation and accuracy benchmarking</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Performance fine-tuning and optimization</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl p-6 border border-purple-200/30 dark:border-purple-800/30">
-                        <div className="text-center">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                            <Activity className="w-8 h-8 text-white" />
-                          </div>
-                          <h5 className="font-semibold mb-2">Advanced Training</h5>
-                          <p className="text-sm text-foreground/70">
-                            State-of-the-art machine learning pipelines with continuous validation and improvement.
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-card rounded-xl p-4 border border-border/30">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-foreground/60">Timeline</span>
-                          <span className="font-medium text-purple-500">4-6 weeks</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Step>
-
-              <Step>
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                      <Eye className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">Integration & Testing</h3>
-                    <p className="text-foreground/70">Seamless integration with comprehensive testing and validation</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
-                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
-                            <Activity className="w-4 h-4 text-green-500" />
-                          </div>
-                          System Integration
-                        </h4>
-                        <ul className="space-y-3">
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">API development and comprehensive documentation</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Real-time processing implementation and optimization</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Comprehensive testing and quality assurance</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Security audit and compliance verification</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl p-6 border border-green-200/30 dark:border-green-800/30">
-                        <div className="text-center">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                            <CheckCircle className="w-8 h-8 text-white" />
-                          </div>
-                          <h5 className="font-semibold mb-2">Quality Assurance</h5>
-                          <p className="text-sm text-foreground/70">
-                            Rigorous testing ensures reliability, security, and optimal performance in production.
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-card rounded-xl p-4 border border-border/30">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-foreground/60">Timeline</span>
-                          <span className="font-medium text-green-500">2-3 weeks</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Step>
-
-              <Step>
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
-                      <ArrowRight className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">Deployment & Support</h3>
-                    <p className="text-foreground/70">Going live with continuous monitoring and optimization support</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-6">
-                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
-                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                            <PieChart className="w-4 h-4 text-amber-500" />
-                          </div>
-                          Launch & Maintenance
-                        </h4>
-                        <ul className="space-y-3">
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Production deployment with monitoring systems</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Team training and comprehensive knowledge transfer</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Continuous model improvement and optimization</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">24/7 technical support and maintenance</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-xl p-6 border border-amber-200/30 dark:border-amber-800/30">
-                        <div className="text-center">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
-                            <Database className="w-8 h-8 text-white" />
-                          </div>
-                          <h5 className="font-semibold mb-2">Ongoing Success</h5>
-                          <p className="text-sm text-foreground/70">
-                            Complete support ecosystem for long-term success and continuous improvement.
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-card rounded-xl p-4 border border-border/30">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-foreground/60">Timeline</span>
-                          <span className="font-medium text-amber-500">Ongoing</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-8 text-center">
-                    <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-purple-500 text-white rounded-xl font-medium shadow-lg">
-                      <CheckCircle className="w-5 h-5" />
-                      Your Computer Vision Solution is Live!
-                    </div>
-                  </div>
-                </div>
-              </Step>
-            </Stepper>
-          </motion.div>
-        </div>
-      </section>
-      
-      {/* Case Studies */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
-              Case Studies
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
-              Vision Intelligence in Action
-            </h2>
-            <p className="text-lg text-foreground/70">
-              Explore how our computer vision solutions are solving complex challenges and creating new opportunities across industries.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Manufacturing Quality Control",
-                category: "Manufacturing",
-                image: "https://images.unsplash.com/photo-1621634288783-b9c1176655cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-                description: "Reduced defects by 87% with real-time vision inspection systems that identify product anomalies instantly."
-              },
-              {
-                title: "Smart Retail Analytics",
-                category: "Retail",
-                image: "https://images.unsplash.com/photo-1615900537427-4cf290f8608e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-                description: "Increased sales by 32% with customer behavior analysis and inventory optimization through vision intelligence."
-              },
-              {
-                title: "Medical Imaging Analysis",
-                category: "Healthcare",
-                image: "https://images.unsplash.com/photo-1576671414121-aa0c83dd95ee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-                description: "Revolutionized diagnostics with AI-powered vision systems that detect patterns and anomalies in medical images."
-              },
-            ].map((study, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group overflow-hidden rounded-2xl bg-card border border-border shadow-md hover:shadow-lg transition-shadow relative"
-              >
-                <div className="relative h-60 overflow-hidden">
-                  <img 
-                    src={study.image} 
-                    alt={study.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                    <span className="p-4 text-sm font-medium text-white">{study.category}</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{study.title}</h3>
-                  <p className="text-foreground/70 mb-4">{study.description}</p>
-                  <button className="flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
-                    Read Case Study 
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-                <BorderBeam size={100} duration={6} delay={index} />
-              </motion.div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <button className="px-6 py-3 rounded-xl bg-secondary text-foreground font-medium hover:bg-secondary/80 transition-colors">
-              View All Case Studies
-            </button>
-          </div>
-        </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/10 to-purple-500/10 backdrop-blur-sm">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto bg-card rounded-3xl p-10 shadow-xl border border-border relative overflow-hidden">
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl opacity-50"></div>
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-purple-500/10 rounded-full filter blur-2xl opacity-50"></div>
-            
-            <div className="relative z-10">
-              <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
-                  Ready to Transform Your Visual Data?
-                </h2>
-                <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-                  Let's discuss how our computer vision solutions can help you automate processes, enhance security, and gain valuable insights.
-                </p>
-              </div>
-              
-              <div className="mt-10 flex flex-col md:flex-row gap-6 items-center justify-center">
-                <button className="px-8 py-4 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 w-full md:w-auto relative overflow-hidden">
-                  Contact Us Today
-                  <BorderBeam size={60} />
-                </button>
-                <button className="px-8 py-4 rounded-xl bg-card border border-border text-foreground font-medium hover:bg-secondary/30 transition-colors flex items-center justify-center gap-2 w-full md:w-auto group">
-                  Schedule a Demo
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
       
