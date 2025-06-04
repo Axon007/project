@@ -28,9 +28,6 @@ function ComputerVision() {
     <div className="bg-background min-h-screen">
       {/* Hero Section with 3D model */}
       <section className="relative overflow-hidden pt-24 pb-32">
-        {/* 3D Grid background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10"></div>
-        
         {/* Gradient orbs */}
         <div className="absolute left-1/4 top-1/4 w-64 h-64 bg-blue-500/30 rounded-full filter blur-3xl opacity-30 animate-blob"></div>
         <div className="absolute right-1/4 bottom-1/4 w-64 h-64 bg-emerald-500/30 rounded-full filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>

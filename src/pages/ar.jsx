@@ -1540,27 +1540,24 @@ function ComputerVisionVisualization() {
   return (
     <div 
       ref={containerRef} 
-      className="w-full h-full relative overflow-hidden rounded-xl bg-gradient-to-br from-background to-secondary/20 dark:from-background dark:to-secondary/10"
+      className="w-full h-full relative overflow-hidden rounded-xl"
     >
       {/* Background image */}
       <img 
         src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" 
         alt="Street scene with person" 
-        className="absolute inset-0 w-full h-full object-cover opacity-70 dark:opacity-50"
+        className="absolute inset-0 w-full h-full object-cover"
       />
       
-      {/* Semi-transparent overlay */}
-      <div className="absolute inset-0 bg-background/40 dark:bg-background/60"></div>
-      
       {/* Camera interface elements */}
-      <div className="absolute top-4 left-4 bg-background/80 dark:bg-background/90 backdrop-blur-sm p-2 rounded-lg border border-border/50 dark:border-border/30 flex items-center gap-2 shadow-lg">
-        <Camera size={16} className="text-foreground" />
-        <span className="text-foreground text-xs font-medium">Live Feed</span>
+      <div className="absolute top-4 left-4 bg-black/30 backdrop-blur-sm p-2 rounded-lg border border-white/20 flex items-center gap-2 shadow-lg">
+        <Camera size={16} className="text-white" />
+        <span className="text-white text-xs font-medium">Live Feed</span>
         <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
       </div>
       
-      <div className="absolute top-4 right-4 bg-background/80 dark:bg-background/90 backdrop-blur-sm p-2 rounded-lg border border-border/50 dark:border-border/30 shadow-lg">
-        <div className="text-foreground text-xs font-medium">Processing...</div>
+      <div className="absolute top-4 right-4 bg-black/30 backdrop-blur-sm p-2 rounded-lg border border-white/20 shadow-lg">
+        <div className="text-white text-xs font-medium">Processing...</div>
       </div>
       
       {/* Main person detection */}
@@ -1730,7 +1727,7 @@ function ComputerVisionVisualization() {
       </div>
       
       {/* Grid overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:40px_40px] opacity-30 dark:opacity-20"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       
       {/* Analysis metrics */}
       {/* <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm p-3 rounded-lg border border-white/10 shadow-lg">

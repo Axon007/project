@@ -855,13 +855,9 @@ function AppDevelopment() {
       />
     </motion.div>
   </div>
-  
+    </section>
 
-
-
-
-
-</section>
+    
           {/* App Showcase with iPhone mockup */}
           <div className="container mx-auto px-4 py-16 flex flex-col lg:flex-row items-center">
             <div className="lg:w-1/2 lg:pr-12 mb-12 lg:mb-0">
@@ -880,13 +876,9 @@ function AppDevelopment() {
                 </button>
               </div>
             </div>
-<DevicePlatformShowcase />
+              <DevicePlatformShowcase />
           </div>
-
-
-        
-      
-        <section className="relative py-28 md:py-36 px-4 overflow-hidden">
+    <section className="relative py-28 md:py-36 px-4 overflow-hidden">
           
           <div className="max-w-7xl mx-auto relative z-10">
 
