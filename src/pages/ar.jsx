@@ -239,7 +239,7 @@ export const BorderBeam = ({
 const ShimmerButton = ({ children, className = "" }) => {
   return (
     <motion.button
-      className={`relative inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium overflow-hidden ${className}`}
+      className={`relative inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium overflow-hidden transition-all duration-300 ${className}`}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
@@ -258,7 +258,7 @@ const ShimmerButton = ({ children, className = "" }) => {
 const TextShimmer = ({ children, className = "" }) => {
   return (
     <motion.span
-      className={`inline-block ${className}`}
+      className={`inline-block transition-all duration-300 ${className}`}
       animate={{ opacity: [0.7, 1, 0.7] }}
       transition={{ duration: 2, repeat: Infinity }}
     >
@@ -299,6 +299,7 @@ const BlurFade = ({ children, delay = 0 }) => {
       initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.6, delay }}
+      className="transition-all duration-300"
     >
       {children}
     </motion.div>
@@ -482,7 +483,7 @@ const COMPANY_LOGOS = [
 // Trusted by companies section
 const Trusted = memo(() => {
   return (
-    <section className="py-3 md:py-6 lg:py-8 overflow-hidden dark:bg-gray-900">
+    <section className="py-3 md:py-6 lg:py-8 overflow-hidden bg-background border-t border-border/50">
       <div className="relative z-10 max-w-7xl mx-auto min-h-[120px]">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -495,9 +496,9 @@ const Trusted = memo(() => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 dark:border-primary/30 bg-primary/10 dark:bg-primary/20 backdrop-blur-sm shadow-lg shadow-primary/10 dark:shadow-primary/5"
           >
-            <span className="text-sm font-semibold text-primary"> TRUSTED BY INDUSTRY LEADERS</span>
+            <span className="text-sm font-semibold text-primary">TRUSTED BY INDUSTRY LEADERS</span>
           </motion.div>
         </motion.div>
         
@@ -511,11 +512,11 @@ const Trusted = memo(() => {
               transition={{ delay: index * 0.1, duration: 0.4 }}
               className="flex items-center justify-center"
             >
-              <div className="p-4 w-full flex justify-center">
+              <div className="p-4 w-full flex justify-center group">
                 <img 
                   src={logo} 
                   alt={`Partner company ${index + 1}`} 
-                  className="h-12 opacity-80" 
+                  className="h-12 opacity-60 dark:opacity-50 group-hover:opacity-80 dark:group-hover:opacity-70 transition-opacity duration-300 filter dark:brightness-0 dark:invert" 
                 />
               </div>
             </motion.div>
@@ -541,15 +542,15 @@ function ComputerVisionPage() {
   };
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background min-h-screen transition-colors duration-300">
       {/* Hero Section with 3D model */}
       <section className="relative overflow-hidden pt-24 pb-32">
         {/* 3D Grid background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] -z-10"></div>
         
         {/* Gradient orbs */}
-        <div className="absolute left-1/4 top-1/4 w-64 h-64 bg-primary/30 rounded-full filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute right-1/4 bottom-1/4 w-64 h-64 bg-purple-500/30 rounded-full filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div className="absolute left-1/4 top-1/4 w-64 h-64 bg-primary/20 dark:bg-primary/10 rounded-full filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute right-1/4 bottom-1/4 w-64 h-64 bg-purple-500/20 dark:bg-purple-500/10 rounded-full filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -561,7 +562,7 @@ function ComputerVisionPage() {
               className="flex-1"
             >
               <div className="mb-6">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary border border-primary/20 dark:border-primary/30">
                   Computer Vision Technology
                 </span>
               </div>
@@ -570,16 +571,18 @@ function ComputerVisionPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-500"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
               >
-                Advanced Vision Intelligence Solutions
+                <span className="bg-gradient-to-r from-primary via-purple-500 to-blue-500 bg-clip-text text-transparent">
+                  Advanced Vision Intelligence Solutions
+                </span>
               </motion.h1>
               
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-xl text-foreground/70 mb-8"
+                className="text-xl text-muted-foreground mb-8 leading-relaxed"
               >
                 We develop cutting-edge computer vision systems that enable machines 
                 to accurately perceive, analyze, and understand visual data from the real world.
@@ -591,11 +594,11 @@ function ComputerVisionPage() {
                 transition={{ duration: 0.6, delay: 0.6 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <button className="px-8 py-4 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 relative overflow-hidden">
-                  Schedule a Demo
+                <button className="px-8 py-4 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/25 dark:shadow-primary/20 relative overflow-hidden group">
+                  <span className="relative z-10">Schedule a Demo</span>
                   <BorderBeam size={100} duration={4} />
                 </button>
-                <button className="px-8 py-4 rounded-xl bg-secondary text-foreground font-medium hover:bg-secondary/80 transition-colors flex items-center justify-center gap-2 group">
+                <button className="px-8 py-4 rounded-xl bg-secondary text-secondary-foreground font-medium hover:bg-secondary/80 transition-all duration-300 flex items-center justify-center gap-2 group border border-border">
                   View Our Solutions
                   <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -607,7 +610,7 @@ function ComputerVisionPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="flex-1 h-[500px] w-full rounded-2xl overflow-hidden shadow-xl relative"
+              className="flex-1 h-[500px] w-full rounded-2xl overflow-hidden shadow-xl border border-border/50 relative"
             >
               <ComputerVisionVisualization />
             </motion.div>
@@ -620,16 +623,18 @@ function ComputerVisionPage() {
       
        
       {/* Implementation Process Stepper */}
-      <section className="py-24">
+      <section className="py-24 bg-secondary/5 dark:bg-secondary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary border border-primary/20 dark:border-primary/30 mb-6">
               Implementation Process
             </span>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
-              Your Journey to Vision Intelligence
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+                Your Journey to Vision Intelligence
+              </span>
             </h2>
-            <p className="text-lg text-foreground/70">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               Follow our proven step-by-step process to implement cutting-edge computer vision solutions for your business.
             </p>
           </div>
@@ -646,24 +651,24 @@ function ComputerVisionPage() {
             <Stepper 
               initialStep={1}
               onFinalStepCompleted={() => console.log('Implementation process completed!')}
-              contentClassName="bg-gradient-to-br from-secondary/10 to-primary/5 rounded-2xl p-8 border border-border/30"
+              contentClassName="bg-gradient-to-br from-secondary/20 to-primary/10 dark:from-secondary/30 dark:to-primary/20 rounded-2xl p-8 border border-border/30"
               footerClassName="mt-8"
             >
               <Step>
                 <div className="space-y-6">
                   <div className="text-center mb-8">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center shadow-lg">
                       <Search className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold mb-2">Requirements Analysis</h3>
-                    <p className="text-foreground/70">Understanding your specific computer vision needs and objectives</p>
+                    <h3 className="text-2xl font-bold mb-2 text-foreground">Requirements Analysis</h3>
+                    <p className="text-muted-foreground">Understanding your specific computer vision needs and objectives</p>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-6">
-                      <div className="bg-card rounded-xl p-6 border border-border/50 shadow-sm">
-                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <div className="bg-card/50 dark:bg-card/80 rounded-xl p-6 border border-border/50 shadow-sm backdrop-blur-sm">
+                        <h4 className="font-semibold text-lg mb-4 flex items-center gap-2 text-foreground">
+                          <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
                             <Eye className="w-4 h-4 text-primary" />
                           </div>
                           Discovery Phase
@@ -671,40 +676,40 @@ function ComputerVisionPage() {
                         <ul className="space-y-3">
                           <li className="flex items-start gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Business objectives assessment and alignment</span>
+                            <span className="text-sm text-foreground">Business objectives assessment and alignment</span>
                           </li>
                           <li className="flex items-start gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Current system evaluation and integration points</span>
+                            <span className="text-sm text-foreground">Current system evaluation and integration points</span>
                           </li>
                           <li className="flex items-start gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Technical requirements and constraints analysis</span>
+                            <span className="text-sm text-foreground">Technical requirements and constraints analysis</span>
                           </li>
                           <li className="flex items-start gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm">Performance expectations and success metrics</span>
+                            <span className="text-sm text-foreground">Performance expectations and success metrics</span>
                           </li>
                         </ul>
                       </div>
                     </div>
                     
                     <div className="space-y-6">
-                      <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-xl p-6 border border-blue-200/30 dark:border-blue-800/30">
+                      <div className="bg-gradient-to-br from-blue-50/80 to-purple-50/80 dark:from-blue-950/30 dark:to-purple-950/30 rounded-xl p-6 border border-blue-200/30 dark:border-blue-800/30 backdrop-blur-sm">
                         <div className="text-center">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                          <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shadow-lg">
                             <BrainCircuit className="w-8 h-8 text-white" />
                           </div>
-                          <h5 className="font-semibold mb-2">Smart Analysis</h5>
-                          <p className="text-sm text-foreground/70">
+                          <h5 className="font-semibold mb-2 text-foreground">Smart Analysis</h5>
+                          <p className="text-sm text-muted-foreground">
                             We conduct comprehensive analysis to ensure the perfect solution fit for your unique requirements.
                           </p>
                         </div>
                       </div>
                       
-                      <div className="bg-card rounded-xl p-4 border border-border/30">
+                      <div className="bg-card/50 dark:bg-card/80 rounded-xl p-4 border border-border/30 backdrop-blur-sm">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-foreground/60">Timeline</span>
+                          <span className="text-muted-foreground">Timeline</span>
                           <span className="font-medium text-primary">1-2 weeks</span>
                         </div>
                       </div>
@@ -981,16 +986,18 @@ function ComputerVisionPage() {
       </section>
       
       {/* Services Section */}
-      <section className="py-24" id="services">
+      <section className="py-24 bg-background" id="services">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary border border-primary/20 dark:border-primary/30 mb-6">
               Our Services
             </span>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
-              Computer Vision Solutions
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+                Computer Vision Solutions
+              </span>
             </h2>
-            <p className="text-lg text-foreground/70">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               From object detection to facial recognition, our advanced computer vision solutions help businesses automate processes, enhance security, and gain valuable insights from visual data.
             </p>
           </div>
@@ -1076,19 +1083,19 @@ function ComputerVisionPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-2xl border border-border overflow-hidden group hover:shadow-lg transition-shadow relative"
+                className="bg-card border border-border rounded-2xl overflow-hidden group hover:shadow-lg dark:hover:shadow-primary/5 transition-all duration-300 relative"
               >
                 <div className="p-6">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center text-white mb-6`}>
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center text-white mb-6 shadow-lg`}>
                     {service.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                  <p className="text-foreground/70 mb-6">{service.description}</p>
+                  <h3 className="text-xl font-bold mb-3 text-foreground">{service.title}</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
                   <div className="space-y-3">
                     {service.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2">
                         <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
+                        <span className="text-sm text-foreground">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -1101,13 +1108,13 @@ function ComputerVisionPage() {
       </section>
       
       {/* Services Section - Enhanced Bento Grid */}
-      <section className="py-32">
+      <section className="py-32 bg-background">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center mb-20">
             <BlurFade delay={0.1}>
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 mb-8">
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 dark:from-purple-500/20 dark:to-pink-500/20 border border-purple-500/20 dark:border-purple-500/30 mb-8">
                 <Target className="w-4 h-4 text-purple-500 mr-2" />
-                <span className="text-sm font-medium">Comprehensive Solutions</span>
+                <span className="text-sm font-medium text-foreground">Comprehensive Solutions</span>
               </div>
             </BlurFade>
             
@@ -1136,8 +1143,8 @@ function ComputerVisionPage() {
                 name="Real-time Object Detection"
                 className="col-span-3 lg:col-span-1"
                 background={
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-3xl">
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:20px_20px]" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 dark:from-blue-500/10 dark:to-cyan-500/10 rounded-3xl">
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:20px_20px] opacity-30 dark:opacity-20" />
                     <Meteors number={20} />
                   </div>
                 }
@@ -1150,11 +1157,11 @@ function ComputerVisionPage() {
                 name="Facial Recognition & Analysis"
                 className="col-span-3 lg:col-span-2"
                 background={
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-3xl">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 dark:from-purple-500/10 dark:to-blue-500/10 rounded-3xl">
                     <div className="absolute inset-0 flex items-center justify-center p-8">
-                      <div className="grid grid-cols-4 gap-4 opacity-30">
+                      <div className="grid grid-cols-4 gap-4 opacity-30 dark:opacity-20">
                         {["TensorFlow", "PyTorch", "Python", "OpenCV", "Docker", "Kubernetes", "AWS", "Google Cloud"].slice(0, 8).map((tech, i) => (
-                          <div key={i} className="text-xs p-2 bg-white/10 rounded-lg text-center">
+                          <div key={i} className="text-xs p-2 bg-background/20 dark:bg-background/30 rounded-lg text-center text-foreground/60">
                             {tech}
                           </div>
                         ))}
@@ -1171,13 +1178,13 @@ function ComputerVisionPage() {
                 name="Video Analytics Platform"
                 className="col-span-3 lg:col-span-2"
                 background={
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-3xl">
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 dark:from-emerald-500/10 dark:to-teal-500/10 rounded-3xl">
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="grid grid-cols-8 gap-1 p-8">
                         {Array.from({ length: 64 }).map((_, i) => (
                           <motion.div
                             key={i}
-                            className="w-3 h-3 rounded-sm bg-emerald-500/40"
+                            className="w-3 h-3 rounded-sm bg-emerald-500/40 dark:bg-emerald-500/30"
                             animate={{
                               opacity: [0.2, 0.8, 0.2],
                               scale: [1, 1.2, 1],
@@ -1275,13 +1282,13 @@ function ComputerVisionPage() {
       </section>
 
       {/* Enhanced How It Works Section */}
-      <section className="py-32 bg-gradient-to-b from-transparent to-secondary/5">
+      <section className="py-32 bg-gradient-to-b from-transparent to-secondary/10 dark:to-secondary/5">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center mb-20">
             <BlurFade delay={0.1}>
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 mb-8">
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-green-500/10 to-emerald-500/10 dark:from-green-500/20 dark:to-emerald-500/20 border border-green-500/20 dark:border-green-500/30 mb-8">
                 <Gauge className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Simple Process</span>
+                <span className="text-sm font-medium text-foreground">Simple Process</span>
               </div>
             </BlurFade>
             
@@ -1330,18 +1337,18 @@ function ComputerVisionPage() {
                 }
               ].map((step, index) => (
                 <BlurFade key={index} delay={0.2 * (index + 1)}>
-                  <MagicCard className="h-full">
+                  <MagicCard className="h-full border border-border/50 dark:border-border/30">
                     <div className="p-8">
                       <div className="flex items-start gap-6 mb-6">
-                        <div className="text-6xl font-black text-muted-foreground/20">
+                        <div className="text-6xl font-black text-muted-foreground/20 dark:text-muted-foreground/15">
                           {step.step}
                         </div>
-                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${step.color} flex items-center justify-center text-white`}>
+                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${step.color} flex items-center justify-center text-white shadow-lg`}>
                           {step.icon}
                         </div>
                       </div>
                       
-                      <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
+                      <h3 className="text-2xl font-bold mb-4 text-foreground">{step.title}</h3>
                       <p className="text-muted-foreground leading-relaxed">{step.description}</p>
                       
                       <div className="mt-6 pt-6 border-t border-border/50">
@@ -1363,8 +1370,8 @@ function ComputerVisionPage() {
       
        {/* Enhanced CTA Section */}
        <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-cyan-500/10" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-cyan-500/10 dark:from-blue-500/5 dark:via-purple-500/5 dark:to-cyan-500/5" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:40px_40px]" />
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -1392,7 +1399,7 @@ function ComputerVisionPage() {
                   Start Your Free Trial
                 </ShimmerButton>
                 
-                <button className="group inline-flex items-center px-8 py-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-foreground font-medium hover:bg-white/10 transition-all duration-300">
+                <button className="group inline-flex items-center px-8 py-4 rounded-2xl bg-background/50 dark:bg-background/30 backdrop-blur-sm border border-border/50 dark:border-border/30 text-foreground font-medium hover:bg-background/80 dark:hover:bg-background/50 transition-all duration-300 shadow-lg hover:shadow-xl">
                   Schedule Demo
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -1420,13 +1427,13 @@ function ComputerVisionPage() {
       </section>
 
         {/* Testimonials Section */}
-        <section className="py-32">
+        <section className="py-32 bg-secondary/5 dark:bg-secondary/10">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center mb-20">
             <BlurFade delay={0.1}>
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 mb-8">
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/10 to-orange-500/10 dark:from-yellow-500/20 dark:to-orange-500/20 border border-yellow-500/20 dark:border-yellow-500/30 mb-8">
                 <Star className="w-4 h-4 text-yellow-500 mr-2" />
-                <span className="text-sm font-medium">Customer Success</span>
+                <span className="text-sm font-medium text-foreground">Customer Success</span>
               </div>
             </BlurFade>
             
@@ -1482,7 +1489,7 @@ function ComputerVisionPage() {
                       ))}
                     </div>
                     
-                    <Quote className="w-8 h-8 text-muted-foreground/20 mb-4" />
+                    <Quote className="w-8 h-8 text-muted-foreground/30 dark:text-muted-foreground/20 mb-4" />
                     
                     <p className="text-muted-foreground leading-relaxed mb-6">
                       "{testimonial.content}"
@@ -1492,10 +1499,10 @@ function ComputerVisionPage() {
                       <img 
                         src={testimonial.avatar} 
                         alt={testimonial.name}
-                        className="w-12 h-12 rounded-full object-cover"
+                        className="w-12 h-12 rounded-full object-cover border-2 border-border/50"
                       />
                       <div>
-                        <div className="font-semibold">{testimonial.name}</div>
+                        <div className="font-semibold text-foreground">{testimonial.name}</div>
                         <div className="text-sm text-muted-foreground">{testimonial.role}</div>
                       </div>
                     </div>
@@ -1533,27 +1540,27 @@ function ComputerVisionVisualization() {
   return (
     <div 
       ref={containerRef} 
-      className="w-full h-full relative overflow-hidden rounded-xl"
+      className="w-full h-full relative overflow-hidden rounded-xl bg-gradient-to-br from-background to-secondary/20 dark:from-background dark:to-secondary/10"
     >
       {/* Background image */}
       <img 
         src="https://img.recraft.ai/SKznhPwTLev5w3maxlI5MuSWYEB65SwcFkt6maCHIHY/rs:fit:1024:1024:0/q:95/g:no/plain/abs://prod/images/d6a240d9-5508-410b-b4b9-0fb36893b188@jpg" 
         alt="Street scene with person" 
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover opacity-70 dark:opacity-50"
       />
       
       {/* Semi-transparent overlay */}
-      <div className="absolute inset-0 bg-black/30"></div>
+      <div className="absolute inset-0 bg-background/40 dark:bg-background/60"></div>
       
       {/* Camera interface elements */}
-      <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-sm p-2 rounded-lg border border-white/20 flex items-center gap-2">
-        <Camera size={16} className="text-white" />
-        <span className="text-white text-xs font-medium">Live Feed</span>
+      <div className="absolute top-4 left-4 bg-background/80 dark:bg-background/90 backdrop-blur-sm p-2 rounded-lg border border-border/50 dark:border-border/30 flex items-center gap-2 shadow-lg">
+        <Camera size={16} className="text-foreground" />
+        <span className="text-foreground text-xs font-medium">Live Feed</span>
         <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
       </div>
       
-      <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-sm p-2 rounded-lg border border-white/20">
-        <div className="text-white text-xs font-medium">Processing...</div>
+      <div className="absolute top-4 right-4 bg-background/80 dark:bg-background/90 backdrop-blur-sm p-2 rounded-lg border border-border/50 dark:border-border/30 shadow-lg">
+        <div className="text-foreground text-xs font-medium">Processing...</div>
       </div>
       
       {/* Main person detection */}
@@ -1571,7 +1578,7 @@ function ComputerVisionVisualization() {
           }}
           transition={{ duration: 2.5, repeat: Infinity }}
         >
-          <div className="absolute -top-8 left-0 bg-purple-500 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2">
+          <div className="absolute -top-8 left-0 bg-purple-500 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2 shadow-lg">
             <Eye size={12} />
             Person
             <span className="bg-white/20 px-1 rounded">98%</span>
@@ -1635,7 +1642,7 @@ function ComputerVisionVisualization() {
           }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <div className="absolute -top-8 left-0 bg-green-500 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2">
+          <div className="absolute -top-8 left-0 bg-green-500 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2 shadow-lg">
             <Table size={12} />
             Bench
             <span className="bg-white/20 px-1 rounded">87%</span>
@@ -1658,7 +1665,7 @@ function ComputerVisionVisualization() {
           }}
           transition={{ duration: 1.8, repeat: Infinity }}
         >
-          <div className="absolute -top-8 left-0 bg-blue-400 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2">
+          <div className="absolute -top-8 left-0 bg-blue-400 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2 shadow-lg">
             <Camera size={12} />
             Truck or van
             <span className="bg-white/20 px-1 rounded">93%</span>
@@ -1667,7 +1674,7 @@ function ComputerVisionVisualization() {
       </motion.div>
       
       {/* Data processing overlay */}
-      <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm p-2.5 rounded-lg border border-green-500/20 shadow-md" style={{ width: "180px" }}>
+      <div className="absolute top-4 right-4 bg-background/90 dark:bg-background/95 backdrop-blur-sm p-2.5 rounded-lg border border-green-500/20 dark:border-green-500/30 shadow-md" style={{ width: "180px" }}>
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5">
             <motion.div 
@@ -1675,10 +1682,10 @@ function ComputerVisionVisualization() {
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
-            <span className="text-xs font-medium text-white">AI Vision</span>
+            <span className="text-xs font-medium text-foreground">AI Vision</span>
           </div>
           <motion.span 
-            className="text-[10px] font-medium text-green-400"
+            className="text-[10px] font-medium text-green-500"
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
@@ -1691,8 +1698,8 @@ function ComputerVisionVisualization() {
             { label: "Analysis", color: "blue-400" }
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-1.5">
-              <span className="text-[10px] text-white/80 w-14">{item.label}</span>
-              <div className="h-1 flex-grow bg-gray-800/60 rounded-full overflow-hidden">
+              <span className="text-[10px] text-muted-foreground w-14">{item.label}</span>
+              <div className="h-1 flex-grow bg-secondary/60 dark:bg-secondary/40 rounded-full overflow-hidden">
                 <motion.div 
                   className={`h-full bg-${item.color}`}
                   initial={{ width: "10%" }}
@@ -1717,13 +1724,13 @@ function ComputerVisionVisualization() {
       </div>
       
       {/* AI insights */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm py-2 px-4 rounded-full border border-white/10 shadow-lg flex items-center gap-2">
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-background/90 dark:bg-background/95 backdrop-blur-sm py-2 px-4 rounded-full border border-border/50 dark:border-border/30 shadow-lg flex items-center gap-2">
         <BrainCircuit size={16} className="text-primary" />
-        <span className="text-white text-xs">AI Vision Analysis Active</span>
+        <span className="text-foreground text-xs">AI Vision Analysis Active</span>
       </div>
       
       {/* Grid overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:40px_40px] opacity-30 dark:opacity-20"></div>
       
       {/* Analysis metrics */}
       {/* <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm p-3 rounded-lg border border-white/10 shadow-lg">
@@ -1790,22 +1797,22 @@ function ComputerVisionVisualization() {
 // Fallback component when Spline fails to load
 function SplineFallback() {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-background to-secondary/10 p-8">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-background to-secondary/20 dark:to-secondary/10 p-8">
       <div className="mb-8 relative">
-        <div className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-r from-primary to-purple-500 flex items-center justify-center text-white">
+        <div className="relative z-10 w-24 h-24 rounded-full bg-gradient-to-r from-primary to-purple-500 flex items-center justify-center text-white shadow-lg">
           <Eye className="w-12 h-12" />
         </div>
-        <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl"></div>
+        <div className="absolute inset-0 bg-primary/20 dark:bg-primary/10 rounded-full blur-xl"></div>
       </div>
-      <h3 className="text-2xl font-bold text-center mb-4">Computer Vision Intelligence</h3>
-      <p className="text-center text-foreground/70 max-w-md mb-6">
+      <h3 className="text-2xl font-bold text-center mb-4 text-foreground">Computer Vision Intelligence</h3>
+      <p className="text-center text-muted-foreground max-w-md mb-6 leading-relaxed">
         Our advanced AI algorithms process visual data to deliver real-time insights and automated recognition capabilities.
       </p>
       <div className="flex gap-4 flex-wrap justify-center">
         {['Object Detection', 'Face Recognition', 'Scene Analysis', 'Motion Tracking'].map((item, i) => (
           <div 
             key={i} 
-            className="px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-sm font-medium"
+            className="px-4 py-2 rounded-full border border-primary/20 dark:border-primary/30 bg-primary/10 dark:bg-primary/20 text-sm font-medium text-foreground"
           >
             {item}
           </div>
@@ -1823,7 +1830,7 @@ function SplineFallback() {
           return (
             <motion.div
               key={i}
-              className="absolute rounded-full bg-gradient-to-r from-primary/40 to-purple-500/40"
+              className="absolute rounded-full bg-gradient-to-r from-primary/40 to-purple-500/40 dark:from-primary/30 dark:to-purple-500/30"
               style={{ width: size, height: size, top: `${top}%`, left: `${left}%` }}
               animate={{ 
                 scale: [1, 1.2, 1],
