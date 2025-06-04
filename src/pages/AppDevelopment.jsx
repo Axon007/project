@@ -2,12 +2,17 @@ import { motion } from "framer-motion";
 import PageTransition from '../components/PageTransition';
 import { ContainerScroll } from "../components/ui/container-scroll-animation"; 
 import Iphone15Pro from "@/components/magicui/iphone-15-pro";
+import Android from "@/components/magicui/android";
+import { useState } from "react";
+import DevicePlatformShowcase from "../components/DevicePlatformShowcase";
+
+
 import { 
   Code, Smartphone, Zap, Shield, 
   ArrowRight, Star, Settings,
   Layers, BarChart, Users, 
   CheckCircle, ArrowUpRight,
-  Layout
+  Layout, Phone, Tablet
 } from "lucide-react";
 
 const CosmicSphere = () => {
@@ -15,6 +20,211 @@ const CosmicSphere = () => {
     <div className="absolute right-24 top-40 h-80 w-80 lg:w-96 lg:h-96 blur-3xl rounded-full bg-gradient-to-br from-primary/30 via-purple-600/20 to-blue-600/30 animate-slow-spin hidden lg:block" />
   );
 };
+// DeviceShowcase component with tabs for iPhone and Android devices
+const DeviceShowcase = () => {
+  const [activeTab, setActiveTab] = useState("iphone");
+  
+  return (
+    <div className="w-full">
+      {/* Tab Selector */}
+      <div className="flex justify-center mb-8">
+        <div className="bg-secondary/10 p-1 rounded-xl backdrop-blur-sm flex items-center">
+          <button 
+            className={`px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
+              activeTab === "iphone" ? "bg-primary text-white shadow-md" : "hover:bg-secondary/20"
+            }`}
+            onClick={() => setActiveTab("iphone")}
+          >
+            <Phone className="w-4 h-4" />
+            iPhone
+          </button>
+          <button 
+            className={`px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
+              activeTab === "android" ? "bg-primary text-white shadow-md" : "hover:bg-secondary/20"
+            }`}
+            onClick={() => setActiveTab("android")}
+          >
+            <Smartphone className="w-4 h-4" />
+            Android
+          </button>
+        </div>
+      </div>
+      
+      {/* Device Display */}
+      <motion.div 
+        className="relative flex justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* iPhone Display */}
+        {activeTab === "iphone" && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="relative"
+          >
+            {/* Light effects behind iPhone */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 via-indigo-500/10 to-purple-500/20 rounded-full blur-2xl opacity-70 animate-pulse"></div>
+            
+            <div className="relative border-[3px] border-black rounded-[70px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(99,102,241,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-black/0 z-10 rounded-[70px]"></div>
+              
+              {/* Subtle reflection effect */}
+              <motion.div
+                animate={{ 
+                  opacity: [0, 0.07, 0],
+                  x: ["-100%", "100%"]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  ease: "easeInOut",
+                  delay: 1
+                }}
+                className="absolute inset-0 z-20 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 rounded-[70px]"
+              />
+       
+              
+
+            </div>
+                        <div className="relative border-[3px] border-black rounded-[40px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(16,185,129,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-black/0 z-10 rounded-[40px]"></div>
+              
+              {/* Subtle reflection effect */}
+              <motion.div
+                animate={{ 
+                  opacity: [0, 0.07, 0],
+                  x: ["-100%", "100%"]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  ease: "easeInOut",
+                  delay: 1
+                }}
+                className="absolute inset-0 z-20 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 rounded-[40px]"
+              />
+              
+              <Iphone15Pro
+                scale={0.7}
+                className="w-[280px] h-[560px] drop-shadow-[0_15px_25px_rgba(0,0,0,0.6)] group-hover:scale-[1.01] transition-transform duration-500"
+                screenshotUrl="/vite.svg"
+                alt="Android App Development Preview"
+              />
+            </div>
+            
+            {/* iPhone features */}
+            <div className="absolute -right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
+                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+              >
+                <span className="text-xs font-medium">Face ID</span>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
+                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+              >
+                <span className="text-xs font-medium">App Clips</span>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
+                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+              >
+                <span className="text-xs font-medium">ARKit</span>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+    
+        {/* Android Display */}
+        {activeTab === "android" && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="relative"
+          >
+            {/* Light effects behind Android */}
+            <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 via-emerald-500/10 to-teal-500/20 rounded-full blur-2xl opacity-70 animate-pulse"></div>
+            
+            <div className="relative border-[3px] border-black rounded-[40px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(16,185,129,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-black/0 z-10 rounded-[40px]"></div>
+              
+              {/* Subtle reflection effect */}
+              <motion.div
+                animate={{ 
+                  opacity: [0, 0.07, 0],
+                  x: ["-100%", "100%"]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  ease: "easeInOut",
+                  delay: 1
+                }}
+                className="absolute inset-0 z-20 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 rounded-[40px]"
+              />
+              
+              <Android
+                scale={0.7}
+                className="w-[280px] h-[560px] drop-shadow-[0_15px_25px_rgba(0,0,0,0.6)] group-hover:scale-[1.01] transition-transform duration-500"
+                screenshotUrl="/vite.svg"
+                alt="Android App Development Preview"
+              />
+            </div>
+            
+            {/* Android features */}
+            <div className="absolute -right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(16,185,129,0.15)" }}
+                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+              >
+                <span className="text-xs font-medium">Material Design</span>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(16,185,129,0.15)" }}
+                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+              >
+                <span className="text-xs font-medium">Widgets</span>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(16,185,129,0.15)" }}
+                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+              >
+                <span className="text-xs font-medium">Jetpack</span>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+        
+        {/* Platform stats */}
+        <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-secondary/10 backdrop-blur-md border border-secondary/20 rounded-xl p-4 flex items-center gap-8">
+          <div className="text-center">
+            <p className="text-xs text-foreground/60">App Stores</p>
+            <p className="font-semibold">2</p>
+          </div>
+          <div className="text-center">
+            <p className="text-xs text-foreground/60">Market Share</p>
+            <p className="font-semibold">99.6%</p>
+          </div>
+          <div className="text-center">
+            <p className="text-xs text-foreground/60">Global Users</p>
+            <p className="font-semibold">6.92B</p>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 
 export function HeroScrollDemo() {
   return (
@@ -629,6 +839,7 @@ function AppDevelopment() {
   </div>
 
       </motion.div>
+      
       <motion.div 
         className="absolute top-2/3 -right-12 w-10 h-10 bg-green-500/20 rounded-full"
         animate={{ 
@@ -651,7 +862,26 @@ function AppDevelopment() {
 
 
 </section>
-
+          {/* App Showcase with iPhone mockup */}
+          <div className="container mx-auto px-4 py-16 flex flex-col lg:flex-row items-center">
+            <div className="lg:w-1/2 lg:pr-12 mb-12 lg:mb-0">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Beautiful <span className="text-primary">App Experiences</span> for Modern Businesses
+              </h2>
+              <p className="text-foreground/70 mb-8 text-lg">
+                We blend stunning design with powerful functionality to create apps that users love. Our development process focuses on creating intuitive, responsive, and engaging mobile experiences.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium flex items-center gap-2 hover:bg-primary/90 transition-all">
+                  Get Started <ArrowRight className="w-4 h-4" />
+                </button>
+                <button className="px-6 py-3 border border-secondary/20 rounded-xl font-medium hover:bg-secondary/10 transition-all">
+                  View Portfolio
+                </button>
+              </div>
+            </div>
+<DevicePlatformShowcase />
+          </div>
 
 
         
@@ -659,15 +889,8 @@ function AppDevelopment() {
         <section className="relative py-28 md:py-36 px-4 overflow-hidden">
           
           <div className="max-w-7xl mx-auto relative z-10">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-center mb-16"
-            >
 
 
-            </motion.div>
 
 
 
@@ -991,136 +1214,8 @@ function AppDevelopment() {
   </div>
 </section>
 
-{/* Technology Stack Section */}
-<section className="py-20 px-4 relative">
-  <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-12">
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
-        <Code className="w-4 h-4 mr-2" /> Technology Stack
-      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
-        Built With Cutting-Edge Technologies
-      </h2>
-      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-        We leverage the most advanced and reliable technologies to ensure your application 
-        performs exceptionally well across all platforms.
-      </p>
-    </div>
-    
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mt-12">
-      {[
-        { name: "React Native", logo: "react.svg", description: "Cross-platform mobile apps" },
-        { name: "Flutter", logo: "flutter.svg", description: "Native UI experiences" },
-        { name: "Swift", logo: "swift.svg", description: "iOS development" },
-        { name: "Kotlin", logo: "kotlin.svg", description: "Android development" },
-        { name: "Firebase", logo: "firebase.svg", description: "Backend & analytics" },
-        { name: "AWS", logo: "aws.svg", description: "Cloud infrastructure" }
-      ].map((tech, index) => (
-        <div key={index} className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-secondary/5 transition-all">
-          <div className="w-16 h-16 mb-4 flex items-center justify-center">
-            {/* Replace with actual tech logos */}
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <Code className="w-6 h-6 text-primary" />
-            </div>
-          </div>
-          <h3 className="font-medium mb-1">{tech.name}</h3>
-          <p className="text-sm text-foreground/60">{tech.description}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
 
-{/* App Design Showcase Section */}
-<section className="py-24 px-4 relative overflow-hidden">
-  {/* Subtle background pattern */}
-  <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-  
-  <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-20">
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
-        <Layout className="w-4 h-4 mr-2" /> Design Excellence
-      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
-        App Design That Captivates Users
-      </h2>
-      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-        Our design philosophy combines aesthetics with functionality to create interfaces that users love.
-      </p>
-    </div>
-    
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      <div className="order-2 lg:order-1">
-        <div className="space-y-8">
-          {/* Design pillars with visual indicators */}
-          {[
-            {
-              title: "User-Centered Design",
-              description: "We build every interface with real users in mind, focusing on intuitive navigation and clear visual hierarchy.",
-              color: "bg-gradient-to-r from-primary to-blue-400"
-            },
-            {
-              title: "Consistent Experience",
-              description: "Our design system ensures a cohesive look and feel across all screens and interactions within your application.",
-              color: "bg-gradient-to-r from-blue-500 to-purple-500"
-            },
-            {
-              title: "Accessibility First",
-              description: "We design for everyone, ensuring your app is usable by people of all abilities and meets WCAG standards.",
-              color: "bg-gradient-to-r from-purple-500 to-pink-500"
-            }
-          ].map((pillar, index) => (
-            <div key={index} className="flex gap-5">
-              <div className={`h-full w-1 ${pillar.color} rounded-full self-stretch`}></div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">{pillar.title}</h3>
-                <p className="text-foreground/70">{pillar.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <div className="mt-10 grid grid-cols-3 gap-4">
-          {["Wireframing", "Prototyping", "UI/UX", "Visual Design", "Motion Design", "Design Systems"].map((tag, index) => (
-            <div key={index} className="bg-secondary/10 rounded-lg py-2 px-4 text-sm text-center font-medium text-foreground/80">
-              {tag}
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <div className="order-1 lg:order-2 relative">
-        {/* Design showcase with layered screens */}
-        <div className="relative h-[500px]">
-          <div className="absolute top-0 right-0 w-72 h-auto transform rotate-6 shadow-xl rounded-2xl border-8 border-gray-900 overflow-hidden">
-            <img 
-              src="https://images.unsplash.com/photo-1573867639040-6dd25fa5f597?w=500&h=1000&fit=crop" 
-              alt="App Design Example" 
-              className="w-full h-auto"
-              loading="lazy"
-            />
-          </div>
-          <div className="absolute top-20 left-4 w-64 h-auto transform -rotate-3 shadow-xl rounded-2xl border-8 border-gray-900 overflow-hidden z-10">
-            <img 
-              src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=1000&fit=crop" 
-              alt="App Design Example" 
-              className="w-full h-auto"
-              loading="lazy"
-            />
-          </div>
-          <div className="absolute bottom-0 right-20 w-56 h-auto transform rotate-[-10deg] shadow-xl rounded-2xl border-8 border-gray-900 overflow-hidden">
-            <img 
-              src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=500&h=1000&fit=crop" 
-              alt="App Design Example" 
-              className="w-full h-auto"
-              loading="lazy"
-            />
-          </div>
-          <div className="absolute top-1/4 left-1/3 w-16 h-16 bg-primary/20 rounded-full filter blur-xl"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-24 h-24 bg-blue-500/20 rounded-full filter blur-xl"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 {/* Interactive Feature Showcase */}
 <section className="py-28 px-4 relative bg-gradient-to-b from-secondary/5 to-background">
@@ -1638,7 +1733,9 @@ function AppDevelopment() {
               </a>
             </motion.div>
           </div>
+
         </section>
+        <DevicePlatformShowcase/>
         
         
       </div>
