@@ -26,31 +26,39 @@ const DeviceShowcase = () => {
   
   return (
     <div className="w-full">
-      {/* Tab Selector */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-secondary/10 p-1 rounded-xl backdrop-blur-sm flex items-center">
+      {/* Tab Selector - Fixed styling and mobile responsiveness */}
+      <div className="flex justify-center mb-8 px-4 sm:px-0">
+        <div className="bg-white/80 dark:bg-gray-800/80 p-1.5 rounded-2xl backdrop-blur-lg border border-gray-200/50 dark:border-gray-700/50 flex items-center shadow-lg">
           <button 
-            className={`px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-              activeTab === "iphone" ? "bg-primary text-white shadow-md" : "hover:bg-secondary/20"
+            className={`px-4 sm:px-6 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 transition-all duration-300 ${
+              activeTab === "iphone" 
+                ? "bg-primary text-white shadow-lg shadow-primary/25 transform scale-105" 
+                : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white"
             }`}
             onClick={() => setActiveTab("iphone")}
+            aria-pressed={activeTab === "iphone"}
           >
             <Phone className="w-4 h-4" />
-            iPhone
+            <span className="hidden sm:inline">iPhone</span>
+            <span className="sm:hidden">iOS</span>
           </button>
           <button 
-            className={`px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-              activeTab === "android" ? "bg-primary text-white shadow-md" : "hover:bg-secondary/20"
+            className={`px-4 sm:px-6 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 transition-all duration-300 ${
+              activeTab === "android" 
+                ? "bg-primary text-white shadow-lg shadow-primary/25 transform scale-105" 
+                : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white"
             }`}
             onClick={() => setActiveTab("android")}
+            aria-pressed={activeTab === "android"}
           >
             <Smartphone className="w-4 h-4" />
-            Android
+            <span className="hidden sm:inline">Android</span>
+            <span className="sm:hidden">Android</span>
           </button>
         </div>
       </div>
       
-      {/* Device Display */}
+      {/* Device Display - Enhanced for better responsiveness */}
       <motion.div 
         className="relative flex justify-center"
         initial={{ opacity: 0 }}
@@ -65,19 +73,21 @@ const DeviceShowcase = () => {
           androidScreenshotUrl={activeTab === "android" ? "https://i.imgur.com/qUSBBQN.png" : null}
         />
         
-        {/* Platform stats */}
-        <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-secondary/10 backdrop-blur-md border border-secondary/20 rounded-xl p-4 flex items-center gap-8">
+        {/* Platform stats - Improved responsive design */}
+        <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-2xl p-4 sm:p-6 flex items-center gap-6 sm:gap-8 shadow-xl max-w-[95%] sm:max-w-none">
           <div className="text-center">
-            <p className="text-xs text-foreground/60">App Stores</p>
-            <p className="font-semibold">2</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">App Stores</p>
+            <p className="font-bold text-lg text-gray-900 dark:text-white">2</p>
           </div>
+          <div className="w-px h-8 bg-gray-200 dark:bg-gray-600"></div>
           <div className="text-center">
-            <p className="text-xs text-foreground/60">Market Share</p>
-            <p className="font-semibold">99.6%</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Market Share</p>
+            <p className="font-bold text-lg text-gray-900 dark:text-white">99.6%</p>
           </div>
+          <div className="w-px h-8 bg-gray-200 dark:bg-gray-600"></div>
           <div className="text-center">
-            <p className="text-xs text-foreground/60">Global Users</p>
-            <p className="font-semibold">6.92B</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">Global Users</p>
+            <p className="font-bold text-lg text-gray-900 dark:text-white">6.92B</p>
           </div>
         </div>
       </motion.div>
@@ -119,13 +129,13 @@ const FeatureCard = ({ icon, title, description }) => {
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="p-6 rounded-2xl bg-secondary/5 border border-secondary/10 hover:border-primary/20 transition-all group"
+      className="p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-primary/40 hover:shadow-lg transition-all group"
     >
       <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-foreground/70">{description}</p>
+      <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{title}</h3>
+      <p className="text-gray-600 dark:text-gray-300">{description}</p>
     </motion.div>
   );
 };
@@ -135,21 +145,21 @@ const ServiceCard = ({ icon, title, description, features }) => {
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="p-8 rounded-2xl bg-secondary/5 backdrop-blur-sm border border-secondary/20 hover:border-primary/20 transition-all group"
+      className="p-8 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover:border-primary/40 hover:shadow-lg transition-all group"
     >
       <div className="flex items-start gap-4 mb-6">
         <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
           {icon}
         </div>
         <div>
-          <h3 className="text-xl font-semibold mb-2">{title}</h3>
-          <p className="text-foreground/70">{description}</p>
+          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{title}</h3>
+          <p className="text-gray-600 dark:text-gray-300">{description}</p>
         </div>
       </div>
       <ul className="space-y-2">
         {features.map((feature, index) => (
-          <li key={index} className="flex items-center gap-2 text-sm text-foreground/70">
-            <CheckCircle className="w-4 h-4 text-primary" />
+          <li key={index} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+            <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
             {feature}
           </li>
         ))}
@@ -382,11 +392,11 @@ function AppDevelopment() {
   initial={{ opacity: 0, y: 20 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, delay: 0.7 }}
-  className="flex flex-wrap gap-4 justify-center"
+  className="flex flex-col sm:flex-row gap-4 justify-center items-center"
 >
 <a 
   href="#contact" 
-  className="px-8 py-4 bg-white text-black dark:text-black rounded-xl font-medium hover:bg-gray-100 transition-all hover:shadow-lg hover:shadow-black/10 flex items-center justify-center gap-2 group"
+  className="px-8 py-4 bg-white text-gray-900 rounded-xl font-medium hover:bg-gray-50 transition-all hover:shadow-lg hover:shadow-gray-900/10 flex items-center justify-center gap-2 group shadow-md border border-gray-200 w-full sm:w-auto"
 >
   Start Your Project
   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -395,7 +405,7 @@ function AppDevelopment() {
   
   <a 
     href="#portfolio" 
-    className="px-8 py-4 bg-secondary/10 backdrop-blur-sm border border-secondary/20 text-foreground rounded-xl font-medium hover:bg-secondary/20 transition-all flex items-center justify-center gap-2 group"
+    className="px-8 py-4 bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-200/80 dark:hover:bg-gray-700/80 transition-all flex items-center justify-center gap-2 group shadow-sm w-full sm:w-auto"
   >
     View Our Work
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
@@ -408,14 +418,16 @@ function AppDevelopment() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}
-          className="flex justify-center gap-8 mt-12"
+          className="flex flex-col sm:flex-row justify-center gap-6 sm:gap-8 mt-12"
         >
           {[
             { name: "Trusted by 500+", value: "Companies" },
             { name: "4.9 / 5.0", value: "Customer Rating" },
             { name: "25M+", value: "App Downloads" },
           ].map((stat, index) => (
-            <div key={index} className="text-center">
+            <div key={index} className="text-center bg-white/10 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4 border border-white/20 dark:border-gray-700/30">
+              <p className="text-lg font-bold text-gray-900 dark:text-white">{stat.name}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{stat.value}</p>
             </div>
           ))}
         </motion.div>
@@ -719,53 +731,53 @@ function AppDevelopment() {
 
     
           {/* App Showcase with Enhanced Device Mockups */}
-          <section className="container mx-auto px-4 py-24 relative overflow-hidden">
+          <section className="container mx-auto px-4 py-16 sm:py-24 relative overflow-hidden">
             {/* Background elements */}
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl opacity-60 -z-10"></div>
             <div className="absolute right-0 top-1/3 w-80 h-80 bg-blue-500/10 rounded-full filter blur-3xl opacity-60 -z-10"></div>
             
-            <div className="flex flex-col lg:flex-row items-center gap-12 relative">
+            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 relative">
               {/* Content Side */}
-              <div className="lg:w-1/2 lg:pr-12 z-10">
+              <div className="lg:w-1/2 lg:pr-8 z-10 text-center lg:text-left">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+                  <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6 backdrop-blur-sm border border-primary/20">
                     <Phone className="w-4 h-4 mr-2" /> App Showcase
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                    Beautiful <span className="text-primary">App Experiences</span> for Modern Businesses
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+                    Beautiful <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">App Experiences</span> for Modern Businesses
                   </h2>
-                  <p className="text-foreground/70 mb-8 text-lg">
+                  <p className="text-gray-600 dark:text-gray-300 mb-8 text-base lg:text-lg leading-relaxed">
                     We blend stunning design with powerful functionality to create apps that users love. Our development process focuses on creating intuitive, responsive, and engaging mobile experiences.
                   </p>
                   
                   {/* Enhanced Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start">
                     <motion.button 
                       whileHover={{ scale: 1.02 }} 
                       whileTap={{ scale: 0.98 }}
-                      className="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-sm hover:shadow-primary/25 hover:shadow-lg"
+                      className="px-6 py-3 bg-primary text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25 hover:shadow-xl"
                     >
                       Get Started <ArrowRight className="w-4 h-4" />
                     </motion.button>
                     <motion.button 
-                      whileHover={{ scale: 1.02, backgroundColor: "rgba(var(--secondary), 0.15)" }} 
+                      whileHover={{ scale: 1.02 }} 
                       whileTap={{ scale: 0.98 }}
-                      className="px-6 py-3 border border-secondary/20 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all"
+                      className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                     >
                       View Portfolio <ArrowUpRight className="w-4 h-4" />
                     </motion.button>
                   </div>
                   
                   {/* Key Features Tags */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                     {["Responsive Design", "Native Experience", "Cross-Platform", "Fast Performance"].map((tag, index) => (
-                      <div key={index} className="px-3 py-1 bg-secondary/10 backdrop-blur-sm rounded-lg text-sm">
-                        <span className="text-foreground/80">{tag}</span>
+                      <div key={index} className="px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg text-sm border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <span className="text-gray-700 dark:text-gray-300 font-medium">{tag}</span>
                       </div>
                     ))}
                   </div>
@@ -773,7 +785,7 @@ function AppDevelopment() {
               </div>
               
               {/* Device Showcase Side */}
-              <div className="lg:w-1/2 relative">
+              <div className="lg:w-1/2 relative w-full">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -792,43 +804,45 @@ function AppDevelopment() {
                     showFeatureBadges={true}
                   />
                   
-                  {/* Interactive elements */}
+                  {/* Interactive elements - Hidden on mobile for better UX */}
                   <motion.div 
-                    className="absolute top-10 -right-6 w-16 h-16 bg-white dark:bg-gray-800 rounded-full shadow-xl flex items-center justify-center cursor-pointer group border border-gray-200 dark:border-gray-700"
+                    className="absolute top-10 -right-4 lg:-right-6 w-12 h-12 lg:w-16 lg:h-16 bg-white dark:bg-gray-800 rounded-full shadow-xl flex items-center justify-center cursor-pointer group border border-gray-200 dark:border-gray-700 hidden sm:flex"
                     whileHover={{ scale: 1.1, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }} 
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Phone className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
+                    <Phone className="w-5 h-5 lg:w-6 lg:h-6 text-primary group-hover:scale-110 transition-transform" />
                   </motion.div>
                   
                   <motion.div 
-                    className="absolute bottom-20 -left-6 w-16 h-16 bg-white dark:bg-gray-800 rounded-full shadow-xl flex items-center justify-center cursor-pointer group border border-gray-200 dark:border-gray-700"
+                    className="absolute bottom-20 -left-4 lg:-left-6 w-12 h-12 lg:w-16 lg:h-16 bg-white dark:bg-gray-800 rounded-full shadow-xl flex items-center justify-center cursor-pointer group border border-gray-200 dark:border-gray-700 hidden sm:flex"
                     whileHover={{ scale: 1.1, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }} 
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Tablet className="w-6 h-6 text-blue-500 group-hover:scale-110 transition-transform" />
+                    <Tablet className="w-5 h-5 lg:w-6 lg:h-6 text-blue-500 group-hover:scale-110 transition-transform" />
                   </motion.div>
                 </motion.div>
                 
-                {/* App Stats Card */}
+                {/* App Stats Card - Better mobile responsive */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.5 }}
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 flex items-center gap-8 z-20"
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl p-3 sm:p-4 shadow-xl border border-gray-200/50 dark:border-gray-700/50 flex items-center gap-4 sm:gap-6 lg:gap-8 z-20 text-center max-w-[90%] sm:max-w-none"
                 >
                   <div className="text-center">
-                    <p className="text-xs text-foreground/60 font-medium">App Stores</p>
-                    <p className="font-bold text-lg">2</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">App Stores</p>
+                    <p className="font-bold text-base lg:text-lg text-gray-900 dark:text-white">2</p>
                   </div>
+                  <div className="w-px h-6 bg-gray-200 dark:bg-gray-600"></div>
                   <div className="text-center">
-                    <p className="text-xs text-foreground/60 font-medium">Market Share</p>
-                    <p className="font-bold text-lg">99.6%</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Market Share</p>
+                    <p className="font-bold text-base lg:text-lg text-gray-900 dark:text-white">99.6%</p>
                   </div>
+                  <div className="w-px h-6 bg-gray-200 dark:bg-gray-600"></div>
                   <div className="text-center">
-                    <p className="text-xs text-foreground/60 font-medium">Global Users</p>
-                    <p className="font-bold text-lg">6.92B</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Global Users</p>
+                    <p className="font-bold text-base lg:text-lg text-gray-900 dark:text-white">6.92B</p>
                   </div>
                 </motion.div>
               </div>
@@ -847,23 +861,24 @@ function AppDevelopment() {
 
 
 {/* Neuomorphic Interface Elements */}
-<section className="py-28 px-4 relative overflow-hidden bg-secondary/5">
+<section className="py-16 sm:py-28 px-4 relative overflow-hidden bg-secondary/5">
   <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-20">
+    <div className="text-center mb-12 sm:mb-20">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><circle cx="12" cy="12" r="10"></circle><path d="m16.24 7.76-8.48 8.48"></path><path d="m7.76 7.76 8.48 8.48"></path></svg>
         Modern Interface Design
-      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
+      </span>
+      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
         Neuomorphic Design Language
       </h2>
-      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+      <p className="text-base sm:text-lg text-foreground/70 max-w-3xl mx-auto">
         Soft, tactile interfaces that blur the line between digital and physical with subtle shadows and highlights.
       </p>
     </div>
     
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
-      <div className="col-span-1">
-        <div className="space-y-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 items-center">
+      <div className="col-span-1 order-2 md:order-1">
+        <div className="space-y-6 sm:space-y-8">
           {[
             {
               title: "Subtle Depth",
@@ -879,8 +894,8 @@ function AppDevelopment() {
             }
           ].map((item, index) => (
             <div key={index} className="group">
-              <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-primary"></div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-primary flex-shrink-0"></div>
                 {item.title}
               </h3>
               <p className="text-foreground/70 ml-5">{item.description}</p>
@@ -890,34 +905,37 @@ function AppDevelopment() {
       </div>
       
       {/* Center showcase */}
-      <div className="col-span-1 md:col-span-1 p-10">
-        <div className="relative w-full aspect-square bg-secondary/5 rounded-3xl shadow-[10px_10px_30px_rgba(0,0,0,0.1),-10px_-10px_30px_rgba(255,255,255,0.05)] flex items-center justify-center">
+      <div className="col-span-1 md:col-span-1 p-5 sm:p-10 order-1 md:order-2 mb-8 md:mb-0">
+        <div className="relative w-full aspect-square bg-secondary/5 rounded-3xl shadow-[8px_8px_20px_rgba(0,0,0,0.08),-8px_-8px_20px_rgba(255,255,255,0.04)] dark:shadow-[10px_10px_30px_rgba(0,0,0,0.1),-10px_-10px_30px_rgba(255,255,255,0.05)] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-20 h-20 rounded-full bg-secondary/5 shadow-[5px_5px_15px_rgba(0,0,0,0.1),-5px_-5px_15px_rgba(255,255,255,0.05)] flex items-center justify-center">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+            <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-secondary/5 shadow-[4px_4px_10px_rgba(0,0,0,0.08),-4px_-4px_10px_rgba(255,255,255,0.04)] dark:shadow-[5px_5px_15px_rgba(0,0,0,0.1),-5px_-5px_15px_rgba(255,255,255,0.05)] flex items-center justify-center transition-transform hover:scale-105">
+              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className=""><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               </div>
             </div>
           </div>
           
           {/* Neuomorphic controls */}
-          <div className="absolute bottom-6 left-6 right-6 h-10 rounded-full bg-secondary/5 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.1),inset_-2px_-2px_5px_rgba(255,255,255,0.05)] flex items-center px-3">
-            <div className="w-5 h-5 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] mr-auto"></div>
-            <div className="w-16 h-4 rounded-full bg-secondary/5 shadow-[inset_2px_2px_3px_rgba(0,0,0,0.1),inset_-2px_-2px_3px_rgba(255,255,255,0.05)]">
-              <div className="w-5 h-4 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] ml-1"></div>
+          <div className="absolute bottom-6 left-6 right-6 h-10 rounded-full bg-secondary/5 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.08),inset_-2px_-2px_5px_rgba(255,255,255,0.04)] dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.1),inset_-2px_-2px_5px_rgba(255,255,255,0.05)] flex items-center px-3">
+            <div className="w-5 h-5 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.08),-2px_-2px_5px_rgba(255,255,255,0.04)] dark:shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] mr-auto"></div>
+            <div className="w-16 h-4 rounded-full bg-secondary/5 shadow-[inset_2px_2px_3px_rgba(0,0,0,0.08),inset_-2px_-2px_3px_rgba(255,255,255,0.04)] dark:shadow-[inset_2px_2px_3px_rgba(0,0,0,0.1),inset_-2px_-2px_3px_rgba(255,255,255,0.05)]">
+              <div className="w-5 h-4 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.08),-2px_-2px_5px_rgba(255,255,255,0.04)] dark:shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] ml-1"></div>
             </div>
-            <div className="w-5 h-5 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] ml-auto"></div>
+            <div className="w-5 h-5 rounded-full bg-secondary/5 shadow-[2px_2px_5px_rgba(0,0,0,0.08),-2px_-2px_5px_rgba(255,255,255,0.04)] dark:shadow-[2px_2px_5px_rgba(0,0,0,0.1),-2px_-2px_5px_rgba(255,255,255,0.05)] ml-auto"></div>
           </div>
         </div>
       </div>
       
-      <div className="col-span-1">
-        <div className="grid grid-cols-2 gap-5">
+      <div className="col-span-1 order-3 md:order-3">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5">
           {[
             "Light Surfaces", "Soft Shadows", "Rounded Corners", 
             "Minimal Borders", "Tactile Feedback", "Muted Colors"
           ].map((tag, index) => (
-            <div key={index} className="flex items-center justify-center h-16 rounded-2xl bg-secondary/5 shadow-[5px_5px_15px_rgba(0,0,0,0.1),-5px_-5px_15px_rgba(255,255,255,0.05)] text-sm font-medium hover:shadow-[inset_5px_5px_10px_rgba(0,0,0,0.1),inset_-5px_-5px_10px_rgba(255,255,255,0.05)] hover:text-primary transition-all cursor-pointer">
+            <div 
+              key={index} 
+              className="flex items-center justify-center h-12 sm:h-16 rounded-2xl bg-secondary/5 shadow-[4px_4px_10px_rgba(0,0,0,0.08),-4px_-4px_10px_rgba(255,255,255,0.04)] dark:shadow-[5px_5px_15px_rgba(0,0,0,0.1),-5px_-5px_15px_rgba(255,255,255,0.05)] text-sm font-medium hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.08),inset_-4px_-4px_8px_rgba(255,255,255,0.04)] dark:hover:shadow-[inset_5px_5px_10px_rgba(0,0,0,0.1),inset_-5px_-5px_10px_rgba(255,255,255,0.05)] hover:text-primary transition-all cursor-pointer"
+            >
               {tag}
             </div>
           ))}
@@ -928,34 +946,35 @@ function AppDevelopment() {
 </section>
 
 {/* Glassmorphism UI Components */}
-<section className="py-28 px-4 relative overflow-hidden">
-  {/* Background blur elements */}
-  <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-blue-500/30 mix-blend-multiply filter blur-[80px] animate-blob"></div>
-  <div className="absolute bottom-20 right-1/4 w-64 h-64 rounded-full bg-primary/30 mix-blend-multiply filter blur-[80px] animate-blob animation-delay-2000"></div>
-  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-purple-500/30 mix-blend-multiply filter blur-[80px] animate-blob animation-delay-4000"></div>
+<section className="py-16 sm:py-28 px-4 relative overflow-hidden">
+  {/* Background blur elements - enhanced for better contrast and effect */}
+  <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-blue-500/20 mix-blend-multiply filter blur-[80px] animate-blob"></div>
+  <div className="absolute bottom-20 right-1/4 w-64 h-64 rounded-full bg-primary/20 mix-blend-multiply filter blur-[80px] animate-blob animation-delay-2000"></div>
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-purple-500/20 mix-blend-multiply filter blur-[80px] animate-blob animation-delay-4000"></div>
   
   <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-16 relative z-10">
+    <div className="text-center mb-12 sm:mb-16 relative z-10">
       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M21 9V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h4"></path><path d="M16 16h6"></path><path d="M19 13v6"></path></svg>
         Next-Gen UI
-      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-violet-500">
+      </span>
+      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-violet-500">
         Glassmorphic UI Components
       </h2>
-      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+      <p className="text-base sm:text-lg text-foreground/70 max-w-3xl mx-auto">
         Transparent, blurred interfaces that create a sense of depth while maintaining focus on content.
       </p>
     </div>
     
-    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
       {/* Showcase of glass UI components */}
-      <div className="relative h-[600px] order-2 lg:order-1">
+      <div className="relative h-[450px] sm:h-[600px] order-2 lg:order-1">
         {/* Main glass card */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[320px] h-[450px] bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/20 shadow-xl z-20 overflow-hidden">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-8">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[320px] h-[380px] sm:h-[450px] bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-3xl border border-white/20 shadow-xl z-20 overflow-hidden">
+          <div className="p-4 sm:p-6 h-full flex flex-col">
+            <div className="flex items-center justify-between mb-6 sm:mb-8">
+              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>
               </div>
               <div className="flex space-x-2">
                 <div className="w-2 h-2 rounded-full bg-red-500"></div>
@@ -963,10 +982,10 @@ function AppDevelopment() {
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
               </div>
             </div>
-            <h3 className="text-xl font-semibold mb-2">Glass Dashboard</h3>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2">Glass Dashboard</h3>
             <div className="h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent my-4"></div>
             
-            <div className="space-y-4 mt-6">
+            <div className="space-y-3 sm:space-y-4 mt-4 sm:mt-6 flex-grow">
               <div className="bg-white/10 rounded-lg p-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Activity</span>
@@ -998,51 +1017,51 @@ function AppDevelopment() {
               </div>
             </div>
             
-            <div className="mt-10 grid grid-cols-3 gap-2">
+            <div className="mt-auto grid grid-cols-3 gap-2">
               {[1, 2, 3].map((item, index) => (
-                <div key={index} className="bg-white/10 rounded-xl p-3 text-center">
-                  <div className="text-lg font-bold">{index + 1}k</div>
+                <div key={index} className="bg-white/10 rounded-xl p-2 sm:p-3 text-center">
+                  <div className="text-base sm:text-lg font-bold">{index + 1}k</div>
                   <div className="text-xs opacity-70">Users</div>
                 </div>
               ))}
             </div>
             
-            <div className="absolute bottom-0 left-0 right-0 h-16 bg-white/10 backdrop-blur-md border-t border-white/10 flex items-center justify-around px-6">
+            <div className="absolute bottom-0 left-0 right-0 h-14 sm:h-16 bg-white/10 backdrop-blur-md border-t border-white/10 flex items-center justify-around px-4 sm:px-6">
               {['home', 'search', 'bell', 'user'].map((icon, index) => (
-                <div key={index} className={`w-8 h-8 rounded-full ${index === 0 ? 'bg-primary/20 text-primary' : 'bg-white/5 text-white/70'} flex items-center justify-center`}>
-                  {icon === 'home' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>}
-                  {icon === 'search' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>}
-                  {icon === 'bell' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>}
-                  {icon === 'user' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 1 0-16 0"></path></svg>}
+                <div key={index} className={`w-7 sm:w-8 h-7 sm:h-8 rounded-full ${index === 0 ? 'bg-primary/20 text-primary' : 'bg-white/5 text-white/70'} flex items-center justify-center`}>
+                  {icon === 'home' && <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>}
+                  {icon === 'search' && <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>}
+                  {icon === 'bell' && <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>}
+                  {icon === 'user' && <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 1 0-16 0"></path></svg>}
                 </div>
               ))}
             </div>
           </div>
         </div>
         
-        {/* Secondary glass components */}
-        <div className="absolute top-20 right-10 w-64 h-40 bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl -rotate-6 z-10 overflow-hidden">
+        {/* Secondary glass components - optimized for better responsiveness */}
+        <div className="absolute top-20 right-0 sm:right-10 w-48 sm:w-64 h-32 sm:h-40 bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl -rotate-6 z-10 overflow-hidden">
           <div className="h-1/2 bg-gradient-to-r from-primary/20 to-blue-500/20"></div>
-          <div className="p-4">
+          <div className="p-3 sm:p-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm font-medium">Subscribers</span>
-              <span className="text-xs bg-green-500/20 text-green-500 px-2 py-0.5 rounded-full">+5%</span>
+              <span className="text-xs sm:text-sm font-medium">Subscribers</span>
+              <span className="text-[10px] sm:text-xs bg-green-500/20 text-green-500 px-1.5 sm:px-2 py-0.5 rounded-full">+5%</span>
             </div>
-            <div className="mt-2 text-2xl font-bold">142.5K</div>
+            <div className="mt-1 sm:mt-2 text-xl sm:text-2xl font-bold">142.5K</div>
           </div>
         </div>
         
-        <div className="absolute bottom-20 left-10 w-56 h-56 bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl rotate-12 z-10 overflow-hidden">
-          <div className="p-4 h-full flex flex-col">
-            <div className="text-sm font-medium mb-4">Quick Access</div>
+        <div className="absolute bottom-20 left-0 sm:left-10 w-48 sm:w-56 h-48 sm:h-56 bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl rotate-12 z-10 overflow-hidden">
+          <div className="p-3 sm:p-4 h-full flex flex-col">
+            <div className="text-xs sm:text-sm font-medium mb-3 sm:mb-4">Quick Access</div>
             {[1, 2, 3].map((item, index) => (
-              <div key={index} className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <div key={index} className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                <div className="w-6 sm:w-8 h-6 sm:h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
                 </div>
                 <div>
-                  <div className="text-xs font-medium">Document {index + 1}</div>
-                  <div className="text-xs opacity-50">PDF • 2.4MB</div>
+                  <div className="text-[10px] sm:text-xs font-medium">Document {index + 1}</div>
+                  <div className="text-[8px] sm:text-xs opacity-50">PDF • 2.4MB</div>
                 </div>
               </div>
             ))}
@@ -1051,7 +1070,7 @@ function AppDevelopment() {
       </div>
       
       <div className="order-1 lg:order-2">
-        <div className="space-y-10">
+        <div className="space-y-8 sm:space-y-10">
           {[
             {
               title: "Light Diffusion",
@@ -1070,18 +1089,18 @@ function AppDevelopment() {
               description: "Clear boundaries between interactive elements while maintaining visual harmony."
             }
           ].map((feature, index) => (
-            <div key={index} className="relative pl-10 border-l-2 border-primary/30 py-2 hover:border-primary transition-colors group">
+            <div key={index} className="relative pl-8 sm:pl-10 border-l-2 border-primary/30 py-2 hover:border-primary transition-colors group">
               <div className="absolute -left-[9px] top-3 w-4 h-4 rounded-full bg-background border-2 border-primary/50 group-hover:border-primary transition-colors"></div>
-              <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
               <p className="text-foreground/70">{feature.description}</p>
             </div>
           ))}
         </div>
         
-        <div className="mt-12">
-          <a href="#" className="inline-flex items-center px-6 py-3 bg-white/10 dark:bg-gray-900/20 backdrop-blur-md text-primary border border-white/20 rounded-xl hover:bg-white/20 dark:hover:bg-gray-900/30 transition-all gap-2 group shadow-lg">
+        <div className="mt-10 sm:mt-12">
+          <a href="#" className="inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 bg-white/10 dark:bg-gray-900/20 backdrop-blur-md text-primary border border-white/20 rounded-xl hover:bg-white/20 dark:hover:bg-gray-900/30 transition-all gap-2 group shadow-lg">
             Explore Glass UI Kit
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
           </a>
         </div>
       </div>
@@ -1090,21 +1109,22 @@ function AppDevelopment() {
 </section>
 
 {/* App Feature Grid with Micro-interactions */}
-<section className="py-28 px-4 relative bg-secondary/5">
+<section className="py-16 sm:py-28 px-4 relative bg-secondary/5">
   <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-16">
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+    <div className="text-center mb-10 sm:mb-16">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-4 sm:mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
         Engaging Features
-      </span>      <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
+      </span>
+      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
         Micro-interactions That Delight
       </h2>
-      <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+      <p className="text-base sm:text-lg text-foreground/70 max-w-3xl mx-auto">
         Small, thoughtful animations that provide feedback and guide users through your application.
       </p>
     </div>
     
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
       {[
         {
           title: "Loading States",
@@ -1131,20 +1151,23 @@ function AppDevelopment() {
           icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
         }
       ].map((feature, index) => (
-        <div key={index} className="group relative h-[280px] rounded-2xl bg-secondary/5 backdrop-blur-sm border border-secondary/10 p-6 overflow-hidden hover:shadow-lg transition-shadow">
-          {/* Background gradient */}
+        <div 
+          key={index} 
+          className="group relative h-[250px] sm:h-[280px] rounded-2xl bg-secondary/5 backdrop-blur-sm border border-secondary/10 p-5 sm:p-6 overflow-hidden hover:shadow-lg transition-shadow"
+        >
+          {/* Background gradient with consistent opacity */}
           <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}></div>
           
           {/* Feature content */}
           <div className="relative z-10 h-full flex flex-col">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
               <div className="text-primary group-hover:text-blue-500 transition-colors">
                 {feature.icon}
               </div>
             </div>
             
-            <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">{feature.title}</h3>
-            <p className="text-foreground/70 mb-6">{feature.description}</p>
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 group-hover:text-primary transition-colors">{feature.title}</h3>
+            <p className="text-sm sm:text-base text-foreground/70 mb-4 sm:mb-6">{feature.description}</p>
             
             <div className="mt-auto">
               <a href="#" className="inline-flex items-center text-sm text-primary font-medium group-hover:underline">
@@ -1153,7 +1176,7 @@ function AppDevelopment() {
               </a>
             </div>
             
-            {/* Animated corners */}
+            {/* Animated corners - more subtle and consistent */}
             <div className="absolute top-2 right-2 w-3 h-3 border-t border-r border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </div>
@@ -1161,12 +1184,28 @@ function AppDevelopment() {
       ))}
     </div>
     
-
+    {/* Call-to-action banner with improved styling */}
+    <div className="mt-16 sm:mt-24 relative">
+      <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent w-full my-8 sm:my-12"></div>
+      
+      <div className="flex flex-col sm:flex-row items-center justify-between p-6 sm:p-8 bg-secondary/5 backdrop-blur-sm rounded-2xl border border-secondary/10 shadow-sm">
+        <div className="mb-6 sm:mb-0 sm:mr-10 text-center sm:text-left">
+          <h3 className="text-xl sm:text-2xl font-bold mb-2">See It In Action</h3>
+          <p className="text-foreground/70 max-w-md text-sm sm:text-base">
+            Experience the power of our interactive features with a live demonstration of our latest projects.
+          </p>
+        </div>
+        <a 
+          href="#demo" 
+          className="px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group whitespace-nowrap"
+        >
+          Watch Demo
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 group-hover:translate-x-1 transition-transform"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
-
-
-
 
 {/* Interactive Feature Showcase */}
 <section className="py-28 px-4 relative bg-gradient-to-b from-secondary/5 to-background">
@@ -1599,17 +1638,17 @@ function AppDevelopment() {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 + 0.3 }}
                     whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                    className="bg-secondary/5 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-secondary/10 group"
+                    className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:border-primary/40 hover:shadow-lg group transition-all"
                   >
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
                       {feature.icon}
                     </div>
                     
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                       {feature.title}
                     </h3>
                     
-                    <p className="text-foreground/70">
+                    <p className="text-gray-600 dark:text-gray-300">
                       {feature.description}
                     </p>
                   </motion.div>
@@ -1627,7 +1666,7 @@ function AppDevelopment() {
             <div className="text-center mb-12">              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
                 Why Choose Us
               </h2>
-              <p className="text-lg text-foreground/70">
+              <p className="text-lg text-gray-600 dark:text-gray-300">
                 We deliver cutting-edge mobile solutions with a focus on quality and innovation
               </p>
             </div>
@@ -1641,12 +1680,12 @@ function AppDevelopment() {
         </section>
 
         {/* Services Section */}
-        <section id="services" className="py-20 px-4 relative bg-secondary/5">
+        <section id="services" className="py-20 px-4 relative bg-gray-50/80 dark:bg-gray-900/50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">              <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">
                 Our Services
               </h2>
-              <p className="text-lg text-foreground/70">
+              <p className="text-lg text-gray-600 dark:text-gray-300">
                 Comprehensive mobile app development solutions for your business needs
               </p>
             </div>
@@ -1667,17 +1706,17 @@ function AppDevelopment() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-blue-500/5 to-primary/5 border border-primary/10 text-center"
+              className="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-blue-500/5 to-primary/5 border border-primary/20 text-center shadow-lg backdrop-blur-sm"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
                 Ready to Build Your App?
               </h2>
-              <p className="text-lg text-foreground/70 mb-8">
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
                 Let's turn your vision into a successful mobile application.
               </p>
               <a 
                 href="#contact" 
-                className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all gap-2 group"
+                className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all gap-2 group shadow-lg hover:shadow-xl"
               >
                 Get Started
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
