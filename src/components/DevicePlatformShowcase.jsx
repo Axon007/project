@@ -4,7 +4,52 @@ import Iphone15Pro from "@/components/magicui/iphone-15-pro";
 import Android from "@/components/magicui/android";
 import { Phone, Smartphone, ArrowRight, Zap } from "lucide-react";
 
-const DevicePlatformShowcase = () => {
+// Define app screenshot URLs
+const APP_SCREENSHOTS = {
+  iphone: [
+    {
+      id: "overview",
+      url: "https://i.imgur.com/u3CtPYQ.png" // Apple Health-like app UI
+    },
+    {
+      id: "design",
+      url: "https://i.imgur.com/YqDknep.png" // iOS Design-focused app
+    },
+    {
+      id: "ecosystem",
+      url: "https://i.imgur.com/jBFGlZE.png" // Apple Wallet-like UI
+    },
+    {
+      id: "security",
+      url: "https://i.imgur.com/HsGtmGc.png" // Face ID/Security focused UI
+    }
+  ],
+  android: [
+    {
+      id: "overview",
+      url: "https://i.imgur.com/LQFqmj2.png" // Material Design 3 example
+    },
+    {
+      id: "material",
+      url: "https://i.imgur.com/p2CHNmF.png" // Material You design example
+    },
+    {
+      id: "ecosystem",
+      url: "https://i.imgur.com/gIFZYA8.png" // Google ecosystem integration
+    },
+    {
+      id: "fragmentation",
+      url: "https://i.imgur.com/4ae3Q38.png" // Adaptive UI for multiple screens
+    }
+  ]
+};
+
+const DevicePlatformShowcase = ({ 
+  iphoneScreenshotUrl,  // Optional custom iPhone screenshot URL
+  androidScreenshotUrl, // Optional custom Android screenshot URL
+  showTabs = true,      // Whether to show platform tabs 
+  showFeatureBadges = false // Whether to show feature badges
+}) => {
   const [activeTab, setActiveTab] = useState("iphone");
   const [activePlatformFeature, setActivePlatformFeature] = useState("overview");
   
@@ -26,8 +71,6 @@ const DevicePlatformShowcase = () => {
         { id: "security", name: "Privacy & Security", 
           content: "Build with Apple's industry-leading security and privacy features. Integrate Face ID, Touch ID, App Tracking Transparency, and secure enclaves to protect user data and build trust." }
       ],
-
-
       services: [
         "Swift & SwiftUI Development",
         "Human Interface Guidelines",
@@ -51,7 +94,6 @@ const DevicePlatformShowcase = () => {
         { id: "fragmentation", name: "Device Support",
           content: "Navigate Android's device diversity with confidence. Our development practices ensure your app works flawlessly across different screen sizes, resolutions, hardware specifications, and Android versions." }
       ],
-
       services: [
         "Kotlin & Jetpack Compose",
         "Material Design Implementation",
@@ -62,57 +104,76 @@ const DevicePlatformShowcase = () => {
   };
 
   const currentPlatform = platforms[activeTab];
+  
+  // Get screenshot URL based on active tab and feature
+  const getScreenshotUrl = () => {
+    // If custom screenshot URLs are provided, use them
+    if (activeTab === "iphone" && iphoneScreenshotUrl) {
+      return iphoneScreenshotUrl;
+    }
+    if (activeTab === "android" && androidScreenshotUrl) {
+      return androidScreenshotUrl;
+    }
+    
+    // Otherwise use the default screenshots based on active feature
+    const screenshot = APP_SCREENSHOTS[activeTab].find(
+      s => s.id === activePlatformFeature
+    );
+    
+    return screenshot ? screenshot.url : APP_SCREENSHOTS[activeTab][0].url;
+  };
 
   return (
-    <div className="w-full py-16 px-4">
+    <div className="w-full py-12 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Simplified Platform Selection Tabs */}
-        <div className="flex justify-center mb-16">
-          <div className="bg-black/30 backdrop-blur-xl py-1 px-1 rounded-2xl overflow-hidden shadow-lg border border-white/5">
-            <div className="relative flex h-14 p-1 bg-black/20 rounded-xl overflow-hidden border border-white/5 z-10">
-              <div className="absolute inset-y-0 z-0 transition-all duration-300 ease-out px-1 py-1" style={{ left: activeTab === "iphone" ? "0%" : "50%", width: "50%" }}>
-                <motion.div
-                  layoutId="tabBackground"
-                  className="w-full h-full rounded-lg relative overflow-hidden"
-                  transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-                >
-                  <div
-                    className="absolute inset-0"
-                    style={{ 
-                      background: `linear-gradient(135deg, ${currentPlatform.color}, ${currentPlatform.secondaryColor})`,
-                    }}
-                  />
-                </motion.div>
-              </div>
-              
-              <div className="grid grid-cols-2 w-full relative z-10 pr-4">
-                {Object.entries(platforms).map(([id, platform]) => (
-                  <button
-                    key={id}
-                    onClick={() => {
-                      setActiveTab(id);
-                      setActivePlatformFeature("overview");
-                    }}
-                    className={`relative py-3 flex justify-center items-center gap-2 ${
-                      activeTab === id ? "text-white" : "text-white/40 hover:text-white/70"
-                    }`}
+        {showTabs && (
+          <div className="flex justify-center mb-16">
+            <div className="bg-black/30 backdrop-blur-xl py-1 px-1 rounded-2xl overflow-hidden shadow-lg border border-white/5">
+              <div className="relative flex h-14 p-1 bg-black/20 rounded-xl overflow-hidden border border-white/5 z-10">
+                <div className="absolute inset-y-0 z-0 transition-all duration-300 ease-out px-1 py-1" style={{ left: activeTab === "iphone" ? "0%" : "50%", width: "50%" }}>
+                  <motion.div
+                    layoutId="tabBackground"
+                    className="w-full h-full rounded-lg relative overflow-hidden"
+                    transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                   >
-                    <span className={`w-5 h-5 ${activeTab === id ? "text-white" : "text-white/60"}`}>
-                      {platform.icon}
-                    </span>
-                    <span className={`font-medium ${activeTab === id ? "font-semibold" : ""}`}>
-                      {platform.name}
-                    </span>
-                  </button>
-                ))}
+                    <div
+                      className="absolute inset-0"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${currentPlatform.color}, ${currentPlatform.secondaryColor})`,
+                      }}
+                    />
+                  </motion.div>
+                </div>
+                
+                <div className="grid grid-cols-2 w-full relative z-10 pr-4">
+                  {Object.entries(platforms).map(([id, platform]) => (
+                    <button
+                      key={id}
+                      onClick={() => {
+                        setActiveTab(id);
+                        setActivePlatformFeature("overview");
+                      }}
+                      className={`relative py-3 flex justify-center items-center gap-2 ${
+                        activeTab === id ? "text-white" : "text-white/40 hover:text-white/70"
+                      }`}
+                    >
+                      <span className={`w-5 h-5 ${activeTab === id ? "text-white" : "text-white/60"}`}>
+                        {platform.icon}
+                      </span>
+                      <span className={`font-medium ${activeTab === id ? "font-semibold" : ""}`}>
+                        {platform.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Left Column - Device Display (5 cols) */}
+          {/* Left Column - Enhanced Device Display (5 cols) */}
           <div className="lg:col-span-5 flex justify-center items-center">
             <AnimatePresence mode="wait">
               <motion.div
@@ -149,87 +210,15 @@ const DevicePlatformShowcase = () => {
                 ></motion.div>
                 
                 {/* Device Container */}
-                <div 
-                  className={`relative overflow-hidden shadow-2xl transition-all duration-500`}
-                  style={{ 
-                    borderRadius: currentPlatform.borderRadius,
-                    boxShadow: `0 25px 60px -12px ${currentPlatform.color}60`
-                  }}
-                >
-                  {/* Futuristic device glow */}
-                  <div 
-                    className={`absolute inset-0 bg-gradient-to-tr from-[${currentPlatform.color}20] to-transparent z-10 backdrop-blur-sm`} 
-                    style={{ borderRadius: currentPlatform.borderRadius }}
-                  ></div>
-                  
-                  {/* Holographic effect */}
-                  <motion.div
-                    animate={{ 
-                      opacity: [0, 0.2, 0],
-                      x: ["-100%", "100%"]
-                    }}
-                    transition={{ 
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      ease: "easeInOut",
-                      delay: 0.5
-                    }}
-                    className="absolute inset-0 z-20 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
-                    style={{ borderRadius: currentPlatform.borderRadius }}
-                  />
-                  
-                  {/* Futuristic scanline effect */}
-                  <motion.div
-                    animate={{ 
-                      y: ["-100%", "100%"]
-                    }}
-                    transition={{ 
-                      duration: 8,
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      ease: "linear"
-                    }}
-                    className="absolute inset-x-0 h-[2px] z-20 bg-[#ffffff30]"
-                  />
-
-                  {/* Device Component with Online Platform-specific Screenshots */}
+                <div className="relative z-10">
                   {activeTab === "iphone" ? (
                     <Iphone15Pro
-                      scale={0.7}
-                      className="w-[280px] h-[560px] drop-shadow-xl"
-                      alt="iPhone App Development Preview"
+                      scale={0.9}
+                      className="w-[320px] h-[640px] drop-shadow-[0_15px_35px_rgba(0,0,0,0.4)]"
+                      src={getScreenshotUrl()}
+                      alt="iOS App Development Preview"
                     >
-                      <div className="w-full h-full overflow-hidden">
-                        {activePlatformFeature === "overview" && (
-                          <img 
-                            src="https://images.unsplash.com/photo-1621946911155-919eecd0f8d5?q=80&w=1536&auto=format&fit=crop"
-                            alt="iOS Interface" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                        {activePlatformFeature === "design" && (
-                          <img 
-                            src="https://images.unsplash.com/photo-1636622433525-127afdf3662d?q=80&w=1540&auto=format&fit=crop"
-                            alt="iOS Design" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                        {activePlatformFeature === "ecosystem" && (
-                          <img 
-                            src="https://images.unsplash.com/photo-1619508698656-156c1d7e66df?q=80&w=1471&auto=format&fit=crop"
-                            alt="Apple Ecosystem" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                        {activePlatformFeature === "security" && (
-                          <img 
-                            src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=1587&auto=format&fit=crop"
-                            alt="iOS Security" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                        {/* Overlay with iOS brand styling */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/0 z-10">
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                           <div className="flex items-center">
                             <div className="w-8 h-8 bg-[#007AFF] rounded-xl flex items-center justify-center mr-2">
@@ -248,40 +237,12 @@ const DevicePlatformShowcase = () => {
                     </Iphone15Pro>
                   ) : (
                     <Android
-                      scale={0.7}
-                      className="w-[280px] h-[560px] drop-shadow-xl"
+                      scale={0.9}
+                      className="w-[320px] h-[640px] drop-shadow-[0_15px_35px_rgba(0,0,0,0.4)]"
+                      screenshotUrl={getScreenshotUrl()}
                       alt="Android App Development Preview"
                     >
-                      <div className="w-full h-full overflow-hidden">
-                        {activePlatformFeature === "overview" && (
-                          <img 
-                            src="https://images.unsplash.com/photo-1607252650355-f7fd0460ccdb?q=80&w=1470&auto=format&fit=crop"
-                            alt="Android Interface" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                        {activePlatformFeature === "material" && (
-                          <img 
-                            src="https://images.unsplash.com/photo-1635236066451-a17f04caa37c?q=80&w=1469&auto=format&fit=crop"
-                            alt="Material Design" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                        {activePlatformFeature === "ecosystem" && (
-                          <img 
-                            src="https://images.unsplash.com/photo-1596558450255-7c0b7be9d56a?q=80&w=1470&auto=format&fit=crop"
-                            alt="Google Services" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                        {activePlatformFeature === "fragmentation" && (
-                          <img 
-                            src="https://images.unsplash.com/photo-1573739022854-abceaeb585dc?q=80&w=1470&auto=format&fit=crop"
-                            alt="Device Support" 
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                        {/* Overlay with Android brand styling */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/0 z-10">
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                           <div className="flex items-center">
                             <div className="w-8 h-8 bg-[#3DDC84] rounded-xl flex items-center justify-center mr-2">
@@ -299,101 +260,104 @@ const DevicePlatformShowcase = () => {
                     </Android>
                   )}
 
-                  {/* Futuristic iPhone Notch */}
-                  {activeTab === "iphone" && (
-                    <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[26%] h-7 bg-black/90 rounded-full z-30 flex items-center justify-center overflow-hidden backdrop-blur border-b border-white/10">
-                      <motion.div 
-                        className="absolute inset-0 opacity-20"
-                        style={{ 
-                          background: `linear-gradient(90deg, transparent, ${currentPlatform.color}40, transparent)` 
-                        }}
-                        animate={{ 
-                          x: ["-100%", "100%"] 
-                        }}
-                        transition={{ 
-                          duration: 3, 
-                          repeat: Infinity,
-                          ease: "easeInOut" 
-                        }}
-                      />
-                      
-                      <div className="flex items-center space-x-2">
-                        <motion.div 
-                          className="w-1.5 h-1.5 rounded-full"
-                          style={{ backgroundColor: `${currentPlatform.color}80` }}
-                          animate={{ opacity: [0.4, 0.9, 0.4] }}
-                          transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
-                        />
-                        <motion.div 
-                          className="w-2 h-2 rounded-full"
-                          style={{ backgroundColor: `${currentPlatform.secondaryColor}80` }}
-                          animate={{ opacity: [0.5, 1, 0.5] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                        />
-                        <motion.div 
-                          className="w-1.5 h-1.5 rounded-full"
-                          style={{ backgroundColor: `${currentPlatform.color}80` }}
-                          animate={{ opacity: [0.4, 0.9, 0.4] }}
-                          transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                        />
-                      </div>
-                    </div>
+                  {/* Floating feature badges */}
+                  {showFeatureBadges && (
+                    <>
+                      {/* Feature badges specific to platform */}
+                      {activeTab === "iphone" ? (
+                        <>
+                          <motion.div 
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="absolute -right-12 top-1/4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl p-2 shadow-lg border border-white/20 dark:border-gray-700/20"
+                          >
+                            <p className="text-xs font-medium">
+                              {activePlatformFeature === "overview" && "Swift & SwiftUI"}
+                              {activePlatformFeature === "design" && "Apple HIG"}
+                              {activePlatformFeature === "ecosystem" && "App Store"}
+                              {activePlatformFeature === "security" && "Face ID"}
+                            </p>
+                          </motion.div>
+                          
+                          <motion.div 
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.5 }}
+                            className="absolute -left-12 top-2/3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl p-2 shadow-lg border border-white/20 dark:border-gray-700/20"
+                          >
+                            <p className="text-xs font-medium">
+                              {activePlatformFeature === "overview" && "Native Performance"}
+                              {activePlatformFeature === "design" && "Smooth Animation"}
+                              {activePlatformFeature === "ecosystem" && "iCloud Sync"}
+                              {activePlatformFeature === "security" && "Privacy Features"}
+                            </p>
+                          </motion.div>
+                        </>
+                      ) : (
+                        <>
+                          <motion.div 
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="absolute -right-12 top-1/4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl p-2 shadow-lg border border-white/20 dark:border-gray-700/20"
+                          >
+                            <p className="text-xs font-medium">
+                              {activePlatformFeature === "overview" && "Kotlin & Jetpack"}
+                              {activePlatformFeature === "material" && "Material Design"}
+                              {activePlatformFeature === "ecosystem" && "Play Store"}
+                              {activePlatformFeature === "fragmentation" && "Device Support"}
+                            </p>
+                          </motion.div>
+                          
+                          <motion.div 
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.5 }}
+                            className="absolute -left-12 top-2/3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl p-2 shadow-lg border border-white/20 dark:border-gray-700/20"
+                          >
+                            <p className="text-xs font-medium">
+                              {activePlatformFeature === "overview" && "Cross-Device"}
+                              {activePlatformFeature === "material" && "Adaptive UI"}
+                              {activePlatformFeature === "ecosystem" && "Firebase"}
+                              {activePlatformFeature === "fragmentation" && "Multi-Screen"}
+                            </p>
+                          </motion.div>
+                        </>
+                      )}
+                    </>
                   )}
-                </div>
 
-                {/* Futuristic Interactive Elements */}
-                <div className="absolute -left-6 top-1/4 flex flex-col gap-3 items-center">
-                  <motion.div 
-                    className="w-1 h-16 rounded-full"
-                    style={{ background: `linear-gradient(to bottom, ${currentPlatform.color}, transparent)` }}
-                    animate={{ height: [12, 24, 12] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  />
-                  <motion.div 
-                    className="w-6 h-6 rounded-full bg-transparent backdrop-blur-lg border-[1px] flex items-center justify-center"
-                    style={{ borderColor: currentPlatform.color }}
-                    animate={{ 
-                      boxShadow: [`0 0 0px ${currentPlatform.color}50`, `0 0 15px ${currentPlatform.color}60`, `0 0 0px ${currentPlatform.color}50`] 
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
+                  {/* Futuristic iPhone Notch */}
+                  <div className="absolute -left-6 top-1/4 flex flex-col gap-3 items-center">
                     <motion.div 
-                      className="w-2 h-2"
-                      style={{ backgroundColor: currentPlatform.color }}
-                      animate={{ scale: [0.8, 1.2, 0.8] }}
+                      className="w-1 h-16 rounded-full"
+                      style={{ background: `linear-gradient(to bottom, ${currentPlatform.color}, transparent)` }}
+                      animate={{ height: [12, 24, 12] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    />
+                    <motion.div 
+                      className="w-6 h-6 rounded-full bg-transparent backdrop-blur-lg border-[1px] flex items-center justify-center"
+                      style={{ borderColor: currentPlatform.color }}
+                      animate={{ 
+                        boxShadow: [`0 0 0px ${currentPlatform.color}50`, `0 0 15px ${currentPlatform.color}60`, `0 0 0px ${currentPlatform.color}50`] 
+                      }}
                       transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  </motion.div>
-                </div>
-                
-                <div className="absolute -right-6 bottom-1/4 flex flex-col gap-3 items-center">
-                  <motion.div 
-                    className="w-6 h-6 rounded-full bg-transparent backdrop-blur-lg border-[1px] flex items-center justify-center"
-                    style={{ borderColor: currentPlatform.secondaryColor }}
-                    animate={{ 
-                      boxShadow: [`0 0 0px ${currentPlatform.secondaryColor}50`, `0 0 15px ${currentPlatform.secondaryColor}60`, `0 0 0px ${currentPlatform.secondaryColor}50`] 
-                    }}
-                    transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-                  >
-                    <motion.div 
-                      className="w-2 h-2"
-                      style={{ backgroundColor: currentPlatform.secondaryColor }}
-                      animate={{ scale: [0.8, 1.2, 0.8] }}
-                      transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-                    />
-                  </motion.div>
-                  <motion.div 
-                    className="w-1 h-16 rounded-full"
-                    style={{ background: `linear-gradient(to top, ${currentPlatform.secondaryColor}, transparent)` }}
-                    animate={{ height: [12, 24, 12] }}
-                    transition={{ duration: 3.5, repeat: Infinity, delay: 0.7 }}
-                  />
+                    >
+                      <motion.div 
+                        className="w-2 h-2"
+                        style={{ backgroundColor: currentPlatform.color }}
+                        animate={{ scale: [0.8, 1.2, 0.8] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                    </motion.div>
+                  </div>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
-
-          {/* Right Column - Minimal Modern Content (7 cols) */}
+          
+          {/* Right Column - Platform Information (7 cols) */}
           <div className="lg:col-span-7 space-y-8">
             {/* Minimal Platform Header */}
             <div className="space-y-4">
@@ -475,9 +439,37 @@ const DevicePlatformShowcase = () => {
               ))}
             </div>
 
-
-
-
+            {/* Services List */}
+            <div className="pt-6">
+              <motion.h4 
+                className="text-lg font-semibold mb-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                Services
+              </motion.h4>
+              
+              <div className="grid grid-cols-2 gap-3">
+                {currentPlatform.services.map((service, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 + (index * 0.1) }}
+                    className="flex items-center gap-2"
+                  >
+                    <div 
+                      className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: currentPlatform.color }}
+                    >
+                      <Zap className="w-2.5 h-2.5 text-white" />
+                    </div>
+                    <span className="text-sm text-white/80">{service}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

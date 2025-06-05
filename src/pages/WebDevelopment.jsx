@@ -8,6 +8,166 @@ import { Terminal, TypingAnimation, AnimatedSpan } from "../components/magicui/t
 import { AnimatePresence } from "framer-motion";
 import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
 
+// Add the LineShadowText component
+const LineShadowText = ({ children, shadowColor = "#8B5CF6", className = "", as = "span", ...props }) => {
+  const Component = as;
+  const content = typeof children === "string" ? children : null;
+
+  if (!content) {
+    throw new Error("LineShadowText only accepts string content");
+  }
+
+  return (
+    <Component
+      style={{ "--shadow-color": shadowColor }}
+      className={`relative z-0 inline-flex
+        after:absolute after:left-[0.04em] after:top-[0.04em] after:content-[attr(data-text)]
+        after:bg-[linear-gradient(45deg,transparent_45%,var(--shadow-color)_45%,var(--shadow-color)_55%,transparent_0)]
+        after:-z-10 after:bg-[length:0.06em_0.06em] after:bg-clip-text after:text-transparent
+        after:animate-line-shadow ${className}`}
+      data-text={content}
+      {...props}
+    >
+      {content}
+    </Component>
+  );
+};
+
+// Add the AuroraText component
+const AuroraText = ({ children, className = "", colors = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"], speed = 1 }) => {
+  const gradientStyle = {
+    backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${colors[0]})`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    animationDuration: `${10 / speed}s`,
+  };
+
+  return (
+    <span className={`relative inline-block ${className}`}>
+      <span className="sr-only">{children}</span>
+      <span
+        className="relative animate-aurora bg-[length:200%_auto] bg-clip-text text-transparent"
+        style={gradientStyle}
+        aria-hidden="true"
+      >
+        {children}
+      </span>
+    </span>
+  );
+};
+
+// Add the keyframe for line-shadow animation to your CSS
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.innerHTML = `
+    @keyframes line-shadow {
+      0% {
+        background-position: -100% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+    .animate-line-shadow {
+      animation: line-shadow 2s linear infinite;
+    }
+    @keyframes aurora {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    .animate-aurora {
+      animation: aurora 10s linear infinite;
+    }
+    @keyframes float-blob {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      25% {
+        transform: translate(5%, -2%) scale(1.03);
+      }
+      50% {
+        transform: translate(0, 3%) scale(0.98);
+      }
+      75% {
+        transform: translate(-5%, 1%) scale(1.01);
+      }
+    }
+    .animate-float {
+      animation: float-blob 15s ease-in-out infinite;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Add AuroraBackground component
+const AuroraBackground = ({ className = "" }) => {
+  return (
+    <div className={`absolute inset-0 overflow-hidden ${className}`}>
+      {/* Main aurora blobs */}
+      <div 
+        className="absolute -top-1/4 -left-1/2 h-[50%] w-[100%] rounded-full bg-gradient-to-r from-violet-600/30 to-purple-600/30 blur-[64px] animate-float"
+        style={{ animationDelay: "0s" }}
+      />
+      <div 
+        className="absolute -right-1/4 -top-1/4 h-[50%] w-[60%] rounded-full bg-gradient-to-l from-indigo-600/20 via-blue-600/20 to-cyan-600/20 blur-[80px] animate-float"
+        style={{ animationDelay: "-5s" }}
+      />
+      <div 
+        className="absolute top-1/3 -right-1/4 h-[40%] w-[50%] rounded-full bg-gradient-to-tl from-pink-600/20 via-purple-600/20 to-indigo-600/20 blur-[64px] animate-float"
+        style={{ animationDelay: "-2s" }}
+      />
+      <div 
+        className="absolute bottom-0 left-1/4 h-[40%] w-[50%] rounded-full bg-gradient-to-tr from-blue-600/20 via-cyan-600/20 to-teal-600/20 blur-[96px] animate-float"
+        style={{ animationDelay: "-8s" }}
+      />
+      
+      {/* Overlay to control intensity */}
+      <div className="absolute inset-0 bg-background/50"></div>
+    </div>
+  );
+};
+
+// Add InteractiveGridPattern component here
+const InteractiveGridPattern = ({ width = 40, height = 40, squares = [24, 24], className, squaresClassName, ...props }) => {
+  const [horizontal, vertical] = squares;
+  const [hoveredSquare, setHoveredSquare] = useState(null);
+
+  return (
+    <svg
+      width={width * horizontal}
+      height={height * vertical}
+      className={`absolute inset-0 h-full w-full border border-gray-400/30 ${className || ""}`}
+      {...props}
+    >
+      {Array.from({ length: horizontal * vertical }).map((_, index) => {
+        const x = (index % horizontal) * width;
+        const y = Math.floor(index / horizontal) * height;
+        return (
+          <rect
+            key={index}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            className={`stroke-gray-400/30 transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000 ${
+              hoveredSquare === index ? "fill-gray-300/30" : "fill-transparent"
+            } ${squaresClassName || ""}`}
+            onMouseEnter={() => setHoveredSquare(index)}
+            onMouseLeave={() => setHoveredSquare(null)}
+          />
+        );
+      })}
+    </svg>
+  );
+};
+
 const features = [
   {
     name: 'Responsive Web Design',
@@ -787,64 +947,88 @@ function WebDevelopmentServices() {
     };
   }, []);
   return (
-    <div className="min-h-screen">      {/* Hero Section with Feature Overview */}
-      <div className="overflow-hidden bg-background py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-10 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-          <div className="lg:pt-8 lg:pr-10">
-            <div className="hidden sm:mb-10 sm:flex sm:justify-start">
- <div className="relative rounded-full px-3 py-1 text-sm/6 text-muted-foreground ring-1 ring-border hover:ring-border/80 transition-colors">
-              Announcing our next round of funding.{' '}
-              <a href="#" className="font-semibold text-primary hover:text-primary/80 transition-colors">
-                <span aria-hidden="true" className="absolute inset-0" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
-          </div>
-          <div className="text-left">
-                  <h1 className="text-5xl font-semibold tracking-tight text-balance text-foreground sm:text-7xl">
-              Crafting Digital Experiences That Drive Results
-            </h1>       
-                        <p className="mt-8 text-lg font-medium text-pretty text-muted-foreground sm:text-xl/8">
-              Custom web development solutions that transform your vision into powerful, scalable, and user-friendly websites designed to grow your business and engage your audience.
-
-            </p>
-            
-            {/* Feature list with improved visuals */}            <div className="mt-10 grid grid-cols-1 gap-y-8 text-sm">
-              {features.map((feature, index) => (
-                <div key={feature.name} className="space-y-3">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-                    <feature.icon className="size-4 text-primary" aria-hidden="true" />
-                    <span className="font-semibold text-primary">{feature.name}</span>
-                  </div>
+    <div className="min-h-screen">
+      {/* Hero Section with Feature Overview */}
+      <div className="overflow-hidden bg-background py-24 sm:py-32 relative">
+        {/* Add AuroraBackground component */}
+        <AuroraBackground className="z-0" />
+        
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-10 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            {/* Left column with text content */}
+            <div className="lg:pt-8 lg:pr-10 relative">
+              {/* Remove Interactive Grid Pattern background */}
+              <div className="hidden sm:mb-10 sm:flex sm:justify-start">
+                <div className="relative rounded-full px-3 py-1 text-sm/6 text-muted-foreground ring-1 ring-border hover:ring-border/80 transition-colors">
+                  Announcing our next round of funding.{' '}
+                  <a href="#" className="font-semibold text-primary hover:text-primary/80 transition-colors">
+                    <span aria-hidden="true" className="absolute inset-0" />
+                    Read more <span aria-hidden="true">&rarr;</span>
+                  </a>
                 </div>
-              ))}
+              </div>
+              <div className="text-left relative z-10">
+                <h1 className="text-5xl font-semibold tracking-tight text-balance text-foreground sm:text-7xl">
+                  <AuroraText 
+                    colors={["#7C3AED", "#8B5CF6", "#A78BFA", "#C4B5FD"]} 
+                    speed={1.5}
+                  >
+                    Crafting
+                  </AuroraText>{" "}
+                  <br/>
+                  <LineShadowText
+                    shadowColor="#8B5CF6"
+                    className="font-bold"
+                  >
+                    Digital Experiences
+                  </LineShadowText>{" "}
+                  <br/>
+                  That Drive Results
+                </h1>       
+                <p className="mt-8 text-lg font-medium text-pretty text-muted-foreground sm:text-xl/8">
+                  Custom web development solutions that transform your vision into powerful, scalable, and user-friendly websites designed to grow your business and engage your audience.
+                </p>
+                
+                {/* Feature list with improved visuals */}
+                <div className="mt-10 grid grid-cols-1 gap-y-8 text-sm">
+                  {features.map((feature, index) => (
+                    <div key={feature.name} className="space-y-3">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+                        <feature.icon className="size-4 text-primary" aria-hidden="true" />
+                        <span className="font-semibold text-primary">{feature.name}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-12 flex items-center gap-x-6">
+                  <a
+                    href="#contact"
+                    className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors duration-200"
+                  >
+                    Schedule a consultation
+                  </a>
+                  <a href="#services" className="text-sm font-medium text-primary flex items-center gap-1 hover:gap-2 transition-all duration-200 hover:text-primary/80">
+                    Explore services <span aria-hidden="true" className="transition-transform duration-200">→</span>
+                  </a>
+                </div>
+              </div>
             </div>
             
-            <div className="mt-12 flex items-center gap-x-6">
-              <a
-                href="#contact"
-                className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors duration-200"
-              >
-                Schedule a consultation
-              </a>
-              <a href="#services" className="text-sm font-medium text-primary flex items-center gap-1 hover:gap-2 transition-all duration-200 hover:text-primary/80">
-                Explore services <span aria-hidden="true" className="transition-transform duration-200">→</span>
-              </a>
+            {/* Right column with image */}
+            <div className="relative">
+              {/* Remove Interactive Grid Pattern for the image side */}
+              <img
+                alt="Product screenshot"
+                src="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
+                width={1080}
+                height={1442}
+                className="w-3xl max-w-none rounded-xl shadow-xl ring-1 ring-border sm:w-228 md:-ml-4 lg:-ml-0 relative z-10"
+              />
             </div>
           </div>
-
-          </div>
-          <img
-            alt="Product screenshot"
-            src="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
-            width={1080}
-            height={1442}
-            className="w-3xl max-w-none rounded-xl shadow-xl ring-1 ring-border sm:w-228 md:-ml-4 lg:-ml-0"
-          />
         </div>
       </div>
-    </div>
             {/* App Analytics Dashboard Showcase */}
       <section className="py-24 px-4 relative">
         <div className="max-w-7xl mx-auto">

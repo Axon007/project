@@ -80,8 +80,27 @@
   }
 }
 
+@keyframes subtle-pulse {
+  0% {
+    opacity: 0.2;
+    transform: translateY(-2px);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0.2;
+    transform: translateY(-2px);
+  }
+}
+
 .animate-shimmer {
   animation: shimmer 1.5s infinite;
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 4s ease-in-out infinite;
 }
 
 /* Navbar text color adaptation */
