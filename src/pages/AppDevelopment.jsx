@@ -731,123 +731,148 @@ function AppDevelopment() {
 
     
           {/* App Showcase with Enhanced Device Mockups */}
-          <section className="container mx-auto px-4 py-16 sm:py-24 relative overflow-hidden">
-            {/* Background elements */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl opacity-60 -z-10"></div>
-            <div className="absolute right-0 top-1/3 w-80 h-80 bg-blue-500/10 rounded-full filter blur-3xl opacity-60 -z-10"></div>
-            
-            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 relative">
-              {/* Content Side */}
-              <div className="lg:w-1/2 lg:pr-8 z-10 text-center lg:text-left">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6 backdrop-blur-sm border border-primary/20">
-                    <Phone className="w-4 h-4 mr-2" /> App Showcase
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-                    Beautiful <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">App Experiences</span> for Modern Businesses
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-300 mb-8 text-base lg:text-lg leading-relaxed">
-                    We blend stunning design with powerful functionality to create apps that users love. Our development process focuses on creating intuitive, responsive, and engaging mobile experiences.
-                  </p>
-                  
-                  {/* Enhanced Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }} 
-                      whileTap={{ scale: 0.98 }}
-                      className="px-6 py-3 bg-primary text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25 hover:shadow-xl"
-                    >
-                      Get Started <ArrowRight className="w-4 h-4" />
-                    </motion.button>
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }} 
-                      whileTap={{ scale: 0.98 }}
-                      className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
-                    >
-                      View Portfolio <ArrowUpRight className="w-4 h-4" />
-                    </motion.button>
-                  </div>
-                  
-                  {/* Key Features Tags */}
-                  <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                    {["Responsive Design", "Native Experience", "Cross-Platform", "Fast Performance"].map((tag, index) => (
-                      <div key={index} className="px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg text-sm border border-gray-200 dark:border-gray-700 shadow-sm">
-                        <span className="text-gray-700 dark:text-gray-300 font-medium">{tag}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-              
-              {/* Device Showcase Side */}
-              <div className="lg:w-1/2 relative w-full">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="relative z-10"
-                >
-                  {/* Light effect behind the devices */}
-                  <div className="absolute inset-0 bg-gradient-radial from-primary/20 via-blue-500/10 to-transparent filter blur-2xl rounded-full opacity-70 -z-10"></div>
-                  
-                  {/* DevicePlatformShowcase with custom props */}
-                  <DevicePlatformShowcase 
-                    iphoneScreenshotUrl="/images/ios.png" 
-                    androidScreenshotUrl="/images/android2.png"
-                    showTabs={true}
-                    showFeatureBadges={true}
-                  />
-                  
-                  {/* Interactive elements - Hidden on mobile for better UX */}
-                  <motion.div 
-                    className="absolute top-10 -right-4 lg:-right-6 w-12 h-12 lg:w-16 lg:h-16 bg-white dark:bg-gray-800 rounded-full shadow-xl flex items-center justify-center cursor-pointer group border border-gray-200 dark:border-gray-700 hidden sm:flex"
-                    whileHover={{ scale: 1.1, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }} 
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Phone className="w-5 h-5 lg:w-6 lg:h-6 text-primary group-hover:scale-110 transition-transform" />
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="absolute bottom-20 -left-4 lg:-left-6 w-12 h-12 lg:w-16 lg:h-16 bg-white dark:bg-gray-800 rounded-full shadow-xl flex items-center justify-center cursor-pointer group border border-gray-200 dark:border-gray-700 hidden sm:flex"
-                    whileHover={{ scale: 1.1, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }} 
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Tablet className="w-5 h-5 lg:w-6 lg:h-6 text-blue-500 group-hover:scale-110 transition-transform" />
-                  </motion.div>
-                </motion.div>
-                
-                {/* App Stats Card - Better mobile responsive */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl p-3 sm:p-4 shadow-xl border border-gray-200/50 dark:border-gray-700/50 flex items-center gap-4 sm:gap-6 lg:gap-8 z-20 text-center max-w-[90%] sm:max-w-none"
-                >
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">App Stores</p>
-                    <p className="font-bold text-base lg:text-lg text-gray-900 dark:text-white">2</p>
-                  </div>
-                  <div className="w-px h-6 bg-gray-200 dark:bg-gray-600"></div>
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Market Share</p>
-                    <p className="font-bold text-base lg:text-lg text-gray-900 dark:text-white">99.6%</p>
-                  </div>
-                  <div className="w-px h-6 bg-gray-200 dark:bg-gray-600"></div>
-                  <div className="text-center">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Global Users</p>
-                    <p className="font-bold text-base lg:text-lg text-gray-900 dark:text-white">6.92B</p>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </section>
+          <section className="container mx-auto px-4 py-16 md:py-24 relative overflow-hidden">
+  {/* Background elements - improved positioning and colors */}
+  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64 bg-primary/8 rounded-full filter blur-3xl opacity-50 -z-10"></div>
+  <div className="absolute right-0 top-1/3 w-60 h-60 md:w-80 md:h-80 bg-blue-500/8 rounded-full filter blur-3xl opacity-50 -z-10"></div>
+  
+  <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 relative">
+    {/* Content Side */}
+    <div className="w-full lg:w-1/2 lg:pr-8 xl:pr-12 z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-center lg:text-left"
+      >
+        <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary mb-4 md:mb-6 border border-primary/20">
+          <Phone className="w-4 h-4 mr-2" /> App Showcase
+        </span>
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 leading-tight">
+          Beautiful <span className="text-primary bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">App Experiences</span> for Modern Businesses
+        </h2>
+        <p className="text-muted-foreground mb-6 md:mb-8 text-base md:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+          We blend stunning design with powerful functionality to create apps that users love. Our development process focuses on creating intuitive, responsive, and engaging mobile experiences.
+        </p>
+        
+        {/* Enhanced Buttons - Fixed positioning and styling */}
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-8 justify-center lg:justify-start">
+          <motion.button 
+            whileHover={{ scale: 1.02 }} 
+            whileTap={{ scale: 0.98 }}
+            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-primary/25 min-w-[140px]"
+          >
+            Get Started <ArrowRight className="w-4 h-4" />
+          </motion.button>
+          <motion.button 
+            whileHover={{ scale: 1.02 }} 
+            whileTap={{ scale: 0.98 }}
+            className="px-6 py-3 border border-border bg-background/50 backdrop-blur-sm rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-accent hover:text-accent-foreground transition-all duration-200 min-w-[140px]"
+          >
+            View Portfolio <ArrowUpRight className="w-4 h-4" />
+          </motion.button>
+        </div>
+        
+        {/* Key Features Tags - Improved responsiveness */}
+        <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+          {["Responsive Design", "Native Experience", "Cross-Platform", "Fast Performance"].map((tag, index) => (
+            <motion.div 
+              key={index} 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="px-3 py-1.5 bg-secondary/80 backdrop-blur-sm rounded-lg text-sm border border-border/50"
+            >
+              <span className="text-foreground/80 font-medium">{tag}</span>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+    
+    {/* Device Showcase Side - Fixed positioning and interactions */}
+    <div className="w-full lg:w-1/2 relative mt-8 lg:mt-0">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative z-10"
+      >
+        {/* Enhanced light effect behind devices */}
+        <div className="absolute inset-0 bg-gradient-radial from-primary/15 via-blue-500/8 to-transparent filter blur-2xl rounded-full opacity-60 -z-10 scale-110"></div>
+        
+        {/* DevicePlatformShowcase with custom props */}
+        <div className="relative">
+          <DevicePlatformShowcase 
+            iphoneScreenshotUrl="/images/ios.png" 
+            androidScreenshotUrl="/images/android2.png"
+            showTabs={true}
+            showFeatureBadges={true}
+          />
+        </div>
+        
+        {/* Fixed Interactive elements - Better positioning and styling */}
+        <motion.div 
+          className="absolute top-8 md:top-10 -right-4 md:-right-6 w-12 h-12 md:w-16 md:h-16 bg-background/95 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center cursor-pointer group border border-border/50 hover:border-primary/30 transition-all duration-200"
+          whileHover={{ 
+            scale: 1.1, 
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
+          }} 
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <Phone className="w-5 h-5 md:w-6 md:h-6 text-primary group-hover:scale-110 transition-transform duration-200" />
+        </motion.div>
+        
+        <motion.div 
+          className="absolute bottom-16 md:bottom-20 -left-4 md:-left-6 w-12 h-12 md:w-16 md:h-16 bg-background/95 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center cursor-pointer group border border-border/50 hover:border-blue-500/30 transition-all duration-200"
+          whileHover={{ 
+            scale: 1.1, 
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
+          }} 
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 1.0 }}
+        >
+          <Tablet className="w-5 h-5 md:w-6 md:h-6 text-blue-500 group-hover:scale-110 transition-transform duration-200" />
+        </motion.div>
+      </motion.div>
+      
+      {/* App Stats Card - Improved responsiveness and positioning */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="absolute -bottom-4 md:bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-background/95 backdrop-blur-md rounded-xl p-3 md:p-4 shadow-lg border border-border/50 flex items-center gap-4 md:gap-8 z-20 min-w-[280px] md:min-w-[320px]"
+      >
+        <div className="text-center flex-1">
+          <p className="text-xs text-muted-foreground font-medium">App Stores</p>
+          <p className="font-bold text-lg md:text-xl text-foreground">2</p>
+        </div>
+        <div className="w-px h-8 bg-border"></div>
+        <div className="text-center flex-1">
+          <p className="text-xs text-muted-foreground font-medium">Market Share</p>
+          <p className="font-bold text-lg md:text-xl text-foreground">99.6%</p>
+        </div>
+        <div className="w-px h-8 bg-border"></div>
+        <div className="text-center flex-1">
+          <p className="text-xs text-muted-foreground font-medium">Global Users</p>
+          <p className="font-bold text-lg md:text-xl text-foreground">6.92B</p>
+        </div>
+      </motion.div>
+    </div>
+  </div>
+</section>
+
 
 
 
