@@ -80,8 +80,27 @@
   }
 }
 
+@keyframes subtle-pulse {
+  0% {
+    opacity: 0.2;
+    transform: translateY(-2px);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0.2;
+    transform: translateY(-2px);
+  }
+}
+
 .animate-shimmer {
   animation: shimmer 1.5s infinite;
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 4s ease-in-out infinite;
 }
 
 /* Navbar text color adaptation */
@@ -135,6 +154,22 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Global theme transition */
+  *,
+  *::before,
+  *::after {
+    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  /* Ensure smooth transitions for pseudo-elements and gradients */
+  .theme-transition {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 

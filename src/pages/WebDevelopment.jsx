@@ -8,6 +8,166 @@ import { Terminal, TypingAnimation, AnimatedSpan } from "../components/magicui/t
 import { AnimatePresence } from "framer-motion";
 import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
 
+// Add the LineShadowText component
+const LineShadowText = ({ children, shadowColor = "#8B5CF6", className = "", as = "span", ...props }) => {
+  const Component = as;
+  const content = typeof children === "string" ? children : null;
+
+  if (!content) {
+    throw new Error("LineShadowText only accepts string content");
+  }
+
+  return (
+    <Component
+      style={{ "--shadow-color": shadowColor }}
+      className={`relative z-0 inline-flex
+        after:absolute after:left-[0.04em] after:top-[0.04em] after:content-[attr(data-text)]
+        after:bg-[linear-gradient(45deg,transparent_45%,var(--shadow-color)_45%,var(--shadow-color)_55%,transparent_0)]
+        after:-z-10 after:bg-[length:0.06em_0.06em] after:bg-clip-text after:text-transparent
+        after:animate-line-shadow ${className}`}
+      data-text={content}
+      {...props}
+    >
+      {content}
+    </Component>
+  );
+};
+
+// Add the AuroraText component
+const AuroraText = ({ children, className = "", colors = ["#FF0080", "#7928CA", "#0070F3", "#38bdf8"], speed = 1 }) => {
+  const gradientStyle = {
+    backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${colors[0]})`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    animationDuration: `${10 / speed}s`,
+  };
+
+  return (
+    <span className={`relative inline-block ${className}`}>
+      <span className="sr-only">{children}</span>
+      <span
+        className="relative animate-aurora bg-[length:200%_auto] bg-clip-text text-transparent"
+        style={gradientStyle}
+        aria-hidden="true"
+      >
+        {children}
+      </span>
+    </span>
+  );
+};
+
+// Add the keyframe for line-shadow animation to your CSS
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.innerHTML = `
+    @keyframes line-shadow {
+      0% {
+        background-position: -100% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+    .animate-line-shadow {
+      animation: line-shadow 2s linear infinite;
+    }
+    @keyframes aurora {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    .animate-aurora {
+      animation: aurora 10s linear infinite;
+    }
+    @keyframes float-blob {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      25% {
+        transform: translate(5%, -2%) scale(1.03);
+      }
+      50% {
+        transform: translate(0, 3%) scale(0.98);
+      }
+      75% {
+        transform: translate(-5%, 1%) scale(1.01);
+      }
+    }
+    .animate-float {
+      animation: float-blob 15s ease-in-out infinite;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Add AuroraBackground component
+const AuroraBackground = ({ className = "" }) => {
+  return (
+    <div className={`absolute inset-0 overflow-hidden ${className}`}>
+      {/* Main aurora blobs */}
+      <div 
+        className="absolute -top-1/4 -left-1/2 h-[50%] w-[100%] rounded-full bg-gradient-to-r from-violet-600/30 to-purple-600/30 blur-[64px] animate-float"
+        style={{ animationDelay: "0s" }}
+      />
+      <div 
+        className="absolute -right-1/4 -top-1/4 h-[50%] w-[60%] rounded-full bg-gradient-to-l from-indigo-600/20 via-blue-600/20 to-cyan-600/20 blur-[80px] animate-float"
+        style={{ animationDelay: "-5s" }}
+      />
+      <div 
+        className="absolute top-1/3 -right-1/4 h-[40%] w-[50%] rounded-full bg-gradient-to-tl from-pink-600/20 via-purple-600/20 to-indigo-600/20 blur-[64px] animate-float"
+        style={{ animationDelay: "-2s" }}
+      />
+      <div 
+        className="absolute bottom-0 left-1/4 h-[40%] w-[50%] rounded-full bg-gradient-to-tr from-blue-600/20 via-cyan-600/20 to-teal-600/20 blur-[96px] animate-float"
+        style={{ animationDelay: "-8s" }}
+      />
+      
+      {/* Overlay to control intensity */}
+      <div className="absolute inset-0 bg-background/50"></div>
+    </div>
+  );
+};
+
+// Add InteractiveGridPattern component here
+const InteractiveGridPattern = ({ width = 40, height = 40, squares = [24, 24], className, squaresClassName, ...props }) => {
+  const [horizontal, vertical] = squares;
+  const [hoveredSquare, setHoveredSquare] = useState(null);
+
+  return (
+    <svg
+      width={width * horizontal}
+      height={height * vertical}
+      className={`absolute inset-0 h-full w-full border border-gray-400/30 ${className || ""}`}
+      {...props}
+    >
+      {Array.from({ length: horizontal * vertical }).map((_, index) => {
+        const x = (index % horizontal) * width;
+        const y = Math.floor(index / horizontal) * height;
+        return (
+          <rect
+            key={index}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            className={`stroke-gray-400/30 transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000 ${
+              hoveredSquare === index ? "fill-gray-300/30" : "fill-transparent"
+            } ${squaresClassName || ""}`}
+            onMouseEnter={() => setHoveredSquare(index)}
+            onMouseLeave={() => setHoveredSquare(null)}
+          />
+        );
+      })}
+    </svg>
+  );
+};
+
 const features = [
   {
     name: 'Responsive Web Design',
@@ -35,38 +195,38 @@ const IntegrationsSection = () => {
       name: "GitHub",
       description: "Version control & collaboration",
       logo: "/images/github-logo.png",
-      color: THEME_ACCENT.tertiary
+      color: "rgb(139, 92, 246)" // Using CSS custom property
     },
     {
       name: "VS Code",
       description: "Integrated development environment",
       logo: "/images/vscode-logo.png",
-      color: THEME_ACCENT.primary
+      color: "rgb(139, 92, 246)"
     },
     {
       name: "Docker",
       description: "Containerization & deployment",
       logo: "/images/docker-logo.png",
-      color: THEME_ACCENT.secondary
+      color: "rgb(236, 72, 153)"
     },
     {
       name: "AWS",
       description: "Cloud hosting & services",
       logo: "/images/aws-logo.png",
-      color: THEME_ACCENT.accent
+      color: "rgb(59, 130, 246)"
     },
     {
       name: "Netlify",
       description: "Continuous deployment platform",
       logo: "/images/netlify-logo.png",
-      color: THEME_ACCENT.primary
+      color: "rgb(139, 92, 246)"
     }
   ];
 
   return (
-    <div className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-zinc-900 to-black relative overflow-hidden">
-      {/* Y2K-inspired diagonal patterns */}
-      <div className="absolute inset-0 overflow-hidden opacity-30 mix-blend-overlay pointer-events-none">
+    <div className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background via-secondary/10 to-background relative overflow-hidden">
+      {/* Y2K-inspired diagonal patterns - theme aware */}
+      <div className="absolute inset-0 overflow-hidden opacity-20 dark:opacity-30 mix-blend-overlay pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-[120%] bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.15),transparent_45%)]"></div>
         <div className="absolute top-[10%] left-[30%] w-[70%] h-[60%] rotate-[-35deg] bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(236,72,153,0.1)_10px,rgba(236,72,153,0.1)_20px)]"></div>
         <div className="absolute bottom-0 right-0 w-[80%] h-[70%] rotate-12 bg-[repeating-linear-gradient(-45deg,transparent,transparent_10px,rgba(59,130,246,0.1)_10px,rgba(59,130,246,0.1)_20px)]"></div>
@@ -75,8 +235,9 @@ const IntegrationsSection = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Asymmetrical header with retro elements */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 relative">
-          <div className="md:w-2/3">            {/* Glitchy, pixelated tag */}
-            <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 bg-orange-500 text-white font-mono text-sm uppercase tracking-wider border-2 border-dashed border-orange-300 rotate-2 shadow-[5px_5px_0px_#000] dark:shadow-[5px_5px_0px_#222]">
+          <div className="md:w-2/3">
+            {/* Glitchy, pixelated tag */}
+            <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 bg-orange-500 text-white font-mono text-sm uppercase tracking-wider border-2 border-dashed border-orange-300 rotate-2 shadow-[5px_5px_0px_theme(colors.foreground)] dark:shadow-[5px_5px_0px_theme(colors.background)]">
               <div className="flex gap-1 mr-2">
                 {[1,2,3].map((i) => (
                   <div key={i} className="w-1.5 h-1.5 bg-white rounded-sm"></div>
@@ -90,7 +251,7 @@ const IntegrationsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-3xl md:text-5xl font-black mb-6 text-white"
+              className="text-3xl md:text-5xl font-black mb-6 text-foreground"
             >
               Power your <br/>
               <div className="relative inline-block">
@@ -101,12 +262,12 @@ const IntegrationsSection = () => {
               </div>
             </motion.h2>
           </div>
-            <motion.p
+          <motion.p
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="md:w-1/3 text-base md:text-lg text-zinc-400 md:text-right mt-4 md:mt-0 border-l-4 border-pink-500 pl-4 md:mb-2"
+            className="md:w-1/3 text-base md:text-lg text-muted-foreground md:text-right mt-4 md:mt-0 border-l-4 border-pink-500 pl-4 md:mb-2"
           >
             Seamless integration across your dev stack.<br/>
             Connect your favorite development tools for maximum productivity.
@@ -138,23 +299,24 @@ const IntegrationsSection = () => {
               className="w-full max-w-2xl mb-16"
             >
               <div className="relative bg-gradient-to-r from-violet-600/20 to-pink-600/20 p-1 rounded-lg">
-                <div className="bg-zinc-800 rounded-md p-6">
+                <div className="bg-card rounded-md p-6 border border-border">
                   {/* Mock OS-style window */}
-                  <div className="flex justify-between items-center border-b border-zinc-700 pb-3 mb-5">
+                  <div className="flex justify-between items-center border-b border-border pb-3 mb-5">
                     <div className="flex items-center gap-3">
                       <div className="flex gap-1.5">
                         <div className="w-3 h-3 rounded-full bg-red-400"></div>
                         <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                         <div className="w-3 h-3 rounded-full bg-green-400"></div>
                       </div>
-                      <span className="text-sm text-zinc-400 font-mono">integration_assistant.jsx</span>
+                      <span className="text-sm text-muted-foreground font-mono">integration_assistant.jsx</span>
                     </div>
-                    <div className="text-xs text-zinc-500 font-mono">running...</div>
+                    <div className="text-xs text-muted-foreground font-mono">running...</div>
                   </div>
-                    {/* Chat-like integration interface */}
+                  
+                  {/* Chat-like integration interface */}
                   <div className="space-y-4">
                     <div className="flex justify-start">
-                      <div className="bg-zinc-700 text-white text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%]">
+                      <div className="bg-secondary text-foreground text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%] border border-border">
                         <div className="font-medium mb-1">DevOps Assistant</div>
                         Which development tool would you like to integrate?
                       </div>
@@ -167,12 +329,12 @@ const IntegrationsSection = () => {
                     </div>
                     
                     <div className="flex justify-start">
-                      <div className="bg-zinc-700 text-white text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%]">
+                      <div className="bg-secondary text-foreground text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%] border border-border">
                         <div className="mb-2">Connecting to GitHub & Docker...</div>
                         <div className="flex items-center gap-2">
-                          <div className="w-5 h-5 bg-[#181717] rounded-md flex items-center justify-center">
+                          <div className="w-5 h-5 bg-[#181717] dark:bg-white rounded-md flex items-center justify-center">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill="white"/>
+                              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill="currentColor" className="text-white dark:text-background"/>
                             </svg>
                           </div>
                           <div className="w-5 h-5 bg-[#2496ED] rounded-md flex items-center justify-center">
@@ -180,7 +342,7 @@ const IntegrationsSection = () => {
                               <path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185M11.06 3.093l-.97.97a.186.186 0 00-.186.186v5.52a.186.186 0 00.186.186h1.888a.186.186 0 00.185-.186V4.249c0-.102-.083-.186-.185-.186h-.918z" fill="white"/>
                             </svg>
                           </div>
-                          <div className="h-1.5 w-40 bg-zinc-700 overflow-hidden rounded-full">
+                          <div className="h-1.5 w-40 bg-secondary overflow-hidden rounded-full border border-border">
                             <motion.div 
                               className="h-full bg-green-400"
                               initial={{ width: 0 }}
@@ -193,7 +355,7 @@ const IntegrationsSection = () => {
                     </div>
                     
                     <div className="flex justify-start">
-                      <div className="bg-zinc-700 text-white text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%]">
+                      <div className="bg-secondary text-foreground text-sm rounded-2xl rounded-bl-none px-4 py-2 max-w-[80%] border border-border">
                         <div className="font-medium text-green-400 flex items-center gap-2">
                           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -201,9 +363,9 @@ const IntegrationsSection = () => {
                           Connected Successfully
                         </div>
                         <div className="mt-2">
-                          <div className="text-xs text-zinc-400 mb-1">What would you like to enable?</div>
+                          <div className="text-xs text-muted-foreground mb-1">What would you like to enable?</div>
                           <div className="grid grid-cols-2 gap-2">
-                            <div className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-xs flex items-center gap-1">
+                            <div className="bg-background/50 border border-border rounded px-2 py-1 text-xs flex items-center gap-1">
                               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 22.027v-2.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 5.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 5.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7a3.37 3.37 0 00-.94 2.58v2.87" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M9 20.027c-3 .973-5.5 0-7-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -217,14 +379,14 @@ const IntegrationsSection = () => {
                               </svg>
                               CI/CD Pipeline
                             </div>
-                            <div className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-xs flex items-center gap-1">
+                            <div className="bg-background/50 border border-border rounded px-2 py-1 text-xs flex items-center gap-1">
                               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M22 6L12 13L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                               </svg>
                               Build Notifications
                             </div>
-                            <div className="bg-zinc-900/50 border border-zinc-700 rounded px-2 py-1 text-xs flex items-center gap-1">
+                            <div className="bg-background/50 border border-border rounded px-2 py-1 text-xs flex items-center gap-1">
                               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9 11L12 14L22 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M21 12V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -238,23 +400,22 @@ const IntegrationsSection = () => {
                   </div>
                   
                   {/* Terminal-inspired prompt */}
-                  <div className="mt-6 bg-zinc-900 p-2 rounded flex items-center font-mono text-sm">
+                  <div className="mt-6 bg-background p-2 rounded flex items-center font-mono text-sm border border-border">
                     <span className="text-green-400 mr-2">❯</span>
-                    <div className="text-white flex-1">enable --integration github --features auto-deploy ci-cd</div>
+                    <div className="text-foreground flex-1">enable --integration github --features auto-deploy ci-cd</div>
                     <motion.div 
                       animate={{ opacity: [0, 1, 0] }}
                       transition={{ repeat: Infinity, duration: 1 }}
-                      className="h-4 w-2 bg-white"
+                      className="h-4 w-2 bg-foreground"
                     />
                   </div>
                 </div>
               </div>
             </motion.div>
-            yesno
-            
-
           </div>
-        </div>        {/* Split asymmetrical cards */}
+        </div>
+
+        {/* Split asymmetrical cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 -mt-8">
           {[
             {
@@ -265,7 +426,7 @@ const IntegrationsSection = () => {
                 <path d="M9 20.027c-3 .973-5.5 0-7-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>),
               style: "md:col-span-1 rotate-1",
-              color: THEME_ACCENT.primary,
+              color: "rgb(139, 92, 246)",
               boxStyle: "border-2 border-violet-500 bg-violet-500/10",
               buttonStyle: "border-violet-500 text-violet-400 hover:bg-violet-500/20"
             },
@@ -277,7 +438,7 @@ const IntegrationsSection = () => {
                 <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>),
               style: "md:col-span-2 -rotate-1",
-              color: THEME_ACCENT.secondary,
+              color: "rgb(236, 72, 153)",
               boxStyle: "border-2 border-pink-500 bg-pink-500/10",
               buttonStyle: "border-pink-500 text-pink-400 hover:bg-pink-500/20"
             },
@@ -289,7 +450,7 @@ const IntegrationsSection = () => {
                 <path d="M7 10L12 15L17 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>),
               style: "md:col-span-2 rotate-1",
-              color: THEME_ACCENT.tertiary,
+              color: "rgb(59, 130, 246)",
               boxStyle: "border-2 border-blue-500 bg-blue-500/10",
               buttonStyle: "border-blue-500 text-blue-400 hover:bg-blue-500/20"
             },
@@ -304,7 +465,7 @@ const IntegrationsSection = () => {
                 <path d="M3 21V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>),
               style: "md:col-span-1 -rotate-1",
-              color: THEME_ACCENT.accent,
+              color: "rgb(16, 185, 129)",
               boxStyle: "border-2 border-emerald-500 bg-emerald-500/10",
               buttonStyle: "border-emerald-500 text-emerald-400 hover:bg-emerald-500/20"
             },
@@ -319,13 +480,13 @@ const IntegrationsSection = () => {
             >
               <div className={`rounded-xl p-5 ${feature.boxStyle}`}>
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="p-2 rounded-lg bg-black/40" style={{ color: feature.color }}>
+                  <div className="p-2 rounded-lg bg-background/40 border border-border" style={{ color: feature.color }}>
                     {feature.icon}
                   </div>
-                  <h3 className="text-lg font-bold text-white">{feature.title}</h3>
+                  <h3 className="text-lg font-bold text-foreground">{feature.title}</h3>
                 </div>
                 
-                <p className="text-zinc-300 mb-4 ml-14">{feature.description}</p>
+                <p className="text-muted-foreground mb-4 ml-14">{feature.description}</p>
                 
                 <div className="mt-4 ml-14">
                   <button className={`px-4 py-1 rounded-full text-sm font-medium border ${feature.buttonStyle} transition-colors flex items-center gap-1.5 group-hover:gap-2`}>
@@ -345,16 +506,17 @@ const IntegrationsSection = () => {
           <div className="relative mx-auto max-w-4xl p-1 rounded-lg bg-gradient-to-r from-violet-500 via-pink-500 to-blue-500">
             <div className="grid grid-cols-1 md:grid-cols-2 rounded-lg overflow-hidden">
               {/* Left panel */}
-              <div className="bg-black p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
+              <div className="bg-background p-6 md:p-8 flex flex-col justify-between relative overflow-hidden border border-border">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-violet-500/20 to-transparent rounded-full blur-xl"></div>
                 
-                <div className="relative z-10">                  <div className="mb-6">
-                    <div className="inline-flex items-center px-2 py-1 rounded-md bg-zinc-800 font-mono text-xs text-zinc-400 mb-3">
+                <div className="relative z-10">
+                  <div className="mb-6">
+                    <div className="inline-flex items-center px-2 py-1 rounded-md bg-secondary border border-border font-mono text-xs text-muted-foreground mb-3">
                       <span className="flex w-2 h-2 rounded-full bg-green-400 mr-2"></span>
                       API access
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Deployment API</h3>
-                    <p className="text-zinc-400">
+                    <h3 className="text-xl font-bold text-foreground mb-2">Deployment API</h3>
+                    <p className="text-muted-foreground">
                       Automate your deployment pipeline with our <span className="text-violet-400">RESTful API</span> and GitHub webhooks.
                     </p>
                   </div>
@@ -371,11 +533,12 @@ const IntegrationsSection = () => {
                           <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="#EC4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                           <path d="M22 4L12 14.01L9 11.01" stroke="#EC4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
-                        <span className="text-sm text-zinc-300">{item}</span>
+                        <span className="text-sm text-muted-foreground">{item}</span>
                       </div>
                     ))}
                   </div>
-                    <div className="inline-block relative">
+                  
+                  <div className="inline-block relative">
                     <button className="bg-gradient-to-r from-violet-500 to-pink-500 hover:from-violet-600 hover:to-pink-600 transition-colors text-white rounded-md px-4 py-2 font-medium text-sm flex items-center gap-2">
                       View Deployment Guide
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -397,12 +560,13 @@ const IntegrationsSection = () => {
                   </svg>
                 </div>
               </div>
-                {/* Right panel - Code example */}
-              <div className="bg-zinc-900 p-6 font-mono text-sm">
-                <div className="flex items-center justify-between mb-3 text-xs text-zinc-500">
+              
+              {/* Right panel - Code example */}
+              <div className="bg-secondary p-6 font-mono text-sm border border-border">
+                <div className="flex items-center justify-between mb-3 text-xs text-muted-foreground">
                   <div>deploy.yml</div>
                   <div className="flex items-center">
-                    <span className="px-1.5 py-0.5 bg-zinc-800 rounded mr-2">YAML</span>
+                    <span className="px-1.5 py-0.5 bg-background rounded mr-2 border border-border">YAML</span>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M8 16H6C5.46957 16 4.96086 15.7893 4.58579 15.4142C4.21071 15.0391 4 14.5304 4 14V6C4 5.46957 4.21071 4.96086 4.58579 4.58579C4.96086 4.21071 5.46957 4 6 4H14C14.5304 4 15.0391 4.21071 15.4142 4.58579C15.7893 4.96086 16 5.46957 16 6V8" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M10 14H18C19.1046 14 20 14.8954 20 16V18C20 19.1046 19.1046 20 18 20H10C8.89543 20 8 19.1046 8 18V16C8 14.8954 8.89543 14 10 14Z" stroke="#EC4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -410,8 +574,8 @@ const IntegrationsSection = () => {
                   </div>
                 </div>
                 
-                <div className="bg-zinc-950 rounded p-4 text-green-400 overflow-x-auto">
-                  <div className="text-zinc-500"># GitHub Actions Deployment</div>
+                <div className="bg-background rounded p-4 text-green-400 overflow-x-auto border border-border">
+                  <div className="text-muted-foreground"># GitHub Actions Deployment</div>
                   <div className="mt-2"><span className="text-pink-400">name:</span> <span className="text-yellow-300">Deploy to Production</span></div>
                   <br/>
                   <div><span className="text-pink-400">on:</span></div>
@@ -440,11 +604,12 @@ const IntegrationsSection = () => {
         <div className="mt-20 max-w-4xl mx-auto relative">
           <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-pink-600/20 rounded-xl blur-xl transform rotate-3"></div>
           
-          <div className="relative bg-black border border-zinc-800 rounded-xl p-8 md:p-10 overflow-hidden">
+          <div className="relative bg-background border border-border rounded-xl p-8 md:p-10 overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-violet-600/10 to-pink-600/10 rounded-full blur-3xl transform translate-x-1/4 -translate-y-1/4"></div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div>                <div className="inline-flex items-center px-3 py-1 rounded-full border border-zinc-700 bg-zinc-800/50 text-zinc-300 text-sm mb-4">
+              <div>
+                <div className="inline-flex items-center px-3 py-1 rounded-full border border-border bg-secondary/50 text-muted-foreground text-sm mb-4">
                   <svg className="w-3.5 h-3.5 mr-1.5 text-pink-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M16 12L10 8V16L16 12Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -452,11 +617,11 @@ const IntegrationsSection = () => {
                   Let's Build Together
                 </div>
                 
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
                   Start your dev<br/>project today
                 </h3>
                 
-                <p className="text-zinc-400 mb-6">
+                <p className="text-muted-foreground mb-6">
                   Connect your development workflow and ship faster with our integrated development platform.
                 </p>
                 
@@ -471,11 +636,12 @@ const IntegrationsSection = () => {
               <div className="relative">
                 {/* Integration stats with Y2K-inspired design */}
                 <div className="transform -rotate-2">
-                  <div className="bg-zinc-800/80 border-2 border-zinc-700 backdrop-blur-sm rounded-lg p-5">                    <div className="flex justify-between items-center mb-4">
-                      <div className="text-zinc-300 font-medium">Development Metrics</div>
-                      <div className="text-xs text-zinc-500 font-mono">ACTIVE</div>
+                  <div className="bg-card/80 border-2 border-border backdrop-blur-sm rounded-lg p-5">
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="text-foreground font-medium">Development Metrics</div>
+                      <div className="text-xs text-muted-foreground font-mono">ACTIVE</div>
                     </div>
-                      <div className="space-y-4">
+                    <div className="space-y-4">
                       {[
                         { label: "Deployment Success", value: "99%", icon: "🚀" },
                         { label: "Build Minutes", value: "450", icon: "⚙️" },
@@ -483,15 +649,15 @@ const IntegrationsSection = () => {
                       ].map((stat, i) => (
                         <div key={i} className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-md flex items-center justify-center bg-black">{stat.icon}</div>
-                            <span className="text-zinc-400">{stat.label}</span>
+                            <div className="w-8 h-8 rounded-md flex items-center justify-center bg-background border border-border">{stat.icon}</div>
+                            <span className="text-muted-foreground">{stat.label}</span>
                           </div>
-                          <div className="text-xl font-bold text-white">{stat.value}</div>
+                          <div className="text-xl font-bold text-foreground">{stat.value}</div>
                         </div>
                       ))}
                     </div>
                     
-                    <div className="mt-4 pt-4 border-t border-zinc-700/50">
+                    <div className="mt-4 pt-4 border-t border-border">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-green-400"></div>
                         <span className="text-xs text-green-400">CI/CD pipeline operational</span>
@@ -499,7 +665,8 @@ const IntegrationsSection = () => {
                     </div>
                   </div>
                 </div>
-                  {/* Decorative stickers */}
+                
+                {/* Decorative stickers */}
                 <div className="absolute -top-4 -right-4 transform rotate-12 z-10">
                   <div className="bg-pink-600 text-white text-xs font-bold uppercase px-3 py-1 rounded-full tracking-wider shadow-lg">Pro</div>
                 </div>
@@ -582,12 +749,12 @@ function ProjectCard({ project }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="group relative overflow-hidden rounded-xl aspect-video bg-background/80"
+      className="group relative overflow-hidden rounded-xl aspect-video bg-card border border-border"
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+      <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
         <div className="p-6 w-full">
-          <h3 className="text-lg font-semibold text-white mb-2">{project.title}</h3>
-          <p className="text-white/80 text-sm">{project.description}</p>
+          <h3 className="text-lg font-semibold text-foreground mb-2">{project.title}</h3>
+          <p className="text-muted-foreground text-sm">{project.description}</p>
         </div>
       </div>
       <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
@@ -780,64 +947,88 @@ function WebDevelopmentServices() {
     };
   }, []);
   return (
-    <div className="min-h-screen">      {/* Hero Section with Feature Overview */}
-      <div className="overflow-hidden bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-10 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-          <div className="lg:pt-8 lg:pr-10">
-            <div className="hidden sm:mb-10 sm:flex sm:justify-start">
- <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Announcing our next round of funding.{' '}
-              <a href="#" className="font-semibold text-indigo-600">
-                <span aria-hidden="true" className="absolute inset-0" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
-          </div>
-          <div className="text-left">
-                  <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
-              Crafting Digital Experiences That Drive Results
-            </h1>       
-                        <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
-              Custom web development solutions that transform your vision into powerful, scalable, and user-friendly websites designed to grow your business and engage your audience.
-
-            </p>
-            
-            {/* Feature list with improved visuals */}            <div className="mt-10 grid grid-cols-1 gap-y-8 text-sm">
-              {features.map((feature, index) => (
-                <div key={feature.name} className="space-y-3">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100">
-                    <feature.icon className="size-4 text-indigo-700" aria-hidden="true" />
-                    <span className="font-semibold text-indigo-700">{feature.name}</span>
-                  </div>
+    <div className="min-h-screen">
+      {/* Hero Section with Feature Overview */}
+      <div className="overflow-hidden bg-background py-24 sm:py-32 relative">
+        {/* Add AuroraBackground component */}
+        <AuroraBackground className="z-0" />
+        
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-10 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+            {/* Left column with text content */}
+            <div className="lg:pt-8 lg:pr-10 relative">
+              {/* Remove Interactive Grid Pattern background */}
+              <div className="hidden sm:mb-10 sm:flex sm:justify-start">
+                <div className="relative rounded-full px-3 py-1 text-sm/6 text-muted-foreground ring-1 ring-border hover:ring-border/80 transition-colors">
+                  Announcing our next round of funding.{' '}
+                  <a href="#" className="font-semibold text-primary hover:text-primary/80 transition-colors">
+                    <span aria-hidden="true" className="absolute inset-0" />
+                    Read more <span aria-hidden="true">&rarr;</span>
+                  </a>
                 </div>
-              ))}
+              </div>
+              <div className="text-left relative z-10">
+                <h1 className="text-5xl font-semibold tracking-tight text-balance text-foreground sm:text-7xl">
+                  <AuroraText 
+                    colors={["#7C3AED", "#8B5CF6", "#A78BFA", "#C4B5FD"]} 
+                    speed={1.5}
+                  >
+                    Crafting
+                  </AuroraText>{" "}
+                  <br/>
+                  <LineShadowText
+                    shadowColor="#8B5CF6"
+                    className="font-bold"
+                  >
+                    Digital Experiences
+                  </LineShadowText>{" "}
+                  <br/>
+                  That Drive Results
+                </h1>       
+                <p className="mt-8 text-lg font-medium text-pretty text-muted-foreground sm:text-xl/8">
+                  Custom web development solutions that transform your vision into powerful, scalable, and user-friendly websites designed to grow your business and engage your audience.
+                </p>
+                
+                {/* Feature list with improved visuals */}
+                <div className="mt-10 grid grid-cols-1 gap-y-8 text-sm">
+                  {features.map((feature, index) => (
+                    <div key={feature.name} className="space-y-3">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+                        <feature.icon className="size-4 text-primary" aria-hidden="true" />
+                        <span className="font-semibold text-primary">{feature.name}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-12 flex items-center gap-x-6">
+                  <a
+                    href="#contact"
+                    className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors duration-200"
+                  >
+                    Schedule a consultation
+                  </a>
+                  <a href="#services" className="text-sm font-medium text-primary flex items-center gap-1 hover:gap-2 transition-all duration-200 hover:text-primary/80">
+                    Explore services <span aria-hidden="true" className="transition-transform duration-200">→</span>
+                  </a>
+                </div>
+              </div>
             </div>
             
-            <div className="mt-12 flex items-center gap-x-6">
-              <a
-                href="#contact"
-                className="rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-500 transition-colors duration-200"
-              >
-                Schedule a consultation
-              </a>
-              <a href="#services" className="text-sm font-medium text-indigo-700 flex items-center gap-1 hover:gap-2 transition-all duration-200">
-                Explore services <span aria-hidden="true" className="transition-transform duration-200">→</span>
-              </a>
+            {/* Right column with image */}
+            <div className="relative">
+              {/* Remove Interactive Grid Pattern for the image side */}
+              <img
+                alt="Product screenshot"
+                src="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
+                width={1080}
+                height={1442}
+                className="w-3xl max-w-none rounded-xl shadow-xl ring-1 ring-border sm:w-228 md:-ml-4 lg:-ml-0 relative z-10"
+              />
             </div>
           </div>
-
-          </div>
-          <img
-            alt="Product screenshot"
-            src="https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
-            width={1080}
-            height={1442}
-            className="w-3xl max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-228 md:-ml-4 lg:-ml-0"
-          />
         </div>
       </div>
-    </div>
             {/* App Analytics Dashboard Showcase */}
       <section className="py-24 px-4 relative">
         <div className="max-w-7xl mx-auto">
@@ -1132,7 +1323,7 @@ function WebDevelopmentServices() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
-                className="relative p-6 rounded-2xl bg-background border backdrop-blur-sm hover:border-primary/30 transition-all group overflow-hidden"
+                className="relative p-6 rounded-2xl bg-background border border-border backdrop-blur-sm hover:border-primary/30 transition-all group overflow-hidden"
               >
                 <div 
                   className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-500"
@@ -1147,10 +1338,10 @@ function WebDevelopmentServices() {
                       className="w-8 h-8 group-hover:scale-110 transition-transform duration-300" 
                     />
                   </div>
-                  <h3 className="text-lg font-semibold">{tech.name}</h3>
+                  <h3 className="text-lg font-semibold text-foreground">{tech.name}</h3>
                 </div>
                 
-                <div className="w-full h-3 bg-secondary rounded-full overflow-hidden">
+                <div className="w-full h-3 bg-secondary rounded-full overflow-hidden border border-border">
                   <motion.div 
                     className="h-full rounded-full"
                     style={{ background: `linear-gradient(90deg, ${tech.color}, rgba(123, 97, 255, 0.5))` }}
@@ -1162,7 +1353,7 @@ function WebDevelopmentServices() {
                 <div className="flex justify-between items-center mt-2">
                   <span className="text-sm text-primary font-medium">{tech.level}</span>
                   <motion.span 
-                    className="text-xs text-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ delay: 1.2 }}
@@ -1808,7 +1999,7 @@ function WebDevelopmentServices() {
               </motion.div>
               
               <motion.h2 
-                className="text-3xl md:text-5xl font-bold mb-6"
+                className="text-3xl md:text-5xl font-bold mb-6 text-foreground"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -1817,7 +2008,7 @@ function WebDevelopmentServices() {
               </motion.h2>
               
               <motion.p 
-                className="text-xl text-foreground/80 mb-10 max-w-2xl mx-auto"
+                className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
