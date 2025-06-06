@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Check, Instagram, Facebook, Twitter, Linkedin, TrendingUp, Target, Users, PieChart, BarChart2, Award, Star, MessageCircle, ThumbsUp, Sparkles, Zap, Hash, Music, Film, Globe, TrendingDown, Flame, ShoppingBag, Headphones, BarChart4, Diamond, Rocket, Heart, Play, ChevronRight, Book, Bookmark, Share2, ArrowUpRight, Calendar, Clock, ThumbsDown, Send, Download, Gift } from 'lucide-react';
+import { ArrowRight, Check, Instagram, Facebook, Twitter, Linkedin, TrendingUp, Target, Users, PieChart, BarChart2, Award, Star, MessageCircle, ThumbsUp, Sparkles, Zap, Hash, Music, Film, Globe, TrendingDown, Flame, ShoppingBag, Headphones, BarChart4, Diamond, Rocket, Heart, Play, ChevronRight, Book, Bookmark, Share2, ArrowUpRight, Calendar, Clock, ThumbsDown, Send, Download, Gift, Shield } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 
 // More vibrant Gen Z theme accent colors
@@ -38,7 +38,7 @@ const SocialHeroSection = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-white to-violet-50 dark:from-black dark:to-violet-950 min-h-screen flex flex-col items-center justify-center px-4 sm:px-0">
+    <div className="relative overflow-hidden bg-gradient-to-b from-white to-violet-50 dark:from-black dark:to-violet-950 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated gradient blob - adjusted for light/dark mode */}
@@ -51,7 +51,7 @@ const SocialHeroSection = () => {
       <div className="absolute inset-0 bg-noise opacity-[0.03]"></div>
 
       {/* Interactive floating elements - hide on mobile */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none hidden lg:block">
         <motion.div 
           className="absolute left-[35%] top-[20%]"
           style={{ transform: calculateTransform(-20) }}
@@ -105,14 +105,15 @@ const SocialHeroSection = () => {
         </motion.div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto pt-20 pb-20 sm:pt-24 sm:pb-32 px-2 sm:px-6 md:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto pt-16 pb-16 sm:pt-20 sm:pb-20 lg:pt-24 lg:pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
+            className="order-2 lg:order-1"
           >
-            <div className="flex flex-wrap items-center gap-3 mb-4 sm:mb-6">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
               <div className="px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-300 text-xs font-medium border border-violet-200 dark:border-violet-500/30">
                 #SocialMediaReimagined
               </div>
@@ -121,7 +122,7 @@ const SocialHeroSection = () => {
               </div>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 dark:text-white leading-tight mb-6 sm:mb-8">
               Transform Your <br />
               <div className="mt-2 relative inline-flex flex-col">
                 <div className="flex items-center">
@@ -134,7 +135,7 @@ const SocialHeroSection = () => {
                     transition={{ delay: 0.3, duration: 0.4 }}
                     className="ml-2 sm:ml-4 text-yellow-400 transform rotate-12"
                   >
-                    <Sparkles size={28} className="fill-yellow-400 stroke-yellow-500 sm:w-10 sm:h-10" />
+                    <Sparkles size={28} className="fill-yellow-400 stroke-yellow-500 sm:w-8 sm:h-8 lg:w-10 lg:h-10" />
                   </motion.div>
                 </div>
                 <motion.div
@@ -146,11 +147,11 @@ const SocialHeroSection = () => {
               </div>
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-zinc-300 my-6 sm:my-8 max-w-lg leading-relaxed">
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-zinc-300 mb-8 sm:mb-10 max-w-lg leading-relaxed">
               We create scroll-stopping content and data-driven strategies that resonate with today's audience. No cap.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-10">
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 sm:mb-10">
               <button className="group px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-violet-300/30 dark:shadow-violet-900/30 text-base sm:text-lg">
                 Start Your Journey
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -161,8 +162,8 @@ const SocialHeroSection = () => {
               </button>
             </div>
             
-            <div className="flex items-center">
-              <div className="flex -space-x-4 mr-3 sm:mr-5">
+            <div className="flex items-center gap-4">
+              <div className="flex -space-x-3 sm:-space-x-4">
                 {[1, 2, 3, 4].map((num) => (
                   <div 
                     key={num}
@@ -198,11 +199,11 @@ const SocialHeroSection = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative hidden lg:block"
+            className="relative order-1 lg:order-2"
           >
-            <div className="relative">
+            <div className="relative max-w-md mx-auto lg:max-w-none">
               {/* Phone display with mockup */}
-              <div className="absolute -inset-1.5 bg-gradient-to-r from-violet-500 to-pink-500 rounded-3xl blur-lg opacity-60 dark:opacity-80 animate-pulse"></div>
+              <div className="absolute -inset-1.5 bg-gradient-to-r from-violet-500 to-pink-500 rounded-3xl blur-lg opacity-60 dark:opacity-80 animate-enhanced-pulse"></div>
               
               <div className="relative bg-white dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-2xl overflow-hidden">
                 {/* Phone mockup header */}
@@ -1340,15 +1341,147 @@ const PlansSection = () => {
   ];
 
   return (
-    <div className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-zinc-950">
+    <div className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-zinc-950">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -left-20 top-40 w-96 h-96 rounded-full bg-violet-100 dark:bg-violet-900/10 blur-3xl"></div>
         <div className="absolute -right-20 bottom-40 w-96 h-96 rounded-full bg-pink-100 dark:bg-pink-900/10 blur-3xl"></div>
       </div>
       
-      {/* Section heading */}
-   
-       
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section heading */}
+        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center justify-center px-4 py-1.5 mb-6 text-sm font-medium uppercase tracking-wider text-violet-700 dark:text-violet-300 bg-violet-50 dark:bg-violet-900/30 rounded-full border border-violet-200 dark:border-violet-700/50"
+          >
+            Pricing Plans
+          </motion.div>
+          
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white"
+          >
+            Choose Your <span className="text-transparent bg-clip-text" style={{ backgroundImage: THEME_ACCENT.gradient }}>Growth Plan</span>
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-lg sm:text-xl text-gray-600 dark:text-zinc-300"
+          >
+            Flexible pricing that scales with your social media goals
+          </motion.p>
+        </div>
+
+        {/* Plans grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {plans.map((plan, index) => (
+            <motion.div
+              key={plan.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`relative group ${plan.highlighted ? 'md:-mt-4 md:mb-4' : ''}`}
+            >
+              {plan.highlighted && (
+                <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-pink-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+              )}
+              
+              <div className={`relative h-full rounded-2xl p-6 sm:p-8 ${
+                plan.highlighted 
+                  ? 'bg-white dark:bg-zinc-900 border-2 border-transparent' 
+                  : 'bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800'
+              } transition-all duration-300 group-hover:shadow-xl`}>
+                
+                {plan.highlighted && (
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="bg-gradient-to-r from-violet-600 to-pink-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                      Most Popular
+                    </div>
+                  </div>
+                )}
+
+                <div className="text-center mb-6 sm:mb-8">
+                  <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+                    {plan.name}
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-zinc-400 mb-4">
+                    {plan.description}
+                  </p>
+                  <div className="flex items-baseline justify-center mb-2">
+                    <span className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+                      ${plan.price}
+                    </span>
+                    <span className="text-lg text-gray-500 dark:text-zinc-400 ml-1">/month</span>
+                  </div>
+                </div>
+
+                <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
+                        plan.highlighted 
+                          ? 'bg-gradient-to-r from-violet-600 to-pink-600' 
+                          : 'bg-gray-100 dark:bg-zinc-800'
+                      }`}>
+                        <Check size={12} className={plan.highlighted ? 'text-white' : 'text-gray-600 dark:text-zinc-400'} />
+                      </div>
+                      <span className="text-sm sm:text-base text-gray-700 dark:text-zinc-300">
+                        {feature}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                <button className={`w-full py-3 sm:py-4 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
+                  plan.highlighted
+                    ? 'bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-700 hover:to-pink-700 text-white shadow-lg shadow-violet-900/25'
+                    : 'border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-800'
+                }`}>
+                  Get Started
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Additional info */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="mt-12 sm:mt-16 text-center"
+        >
+          <p className="text-sm sm:text-base text-gray-600 dark:text-zinc-400 mb-4">
+            All plans include a 14-day free trial • No setup fees • Cancel anytime
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500 dark:text-zinc-500">
+            <div className="flex items-center gap-2">
+              <Shield size={16} className="text-green-500" />
+              <span>SSL Secured</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Award size={16} className="text-blue-500" />
+              <span>99.9% Uptime</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Headphones size={16} className="text-violet-500" />
+              <span>24/7 Support</span>
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };
