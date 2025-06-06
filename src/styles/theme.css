@@ -1,0 +1,96 @@
+/* Theme transition styles */
+.theme-transition,
+.theme-transition *,
+.theme-transition *:before,
+.theme-transition *:after {
+  transition: color 0.3s ease, 
+              background-color 0.3s ease, 
+              border-color 0.3s ease, 
+              text-decoration-color 0.3s ease,
+              fill 0.3s ease,
+              stroke 0.3s ease,
+              opacity 0.3s ease,
+              box-shadow 0.3s ease,
+              transform 0.3s ease,
+              filter 0.3s ease,
+              backdrop-filter 0.3s ease !important;
+  transition-delay: 0s !important;
+}
+
+/* Disable transitions on page load */
+.no-transitions,
+.no-transitions *,
+.no-transitions *::before,
+.no-transitions *::after {
+  transition: none !important;
+}
+
+/* Dark mode specific animations */
+@media (prefers-color-scheme: dark) {
+  .dark-glow {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .dark-glow:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Light mode specific animations */
+@media (prefers-color-scheme: light) {
+  .light-glow {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .light-glow:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Theme-aware focus rings */
+.theme-focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
+}
+
+/* Light mode scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
+} 

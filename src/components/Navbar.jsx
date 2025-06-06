@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MoonStar, Sun, Menu, X, ArrowUpRight, ChevronDown, Code, Cloud, Brain, Gamepad2, Palette, VideoIcon, Share2 } from 'lucide-react';
+import { useThemeContext } from './ThemeProvider';
+import ThemeToggle from './ThemeToggle';
 
 const NAVIGATION_LINKS = [
 
@@ -196,7 +198,8 @@ const NavLink = memo(({ name, path, hasDropdown, handleMouseEnter, handleMouseLe
   </motion.div>
 ));
 
-function Navbar({ theme, toggleTheme }) {
+function Navbar({ currentPage }) {
+  const { theme } = useThemeContext();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrollDistance, setScrollDistance] = useState(0);
@@ -355,20 +358,7 @@ function Navbar({ theme, toggleTheme }) {
             {/* Actions */}
             <div className="flex items-center gap-3 sm:gap-5">
               {/* Theme toggle */}
-              <motion.button
-                onClick={toggleTheme}
-                aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-                className={`p-2.5 rounded-full ${
-                  isScrolled 
-                    ? 'bg-secondary/80 hover:bg-secondary' 
-                    : 'bg-secondary/50 hover:bg-secondary/80'
-                } backdrop-blur-sm text-foreground/80 hover:text-foreground transition-all duration-300`}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                {theme === 'light' ? <MoonStar size={18} /> : <Sun size={18} />}
-              </motion.button>
+              <ThemeToggle className={isScrolled ? 'bg-secondary/80 hover:bg-secondary' : 'bg-secondary/50 hover:bg-secondary/80'} />
 
               {/* Mobile menu button */}
               <motion.button
