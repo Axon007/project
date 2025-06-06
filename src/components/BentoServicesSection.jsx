@@ -1,6 +1,5 @@
 import React from "react";
-import { CheckCircle, ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
+import { CheckCircle } from "lucide-react";
 
 const BentoServicesSection = () => {
   const services = [
@@ -53,103 +52,48 @@ const BentoServicesSection = () => {
           <path d="M20.71 16.9a2 2 0 0 0-2.83 0L13 22"></path>
         </svg>
       ),
-      gradient: "from-violet-600/70 to-indigo-600/70",
+      gradient: "from-green-600/70 to-blue-600/70",
       features: ["Scalable Architecture", "24/7 Monitoring", "Data Security"]
     }
   ];
-  return (    <section className="py-24 px-4 relative bg-secondary/5 overflow-hidden">
-      {/* Abstract shapes for background decoration */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/5 rounded-full filter blur-3xl opacity-70 animate-pulse"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/5 rounded-full filter blur-3xl opacity-70 animate-pulse"></div>
-      
-      <div className="max-w-7xl mx-auto relative z-10"><div className="text-center mb-16">
-          <motion.span 
-            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6"
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            Our Expertise
-          </motion.span>
-          <motion.h2 
-            className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Our Services
-          </motion.h2>
-          <motion.p 
-            className="text-lg text-foreground/70 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            Explore our range of innovative solutions designed to elevate your business
-            to new heights with cutting-edge technology.
-          </motion.p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {services.map((service, index) => (            <motion.div 
-              key={index} 
-              className="relative bg-background rounded-3xl overflow-hidden border border-secondary/10 shadow-md h-[400px] group hover:shadow-xl hover:border-primary/20 transition-all duration-500"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              whileHover={{ y: -5 }}
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-90 transition-opacity duration-300 group-hover:opacity-100`}></div>
-              
-              {/* Light effect animation */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100"
-                animate={{ 
-                  x: ['-100%', '100%'],
-                }}
-                transition={{ 
-                  duration: 1.5,
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  ease: "easeInOut",
-                  repeatDelay: 0.5
-                }}
-              />
-              
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div>
-                  <div className="p-3 bg-white/20 rounded-xl inline-flex mb-6 group-hover:scale-110 transition-transform duration-300">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
-                  <p className="text-white/80">{service.description}</p>
-                </div>
-                <div className="mt-4 pt-4 border-t border-white/20">
-                  <ul className="space-y-2">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="w-4 h-4 text-white" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="mt-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                    <a href="#" className="inline-flex items-center text-sm text-white font-medium">
-                      Learn more <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+
+  return (
+    <div className="w-full mx-auto">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold mb-3">Our Services</h2>
+        <p className="text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto">
+          Explore our range of innovative solutions designed to elevate your business
+          to new heights with cutting-edge technology.
+        </p>
       </div>
-    </section>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {services.map((service, index) => (
+          <div key={index} className="relative bg-background rounded-3xl overflow-hidden border border-secondary/10 shadow-md h-[400px] group">
+            <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-90`}></div>
+            <div className="relative h-full p-8 flex flex-col justify-between text-white">
+              <div>
+                <div className="p-3 bg-white/20 rounded-xl inline-flex mb-6">
+                  {service.icon}
+                </div>
+                <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                <p className="text-white/80">{service.description}</p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/20">
+                <ul className="space-y-2">
+                  {service.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-sm">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

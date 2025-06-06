@@ -73,7 +73,7 @@ function AppContent() {
             <Route path="/game-development" element={<GamingDevServices theme={theme} toggleTheme={toggleTheme} />} />
             <Route path="/logo-design" element={<LogoDesign />} />
             <Route path="/video-editing" element={<VideoEditing />} />
-            <Route path="/app-development" element={<AppDevelopment />} />
+            <Route path="/app-development" element={<AppDevelopment theme={theme} toggleTheme={toggleTheme} />} />
             <Route path="/computer-vision" element={<ARVRServices />} />
             <Route path="/social" element={<Social />} />
             <Route path="/contact" element={<ContactUs />} />
