@@ -129,36 +129,49 @@
   scrollbar-width: none;  /* Firefox */
 }
 
-/* Glass morphism effect */
+/* Enhanced Glass morphism effect */
 .glass {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.3s ease;
 }
 
 .dark .glass {
-  background-color: rgba(15, 15, 15, 0.75);
+  background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Text gradients */
+/* Enhanced text gradients */
 .text-gradient-primary {
-  background: linear-gradient(to right, var(--primary), #3291FF);
+  background: linear-gradient(135deg, #8B5CF6, #3B82F6);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+.text-gradient-secondary {
+  background: linear-gradient(135deg, #EC4899, #F59E0B);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
 }
 
 .text-gradient-rainbow {
-  background: linear-gradient(to right, #ff6b6b, #ffe66d, #4ecdc4, #6a67ce);
+  background: linear-gradient(45deg, #ff6b6b, #ffe66d, #4ecdc4, #6a67ce, #ff6b6b);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  background-size: 300% 300%;
   animation: rainbow-shift 6s linear infinite;
 }
 
-@keyframes rainbow-shift {
+@keyframes gradient-shift {
   0% {
     background-position: 0% 50%;
   }
@@ -170,13 +183,32 @@
   }
 }
 
-/* Better focus styles */
+@keyframes rainbow-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Enhanced focus styles */
 .focus-ring {
-  @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-white;
+  @apply outline-none ring-2 ring-violet-500/50 ring-offset-2 ring-offset-white;
+  transition: all 0.2s ease;
 }
 
 .dark .focus-ring {
-  @apply ring-offset-gray-900;
+  @apply ring-offset-gray-900 ring-violet-400/50;
 }
 
 /* Micro interactions */
@@ -205,4 +237,51 @@
   background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Dark mode utilities */
+.dark-mode-bg {
+  @apply bg-gray-900 dark:bg-gray-950;
+}
+
+.dark-mode-text {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.dark-mode-muted {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+.dark-mode-border {
+  @apply border-gray-200 dark:border-gray-800;
+}
+
+.dark-mode-card {
+  @apply bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800;
+}
+
+/* Theme-aware shadows */
+.shadow-theme {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .shadow-theme {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-theme-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .shadow-theme-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced dark mode fixes */
+.dark .bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+
+.dark .bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }

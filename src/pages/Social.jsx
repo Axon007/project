@@ -2,17 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Instagram, Facebook, Twitter, Linkedin, TrendingUp, Target, Users, PieChart, BarChart2, Award, Star, MessageCircle, ThumbsUp, Sparkles, Zap, Hash, Music, Film, Globe, TrendingDown, Flame, ShoppingBag, Headphones, BarChart4, Diamond, Rocket, Heart, Play, ChevronRight, Book, Bookmark, Share2, ArrowUpRight, Calendar, Clock, ThumbsDown, Send, Download, Gift, Shield } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
+import { useThemeContext } from '../components/ThemeProvider';
+import ThemeToggle from '../components/ThemeToggle';
 
-// More vibrant Gen Z theme accent colors
+// Enhanced theme accent colors with better contrast
 const THEME_ACCENT = {
   primary: "#8B5CF6", // Vibrant violet
   secondary: "#EC4899", // Hot pink
   tertiary: "#3B82F6", // Electric blue
   accent: "#10B981", // Neon green
-  gradient: "linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #3B82F6 100%)"
+  gradient: "linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #3B82F6 100%)",
+  light: {
+    primary: "#7C3AED",
+    secondary: "#DB2777", 
+    tertiary: "#2563EB",
+    accent: "#059669"
+  },
+  dark: {
+    primary: "#A78BFA",
+    secondary: "#F472B6",
+    tertiary: "#60A5FA", 
+    accent: "#34D399"
+  }
 };
 
 const SocialHeroSection = () => {
+  const { theme, isDark } = useThemeContext();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   useEffect(() => {
@@ -38,17 +53,17 @@ const SocialHeroSection = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-white to-violet-50 dark:from-black dark:to-violet-950 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="relative overflow-hidden bg-gradient-to-b from-white via-gray-50/50 to-violet-50 dark:from-gray-900 dark:via-gray-900 dark:to-violet-950 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Animated gradient blob - adjusted for light/dark mode */}
-        <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] rounded-full bg-gradient-to-r from-violet-300/40 via-pink-300/40 to-blue-300/40 dark:from-violet-600/40 dark:via-pink-500/40 dark:to-blue-500/40 blur-3xl animate-blob hidden sm:block"></div>
-        <div className="absolute top-60 -left-20 w-[30rem] h-[30rem] rounded-full bg-gradient-to-r from-blue-300/40 via-emerald-300/40 to-violet-300/40 dark:from-blue-600/40 dark:via-emerald-500/40 dark:to-violet-500/40 blur-3xl animate-blob animation-delay-2000 hidden sm:block"></div>
-        <div className="absolute bottom-20 right-60 w-[35rem] h-[35rem] rounded-full bg-gradient-to-r from-pink-300/40 via-violet-300/40 to-blue-300/40 dark:from-pink-600/40 dark:via-violet-500/40 dark:to-blue-500/40 blur-3xl animate-blob animation-delay-4000 hidden sm:block"></div>
+        {/* Animated gradient blob - enhanced for better theme switching */}
+        <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] rounded-full bg-gradient-to-r from-violet-200/30 via-pink-200/30 to-blue-200/30 dark:from-violet-600/30 dark:via-pink-500/30 dark:to-blue-500/30 blur-3xl animate-blob hidden sm:block transition-colors duration-700"></div>
+        <div className="absolute top-60 -left-20 w-[30rem] h-[30rem] rounded-full bg-gradient-to-r from-blue-200/30 via-emerald-200/30 to-violet-200/30 dark:from-blue-600/30 dark:via-emerald-500/30 dark:to-violet-500/30 blur-3xl animate-blob animation-delay-2000 hidden sm:block transition-colors duration-700"></div>
+        <div className="absolute bottom-20 right-60 w-[35rem] h-[35rem] rounded-full bg-gradient-to-r from-pink-200/30 via-violet-200/30 to-blue-200/30 dark:from-pink-600/30 dark:via-violet-500/30 dark:to-blue-500/30 blur-3xl animate-blob animation-delay-4000 hidden sm:block transition-colors duration-700"></div>
       </div>
 
       {/* Noise overlay */}
-      <div className="absolute inset-0 bg-noise opacity-[0.03]"></div>
+      <div className="absolute inset-0 bg-noise opacity-[0.02] dark:opacity-[0.05] transition-opacity duration-300"></div>
 
       {/* Interactive floating elements - hide on mobile */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none hidden lg:block">
@@ -56,33 +71,33 @@ const SocialHeroSection = () => {
           className="absolute left-[35%] top-[20%]"
           style={{ transform: calculateTransform(-20) }}
         >
-          <div className="relative w-16 h-16 rounded-xl bg-white dark:bg-zinc-900 shadow-xl flex items-center justify-center rotate-12">
-            <Instagram className="w-6 h-6 text-pink-500" />
-            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-pink-500 border-2 border-white dark:border-zinc-900"></div>
+          <div className="relative w-16 h-16 rounded-xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 flex items-center justify-center rotate-12 transition-colors duration-300">
+            <Instagram className="w-6 h-6 text-pink-500 dark:text-pink-400" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-pink-500 dark:bg-pink-400 border-2 border-white dark:border-gray-800 transition-colors duration-300"></div>
           </div>
         </motion.div>
         <motion.div 
           className="absolute right-[25%] top-[30%]"
           style={{ transform: calculateTransform(-15) }}
         >
-          <div className="relative w-14 h-14 rounded-xl bg-white dark:bg-zinc-900 shadow-xl flex items-center justify-center -rotate-6">
-            <Music className="w-5 h-5 text-violet-500" />
-            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-violet-500 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-[8px] text-white font-bold">3</div>
+          <div className="relative w-14 h-14 rounded-xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 flex items-center justify-center -rotate-6 transition-colors duration-300">
+            <Music className="w-5 h-5 text-violet-500 dark:text-violet-400" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-violet-500 dark:bg-violet-400 border-2 border-white dark:border-gray-800 flex items-center justify-center text-[8px] text-white font-bold transition-colors duration-300">3</div>
           </div>
         </motion.div>
         <motion.div 
           className="absolute left-[5%] bottom-[30%]"
           style={{ transform: calculateTransform(-25) }}
         >
-          <div className="relative w-20 h-20 rounded-2xl bg-white dark:bg-zinc-900 shadow-xl p-3">
+          <div className="relative w-20 h-20 rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 p-3 transition-colors duration-300">
             <div className="w-full h-2 bg-gradient-to-r from-violet-500 to-pink-500 rounded-full mb-3"></div>
             <div className="flex gap-2 items-center">
-              <div className="w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/40 flex items-center justify-center">
-                <Heart className="w-4 h-4 text-violet-500" />
+              <div className="w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center transition-colors duration-300">
+                <Heart className="w-4 h-4 text-violet-500 dark:text-violet-400" />
               </div>
               <div className="space-y-1">
-                <div className="w-6 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
-                <div className="w-4 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                <div className="w-6 h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full transition-colors duration-300"></div>
+                <div className="w-4 h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full transition-colors duration-300"></div>
               </div>
             </div>
           </div>
@@ -99,10 +114,15 @@ const SocialHeroSection = () => {
           className="absolute right-[33%] top-[15%]"
           style={{ transform: calculateTransform(-30) }}
         >
-          <div className="px-3 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 shadow-lg backdrop-blur-sm border border-violet-100 dark:border-violet-900/50">
+          <div className="px-3 py-1.5 rounded-full bg-white/95 dark:bg-gray-800/95 shadow-lg backdrop-blur-sm border border-violet-200 dark:border-violet-700/50 transition-colors duration-300">
             <span className="text-xs font-medium bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent">+42.8% Growth</span>
           </div>
         </motion.div>
+      </div>
+
+      {/* Theme Toggle - positioned absolutely */}
+      <div className="absolute top-6 right-6 z-50">
+        <ThemeToggle className="bg-white/10 dark:bg-gray-800/10 backdrop-blur-xl border border-white/20 dark:border-gray-700/20 shadow-xl" />
       </div>
 
       <div className="relative max-w-7xl mx-auto pt-16 pb-16 sm:pt-20 sm:pb-20 lg:pt-24 lg:pb-32">
@@ -114,10 +134,10 @@ const SocialHeroSection = () => {
             className="order-2 lg:order-1"
           >
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-              <div className="px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-300 text-xs font-medium border border-violet-200 dark:border-violet-500/30">
+              <div className="px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-500/20 text-violet-700 dark:text-violet-300 text-xs font-medium border border-violet-200 dark:border-violet-500/30 transition-colors duration-300">
                 #SocialMediaReimagined
               </div>
-              <div className="px-3 py-1 rounded-full bg-pink-100 dark:bg-pink-500/20 text-pink-600 dark:text-pink-300 text-xs font-medium border border-pink-200 dark:border-pink-500/30">
+              <div className="px-3 py-1 rounded-full bg-pink-100 dark:bg-pink-500/20 text-pink-700 dark:text-pink-300 text-xs font-medium border border-pink-200 dark:border-pink-500/30 transition-colors duration-300">
                 Gen Z Approved
               </div>
             </div>
@@ -147,17 +167,17 @@ const SocialHeroSection = () => {
               </div>
             </h1>
 
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-zinc-300 mb-8 sm:mb-10 max-w-lg leading-relaxed">
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 max-w-lg leading-relaxed transition-colors duration-300">
               We create scroll-stopping content and data-driven strategies that resonate with today's audience. No cap.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8 sm:mb-10">
-              <button className="group px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-violet-300/30 dark:shadow-violet-900/30 text-base sm:text-lg">
+              <button className="group px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 focus:from-violet-700 focus:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-violet-300/30 dark:shadow-violet-500/20 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-violet-500/50">
                 Start Your Journey
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
               
-              <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-medium border border-violet-200 dark:border-violet-800 text-violet-600 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-900/30 transition-all duration-300 backdrop-blur-sm text-base sm:text-lg">
+              <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-medium border border-violet-300 dark:border-violet-600 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-900/20 focus:bg-violet-50 dark:focus:bg-violet-900/20 transition-all duration-300 backdrop-blur-sm text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-violet-500/50">
                 View Our Work
               </button>
             </div>
@@ -167,7 +187,7 @@ const SocialHeroSection = () => {
                 {[1, 2, 3, 4].map((num) => (
                   <div 
                     key={num}
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-zinc-900 overflow-hidden shadow-md"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-gray-900 overflow-hidden shadow-md transition-colors duration-300"
                   >
                     <img 
                       src={`https://randomuser.me/api/portraits/women/${num + 10}.jpg`}
@@ -176,7 +196,7 @@ const SocialHeroSection = () => {
                     />
                   </div>
                 ))}
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-violet-100 dark:bg-violet-800 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-xs font-bold text-violet-600 dark:text-violet-300">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-violet-100 dark:bg-violet-800 border-2 border-white dark:border-gray-900 flex items-center justify-center text-xs font-bold text-violet-700 dark:text-violet-300 transition-colors duration-300">
                   +5K
                 </div>
               </div>
@@ -186,9 +206,9 @@ const SocialHeroSection = () => {
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star key={star} size={12} className="text-yellow-400 fill-yellow-400 sm:w-3.5 sm:h-3.5" />
                   ))}
-                  <span className="ml-1 text-xs sm:ml-1.5 sm:text-sm font-medium text-gray-700 dark:text-zinc-300">4.9/5</span>
+                  <span className="ml-1 text-xs sm:ml-1.5 sm:text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">4.9/5</span>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
                   From <span className="font-medium">200+</span> satisfied brands
                 </p>
               </div>
@@ -205,7 +225,7 @@ const SocialHeroSection = () => {
               {/* Phone display with mockup */}
               <div className="absolute -inset-1.5 bg-gradient-to-r from-violet-500 to-pink-500 rounded-3xl blur-lg opacity-60 dark:opacity-80 animate-enhanced-pulse"></div>
               
-              <div className="relative bg-white dark:bg-zinc-900 rounded-3xl border border-gray-200 dark:border-zinc-800 shadow-2xl overflow-hidden">
+              <div className="relative bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-2xl overflow-hidden transition-colors duration-300">
                 {/* Phone mockup header */}
                 <div className="px-4 pt-4 pb-2 flex items-center justify-between">
                   <div className="flex space-x-1.5">
@@ -213,24 +233,24 @@ const SocialHeroSection = () => {
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
-                  <div className="h-1.5 w-1/4 rounded-full bg-gray-200 dark:bg-zinc-700"></div>
-                  <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-zinc-700"></div>
+                  <div className="h-1.5 w-1/4 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300"></div>
+                  <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300"></div>
                 </div>
                 
                 {/* App mockup content */}
                 <div className="p-4">
                   {/* Social feed mockup */}
-                  <div className="bg-gray-50 dark:bg-zinc-800 rounded-2xl overflow-hidden">
+                  <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden transition-colors duration-300">
                     {/* App header */}
-                    <div className="px-4 py-3 border-b border-gray-200 dark:border-zinc-700 flex justify-between items-center">
+                    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 flex justify-between items-center transition-colors duration-300">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-pink-500 flex items-center justify-center">
                           <span className="text-sm text-white font-medium">V</span>
                         </div>
-                        <div>
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">ViralConnect</div>
-                          <div className="text-xs text-gray-500 dark:text-zinc-400">@viralconnect</div>
-                        </div>
+                                                  <div>
+                            <div className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">ViralConnect</div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">@viralconnect</div>
+                          </div>
                       </div>
                       
                       <div className="flex items-center gap-2">
@@ -265,29 +285,29 @@ const SocialHeroSection = () => {
                       </div>
                       
                       {/* Post caption */}
-                      <div className="mb-3 text-sm text-gray-700 dark:text-zinc-300">
+                      <div className="mb-3 text-sm text-gray-700 dark:text-gray-300 transition-colors duration-300">
                         Our latest case study reveals the exact strategies we used for explosive growth across all platforms. #SocialStrategy #GrowthHacking 🚀
                       </div>
                       
                       {/* Hash tags */}
                       <div className="flex flex-wrap gap-1 mb-3">
                         {["ContentStrategy", "GenZ", "TikTokGrowth"].map((tag, i) => (
-                          <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-700 text-violet-600 dark:text-violet-300">
+                          <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-violet-600 dark:text-violet-300 transition-colors duration-300">
                             #{tag}
                           </span>
                         ))}
                       </div>
                       
                       {/* Engagement stats */}
-                      <div className="flex justify-between items-center mt-3 pt-3 border-t border-gray-200 dark:border-zinc-700">
+                      <div className="flex justify-between items-center mt-3 pt-3 border-t border-gray-200 dark:border-gray-600 transition-colors duration-300">
                         <div className="flex gap-5">
                           <div className="flex items-center gap-1">
-                            <ThumbsUp size={16} className="text-gray-500 dark:text-zinc-400" />
-                            <span className="text-xs text-gray-500 dark:text-zinc-400">138K</span>
+                            <ThumbsUp size={16} className="text-gray-500 dark:text-gray-400 transition-colors duration-300" />
+                            <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">138K</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <MessageCircle size={16} className="text-gray-500 dark:text-zinc-400" />
-                            <span className="text-xs text-gray-500 dark:text-zinc-400">4.2K</span>
+                            <MessageCircle size={16} className="text-gray-500 dark:text-gray-400 transition-colors duration-300" />
+                            <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">4.2K</span>
                           </div>
                         </div>
                         
@@ -299,8 +319,8 @@ const SocialHeroSection = () => {
                     </div>
                     
                     {/* App analytics section */}
-                    <div className="p-3 mx-3 mb-3 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700">
-                      <div className="text-xs font-medium text-gray-600 dark:text-zinc-400 mb-3">Campaign Performance</div>
+                                  <div className="p-3 mx-3 mb-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-3 transition-colors duration-300">Campaign Performance</div>
                       
                       <div className="h-16 mb-3">
                         <div className="w-full h-full flex items-end gap-0.5">
@@ -353,6 +373,7 @@ const SocialHeroSection = () => {
 };
 
 const ServicesSection = () => {
+  const { theme, isDark } = useThemeContext();
   const services = [
     {
       title: "Content That Slaps",
@@ -435,10 +456,10 @@ const ServicesSection = () => {
   ];
 
   return (
-    <div className="relative py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-black">
+    <div className="relative py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -left-20 top-40 w-96 h-96 rounded-full bg-violet-100 dark:bg-violet-900/20 blur-3xl"></div>
-        <div className="absolute right-20 bottom-20 w-80 h-80 rounded-full bg-pink-100 dark:bg-pink-900/20 blur-3xl"></div>
+        <div className="absolute -left-20 top-40 w-96 h-96 rounded-full bg-violet-100 dark:bg-violet-900/15 blur-3xl transition-colors duration-700"></div>
+        <div className="absolute right-20 bottom-20 w-80 h-80 rounded-full bg-pink-100 dark:bg-pink-900/15 blur-3xl transition-colors duration-700"></div>
       </div>
       
       {/* Section heading */}
@@ -485,7 +506,7 @@ const ServicesSection = () => {
             >
               <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-violet-500 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:h-[2px]"></div>
               
-              <div className="relative bg-white dark:bg-zinc-900 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-zinc-800 h-full transition-all duration-300 group-hover:shadow-xl">
+              <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700 h-full transition-all duration-300 group-hover:shadow-xl">
                 {/* Service icon */}
                 <div className={`mb-6 w-16 h-16 rounded-2xl flex items-center justify-center ${service.lightBg} dark:${service.darkBg} ${service.lightBorder} dark:${service.darkBorder} border-2`}>
                   <div className={`${service.lightIcon} dark:${service.darkIcon}`}>
@@ -503,14 +524,14 @@ const ServicesSection = () => {
                 </h3>
                 
                 {/* Service description */}
-                <p className="text-gray-600 dark:text-zinc-400 mb-8">
+                <p className="text-gray-600 dark:text-gray-400 mb-8 transition-colors duration-300">
                   {service.description}
                 </p>
                 
                 {/* Learn more link */}
-                <div className="mt-auto pt-6 border-t border-gray-100 dark:border-zinc-800">
+                <div className="mt-auto pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-300">
                   <a href="#" 
-                    className={`inline-flex items-center text-sm font-medium ${service.lightIcon} dark:${service.darkIcon} hover:underline`}
+                    className={`inline-flex items-center text-sm font-medium ${service.lightIcon} dark:${service.darkIcon} hover:underline transition-colors duration-300`}
                   >
                     See how we do it
                     <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
@@ -529,13 +550,13 @@ const ServicesSection = () => {
           transition={{ delay: 0.6 }}
           className="mt-16 p-8 rounded-3xl overflow-hidden relative"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-pink-600/20 dark:from-violet-600/10 dark:to-pink-600/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-pink-600/20 dark:from-violet-600/8 dark:to-pink-600/8 transition-colors duration-300"></div>
           <div className="absolute inset-0 backdrop-blur-3xl"></div>
-          <div className="absolute inset-0 bg-white/60 dark:bg-zinc-900/60"></div>
+          <div className="absolute inset-0 bg-white/60 dark:bg-gray-900/60 transition-colors duration-300"></div>
           
           <div className="relative flex flex-col md:flex-row gap-8 items-center">
             <div className="md:w-1/3 flex-shrink-0">
-              <div className="rounded-2xl overflow-hidden border-8 border-white dark:border-zinc-800 shadow-xl">
+              <div className="rounded-2xl overflow-hidden border-8 border-white dark:border-gray-800 shadow-xl transition-colors duration-300">
                 <img 
                   src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
                   alt="Social strategy" 
@@ -553,13 +574,13 @@ const ServicesSection = () => {
                 Our <span className="text-transparent bg-clip-text" style={{ backgroundImage: THEME_ACCENT.gradient }}>Cross-Platform Growth</span> Strategy
               </h3>
               
-              <p className="text-gray-600 dark:text-zinc-300 mb-6">
+              <p className="text-gray-600 dark:text-gray-300 mb-6 transition-colors duration-300">
                 We combine platform-specific optimization with cohesive brand storytelling to create a powerful social presence that resonates across all channels.
               </p>
               
               <div className="flex flex-wrap gap-4 mb-8">
                 {["TikTok", "Instagram", "YouTube", "Twitter", "LinkedIn"].map((platform, i) => (
-                  <span key={i} className="px-3 py-1.5 rounded-lg text-sm bg-white dark:bg-zinc-800 shadow-sm border border-gray-100 dark:border-zinc-700">
+                  <span key={i} className="px-3 py-1.5 rounded-lg text-sm bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300">
                     {platform}
                   </span>
                 ))}
@@ -579,6 +600,7 @@ const ServicesSection = () => {
 
 // REDESIGNED PLATFORM MASTERY SECTION
 const PlatformsSection = () => {
+  const { theme, isDark } = useThemeContext();
   const [activePlatform, setActivePlatform] = useState('TikTok');
   
   const platforms = {
@@ -667,11 +689,11 @@ const PlatformsSection = () => {
   const currentPlatform = platforms[activePlatform];
 
   return (
-    <div className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-zinc-950 relative overflow-hidden">
+    <div className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-950 relative overflow-hidden transition-colors duration-300">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 -right-40 w-[30rem] h-[30rem] rounded-full bg-gray-200/50 dark:bg-zinc-800/20 blur-3xl"></div>
-        <div className="absolute bottom-20 -left-40 w-[30rem] h-[30rem] rounded-full bg-gray-200/50 dark:bg-zinc-800/20 blur-3xl"></div>
+        <div className="absolute top-20 -right-40 w-[30rem] h-[30rem] rounded-full bg-gray-200/50 dark:bg-gray-800/15 blur-3xl transition-colors duration-700"></div>
+        <div className="absolute bottom-20 -left-40 w-[30rem] h-[30rem] rounded-full bg-gray-200/50 dark:bg-gray-800/15 blur-3xl transition-colors duration-700"></div>
       </div>
       
       {/* Section heading */}
@@ -681,7 +703,7 @@ const PlatformsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center justify-center px-4 py-1.5 mb-6 text-sm font-medium uppercase tracking-wider text-pink-700 dark:text-pink-300 bg-pink-50 dark:bg-pink-900/30 rounded-full border border-pink-200 dark:border-pink-800/30"
+          className="inline-flex items-center justify-center px-4 py-1.5 mb-6 text-sm font-medium uppercase tracking-wider text-pink-700 dark:text-pink-300 bg-pink-50 dark:bg-pink-900/30 rounded-full border border-pink-200 dark:border-pink-700/50 transition-colors duration-300"
         >
           Platform Mastery
         </motion.div>
@@ -896,6 +918,7 @@ const PlatformsSection = () => {
 
 // NEW SECTION: CASE STUDIES SHOWCASE
 const CaseStudiesSection = () => {
+  const { theme, isDark } = useThemeContext();
   const caseStudies = [
     {
       title: "320% Follower Growth for Fashion Brand",
@@ -1047,6 +1070,7 @@ const CaseStudiesSection = () => {
 };
 
 const WorkflowSection = () => {
+  const { theme, isDark } = useThemeContext();
   const [activeStep, setActiveStep] = useState(1);
   
   const steps = [
@@ -1287,6 +1311,7 @@ const WorkflowSection = () => {
 };
 
 const PlansSection = () => {
+  const { theme, isDark } = useThemeContext();
   const plans = [
     {
       name: "Starter",
@@ -1341,7 +1366,7 @@ const PlansSection = () => {
   ];
 
   return (
-    <div className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-zinc-950">
+    <div className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -left-20 top-40 w-96 h-96 rounded-full bg-violet-100 dark:bg-violet-900/10 blur-3xl"></div>
         <div className="absolute -right-20 bottom-40 w-96 h-96 rounded-full bg-pink-100 dark:bg-pink-900/10 blur-3xl"></div>
@@ -1487,8 +1512,9 @@ const PlansSection = () => {
 };
 
 const CTASection = () => {
+  const { theme, isDark } = useThemeContext();
   return (
-    <div className="py-24 px-4 sm:px-6 lg:px-8 bg-black text-white relative overflow-hidden">
+    <div className={`py-24 px-4 sm:px-6 lg:px-8 ${isDark ? 'bg-black text-white' : 'bg-gray-900 text-white'} relative overflow-hidden transition-colors duration-300`}>
       <div className="absolute inset-0">
         {/* Animated gradient background */}
         <div className="absolute top-0 w-full h-full">
@@ -1567,11 +1593,12 @@ const CTASection = () => {
 };
 
 const AnalyticsDashboardSection = () => {
+  const { theme, isDark } = useThemeContext();
   return (
-    <div className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-zinc-950 relative overflow-hidden">
+    <div className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-950 relative overflow-hidden transition-colors duration-300">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 -left-20 w-80 h-80 rounded-full bg-green-100 dark:bg-green-900/10 blur-3xl opacity-40"></div>
-        <div className="absolute bottom-40 -right-20 w-80 h-80 rounded-full bg-blue-100 dark:bg-blue-900/10 blur-3xl opacity-40"></div>
+        <div className="absolute top-20 -left-20 w-80 h-80 rounded-full bg-green-100 dark:bg-green-900/10 blur-3xl opacity-40 transition-colors duration-700"></div>
+        <div className="absolute bottom-40 -right-20 w-80 h-80 rounded-full bg-blue-100 dark:bg-blue-900/10 blur-3xl opacity-40 transition-colors duration-700"></div>
       </div>
       
       <div className="max-w-7xl mx-auto relative">
@@ -1611,7 +1638,7 @@ const AnalyticsDashboardSection = () => {
           transition={{ delay: 0.3 }}
           className="mb-16 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 dark:border-zinc-800"
         >
-          <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+          <div className="bg-gray-800 dark:bg-gray-900 px-4 py-2 flex items-center gap-2 transition-colors duration-300">
             <div className="flex gap-1.5">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -1620,7 +1647,7 @@ const AnalyticsDashboardSection = () => {
             <div className="text-gray-400 text-xs font-medium">Engagement Analytics Dashboard</div>
           </div>
           
-          <div className="bg-white dark:bg-zinc-900 p-6">
+          <div className="bg-white dark:bg-gray-900 p-6 transition-colors duration-300">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
               {[
                 { label: "Total Reach", value: "1.4M", change: "+24%", icon: <Users size={20} />, color: THEME_ACCENT.primary },
@@ -1628,7 +1655,7 @@ const AnalyticsDashboardSection = () => {
                 { label: "Conversions", value: "8.2K", change: "+19%", icon: <ShoppingBag size={20} />, color: THEME_ACCENT.tertiary },
                 { label: "Content ROI", value: "428%", change: "+52%", icon: <TrendingUp size={20} />, color: THEME_ACCENT.accent }
               ].map((stat, i) => (
-                <div key={i} className="bg-white dark:bg-zinc-800 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700 overflow-hidden">
+                <div key={i} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-300">
                   <div className="h-1.5" style={{ backgroundColor: stat.color }}></div>
                   <div className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -1651,7 +1678,7 @@ const AnalyticsDashboardSection = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-gray-50 dark:bg-zinc-800 rounded-xl p-6 border border-gray-200 dark:border-zinc-700">
+              <div className="lg:col-span-2 bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="font-medium text-gray-900 dark:text-white">Platform Performance</h3>
                   <div className="flex items-center gap-4">
@@ -1688,7 +1715,7 @@ const AnalyticsDashboardSection = () => {
                 </div>
               </div>
               
-              <div className="bg-white dark:bg-zinc-900 rounded-xl p-6 border border-gray-200 dark:border-zinc-700 shadow-md">
+              <div className="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-md transition-colors duration-300">
                 <h3 className="font-medium text-gray-900 dark:text-white mb-6">Audience Insights</h3>
                 
                 <div className="space-y-6">
@@ -1721,13 +1748,13 @@ const AnalyticsDashboardSection = () => {
                   <div>
                     <div className="text-xs text-gray-500 dark:text-zinc-400 mb-2">Gender</div>
                     <div className="flex gap-4">
-                      <div className="flex-1 bg-gray-100 dark:bg-zinc-700/50 rounded-xl p-3 text-center">
-                        <div className="text-lg font-bold text-gray-900 dark:text-white">58%</div>
-                        <div className="text-xs text-gray-500 dark:text-zinc-400">Female</div>
+                      <div className="flex-1 bg-gray-100 dark:bg-gray-700/50 rounded-xl p-3 text-center transition-colors duration-300">
+                        <div className="text-lg font-bold text-gray-900 dark:text-white transition-colors duration-300">58%</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">Female</div>
                       </div>
-                      <div className="flex-1 bg-gray-100 dark:bg-zinc-700/50 rounded-xl p-3 text-center">
-                        <div className="text-lg font-bold text-gray-900 dark:text-white">42%</div>
-                        <div className="text-xs text-gray-500 dark:text-zinc-400">Male</div>
+                      <div className="flex-1 bg-gray-100 dark:bg-gray-700/50 rounded-xl p-3 text-center transition-colors duration-300">
+                        <div className="text-lg font-bold text-gray-900 dark:text-white transition-colors duration-300">42%</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">Male</div>
                       </div>
                     </div>
                   </div>
@@ -1735,13 +1762,13 @@ const AnalyticsDashboardSection = () => {
               </div>
             </div>
             
-            <div className="mt-6 bg-white dark:bg-zinc-800 rounded-xl p-6 border border-gray-200 dark:border-zinc-700">
+            <div className="mt-6 bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
               <h3 className="font-medium text-gray-900 dark:text-white mb-6">Top Performing Content</h3>
               
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="text-xs text-gray-500 dark:text-zinc-400 border-b border-gray-200 dark:border-zinc-700">
+                    <tr className="text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
                       <th className="pb-2 text-left font-medium">Content</th>
                       <th className="pb-2 text-center font-medium">Platform</th>
                       <th className="pb-2 text-center font-medium">Engagement</th>
@@ -1784,10 +1811,10 @@ const AnalyticsDashboardSection = () => {
                         conversions: "420"
                       }
                     ].map((content, i) => (
-                      <tr key={i} className="border-b border-gray-200 dark:border-zinc-700">
+                      <tr key={i} className="border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
                         <td className="py-4">
                           <div className="flex items-center">
-                            <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-zinc-700 mr-3 flex items-center justify-center text-xs font-bold">
+                            <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 mr-3 flex items-center justify-center text-xs font-bold transition-colors duration-300">
                               {i+1}
                             </div>
                             <div className="text-gray-900 dark:text-white font-medium">{content.title}</div>
@@ -1801,8 +1828,8 @@ const AnalyticsDashboardSection = () => {
                             {content.platform}
                           </div>
                         </td>
-                        <td className="py-4 text-center text-gray-700 dark:text-zinc-300">{content.engagement}</td>
-                        <td className="py-4 text-center text-gray-700 dark:text-zinc-300">{content.reach}</td>
+                        <td className="py-4 text-center text-gray-700 dark:text-gray-300 transition-colors duration-300">{content.engagement}</td>
+                        <td className="py-4 text-center text-gray-700 dark:text-gray-300 transition-colors duration-300">{content.reach}</td>
                         <td className="py-4 text-center">
                           <div className="flex items-center justify-center gap-1 text-emerald-600 dark:text-emerald-400">
                             <TrendingUp size={14} />
@@ -1847,14 +1874,14 @@ const AnalyticsDashboardSection = () => {
               transition={{ delay: 0.2 + (index * 0.1) }}
               className="relative"
             >
-              <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-md border border-gray-200 dark:border-zinc-800 p-6 h-full">
+              <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md border border-gray-200 dark:border-gray-800 p-6 h-full transition-colors duration-300">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 rounded-lg" style={{ backgroundColor: `${feature.color}20` }}>
                     <div style={{ color: feature.color }}>{feature.icon}</div>
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white">{feature.title}</h3>
                 </div>
-                <p className="text-gray-600 dark:text-zinc-400 ml-[60px]">{feature.description}</p>
+                                  <p className="text-gray-600 dark:text-gray-400 ml-[60px] transition-colors duration-300">{feature.description}</p>
               </div>
             </motion.div>
           ))}
@@ -1868,12 +1895,12 @@ const AnalyticsDashboardSection = () => {
           className="mt-16 max-w-3xl mx-auto text-center"
         >
           <div className="p-1 bg-gradient-to-r from-violet-500 to-pink-500 rounded-full inline-block">
-            <button className="px-8 py-4 bg-white dark:bg-zinc-900 text-gray-900 dark:text-white font-medium rounded-full flex items-center gap-2 ">
+            <button className="px-8 py-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-medium rounded-full flex items-center gap-2 transition-colors duration-300">
               Request Custom Analytics Demo
               <ArrowRight size={18} />
             </button>
           </div>
-          <p className="mt-4 text-gray-500 dark:text-zinc-400">
+          <p className="mt-4 text-gray-500 dark:text-gray-400 transition-colors duration-300">
             Get detailed insights tailored to your specific business goals
           </p>
         </motion.div>
@@ -1883,6 +1910,7 @@ const AnalyticsDashboardSection = () => {
 };
 
 const IntegrationsSection = () => {
+  const { theme, isDark } = useThemeContext();
   const integrations = [
     {
       name: "Microsoft Outlook",
