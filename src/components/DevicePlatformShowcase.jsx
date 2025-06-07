@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useThemeContext } from './ThemeProvider';
 import { 
   Phone, 
   Smartphone, 
@@ -24,19 +25,13 @@ import {
   ChevronLeft,
   Eye,
   ThumbsUp,
-  Mail,
-  Sun,
-  Moon
+  Mail
 } from "lucide-react";
 
 const DevicePlatformShowcase = () => {
+  const { theme } = useThemeContext();
   const [activeTab, setActiveTab] = useState("iphone");
   const [activePlatformFeature, setActivePlatformFeature] = useState("overview");
-  const [theme, setTheme] = useState("dark");
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === "dark" ? "light" : "dark");
-  };
 
   // Platform data structure
   const platforms = {
@@ -111,20 +106,12 @@ const DevicePlatformShowcase = () => {
   const currentPlatform = platforms[activeTab];
   const isDark = theme === 'dark';
 
-  // Enhanced style classes with better theme support
-  const glassStyle = `backdrop-blur-xl border shadow-2xl transition-all duration-300 ${
-    isDark 
-      ? 'bg-slate-900/40 border-slate-700/50 shadow-black/30' 
-      : 'bg-white/60 border-white/40 shadow-black/10'
-  }`;
+  // Enhanced style classes with better theme support using global CSS variables
+  const glassStyle = `backdrop-blur-xl border shadow-2xl transition-all duration-300 bg-card/60 border-border/50 shadow-foreground/10`;
   
-  const textStyle = `transition-colors duration-300 ${
-    isDark ? 'text-white' : 'text-slate-900'
-  }`;
+  const textStyle = `transition-colors duration-300 text-foreground`;
   
-  const mutedTextStyle = `transition-colors duration-300 ${
-    isDark ? 'text-slate-300' : 'text-slate-600'
-  }`;
+  const mutedTextStyle = `transition-colors duration-300 text-muted-foreground`;
 
   // Enhanced floating orb with better positioning
   const FloatingOrb = () => (
@@ -187,13 +174,11 @@ const DevicePlatformShowcase = () => {
       />
 
       <div 
-        className={`relative overflow-hidden transition-all duration-500 ${
-          isDark ? 'border-zinc-700/30' : 'border-slate-300/50'
-        }`}
+        className="relative overflow-hidden transition-all duration-500 border-border/30"
         style={{ 
           borderRadius: currentPlatform.borderRadius,
           boxShadow: `0 30px 80px -15px ${currentPlatform.color}60`,
-          border: `3px solid ${isDark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.3)'}`
+          border: `3px solid hsl(var(--border))`
         }}
       >
         {/* Enhanced holographic effect */}
@@ -246,16 +231,10 @@ const DevicePlatformShowcase = () => {
   );
 
   return (
-    <div className={`relative w-full min-h-screen py-20 px-4 transition-all duration-500 overflow-hidden ${
-      isDark 
-        ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white' 
-        : 'bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900'
-    }`}>
+    <div className="relative w-full min-h-screen py-20 px-4 transition-all duration-500 overflow-hidden bg-background text-foreground">
       
       {/* Enhanced background elements */}
-      <div className={`absolute inset-0 bg-grid-pattern opacity-10 -z-10 ${
-        isDark ? 'bg-grid-slate-700' : 'bg-grid-slate-200'
-      }`} />
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 -z-10" />
       
       {/* Dynamic background orbs with better positioning */}
       {[
@@ -276,30 +255,6 @@ const DevicePlatformShowcase = () => {
           }}
         />
       ))}
-
-      {/* Theme Toggle Button */}
-      <motion.button
-        onClick={toggleTheme}
-        className={`fixed top-6 right-6 z-50 p-3 rounded-full backdrop-blur-xl border shadow-lg transition-all duration-300 ${
-          isDark 
-            ? 'bg-slate-800/80 border-slate-700/50 text-white hover:bg-slate-700/80' 
-            : 'bg-white/80 border-white/40 text-slate-900 hover:bg-white/90'
-        }`}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={theme}
-            initial={{ opacity: 0, rotate: -90 }}
-            animate={{ opacity: 1, rotate: 0 }}
-            exit={{ opacity: 0, rotate: 90 }}
-            transition={{ duration: 0.2 }}
-          >
-            {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </motion.div>
-        </AnimatePresence>
-      </motion.button>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative">
@@ -531,13 +486,13 @@ const DevicePlatformShowcase = () => {
           {/* Enhanced Content Column */}
           <div className="lg:col-span-7 space-y-10">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 lg:gap-8">
               {/* Platform Header */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className={`relative p-8 rounded-3xl overflow-hidden ${glassStyle}`}
+                className={`relative p-6 lg:p-8 rounded-3xl overflow-hidden ${glassStyle} w-full lg:w-auto`}
               >
                 <div 
                   className="absolute inset-0 opacity-20" 
@@ -545,28 +500,28 @@ const DevicePlatformShowcase = () => {
                     background: `linear-gradient(135deg, ${currentPlatform.color}20, transparent 50%, ${currentPlatform.secondaryColor}15)` 
                   }} 
                 />
-                <div className="relative z-10 space-y-4">
-                  <div className="flex items-center gap-6">
-                    <motion.div
-                      className="p-4 rounded-2xl border"
-                      style={{ 
-                        background: `linear-gradient(135deg, ${currentPlatform.color}20, ${currentPlatform.secondaryColor}10)`,
-                        borderColor: `${currentPlatform.color}40`
-                      }}
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      <div style={{ color: currentPlatform.color }}>
-                        {currentPlatform.icon}
+                                  <div className="relative z-10 space-y-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                      <motion.div
+                        className="p-3 lg:p-4 rounded-2xl border"
+                        style={{ 
+                          background: `linear-gradient(135deg, ${currentPlatform.color}20, ${currentPlatform.secondaryColor}10)`,
+                          borderColor: `${currentPlatform.color}40`
+                        }}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <div style={{ color: currentPlatform.color }}>
+                          {currentPlatform.icon}
+                        </div>
+                      </motion.div>
+                      <div>
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                          {currentPlatform.name}
+                        </h1>
+                        <p className={`text-lg lg:text-xl ${mutedTextStyle}`}>Development Platform</p>
                       </div>
-                    </motion.div>
-                    <div>
-                      <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-                        {currentPlatform.name}
-                      </h1>
-                      <p className={`text-xl ${mutedTextStyle}`}>Development Platform</p>
                     </div>
                   </div>
-                </div>
               </motion.div>
 
               {/* Enhanced Tab Navigation */}
@@ -580,12 +535,12 @@ const DevicePlatformShowcase = () => {
                 <div className="relative flex">
                   {/* Active tab indicator */}
                   <motion.div
-                    className="absolute top-1 bottom-1 rounded-xl z-10"
+                    className="absolute top-1 bottom-1 rounded-xl z-10 border"
                     style={{ 
                       background: `linear-gradient(135deg, ${currentPlatform.color}30, ${currentPlatform.secondaryColor}20)`,
                       left: activeTab === "iphone" ? "4px" : "calc(50% + 2px)",
                       width: "calc(50% - 6px)",
-                      border: `1px solid ${currentPlatform.color}40`
+                      borderColor: `${currentPlatform.color}40`
                     }}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     layoutId="activeTabIndicator"
@@ -598,18 +553,18 @@ const DevicePlatformShowcase = () => {
                         setActiveTab(id); 
                         setActivePlatformFeature("overview"); 
                       }}
-                      className={`relative z-20 px-6 py-4 text-sm transition-all duration-300
+                      className={`relative z-20 px-4 py-3 sm:px-6 sm:py-4 text-sm transition-all duration-300
                         ${activeTab === id 
                           ? `${textStyle} font-semibold` 
-                          : `${mutedTextStyle} hover:${textStyle}`
-                        } rounded-xl flex items-center gap-3 min-w-[120px] justify-center`}
+                          : `${mutedTextStyle} hover:text-foreground`
+                        } rounded-xl flex items-center gap-2 sm:gap-3 min-w-[100px] sm:min-w-[120px] justify-center`}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
                       <span style={{ color: activeTab === id ? platform.color : 'inherit' }}>
                         {platform.icon}
                       </span>
-                      <span>{platform.name}</span>
+                      <span className="hidden sm:inline">{platform.name}</span>
                     </motion.button>
                   ))}
                 </div>
@@ -621,7 +576,7 @@ const DevicePlatformShowcase = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className={`${glassStyle} rounded-3xl p-8`}
+              className={`${glassStyle} rounded-3xl p-6 lg:p-8`}
             >
               <div 
                 className="absolute inset-0 opacity-10 rounded-3xl" 
@@ -630,18 +585,16 @@ const DevicePlatformShowcase = () => {
                 }} 
               />
               <div className="relative z-10">
-                <h2 className={`text-2xl font-bold mb-6 ${textStyle}`}>Platform Features</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <h2 className={`text-xl lg:text-2xl font-bold mb-6 ${textStyle}`}>Platform Features</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
                   {currentPlatform.features.map((feature) => (
                     <motion.button
                       key={feature.id}
                       onClick={() => setActivePlatformFeature(feature.id)}
-                      className={`relative p-4 rounded-2xl text-left transition-all duration-300 group
+                      className={`relative p-4 rounded-2xl text-left transition-all duration-300 group border
                         ${activePlatformFeature === feature.id 
                           ? `border-2 ${glassStyle}` 
-                          : `border border-transparent hover:border-white/20 ${
-                              isDark ? 'hover:bg-slate-800/40' : 'hover:bg-white/40'
-                            }`
+                          : `border-transparent hover:border-border/20 hover:bg-secondary/20`
                         }`}
                       style={{
                         borderColor: activePlatformFeature === feature.id ? `${currentPlatform.color}60` : 'transparent'
@@ -661,11 +614,11 @@ const DevicePlatformShowcase = () => {
                       )}
                       <div className="relative z-10 space-y-3">
                         <div 
-                          className="flex items-center gap-3"
+                          className="flex items-center gap-2 lg:gap-3"
                           style={{ color: activePlatformFeature === feature.id ? currentPlatform.color : 'inherit' }}
                         >
                           {feature.icon}
-                          <span className={`font-semibold ${textStyle}`}>{feature.name}</span>
+                          <span className={`font-semibold text-sm lg:text-base ${textStyle}`}>{feature.name}</span>
                         </div>
                       </div>
                     </motion.button>
@@ -682,7 +635,7 @@ const DevicePlatformShowcase = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className={`${glassStyle} rounded-3xl p-8`}
+                className={`${glassStyle} rounded-3xl p-6 lg:p-8`}
               >
                 <div 
                   className="absolute inset-0 opacity-10 rounded-3xl" 
@@ -694,10 +647,10 @@ const DevicePlatformShowcase = () => {
                   {(() => {
                     const activeFeature = currentPlatform.features.find(f => f.id === activePlatformFeature);
                     return (
-                      <div className="space-y-6">
-                        <div className="flex items-center gap-4">
+                      <div className="space-y-4 lg:space-y-6">
+                        <div className="flex items-center gap-3 lg:gap-4">
                           <div 
-                            className="p-3 rounded-xl"
+                            className="p-2 lg:p-3 rounded-xl"
                             style={{ 
                               background: `linear-gradient(135deg, ${currentPlatform.color}20, ${currentPlatform.secondaryColor}10)`,
                               color: currentPlatform.color 
@@ -705,9 +658,9 @@ const DevicePlatformShowcase = () => {
                           >
                             {activeFeature.icon}
                           </div>
-                          <h3 className={`text-3xl font-bold ${textStyle}`}>{activeFeature.name}</h3>
+                          <h3 className={`text-2xl lg:text-3xl font-bold ${textStyle}`}>{activeFeature.name}</h3>
                         </div>
-                        <p className={`text-lg leading-relaxed ${mutedTextStyle}`}>
+                        <p className={`text-base lg:text-lg leading-relaxed ${mutedTextStyle}`}>
                           {activeFeature.content}
                         </p>
                         
@@ -719,15 +672,13 @@ const DevicePlatformShowcase = () => {
                               { title: "Rich Animations", desc: "Smooth 60fps experiences", icon: <Star className="w-5 h-5" /> },
                               { title: "Platform APIs", desc: "Full access to device features", icon: <Code className="w-5 h-5" /> }
                             ].map((item, i) => (
-                              <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: i * 0.1 }}
-                                className={`p-4 rounded-xl border transition-all duration-300 ${
-                                  isDark ? 'border-slate-700/50 hover:border-slate-600/50' : 'border-slate-200/50 hover:border-slate-300/50'
-                                }`}
-                              >
+                                                          <motion.div
+                              key={i}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: i * 0.1 }}
+                              className="p-4 rounded-xl border border-border/50 hover:border-border/80 transition-all duration-300"
+                            >
                                 <div className="flex items-center gap-3 mb-2">
                                   <div style={{ color: currentPlatform.color }}>
                                     {item.icon}

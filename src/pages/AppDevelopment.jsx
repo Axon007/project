@@ -319,7 +319,7 @@ const PriceCard = ({ title, price, description, features, popular }) => {
   );
 };
 
-function AppDevelopment({ theme, toggleTheme }) {
+function AppDevelopment() {
   const features = [
     {
       icon: <Code />,
@@ -975,7 +975,7 @@ function AppDevelopment({ theme, toggleTheme }) {
 
   </div>
 </section>
-        <DevicePlatformShowcase theme={theme} toggleTheme={toggleTheme}/>
+        <DevicePlatformShowcase />
 
 
 
