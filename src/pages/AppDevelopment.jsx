@@ -447,7 +447,8 @@ function AppDevelopment({ theme, toggleTheme }) {
     <PageTransition>
       <div className="min-h-screen bg-gradient-to-b from-background to-background/95 relative overflow-hidden">
         <CosmicSphere />
-          {/* Hero Section - Stunning App Designs */}        <section className="relative min-h-screen flex flex-col overflow-hidden">
+          {/* Hero Section - Stunning App Designs */}        
+          <section className="relative min-h-screen flex flex-col overflow-hidden">
   {/* Background elements */}
   <div className="absolute inset-0 bg-grid-pattern opacity-5 -z-10"></div>
   <div className="absolute top-0 right-0 w-[45vw] h-[45vw] max-w-[800px] max-h-[800px] bg-primary/20 rounded-full filter blur-[120px] opacity-70 -z-10"></div>

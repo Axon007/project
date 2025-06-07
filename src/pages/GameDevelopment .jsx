@@ -7,50 +7,36 @@ import {
   Monitor, Cloud, Zap, Shield, Award, HardDrive, Play, Pause, Volume2, VolumeX
 } from 'lucide-react';
 
-// Add animation keyframes for interactive elements
-const animationStyles = `
+// Animation keyframes - moved to CSS-in-JS for better theme integration
+const getAnimationStyles = (isDark) => `
   @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
   
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 0.6;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.5);
-    }
+  @keyframes customPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
   }
   
   @keyframes blink {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.3;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
   }
 
   @keyframes typeWriter {
-    from {
-      width: 0%;
-    }
-    to {
-      width: 100%;
-    }
+    from { width: 0%; }
+    to { width: 100%; }
   }
   
   .cursor:after {
     content: '|';
     animation: blink 1s step-end infinite;
+    color: ${isDark ? '#60a5fa' : '#2563eb'};
   }
+  
+  .floating { animation: float 3s ease-in-out infinite; }
+  .custom-pulse { animation: customPulse 2s infinite; }
 `;
 
 // Stats data - mobile optimized
@@ -233,7 +219,7 @@ const KEY_FEATURES = [
   }
 ];
 
-const GamingDevServices = ({ theme, toggleTheme }) => {
+const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
   const [scrollY, setScrollY] = useState(0);
   const [activeProject, setActiveProject] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -243,7 +229,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
   
   // For parallax effects
   const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -50]); // Reduced for mobile
+  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -50]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   
   // References for scroll animations and video
@@ -252,8 +238,8 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
   const videoRef = useRef(null);
   const splineContainerRef = useRef(null);
   
-  // Derive darkMode from theme prop
-  const darkMode = theme === 'dark';
+  // Derive isDark from theme prop with fallback
+  const isDark = theme === 'dark';
 
   // Memoized scroll handler for better performance
   const handleScroll = useCallback(() => {
@@ -316,18 +302,37 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
     }
   };
 
-  // Dynamic classes based on color mode - mobile optimized
-  const colorMode = {
-    bg: darkMode ? 'bg-gray-950' : 'bg-gray-50',
-    text: darkMode ? 'text-white' : 'text-gray-900',
-    textMuted: darkMode ? 'text-gray-400' : 'text-gray-600',
-    primary: darkMode ? 'from-blue-500 to-indigo-600' : 'from-blue-600 to-indigo-700',
-    cardBg: darkMode ? 'bg-gray-900/60' : 'bg-white/90',
-    border: darkMode ? 'border-gray-800/80' : 'border-gray-200',
-    hover: darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100',
-    accent: darkMode ? 'text-blue-400' : 'text-blue-600',
-    videoBg: darkMode ? 'opacity-70' : 'opacity-40',
-    mainBg: darkMode ? 'from-gray-950 via-blue-950/10 to-purple-950/20' : 'from-gray-100 via-blue-100/40 to-purple-100/30',
+  // Comprehensive theme configuration
+  const themeConfig = {
+    // Main backgrounds
+    mainBg: isDark ? 'bg-gray-950' : 'bg-gray-50',
+    sectionBg: isDark ? 'bg-gray-900/50' : 'bg-white/80',
+    cardBg: isDark ? 'bg-gray-900/80' : 'bg-white/90',
+    
+    // Text colors
+    textPrimary: isDark ? 'text-white' : 'text-gray-900',
+    textSecondary: isDark ? 'text-gray-300' : 'text-gray-700',
+    textMuted: isDark ? 'text-gray-400' : 'text-gray-600',
+    
+    // Borders and dividers
+    border: isDark ? 'border-gray-800/50' : 'border-gray-200/50',
+    borderHover: isDark ? 'border-blue-500/50' : 'border-blue-400/50',
+    
+    // Interactive states
+    hover: isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-100/50',
+    
+    // Accent colors
+    accent: isDark ? 'text-blue-400' : 'text-blue-600',
+    accentBg: isDark ? 'bg-blue-600/20' : 'bg-blue-500/10',
+    accentBorder: isDark ? 'border-blue-500/30' : 'border-blue-400/30',
+    
+    // Gradients
+    primaryGradient: isDark ? 'from-blue-600 to-indigo-600' : 'from-blue-500 to-indigo-500',
+    textGradient: 'from-blue-400 via-purple-400 to-blue-300',
+    
+    // Shadows
+    shadow: isDark ? 'shadow-blue-900/20' : 'shadow-blue-500/20',
+    glowShadow: isDark ? 'shadow-[0_0_30px_rgba(59,130,246,0.3)]' : 'shadow-[0_0_30px_rgba(59,130,246,0.2)]',
   };
 
   // Interactive typewriter effect for welcome message
@@ -358,7 +363,10 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
   }, []);
 
   return (
-    <div className={`min-h-screen ${colorMode.bg} ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 relative overflow-hidden`}>
+    <div className={`min-h-screen ${themeConfig.mainBg} ${themeConfig.textPrimary} transition-all duration-500 relative overflow-hidden`}>
+      {/* Dynamic Styles */}
+      <style>{getAnimationStyles(isDark)}</style>
+      
       {/* Content Container */}
       <div className="relative z-10">
         {/* Mobile-First Responsive Hero Section with 3D Car Model */}
@@ -386,18 +394,18 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             
             {/* Mobile interaction tooltip - positioned at bottom center */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30 sm:hidden">
-              <div className="bg-black/70 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2 flex items-center gap-2 animate-pulse">
-                <div className="w-2 h-2 rounded-full bg-blue-400 animate-ping"></div>
-                <span className="text-white text-xs font-medium">Click and drag to interact with the 3D model</span>
+              <div className={`${isDark ? 'bg-black/70' : 'bg-white/70'} backdrop-blur-sm border ${themeConfig.accentBorder} rounded-full px-4 py-2 flex items-center gap-2 animate-pulse`}>
+                <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-blue-400' : 'bg-blue-500'} animate-ping`}></div>
+                <span className={`${themeConfig.textPrimary} text-xs font-medium`}>Click and drag to interact with the 3D model</span>
               </div>
             </div>
             
             {/* Loading indicator - mobile optimized */}
             {!splineLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center z-50 px-4 bg-gray-900/50 backdrop-blur-sm">
+              <div className={`absolute inset-0 flex items-center justify-center z-50 px-4 ${isDark ? 'bg-gray-900/50' : 'bg-white/50'} backdrop-blur-sm`}>
                 <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full border-4 border-t-transparent border-b-transparent border-blue-400 animate-spin"></div>
-                  <p className="mt-4 text-white text-sm sm:text-base text-center">Loading 3D Experience...</p>
+                  <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full border-4 border-t-transparent border-b-transparent ${isDark ? 'border-blue-400' : 'border-blue-500'} animate-spin`}></div>
+                  <p className={`mt-4 ${themeConfig.textPrimary} text-sm sm:text-base text-center`}>Loading 3D Experience...</p>
                 </div>
               </div>
             )}
@@ -411,10 +419,10 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="inline-flex items-center mb-4 sm:mb-8 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full backdrop-blur-md bg-blue-600/20 border border-blue-500/30 text-xs sm:text-sm"
+                className={`inline-flex items-center mb-4 sm:mb-8 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full backdrop-blur-md ${themeConfig.accentBg} border ${themeConfig.accentBorder} text-xs sm:text-sm`}
               >
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full animate-pulse bg-blue-400 mr-2"></span>
-                <p className="font-medium text-white">Interactive Game Development</p>
+                <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full animate-pulse ${isDark ? 'bg-blue-400' : 'bg-blue-500'} mr-2`}></span>
+                <p className={`font-medium ${themeConfig.textPrimary}`}>Interactive Game Development</p>
               </motion.div>
               
               {/* Main headline - desktop only */}
@@ -424,10 +432,10 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-[1.1]"
               >
-                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-indigo-400 to-purple-500">
+                <span className={`block bg-clip-text text-transparent bg-gradient-to-r ${themeConfig.textGradient}`}>
                   Racing Into The
                 </span>
-                <span className="block mt-1 sm:mt-2 text-white">
+                <span className={`block mt-1 sm:mt-2 ${themeConfig.textPrimary}`}>
                   Gaming Future
                 </span>
               </motion.h1>
@@ -437,7 +445,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
-                className="mb-6 sm:mb-10 text-base sm:text-lg lg:text-xl leading-relaxed max-w-full sm:max-w-lg text-gray-100 backdrop-blur-sm bg-black/20 rounded-xl py-2 sm:py-3 px-3 sm:px-5"
+                className={`mb-6 sm:mb-10 text-base sm:text-lg lg:text-xl leading-relaxed max-w-full sm:max-w-lg ${themeConfig.textSecondary} backdrop-blur-sm ${isDark ? 'bg-black/20' : 'bg-white/20'} rounded-xl py-2 sm:py-3 px-3 sm:px-5`}
               >
                 Interact with our 3D model and experience the next level of gaming development. We create immersive experiences that push boundaries.
               </motion.p>
@@ -452,18 +460,18 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 <motion.button 
                   whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.5)" }}
                   whileTap={{ scale: 0.98 }}
-                  className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full font-medium text-base sm:text-lg shadow-xl shadow-blue-900/30 text-white flex items-center justify-center gap-2 sm:gap-3 overflow-hidden w-full sm:w-auto min-h-[48px] touch-manipulation"
+                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r ${themeConfig.primaryGradient} rounded-full font-medium text-base sm:text-lg ${themeConfig.shadow} text-white flex items-center justify-center gap-2 sm:gap-3 overflow-hidden w-full sm:w-auto min-h-[48px] touch-manipulation`}
                 >
                   <span className="relative z-10 text-sm sm:text-base">Start Your Game Project</span>
                   <ArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform w-4 h-4 sm:w-5 sm:h-5" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className={`absolute inset-0 bg-gradient-to-r ${isDark ? 'from-blue-500 to-indigo-500' : 'from-blue-400 to-indigo-400'} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
                 </motion.button>
                 
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => scrollToSection(servicesRef)}
-                  className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-4 border rounded-full font-medium transition-colors border-blue-500/30 hover:bg-blue-500/20 backdrop-blur-sm text-white w-full sm:w-auto min-h-[48px] touch-manipulation text-sm sm:text-base"
+                  className={`flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-4 border rounded-full font-medium transition-colors ${themeConfig.accentBorder} ${themeConfig.hover} backdrop-blur-sm ${themeConfig.textPrimary} w-full sm:w-auto min-h-[48px] touch-manipulation text-sm sm:text-base`}
                 >
                   <Gamepad className="w-4 h-4 sm:w-5 sm:h-5" />
                   Explore Our Services
@@ -475,10 +483,10 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 1.2 }}
-                className="mt-6 sm:mt-10 inline-flex items-center text-xs sm:text-sm backdrop-blur-md bg-blue-900/20 rounded-full px-3 sm:px-5 py-1.5 sm:py-2 border border-blue-800/30 max-w-full"
+                className={`mt-6 sm:mt-10 inline-flex items-center text-xs sm:text-sm backdrop-blur-md ${themeConfig.accentBg} rounded-full px-3 sm:px-5 py-1.5 sm:py-2 border ${themeConfig.accentBorder} max-w-full`}
               >
-                <span className="text-blue-300 mr-2">💡</span>
-                <span className="text-gray-200">
+                <span className={`${themeConfig.accent} mr-2`}>💡</span>
+                <span className={`${themeConfig.textSecondary}`}>
                   Tip: Click and drag to interact with the 3D model
                 </span>
               </motion.div>
@@ -492,7 +500,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             <div className="flex flex-col gap-3">
               {/* Primary CTA for mobile */}
               <button 
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full py-3 px-6 font-medium text-white flex items-center justify-center gap-2 shadow-lg min-h-[48px] touch-manipulation"
+                className={`w-full bg-gradient-to-r ${themeConfig.primaryGradient} rounded-full py-3 px-6 font-medium text-white flex items-center justify-center gap-2 ${themeConfig.shadow} min-h-[48px] touch-manipulation`}
                 onClick={() => alert('Starting your game development journey!')}
               >
                 <span>Start Your Game Project</span>
@@ -502,7 +510,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
               {/* Secondary CTA for mobile */}
               <button 
                 onClick={() => scrollToSection(servicesRef)}
-                className="w-full border border-blue-500/30 bg-black/50 backdrop-blur-sm rounded-full py-3 px-6 font-medium text-white flex items-center justify-center gap-2 min-h-[48px] touch-manipulation"
+                className={`w-full border ${themeConfig.accentBorder} ${isDark ? 'bg-black/50' : 'bg-white/50'} backdrop-blur-sm rounded-full py-3 px-6 font-medium ${themeConfig.textPrimary} flex items-center justify-center gap-2 min-h-[48px] touch-manipulation`}
               >
                 <Gamepad className="w-4 h-4" />
                 <span>Explore Services</span>
@@ -512,9 +520,9 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
         </section>
 
         {/* Mobile-First Gaming-themed Key Features Section */}
-        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${darkMode ? '' : 'bg-gray-100/70'} transition-colors duration-300`} ref={servicesRef}>
+        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-gray-100/70'} transition-colors duration-500`} ref={servicesRef}>
           {/* Interactive background elements */}
-          {darkMode && (
+          {isDark && (
             <div className="absolute inset-0 overflow-hidden">
               {Array.from({length: 5}).map((_, i) => (
                 <div 
@@ -524,7 +532,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                     top: `${Math.random() * 100}%`,
                     left: `${Math.random() * 100}%`,
                     boxShadow: '0 0 40px 20px rgba(59,130,246,0.1)',
-                    animation: `pulse ${3 + Math.random() * 3}s infinite alternate`,
+                    animation: `customPulse ${3 + Math.random() * 3}s infinite alternate`,
                   }}
                 ></div>
               ))}
@@ -535,62 +543,89 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             {/* Mobile-optimized section header */}
             <div className="text-center mb-8 sm:mb-12 md:mb-16">
               <div 
-                className={`inline-flex items-center px-3 sm:px-4 py-1 rounded-lg ${darkMode ? 'bg-blue-600/20 border-blue-500/30' : 'bg-blue-500/10 border-blue-500/20'} border mb-3 sm:mb-4 transition-colors duration-300 transform hover:scale-110 cursor-pointer`}
+                className={`inline-flex items-center px-3 sm:px-4 py-1 rounded-lg ${themeConfig.accentBg} border ${themeConfig.accentBorder} mb-3 sm:mb-4 transition-colors duration-500 transform hover:scale-110 cursor-pointer`}
                 onClick={() => window.open('https://example.com/core-features', '_blank')}
               >
-                <Trophy className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-amber-400" />
-                <p className={`text-xs sm:text-sm font-medium ${darkMode ? 'text-blue-300' : 'text-blue-700'} transition-colors duration-300`}>CORE FEATURES</p>
+                <Trophy className={`w-3 h-3 sm:w-4 sm:h-4 mr-2 ${isDark ? 'text-amber-400' : 'text-amber-500'}`} />
+                <p className={`text-xs sm:text-sm font-medium ${themeConfig.accent} transition-colors duration-500`}>CORE FEATURES</p>
               </div>
-              <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 px-2`}>
-                Game Development <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Powerups</span>
+              <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 ${themeConfig.textPrimary} transition-colors duration-500 px-2`}>
+                Game Development <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeConfig.textGradient}`}>Powerups</span>
               </h2>
-              <div className="w-16 sm:w-20 h-1 bg-blue-500 mx-auto rounded-full mb-4 sm:mb-6"></div>
-              <p className={`max-w-2xl mx-auto ${darkMode ? 'text-blue-100/80' : 'text-gray-700'} transition-colors duration-300 text-sm sm:text-base px-4`}>
+              <div className={`w-16 sm:w-20 h-1 ${isDark ? 'bg-blue-500' : 'bg-blue-600'} mx-auto rounded-full mb-4 sm:mb-6`}></div>
+              <p className={`max-w-2xl mx-auto ${themeConfig.textSecondary} transition-colors duration-500 text-sm sm:text-base px-4`}>
                 Our specialized game development services bring your ideas to life with cutting-edge technology and industry expertise.
               </p>
             </div>
             
             {/* Mobile-first responsive grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-              {KEY_FEATURES.map((feature, index) => (
-                <div
-                  key={index}
-                  className={`group relative overflow-hidden rounded-lg ${darkMode ? 'bg-gray-900/80 border-blue-900/50' : 'bg-white/90 border-blue-200/70'} border p-4 sm:p-6 md:p-8 hover:border-blue-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] backdrop-blur-sm transform hover:-translate-y-2 cursor-pointer`}
-                >
-                  {/* Animated background glow */}
-                  <div className={`absolute -inset-1 bg-gradient-to-r from-${feature.color}-500/0 to-${feature.color}-500/0 opacity-0 group-hover:opacity-${darkMode ? '30' : '15'} blur-xl group-hover:animate-pulse transition-all duration-700 -z-10`}></div>
-                  
-                  {/* Mobile-optimized icon container */}
-                  <div className="relative mb-4 sm:mb-6 md:mb-8">
-                    <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mb-2 flex items-center justify-center text-${feature.color}-${darkMode ? '400' : '500'} ${darkMode ? 'bg-gray-800' : 'bg-gray-100'} rounded-lg shadow-[0_0_15px_rgba(59,130,246,0.3)] group-hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition-all group-hover:rotate-3`}>
-                      {feature.icon}
-                    </div>
-                    <div className={`absolute -bottom-2 sm:-bottom-3 left-0 h-0.5 w-8 sm:w-12 bg-gradient-to-r from-${feature.color}-500 to-transparent group-hover:w-16 sm:group-hover:w-24 transition-all duration-500`}></div>
-                  </div>
-                  
-                  {/* Mobile-optimized title */}
-                  <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 text-${feature.color}-${darkMode ? '400' : '600'} group-hover:text-${feature.color}-${darkMode ? '300' : '500'} transition-colors uppercase tracking-wide`}>
-                    {feature.title}
-                  </h3>
-                  
-                  {/* Mobile-friendly description */}
-                  <p className={`${darkMode ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-700 group-hover:text-gray-900'} transition-colors text-sm sm:text-base leading-relaxed`}>
-                    {feature.description}
-                  </p>
-                  
-                  {/* Mobile-friendly "Learn more" link */}
-                  <div 
-                    className={`mt-4 sm:mt-6 flex items-center gap-2 text-sm font-medium ${darkMode ? 'text-blue-400' : 'text-blue-600'} opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 touch-manipulation`} 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open(`https://example.com/feature/${feature.title.toLowerCase().replace(/\s+/g, '-')}`, '_blank');
-                    }}
+              {KEY_FEATURES.map((feature, index) => {
+                const colorClasses = {
+                  blue: {
+                    icon: isDark ? 'text-blue-400' : 'text-blue-600',
+                    iconBg: isDark ? 'bg-gray-800' : 'bg-gray-100',
+                    title: isDark ? 'text-blue-400' : 'text-blue-600',
+                    line: 'from-blue-500',
+                    glow: 'bg-gradient-to-r from-blue-500/0 to-blue-500/0 group-hover:from-blue-500/30 group-hover:to-blue-500/30'
+                  },
+                  purple: {
+                    icon: isDark ? 'text-purple-400' : 'text-purple-600',
+                    iconBg: isDark ? 'bg-gray-800' : 'bg-gray-100',
+                    title: isDark ? 'text-purple-400' : 'text-purple-600',
+                    line: 'from-purple-500',
+                    glow: 'bg-gradient-to-r from-purple-500/0 to-purple-500/0 group-hover:from-purple-500/30 group-hover:to-purple-500/30'
+                  },
+                  amber: {
+                    icon: isDark ? 'text-amber-400' : 'text-amber-600',
+                    iconBg: isDark ? 'bg-gray-800' : 'bg-gray-100',
+                    title: isDark ? 'text-amber-400' : 'text-amber-600',
+                    line: 'from-amber-500',
+                    glow: 'bg-gradient-to-r from-amber-500/0 to-amber-500/0 group-hover:from-amber-500/30 group-hover:to-amber-500/30'
+                  }
+                };
+                const currentColor = colorClasses[feature.color] || colorClasses.blue;
+                
+                return (
+                  <div
+                    key={index}
+                    className={`group relative overflow-hidden rounded-lg ${themeConfig.cardBg} border ${themeConfig.border} hover:${themeConfig.borderHover} p-4 sm:p-6 md:p-8 transition-all duration-500 ${themeConfig.glowShadow} backdrop-blur-sm transform hover:-translate-y-2 cursor-pointer`}
                   >
-                    <span>LEARN MORE</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {/* Animated background glow */}
+                    <div className={`absolute -inset-1 ${currentColor.glow} opacity-0 group-hover:opacity-100 blur-xl group-hover:animate-pulse transition-all duration-700 -z-10`}></div>
+                  
+                    {/* Mobile-optimized icon container */}
+                    <div className="relative mb-4 sm:mb-6 md:mb-8">
+                      <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mb-2 flex items-center justify-center ${currentColor.icon} ${currentColor.iconBg} rounded-lg shadow-[0_0_15px_rgba(59,130,246,0.3)] group-hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition-all group-hover:rotate-3`}>
+                        {feature.icon}
+                      </div>
+                      <div className={`absolute -bottom-2 sm:-bottom-3 left-0 h-0.5 w-8 sm:w-12 bg-gradient-to-r ${currentColor.line} to-transparent group-hover:w-16 sm:group-hover:w-24 transition-all duration-500`}></div>
+                    </div>
+                    
+                    {/* Mobile-optimized title */}
+                    <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 ${currentColor.title} transition-colors uppercase tracking-wide`}>
+                      {feature.title}
+                    </h3>
+                    
+                    {/* Mobile-friendly description */}
+                    <p className={`${isDark ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-700 group-hover:text-gray-900'} transition-colors text-sm sm:text-base leading-relaxed`}>
+                      {feature.description}
+                    </p>
+                    
+                    {/* Mobile-friendly "Learn more" link */}
+                    <div 
+                      className={`mt-4 sm:mt-6 flex items-center gap-2 text-sm font-medium ${isDark ? 'text-blue-400' : 'text-blue-600'} opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 touch-manipulation`} 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(`https://example.com/feature/${feature.title.toLowerCase().replace(/\s+/g, '-')}`, '_blank');
+                      }}
+                    >
+                      <span>LEARN MORE</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
@@ -599,10 +634,10 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
         <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 relative">
           <div className="max-w-7xl mx-auto text-center">
             <div className="mb-8 sm:mb-12">
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">
-                Trusted By <span className={darkMode ? 'text-blue-400' : 'text-blue-600'}>Industry Leaders</span>
+              <h2 className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 ${themeConfig.textPrimary}`}>
+                Trusted By <span className={themeConfig.accent}>Industry Leaders</span>
               </h2>
-              <p className={`max-w-3xl mx-auto ${colorMode.textMuted} text-sm sm:text-base px-4`}>
+              <p className={`max-w-3xl mx-auto ${themeConfig.textMuted} text-sm sm:text-base px-4`}>
                 Partnering with top gaming companies to deliver exceptional experiences
               </p>
             </div>
@@ -611,9 +646,9 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-8">
               {PARTNERS.map((partner, index) => (
                 <div key={index} 
-                  className={`px-3 sm:px-4 md:px-5 py-2 ${colorMode.border} border rounded ${colorMode.cardBg} text-xs sm:text-sm md:text-base transition-transform hover:scale-105`}
+                  className={`px-3 sm:px-4 md:px-5 py-2 ${themeConfig.border} border rounded ${themeConfig.cardBg} text-xs sm:text-sm md:text-base transition-transform hover:scale-105`}
                 >
-                  <span className="font-semibold">{partner.name}</span>
+                  <span className={`font-semibold ${themeConfig.textPrimary}`}>{partner.name}</span>
                 </div>
               ))}
             </div>
@@ -645,7 +680,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 </span>
                 <span className="block mt-1 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-300">Services & Solutions</span>
               </h2>
-              <p className={`max-w-3xl mx-auto text-sm sm:text-base md:text-lg ${darkMode ? 'text-blue-100/80' : 'text-gray-700'} px-4`}>
+              <p className={`max-w-3xl mx-auto text-sm sm:text-base md:text-lg ${isDark ? 'text-blue-100/80' : 'text-gray-700'} px-4`}>
                 Level up your gaming project with our comprehensive suite of development services
               </p>
             </div>
@@ -655,7 +690,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
               {[...SERVICES, ...ADDITIONAL_SERVICES].map((service, index) => (
                 <div
                   key={index}
-                  className={`group relative overflow-hidden rounded-lg ${darkMode ? `bg-gray-900/80 border-${service.color}-900/40` : `bg-white/90 border-${service.color}-200/40`} border p-4 sm:p-6 md:p-8 hover:border-${service.color}-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] backdrop-blur-sm transform hover:-translate-y-1 touch-manipulation`}
+                  className={`group relative overflow-hidden rounded-lg ${isDark ? `bg-gray-900/80 border-${service.color}-900/40` : `bg-white/90 border-${service.color}-200/40`} border p-4 sm:p-6 md:p-8 hover:border-${service.color}-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] backdrop-blur-sm transform hover:-translate-y-1 touch-manipulation`}
                 >
                   {/* Futuristic corner accents - mobile scaled */}
                   <div className={`absolute top-0 left-0 w-6 sm:w-8 md:w-10 h-0.5 sm:h-1 bg-${service.color}-500`}></div>
@@ -680,7 +715,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                   </div>
                   
                   {/* Mobile-optimized description */}
-                  <p className={`mb-4 sm:mb-6 ${darkMode ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-600 group-hover:text-gray-900'} transition-colors text-sm sm:text-base leading-relaxed`}>
+                  <p className={`mb-4 sm:mb-6 ${isDark ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-600 group-hover:text-gray-900'} transition-colors text-sm sm:text-base leading-relaxed`}>
                     {service.description}
                   </p>
                   
@@ -688,17 +723,17 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                   <div className="space-y-2 sm:space-y-3 mt-4 sm:mt-6 border-t border-gray-700/30 pt-3 sm:pt-4">
                     {service.features.map((feature, i) => (
                       <div key={i} className="flex items-start gap-2 sm:gap-3">
-                        <div className={`p-0.5 sm:p-1 rounded ${darkMode ? `bg-${service.color}-900/40` : `bg-${service.color}-100/40`} group-hover:bg-${service.color}-${darkMode ? '800' : '200'}/40 transition-colors mt-0.5 flex-shrink-0`}>
-                          <CheckCircle size={10} className={`sm:w-3 sm:h-3 text-${service.color}-${darkMode ? '400' : '600'}`} />
+                        <div className={`p-0.5 sm:p-1 rounded ${isDark ? `bg-${service.color}-900/40` : `bg-${service.color}-100/40`} group-hover:bg-${service.color}-${isDark ? '800' : '200'}/40 transition-colors mt-0.5 flex-shrink-0`}>
+                          <CheckCircle size={10} className={`sm:w-3 sm:h-3 text-${service.color}-${isDark ? '400' : '600'}`} />
                         </div>
-                        <span className={`text-xs sm:text-sm ${darkMode ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-600 group-hover:text-gray-900'} transition-colors leading-relaxed`}>{feature}</span>
+                        <span className={`text-xs sm:text-sm ${isDark ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-600 group-hover:text-gray-900'} transition-colors leading-relaxed`}>{feature}</span>
                       </div>
                     ))}
                   </div>
                   
                   {/* Mobile-optimized CTA button */}
                   <div className="mt-6 sm:mt-8 pt-2 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                    <button className={`w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 ${darkMode ? `bg-${service.color}-900/80 hover:bg-${service.color}-800/80` : `bg-${service.color}-600/80 hover:bg-${service.color}-700/80`} border border-${service.color}-500/40 rounded text-${service.color}-${darkMode ? '300' : '50'} text-xs sm:text-sm font-medium transition-all min-h-[44px] touch-manipulation`}>
+                    <button className={`w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 ${isDark ? `bg-${service.color}-900/80 hover:bg-${service.color}-800/80` : `bg-${service.color}-600/80 hover:bg-${service.color}-700/80`} border border-${service.color}-500/40 rounded text-${service.color}-${isDark ? '300' : '50'} text-xs sm:text-sm font-medium transition-all min-h-[44px] touch-manipulation`}>
                       <span>SELECT SERVICE</span>
                       <ArrowRight size={12} className="sm:w-3.5 sm:h-3.5" />
                     </button>
@@ -710,12 +745,12 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
         </section>
 
         {/* Mobile-First Portfolio Section - Gaming Showcase */}
-        <section ref={projectsRef} className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${darkMode ? '' : 'bg-blue-50/50'} transition-colors duration-300`}>
+        <section ref={projectsRef} className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-blue-50/50'} transition-colors duration-300`}>
           {/* Gaming background overlay */}
           <div className="absolute inset-0 opacity-10 z-0">
             {/* Hex grid pattern */}
             <div className="w-full h-full transition-opacity duration-300" style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 V15 H30 V0 H60 V15 H30 V30 H60 V45 H30 V60 H0 V45 H30 V30z' fill='%235b95ff' fill-opacity='${darkMode ? '0.2' : '0.3'}'/%3E%3C/svg%3E")`,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 V15 H30 V0 H60 V15 H30 V30 H60 V45 H30 V60 H0 V45 H30 V30z' fill='%235b95ff' fill-opacity='${isDark ? '0.2' : '0.3'}'/%3E%3C/svg%3E")`,
               backgroundSize: '30px 30px'
             }}></div>
           </div>
@@ -724,7 +759,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
           {Array.from({length: 4}).map((_, i) => (
             <div 
               key={`controller-${i}`}
-              className={`absolute opacity-10 ${darkMode ? 'text-blue-400' : 'text-blue-600'} transition-colors duration-300 z-0 hidden sm:block`}
+              className={`absolute opacity-10 ${isDark ? 'text-blue-400' : 'text-blue-600'} transition-colors duration-300 z-0 hidden sm:block`}
               style={{
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
@@ -762,7 +797,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
               {PROJECTS.map((project, idx) => (
                 <div 
                   key={idx}
-                  className={`group relative rounded-2xl overflow-hidden ${darkMode ? 'bg-gray-900/80 border-blue-900/40' : 'bg-white/90 border-blue-200/40'} border hover:border-blue-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] touch-manipulation`}
+                  className={`group relative rounded-2xl overflow-hidden ${isDark ? 'bg-gray-900/80 border-blue-900/40' : 'bg-white/90 border-blue-200/40'} border hover:border-blue-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] touch-manipulation`}
                 >
                   {/* Cyberpunk corner accents - mobile scaled */}
                   <div className={`absolute top-0 left-0 w-6 sm:w-8 md:w-10 h-0.5 sm:h-1 bg-${project.color}-500 z-10`}></div>
@@ -803,13 +838,13 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                       <h3 className={`text-lg sm:text-xl md:text-2xl font-bold text-${project.color}-400 group-hover:text-${project.color}-300 transition-colors`}>{project.title}</h3>
                       <div className={`h-0.5 w-12 sm:w-16 bg-gradient-to-r from-${project.color}-500 to-transparent mt-1 sm:mt-2 group-hover:w-20 sm:group-hover:w-32 transition-all duration-500`}></div>
                     </div>
-                    <p className={`text-xs sm:text-sm mb-1 sm:mb-2 ${darkMode ? 'text-blue-200' : 'text-blue-700'}`}>{project.category}</p>
-                    <p className={`text-xs sm:text-sm mb-3 sm:mb-4 ${darkMode ? 'text-blue-100/70' : 'text-gray-600'} leading-relaxed`}>{project.description}</p>
+                    <p className={`text-xs sm:text-sm mb-1 sm:mb-2 ${isDark ? 'text-blue-200' : 'text-blue-700'}`}>{project.category}</p>
+                    <p className={`text-xs sm:text-sm mb-3 sm:mb-4 ${isDark ? 'text-blue-100/70' : 'text-gray-600'} leading-relaxed`}>{project.description}</p>
                     
                     {/* Tech badges - mobile optimized */}
                     <div className="flex flex-wrap gap-1 sm:gap-2 mb-4 sm:mb-6">
                       {project.tech.map((tech, i) => (
-                        <span key={i} className={`text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full ${darkMode ? 'bg-gray-800' : 'bg-gray-100'} border border-${project.color}-${darkMode ? '900/40' : '200/40'} text-${project.color}-${darkMode ? '400' : '600'}`}>
+                        <span key={i} className={`text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full ${isDark ? 'bg-gray-800' : 'bg-gray-100'} border border-${project.color}-${isDark ? '900/40' : '200/40'} text-${project.color}-${isDark ? '400' : '600'}`}>
                           {tech}
                         </span>
                       ))}
@@ -817,12 +852,12 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                     
                     {/* Achievements tags - mobile optimized */}
                     <div className="mb-4 sm:mb-5">
-                      <div className={`text-xs uppercase ${darkMode ? 'text-gray-400' : 'text-gray-500'} mb-1`}>Achievements</div>
+                      <div className={`text-xs uppercase ${isDark ? 'text-gray-400' : 'text-gray-500'} mb-1`}>Achievements</div>
                       <div className="flex flex-wrap gap-1 sm:gap-2">
                         {project.achievements.map((achievement, i) => (
                           <div key={i} className="flex items-center gap-1">
-                            <Star className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-${project.color}-${darkMode ? '400' : '500'}`} />
-                            <span className={`text-xs ${darkMode ? 'text-blue-100/80' : 'text-gray-600'}`}>{achievement}</span>
+                            <Star className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-${project.color}-${isDark ? '400' : '500'}`} />
+                            <span className={`text-xs ${isDark ? 'text-blue-100/80' : 'text-gray-600'}`}>{achievement}</span>
                           </div>
                         ))}
                       </div>
@@ -841,17 +876,17 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
         </section>
 
         {/* Mobile-First Development Process - Gaming Quest Path */}
-        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${darkMode ? '' : 'bg-indigo-50/30'} transition-colors duration-300`}>
+        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-indigo-50/30'} transition-colors duration-300`}>
           {/* Tech background with lines */}
-          <div className={`absolute inset-0 opacity-${darkMode ? '5' : '10'} z-0 transition-opacity duration-300`}>
-            <div className={`absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-${darkMode ? 'blue-500' : 'blue-600'} to-transparent`}></div>
-            <div className={`absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-${darkMode ? 'blue-500' : 'blue-600'} to-transparent`}></div>
-            <div className={`absolute top-0 left-0 h-full w-px bg-gradient-to-b from-transparent via-${darkMode ? 'blue-500' : 'blue-600'} to-transparent`}></div>
-            <div className={`absolute top-0 right-0 h-full w-px bg-gradient-to-b from-transparent via-${darkMode ? 'blue-500' : 'blue-600'} to-transparent`}></div>
+          <div className={`absolute inset-0 opacity-${isDark ? '5' : '10'} z-0 transition-opacity duration-300`}>
+            <div className={`absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-${isDark ? 'blue-500' : 'blue-600'} to-transparent`}></div>
+            <div className={`absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-${isDark ? 'blue-500' : 'blue-600'} to-transparent`}></div>
+            <div className={`absolute top-0 left-0 h-full w-px bg-gradient-to-b from-transparent via-${isDark ? 'blue-500' : 'blue-600'} to-transparent`}></div>
+            <div className={`absolute top-0 right-0 h-full w-px bg-gradient-to-b from-transparent via-${isDark ? 'blue-500' : 'blue-600'} to-transparent`}></div>
           </div>
           
           {/* Interactive circuit-like pattern for light mode - reduced for mobile */}
-          {!darkMode && (
+          {!isDark && (
             <div className="absolute inset-0 opacity-5 z-0 overflow-hidden">
               {Array.from({length: 6}).map((_, i) => (
                 <div 
@@ -876,18 +911,18 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             <div className="text-center mb-8 sm:mb-12 md:mb-16">
               {/* Gaming badge */}
               <div 
-                className={`inline-flex items-center px-3 sm:px-4 py-1 rounded-lg ${darkMode ? 'bg-purple-600/20 border-purple-500/30' : 'bg-purple-500/10 border-purple-500/20'} border mb-3 sm:mb-4 hover:scale-105 transition-all duration-300 cursor-pointer`}
+                className={`inline-flex items-center px-3 sm:px-4 py-1 rounded-lg ${isDark ? 'bg-purple-600/20 border-purple-500/30' : 'bg-purple-500/10 border-purple-500/20'} border mb-3 sm:mb-4 hover:scale-105 transition-all duration-300 cursor-pointer`}
                 onClick={() => alert("Game Development Journey - Learn more about our process")}
               >
-                <Cpu className={`w-3 h-3 sm:w-4 sm:h-4 mr-2 ${darkMode ? 'text-purple-400' : 'text-purple-700'} transition-colors duration-300`} />
-                <p className={`text-xs sm:text-sm font-medium ${darkMode ? 'text-purple-300' : 'text-purple-700'} transition-colors duration-300`}>QUEST PATH</p>
+                <Cpu className={`w-3 h-3 sm:w-4 sm:h-4 mr-2 ${isDark ? 'text-purple-400' : 'text-purple-700'} transition-colors duration-300`} />
+                <p className={`text-xs sm:text-sm font-medium ${isDark ? 'text-purple-300' : 'text-purple-700'} transition-colors duration-300`}>QUEST PATH</p>
               </div>
               
-              <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 px-2`}>
+              <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 ${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300 px-2`}>
                 Game Development <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Journey</span>
               </h2>
               <div className="w-16 sm:w-20 h-1 bg-purple-500 mx-auto rounded-full mb-4 sm:mb-6"></div>
-              <p className={`max-w-3xl mx-auto text-sm sm:text-base md:text-lg ${darkMode ? 'text-purple-100/80' : 'text-purple-900/80'} transition-colors duration-300 px-4`}>
+              <p className={`max-w-3xl mx-auto text-sm sm:text-base md:text-lg ${isDark ? 'text-purple-100/80' : 'text-purple-900/80'} transition-colors duration-300 px-4`}>
                 Our proven methodology for game development excellence, from concept to launch
               </p>
             </div>
@@ -902,18 +937,18 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 {PROCESS_STEPS.map((step, idx) => (
                   <div 
                     key={idx}
-                    className={`group relative rounded-xl ${darkMode ? 'bg-gray-900/80 border-gray-800' : 'bg-white/90 border-gray-200'} border hover:border-purple-500/40 p-4 sm:p-6 md:p-8 transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] backdrop-blur-sm transform hover:-translate-y-1 cursor-pointer touch-manipulation`}
+                    className={`group relative rounded-xl ${isDark ? 'bg-gray-900/80 border-gray-800' : 'bg-white/90 border-gray-200'} border hover:border-purple-500/40 p-4 sm:p-6 md:p-8 transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] backdrop-blur-sm transform hover:-translate-y-1 cursor-pointer touch-manipulation`}
                     onClick={() => alert(`Step ${step.number}: ${step.title} - Click to learn more`)}
                   >
                     {/* Mobile-optimized step number */}
-                    <div className={`absolute -top-3 sm:-top-5 left-3 sm:left-5 w-8 h-8 sm:w-10 sm:h-10 rounded-full ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} border-4 group-hover:border-purple-500 flex items-center justify-center text-base sm:text-lg font-bold z-10 transition-colors`}>
+                    <div className={`absolute -top-3 sm:-top-5 left-3 sm:left-5 w-8 h-8 sm:w-10 sm:h-10 rounded-full ${isDark ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} border-4 group-hover:border-purple-500 flex items-center justify-center text-base sm:text-lg font-bold z-10 transition-colors`}>
                       <span className="bg-clip-text text-transparent bg-gradient-to-br from-purple-400 to-blue-400">{step.number}</span>
                     </div>
                     
                     {/* Mobile-optimized step icon */}
                     <div className="mb-4 sm:mb-6 relative">
-                      <div className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg flex items-center justify-center ${darkMode ? 'bg-purple-900/30 border-purple-800/30' : 'bg-purple-100/70 border-purple-200/50'} border group-hover:bg-purple-${darkMode ? '800/40' : '200/60'} group-hover:border-purple-500/40 transition-all`}>
-                        <div className={`${darkMode ? 'text-purple-400 group-hover:text-purple-300' : 'text-purple-600 group-hover:text-purple-700'} transition-colors`}>
+                      <div className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg flex items-center justify-center ${isDark ? 'bg-purple-900/30 border-purple-800/30' : 'bg-purple-100/70 border-purple-200/50'} border group-hover:bg-purple-${isDark ? '800/40' : '200/60'} group-hover:border-purple-500/40 transition-all`}>
+                        <div className={`${isDark ? 'text-purple-400 group-hover:text-purple-300' : 'text-purple-600 group-hover:text-purple-700'} transition-colors`}>
                           {step.icon}
                         </div>
                       </div>
@@ -921,11 +956,11 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                     </div>
                     
                     {/* Mobile-optimized step content */}
-                    <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 ${darkMode ? 'text-purple-300 group-hover:text-purple-200' : 'text-purple-700 group-hover:text-purple-800'} transition-colors`}>{step.title}</h3>
-                    <p className={`${darkMode ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-600 group-hover:text-gray-900'} transition-colors text-sm sm:text-base leading-relaxed`}>{step.description}</p>
+                    <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 ${isDark ? 'text-purple-300 group-hover:text-purple-200' : 'text-purple-700 group-hover:text-purple-800'} transition-colors`}>{step.title}</h3>
+                    <p className={`${isDark ? 'text-blue-100/70 group-hover:text-white/90' : 'text-gray-600 group-hover:text-gray-900'} transition-colors text-sm sm:text-base leading-relaxed`}>{step.description}</p>
                     
                     {/* Mobile-friendly progress indicator */}
-                    <div className={`w-full h-0.5 mt-4 sm:mt-6 ${darkMode ? 'bg-gray-800' : 'bg-gray-200'} overflow-hidden transition-colors duration-300`}>
+                    <div className={`w-full h-0.5 mt-4 sm:mt-6 ${isDark ? 'bg-gray-800' : 'bg-gray-200'} overflow-hidden transition-colors duration-300`}>
                       <div className={`h-full bg-gradient-to-r from-purple-500 to-blue-500 w-0 group-hover:w-full transition-all duration-700`}></div>
                     </div>
                   </div>
@@ -934,7 +969,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             </div>
           </div>
         </section>        {/* Testimonials section - Gaming Reviews */}
-        <section className={`py-24 px-4 md:px-8 relative overflow-hidden ${darkMode ? '' : 'bg-indigo-50/50'} transition-colors duration-300`}>
+        <section className={`py-24 px-4 md:px-8 relative overflow-hidden ${isDark ? '' : 'bg-indigo-50/50'} transition-colors duration-300`}>
           {/* Gaming-themed background pattern */}
           <div className="absolute inset-0 opacity-5 z-0">
             <div className="w-full h-full" style={{
@@ -944,14 +979,14 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
           </div>
           
           {/* Glowing orbs */}
-          <div className={`absolute top-1/4 left-1/4 w-64 h-64 ${darkMode ? 'bg-indigo-500/10' : 'bg-indigo-500/20'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`}></div>
-          <div className={`absolute bottom-1/3 right-1/4 w-64 h-64 ${darkMode ? 'bg-blue-500/10' : 'bg-blue-500/20'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`} style={{animationDelay: '1.5s'}}></div>
+          <div className={`absolute top-1/4 left-1/4 w-64 h-64 ${isDark ? 'bg-indigo-500/10' : 'bg-indigo-500/20'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`}></div>
+          <div className={`absolute bottom-1/3 right-1/4 w-64 h-64 ${isDark ? 'bg-blue-500/10' : 'bg-blue-500/20'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`} style={{animationDelay: '1.5s'}}></div>
           
           {/* Interactive floating stars */}
           {Array.from({length: 10}).map((_, i) => (
             <div 
               key={`star-${i}`}
-              className={`absolute ${darkMode ? 'text-amber-400/30' : 'text-amber-500/40'} transition-colors duration-300 z-0`}
+              className={`absolute ${isDark ? 'text-amber-400/30' : 'text-amber-500/40'} transition-colors duration-300 z-0`}
               style={{
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
@@ -966,22 +1001,22 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             <div className="text-center mb-14">
               {/* Gaming badge */}
               <div 
-                className={`inline-flex items-center px-4 py-1 rounded-lg ${darkMode ? 'bg-indigo-600/20 border-indigo-500/30' : 'bg-indigo-500/10 border-indigo-500/20'} border mb-4 cursor-pointer transform hover:scale-110 transition-all duration-300`}
+                className={`inline-flex items-center px-4 py-1 rounded-lg ${isDark ? 'bg-indigo-600/20 border-indigo-500/30' : 'bg-indigo-500/10 border-indigo-500/20'} border mb-4 cursor-pointer transform hover:scale-110 transition-all duration-300`}
                 onClick={() => alert('View all client reviews')}
               >
-                <Star className={`w-4 h-4 mr-2 text-amber-${darkMode ? '400' : '500'} transition-colors duration-300`} />
-                <p className={`text-sm font-medium ${darkMode ? 'text-indigo-300' : 'text-indigo-700'} transition-colors duration-300`}>PLAYER REVIEWS</p>
+                <Star className={`w-4 h-4 mr-2 text-amber-${isDark ? '400' : '500'} transition-colors duration-300`} />
+                <p className={`text-sm font-medium ${isDark ? 'text-indigo-300' : 'text-indigo-700'} transition-colors duration-300`}>PLAYER REVIEWS</p>
               </div>
               
               <h2 className="text-4xl md:text-5xl font-bold mb-4">
                 <span className="relative inline-block">
-                  <span className={`${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>Game Developer</span>
+                  <span className={`${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>Game Developer</span>
                   <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500"></span>
                 </span>
                 <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Reputation</span>
               </h2>
               
-              <p className={`max-w-3xl mx-auto text-lg ${darkMode ? 'text-indigo-100/80' : 'text-indigo-900/80'} mt-4 transition-colors duration-300`}>
+              <p className={`max-w-3xl mx-auto text-lg ${isDark ? 'text-indigo-100/80' : 'text-indigo-900/80'} mt-4 transition-colors duration-300`}>
                 What studios and developers say about our game development expertise
               </p>
             </div>
@@ -990,60 +1025,60 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
               {TESTIMONIALS.map((testimonial, index) => (
                 <div
                   key={index}
-                  className={`group relative overflow-hidden rounded-lg ${darkMode ? 'bg-gray-900/80 border-indigo-900/40' : 'bg-white/90 border-indigo-200/60'} border p-8 hover:border-indigo-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] backdrop-blur-sm transform hover:-translate-y-1 cursor-pointer`}
+                  className={`group relative overflow-hidden rounded-lg ${isDark ? 'bg-gray-900/80 border-indigo-900/40' : 'bg-white/90 border-indigo-200/60'} border p-8 hover:border-indigo-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] backdrop-blur-sm transform hover:-translate-y-1 cursor-pointer`}
                   onClick={() => alert(`${testimonial.name} from ${testimonial.company} - View full review`)}
                 >
                   {/* Interactive ripple effect on click */}
                   <span className="absolute inset-0 transform scale-0 group-hover:scale-100 transition-transform duration-500 origin-center">
-                    <span className={`absolute inset-0 ${darkMode ? 'bg-indigo-600/5' : 'bg-indigo-500/5'} rounded-lg transition-colors duration-300`}></span>
+                    <span className={`absolute inset-0 ${isDark ? 'bg-indigo-600/5' : 'bg-indigo-500/5'} rounded-lg transition-colors duration-300`}></span>
                   </span>
                   
                   {/* Tech corners */}
-                  <div className={`absolute top-0 left-0 w-8 h-1 bg-indigo-${darkMode ? '500' : '400'} transition-colors duration-300`}></div>
-                  <div className={`absolute top-0 left-0 w-1 h-8 bg-indigo-${darkMode ? '500' : '400'} transition-colors duration-300`}></div>
-                  <div className={`absolute bottom-0 right-0 w-8 h-1 bg-indigo-${darkMode ? '500/50' : '300'} transition-colors duration-300`}></div>
-                  <div className={`absolute bottom-0 right-0 w-1 h-8 bg-indigo-${darkMode ? '500/50' : '300'} transition-colors duration-300`}></div>
+                  <div className={`absolute top-0 left-0 w-8 h-1 bg-indigo-${isDark ? '500' : '400'} transition-colors duration-300`}></div>
+                  <div className={`absolute top-0 left-0 w-1 h-8 bg-indigo-${isDark ? '500' : '400'} transition-colors duration-300`}></div>
+                  <div className={`absolute bottom-0 right-0 w-8 h-1 bg-indigo-${isDark ? '500/50' : '300'} transition-colors duration-300`}></div>
+                  <div className={`absolute bottom-0 right-0 w-1 h-8 bg-indigo-${isDark ? '500/50' : '300'} transition-colors duration-300`}></div>
                   
                   {/* Quote mark */}
-                  <div className={`absolute top-6 right-6 ${darkMode ? 'text-indigo-800' : 'text-indigo-200'} opacity-30 font-serif text-6xl leading-none transition-colors duration-300`}>"</div>
+                  <div className={`absolute top-6 right-6 ${isDark ? 'text-indigo-800' : 'text-indigo-200'} opacity-30 font-serif text-6xl leading-none transition-colors duration-300`}>"</div>
                   
                   {/* Testimonial content with hover effect */}
-                  <p className={`mb-6 relative ${darkMode ? 'text-blue-100/80' : 'text-gray-700'} group-hover:${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>
+                  <p className={`mb-6 relative ${isDark ? 'text-blue-100/80' : 'text-gray-700'} group-hover:${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>
                     {testimonial.text}
                   </p>
                   
                   {/* Divider */}
-                  <div className={`h-px w-full bg-gradient-to-r from-indigo-${darkMode ? '500/50' : '400/70'} via-transparent to-transparent mb-6 transition-colors duration-300 group-hover:w-[105%] transition-all duration-500`}></div>
+                  <div className={`h-px w-full bg-gradient-to-r from-indigo-${isDark ? '500/50' : '400/70'} via-transparent to-transparent mb-6 transition-colors duration-300 group-hover:w-[105%] transition-all duration-500`}></div>
                   
                   {/* Client info */}
                   <div className="flex justify-between items-end">
                     <div>
-                      <h4 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 group-hover:text-indigo-${darkMode ? '300' : '700'}`}>
+                      <h4 className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300 group-hover:text-indigo-${isDark ? '300' : '700'}`}>
                         {testimonial.name}
                       </h4>
-                      <p className={`text-sm ${darkMode ? 'text-indigo-400' : 'text-indigo-600'} transition-colors duration-300`}>
+                      <p className={`text-sm ${isDark ? 'text-indigo-400' : 'text-indigo-600'} transition-colors duration-300`}>
                         {testimonial.company}
                       </p>
                     </div>
                     
                     {/* Rating with gaming style */}
-                    <div className={`flex items-center gap-1 p-1 rounded ${darkMode ? 'bg-indigo-900/30 border-indigo-800/50' : 'bg-indigo-100/70 border-indigo-200/50'} border transition-colors duration-300 group-hover:scale-110 transition-transform ease-in-out`}>
+                    <div className={`flex items-center gap-1 p-1 rounded ${isDark ? 'bg-indigo-900/30 border-indigo-800/50' : 'bg-indigo-100/70 border-indigo-200/50'} border transition-colors duration-300 group-hover:scale-110 transition-transform ease-in-out`}>
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} size={14} className={`text-amber-${darkMode ? '400' : '500'} transition-colors duration-300`} fill={darkMode ? "#fbbf24" : "#f59e0b"} />
+                        <Star key={i} size={14} className={`text-amber-${isDark ? '400' : '500'} transition-colors duration-300`} fill={isDark ? "#fbbf24" : "#f59e0b"} />
                       ))}
                     </div>
                   </div>
                   
                   {/* Hover glow effect */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${darkMode ? 'from-indigo-600/5 to-blue-600/5' : 'from-indigo-500/5 to-blue-500/5'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-indigo-600/5 to-blue-600/5' : 'from-indigo-500/5 to-blue-500/5'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
                 </div>
               ))}
             </div>
           </div>
         </section>        {/* Gaming-themed CTA Section */}
-        <section className={`py-32 px-4 md:px-8 relative overflow-hidden ${darkMode ? '' : 'bg-gradient-to-b from-blue-50 to-indigo-100/70'} transition-all duration-500`}>
+        <section className={`py-32 px-4 md:px-8 relative overflow-hidden ${isDark ? '' : 'bg-gradient-to-b from-blue-50 to-indigo-100/70'} transition-all duration-500`}>
           {/* Animated background */}
-          <div className={`absolute inset-0 bg-gradient-to-b ${darkMode ? 'from-blue-900/10 to-purple-900/20' : 'from-blue-400/5 to-purple-400/10'} z-0 transition-colors duration-300`}></div>
+          <div className={`absolute inset-0 bg-gradient-to-b ${isDark ? 'from-blue-900/10 to-purple-900/20' : 'from-blue-400/5 to-purple-400/10'} z-0 transition-colors duration-300`}></div>
           
           {/* Cyberpunk grid pattern */}
           <div className="absolute inset-0 opacity-10" style={{
@@ -1057,7 +1092,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             return (
               <div 
                 key={i} 
-                className={`absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${darkMode ? 'bg-blue-400' : 'bg-blue-500'} opacity-70 animate-pulse cursor-pointer transition-transform duration-300 hover:scale-[3] hover:opacity-100 hidden sm:block`}
+                className={`absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isDark ? 'bg-blue-400' : 'bg-blue-500'} opacity-70 animate-pulse cursor-pointer transition-transform duration-300 hover:scale-[3] hover:opacity-100 hidden sm:block`}
                 style={{
                   top: `${top}%`,
                   left: `${left}%`,
@@ -1076,46 +1111,46 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
           })}
 
           <div className="max-w-4xl mx-auto relative z-10">
-            <div className={`${darkMode ? 'bg-gray-900/80' : 'bg-white/90'} backdrop-blur-md rounded-xl border ${darkMode ? 'border-blue-500/20' : 'border-blue-400/30'} p-6 sm:p-8 md:p-10 shadow-[0_0_100px_rgba(59,130,246,0.3)] transition-colors duration-300 transform hover:scale-[1.01] transition-transform duration-700`}>
+            <div className={`${isDark ? 'bg-gray-900/80' : 'bg-white/90'} backdrop-blur-md rounded-xl border ${isDark ? 'border-blue-500/20' : 'border-blue-400/30'} p-6 sm:p-8 md:p-10 shadow-[0_0_100px_rgba(59,130,246,0.3)] transition-colors duration-300 transform hover:scale-[1.01] transition-transform duration-700`}>
               {/* Mobile-scaled techno corners */}
               <div className="absolute top-0 left-0 w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 group-hover:w-16 sm:group-hover:w-20 md:group-hover:w-24 group-hover:h-16 sm:group-hover:h-20 md:group-hover:h-24 transition-all duration-300">
-                <div className={`absolute top-0 left-0 w-full h-0.5 sm:h-1 ${darkMode ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
-                <div className={`absolute top-0 left-0 w-0.5 sm:w-1 h-full ${darkMode ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
+                <div className={`absolute top-0 left-0 w-full h-0.5 sm:h-1 ${isDark ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
+                <div className={`absolute top-0 left-0 w-0.5 sm:w-1 h-full ${isDark ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
               </div>
               <div className="absolute bottom-0 right-0 w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 group-hover:w-16 sm:group-hover:w-20 md:group-hover:w-24 group-hover:h-16 sm:group-hover:h-20 md:group-hover:h-24 transition-all duration-300">
-                <div className={`absolute bottom-0 right-0 w-full h-0.5 sm:h-1 ${darkMode ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
-                <div className={`absolute bottom-0 right-0 w-0.5 sm:w-1 h-full ${darkMode ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
+                <div className={`absolute bottom-0 right-0 w-full h-0.5 sm:h-1 ${isDark ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
+                <div className={`absolute bottom-0 right-0 w-0.5 sm:w-1 h-full ${isDark ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
               </div>
               
               {/* Mobile-friendly gaming achievement badge */}
               <div className="flex justify-center mb-4 sm:mb-6">
                 <div 
-                  className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 ${darkMode ? 'bg-blue-600/20 border-blue-500/50' : 'bg-blue-500/10 border-blue-400/50'} border rounded-lg flex items-center gap-2 hover:scale-110 transition-transform duration-300 cursor-pointer`}
+                  className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 ${isDark ? 'bg-blue-600/20 border-blue-500/50' : 'bg-blue-500/10 border-blue-400/50'} border rounded-lg flex items-center gap-2 hover:scale-110 transition-transform duration-300 cursor-pointer`}
                   onClick={() => alert('Achievement unlocked: Ready to build your game!')}
                 >
-                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${darkMode ? 'bg-blue-400' : 'bg-blue-500'} animate-pulse transition-colors duration-300`}></div>
-                  <span className={`text-xs sm:text-sm font-semibold ${darkMode ? 'text-blue-300' : 'text-blue-600'} uppercase tracking-wider transition-colors duration-300`}>Ready Player One</span>
+                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${isDark ? 'bg-blue-400' : 'bg-blue-500'} animate-pulse transition-colors duration-300`}></div>
+                  <span className={`text-xs sm:text-sm font-semibold ${isDark ? 'text-blue-300' : 'text-blue-600'} uppercase tracking-wider transition-colors duration-300`}>Ready Player One</span>
                 </div>
               </div>
               
               {/* Mobile-responsive main heading */}
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-center tracking-tight">
                 <span className="relative inline-block">
-                  <span className={`${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>START YOUR</span> 
+                  <span className={`${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>START YOUR</span> 
                   <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500"></span>
                 </span>
                 <span className="block mt-2 sm:mt-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-300">GAME DEVELOPMENT QUEST</span>
               </h2>
               
               {/* Mobile-friendly description */}
-              <p className={`text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 text-center max-w-3xl mx-auto ${darkMode ? 'text-blue-100/90' : 'text-gray-700'} transition-colors duration-300 px-2`}>
+              <p className={`text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 text-center max-w-3xl mx-auto ${isDark ? 'text-blue-100/90' : 'text-gray-700'} transition-colors duration-300 px-2`}>
                 Join forces with our elite game development team to transform your vision into an epic gaming experience that players will never forget
               </p>
               
               {/* Mobile-first responsive button layout */}
               <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 items-center">
                 <button 
-                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 md:py-5 bg-gradient-to-r ${darkMode ? 'from-blue-600 to-indigo-600' : 'from-blue-500 to-indigo-500'} rounded-md font-bold text-base sm:text-lg text-white flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center overflow-hidden shadow-[0_0_20px_rgba(37,99,235,0.5)] hover:shadow-[0_0_30px_rgba(37,99,235,0.7)] transition-all transform hover:scale-105 active:scale-95 min-h-[48px] touch-manipulation`}
+                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 md:py-5 bg-gradient-to-r ${isDark ? 'from-blue-600 to-indigo-600' : 'from-blue-500 to-indigo-500'} rounded-md font-bold text-base sm:text-lg text-white flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center overflow-hidden shadow-[0_0_20px_rgba(37,99,235,0.5)] hover:shadow-[0_0_30px_rgba(37,99,235,0.7)] transition-all transform hover:scale-105 active:scale-95 min-h-[48px] touch-manipulation`}
                   onClick={() => alert('Starting your game development journey!')}
                 >
                   <Gamepad className="w-4 h-4 sm:w-5 sm:h-5 relative z-10 group-hover:animate-bounce" />
@@ -1127,7 +1162,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 </button>
                 
                 <button 
-                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 md:py-5 backdrop-blur-sm bg-transparent border-2 ${darkMode ? 'border-blue-500/30 hover:border-blue-400' : 'border-blue-400/40 hover:border-blue-500'} rounded-md font-bold text-base sm:text-lg flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 active:translate-y-0 min-h-[48px] touch-manipulation`}
+                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 md:py-5 backdrop-blur-sm bg-transparent border-2 ${isDark ? 'border-blue-500/30 hover:border-blue-400' : 'border-blue-400/40 hover:border-blue-500'} rounded-md font-bold text-base sm:text-lg flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 active:translate-y-0 min-h-[48px] touch-manipulation`}
                   onClick={() => window.open('https://example.com/gameplay-demo', '_blank')}
                 >
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300">VIEW GAMEPLAY</span>
@@ -1138,11 +1173,11 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
               {/* Mobile-optimized interactive progress bar */}
               <div className="mt-8 sm:mt-10 md:mt-12 max-w-xs sm:max-w-md mx-auto">
                 <div className="flex justify-between text-xs mb-2">
-                  <span className={`${darkMode ? 'text-blue-400' : 'text-blue-600'} transition-colors duration-300`}>PROJECT PROGRESS</span>
-                  <span className={`${darkMode ? 'text-blue-300' : 'text-blue-500'} transition-colors duration-300`}>READY TO LAUNCH</span>
+                  <span className={`${isDark ? 'text-blue-400' : 'text-blue-600'} transition-colors duration-300`}>PROJECT PROGRESS</span>
+                  <span className={`${isDark ? 'text-blue-300' : 'text-blue-500'} transition-colors duration-300`}>READY TO LAUNCH</span>
                 </div>
                 <div 
-                  className={`relative h-1.5 w-full ${darkMode ? 'bg-gray-800' : 'bg-gray-200'} rounded-full overflow-hidden transition-colors duration-300 cursor-pointer`}
+                  className={`relative h-1.5 w-full ${isDark ? 'bg-gray-800' : 'bg-gray-200'} rounded-full overflow-hidden transition-colors duration-300 cursor-pointer`}
                   id="progressBar"
                   onClick={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
@@ -1158,7 +1193,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                   ></div>
                   <span 
                     id="progressValue" 
-                    className={`absolute bottom-3 sm:bottom-4 left-1/2 transform -translate-x-1/2 text-xs font-bold ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}
+                    className={`absolute bottom-3 sm:bottom-4 left-1/2 transform -translate-x-1/2 text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}
                   >
                     100%
                   </span>
@@ -1169,7 +1204,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
         </section>
 
         {/* Mobile-First Testimonials section - Gaming Reviews */}
-        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden ${darkMode ? '' : 'bg-indigo-50/50'} transition-colors duration-300`}>
+        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden ${isDark ? '' : 'bg-indigo-50/50'} transition-colors duration-300`}>
           {/* Gaming-themed background pattern */}
           <div className="absolute inset-0 opacity-5 z-0">
             <div className="w-full h-full" style={{
@@ -1179,14 +1214,14 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
           </div>
           
           {/* Mobile-optimized glowing orbs */}
-          <div className={`absolute top-1/4 left-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 ${darkMode ? 'bg-indigo-500/10' : 'bg-indigo-500/20'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`}></div>
-          <div className={`absolute bottom-1/3 right-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 ${darkMode ? 'bg-blue-500/10' : 'bg-blue-500/20'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`} style={{animationDelay: '1.5s'}}></div>
+          <div className={`absolute top-1/4 left-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 ${isDark ? 'bg-indigo-500/10' : 'bg-indigo-500/20'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`}></div>
+          <div className={`absolute bottom-1/3 right-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 ${isDark ? 'bg-blue-500/10' : 'bg-blue-500/20'} rounded-full filter blur-[80px] animate-pulse transition-colors duration-300`} style={{animationDelay: '1.5s'}}></div>
           
           {/* Reduced floating stars for mobile */}
           {Array.from({length: 6}).map((_, i) => (
             <div 
               key={`star-${i}`}
-              className={`absolute ${darkMode ? 'text-amber-400/30' : 'text-amber-500/40'} transition-colors duration-300 z-0 hidden sm:block`}
+              className={`absolute ${isDark ? 'text-amber-400/30' : 'text-amber-500/40'} transition-colors duration-300 z-0 hidden sm:block`}
               style={{
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
@@ -1204,22 +1239,22 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             <div className="text-center mb-8 sm:mb-12 md:mb-14">
               {/* Gaming badge */}
               <div 
-                className={`inline-flex items-center px-3 sm:px-4 py-1 rounded-lg ${darkMode ? 'bg-indigo-600/20 border-indigo-500/30' : 'bg-indigo-500/10 border-indigo-500/20'} border mb-3 sm:mb-4 cursor-pointer transform hover:scale-110 transition-all duration-300`}
+                className={`inline-flex items-center px-3 sm:px-4 py-1 rounded-lg ${isDark ? 'bg-indigo-600/20 border-indigo-500/30' : 'bg-indigo-500/10 border-indigo-500/20'} border mb-3 sm:mb-4 cursor-pointer transform hover:scale-110 transition-all duration-300`}
                 onClick={() => alert('View all client reviews')}
               >
-                <Star className={`w-3 h-3 sm:w-4 sm:h-4 mr-2 text-amber-${darkMode ? '400' : '500'} transition-colors duration-300`} />
-                <p className={`text-xs sm:text-sm font-medium ${darkMode ? 'text-indigo-300' : 'text-indigo-700'} transition-colors duration-300`}>PLAYER REVIEWS</p>
+                <Star className={`w-3 h-3 sm:w-4 sm:h-4 mr-2 text-amber-${isDark ? '400' : '500'} transition-colors duration-300`} />
+                <p className={`text-xs sm:text-sm font-medium ${isDark ? 'text-indigo-300' : 'text-indigo-700'} transition-colors duration-300`}>PLAYER REVIEWS</p>
               </div>
               
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
                 <span className="relative inline-block">
-                  <span className={`${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>Game Developer</span>
+                  <span className={`${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>Game Developer</span>
                   <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-0.5 sm:h-1 bg-gradient-to-r from-indigo-500 via-blue-500 to-indigo-500"></span>
                 </span>
                 <span className="block mt-1 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400">Reputation</span>
               </h2>
               
-              <p className={`max-w-3xl mx-auto text-sm sm:text-base md:text-lg ${darkMode ? 'text-indigo-100/80' : 'text-indigo-900/80'} mt-3 sm:mt-4 transition-colors duration-300 px-4`}>
+              <p className={`max-w-3xl mx-auto text-sm sm:text-base md:text-lg ${isDark ? 'text-indigo-100/80' : 'text-indigo-900/80'} mt-3 sm:mt-4 transition-colors duration-300 px-4`}>
                 What studios and developers say about our game development expertise
               </p>
             </div>
@@ -1229,52 +1264,52 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
               {TESTIMONIALS.map((testimonial, index) => (
                 <div
                   key={index}
-                  className={`group relative overflow-hidden rounded-lg ${darkMode ? 'bg-gray-900/80 border-indigo-900/40' : 'bg-white/90 border-indigo-200/60'} border p-4 sm:p-6 md:p-8 hover:border-indigo-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] backdrop-blur-sm transform hover:-translate-y-1 cursor-pointer touch-manipulation`}
+                  className={`group relative overflow-hidden rounded-lg ${isDark ? 'bg-gray-900/80 border-indigo-900/40' : 'bg-white/90 border-indigo-200/60'} border p-4 sm:p-6 md:p-8 hover:border-indigo-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] backdrop-blur-sm transform hover:-translate-y-1 cursor-pointer touch-manipulation`}
                   onClick={() => alert(`${testimonial.name} from ${testimonial.company} - View full review`)}
                 >
                   {/* Interactive ripple effect on click */}
                   <span className="absolute inset-0 transform scale-0 group-hover:scale-100 transition-transform duration-500 origin-center">
-                    <span className={`absolute inset-0 ${darkMode ? 'bg-indigo-600/5' : 'bg-indigo-500/5'} rounded-lg transition-colors duration-300`}></span>
+                    <span className={`absolute inset-0 ${isDark ? 'bg-indigo-600/5' : 'bg-indigo-500/5'} rounded-lg transition-colors duration-300`}></span>
                   </span>
                   
                   {/* Mobile-scaled tech corners */}
-                  <div className={`absolute top-0 left-0 w-6 sm:w-8 h-0.5 sm:h-1 bg-indigo-${darkMode ? '500' : '400'} transition-colors duration-300`}></div>
-                  <div className={`absolute top-0 left-0 w-0.5 sm:w-1 h-6 sm:h-8 bg-indigo-${darkMode ? '500' : '400'} transition-colors duration-300`}></div>
-                  <div className={`absolute bottom-0 right-0 w-6 sm:w-8 h-0.5 sm:h-1 bg-indigo-${darkMode ? '500/50' : '300'} transition-colors duration-300`}></div>
-                  <div className={`absolute bottom-0 right-0 w-0.5 sm:w-1 h-6 sm:h-8 bg-indigo-${darkMode ? '500/50' : '300'} transition-colors duration-300`}></div>
+                  <div className={`absolute top-0 left-0 w-6 sm:w-8 h-0.5 sm:h-1 bg-indigo-${isDark ? '500' : '400'} transition-colors duration-300`}></div>
+                  <div className={`absolute top-0 left-0 w-0.5 sm:w-1 h-6 sm:h-8 bg-indigo-${isDark ? '500' : '400'} transition-colors duration-300`}></div>
+                  <div className={`absolute bottom-0 right-0 w-6 sm:w-8 h-0.5 sm:h-1 bg-indigo-${isDark ? '500/50' : '300'} transition-colors duration-300`}></div>
+                  <div className={`absolute bottom-0 right-0 w-0.5 sm:w-1 h-6 sm:h-8 bg-indigo-${isDark ? '500/50' : '300'} transition-colors duration-300`}></div>
                   
                   {/* Mobile-optimized quote mark */}
-                  <div className={`absolute top-3 sm:top-6 right-3 sm:right-6 ${darkMode ? 'text-indigo-800' : 'text-indigo-200'} opacity-30 font-serif text-3xl sm:text-4xl md:text-6xl leading-none transition-colors duration-300`}>"</div>
+                  <div className={`absolute top-3 sm:top-6 right-3 sm:right-6 ${isDark ? 'text-indigo-800' : 'text-indigo-200'} opacity-30 font-serif text-3xl sm:text-4xl md:text-6xl leading-none transition-colors duration-300`}>"</div>
                   
                   {/* Mobile-friendly testimonial content */}
-                  <p className={`mb-4 sm:mb-6 relative ${darkMode ? 'text-blue-100/80' : 'text-gray-700'} group-hover:${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 text-sm sm:text-base leading-relaxed pr-6`}>
+                  <p className={`mb-4 sm:mb-6 relative ${isDark ? 'text-blue-100/80' : 'text-gray-700'} group-hover:${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300 text-sm sm:text-base leading-relaxed pr-6`}>
                     {testimonial.text}
                   </p>
                   
                   {/* Mobile-optimized divider */}
-                  <div className={`h-px w-full bg-gradient-to-r from-indigo-${darkMode ? '500/50' : '400/70'} via-transparent to-transparent mb-4 sm:mb-6 transition-colors duration-300 group-hover:w-[105%] transition-all duration-500`}></div>
+                  <div className={`h-px w-full bg-gradient-to-r from-indigo-${isDark ? '500/50' : '400/70'} via-transparent to-transparent mb-4 sm:mb-6 transition-colors duration-300 group-hover:w-[105%] transition-all duration-500`}></div>
                   
                   {/* Mobile-responsive client info */}
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 sm:gap-0">
                     <div>
-                      <h4 className={`font-semibold text-sm sm:text-base ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300 group-hover:text-indigo-${darkMode ? '300' : '700'}`}>
+                      <h4 className={`font-semibold text-sm sm:text-base ${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300 group-hover:text-indigo-${isDark ? '300' : '700'}`}>
                         {testimonial.name}
                       </h4>
-                      <p className={`text-xs sm:text-sm ${darkMode ? 'text-indigo-400' : 'text-indigo-600'} transition-colors duration-300`}>
+                      <p className={`text-xs sm:text-sm ${isDark ? 'text-indigo-400' : 'text-indigo-600'} transition-colors duration-300`}>
                         {testimonial.company}
                       </p>
                     </div>
                     
                     {/* Mobile-friendly rating */}
-                    <div className={`flex items-center gap-1 p-1 rounded ${darkMode ? 'bg-indigo-900/30 border-indigo-800/50' : 'bg-indigo-100/70 border-indigo-200/50'} border transition-colors duration-300 group-hover:scale-110 transition-transform ease-in-out self-start sm:self-auto`}>
+                    <div className={`flex items-center gap-1 p-1 rounded ${isDark ? 'bg-indigo-900/30 border-indigo-800/50' : 'bg-indigo-100/70 border-indigo-200/50'} border transition-colors duration-300 group-hover:scale-110 transition-transform ease-in-out self-start sm:self-auto`}>
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} size={12} className={`sm:w-3.5 sm:h-3.5 text-amber-${darkMode ? '400' : '500'} transition-colors duration-300`} fill={darkMode ? "#fbbf24" : "#f59e0b"} />
+                        <Star key={i} size={12} className={`sm:w-3.5 sm:h-3.5 text-amber-${isDark ? '400' : '500'} transition-colors duration-300`} fill={isDark ? "#fbbf24" : "#f59e0b"} />
                       ))}
                     </div>
                   </div>
                   
                   {/* Hover glow effect */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${darkMode ? 'from-indigo-600/5 to-blue-600/5' : 'from-indigo-500/5 to-blue-500/5'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-indigo-600/5 to-blue-600/5' : 'from-indigo-500/5 to-blue-500/5'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
                 </div>
               ))}
             </div>
@@ -1282,9 +1317,9 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
         </section>
 
         {/* Mobile-First Gaming-themed CTA Section */}
-        <section className={`py-16 sm:py-20 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden ${darkMode ? '' : 'bg-gradient-to-b from-blue-50 to-indigo-100/70'} transition-all duration-500`}>
+        <section className={`py-16 sm:py-20 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden ${isDark ? '' : 'bg-gradient-to-b from-blue-50 to-indigo-100/70'} transition-all duration-500`}>
           {/* Animated background */}
-          <div className={`absolute inset-0 bg-gradient-to-b ${darkMode ? 'from-blue-900/10 to-purple-900/20' : 'from-blue-400/5 to-purple-400/10'} z-0 transition-colors duration-300`}></div>
+          <div className={`absolute inset-0 bg-gradient-to-b ${isDark ? 'from-blue-900/10 to-purple-900/20' : 'from-blue-400/5 to-purple-400/10'} z-0 transition-colors duration-300`}></div>
           
           {/* Mobile-optimized cyberpunk grid pattern */}
           <div className="absolute inset-0 opacity-10" style={{
@@ -1298,7 +1333,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
             return (
               <div 
                 key={i} 
-                className={`absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${darkMode ? 'bg-blue-400' : 'bg-blue-500'} opacity-70 animate-pulse cursor-pointer transition-transform duration-300 hover:scale-[3] hover:opacity-100 hidden sm:block`}
+                className={`absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${isDark ? 'bg-blue-400' : 'bg-blue-500'} opacity-70 animate-pulse cursor-pointer transition-transform duration-300 hover:scale-[3] hover:opacity-100 hidden sm:block`}
                 style={{
                   top: `${top}%`,
                   left: `${left}%`,
@@ -1317,46 +1352,46 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
           })}
 
           <div className="max-w-4xl mx-auto relative z-10">
-            <div className={`${darkMode ? 'bg-gray-900/80' : 'bg-white/90'} backdrop-blur-md rounded-xl border ${darkMode ? 'border-blue-500/20' : 'border-blue-400/30'} p-6 sm:p-8 md:p-10 shadow-[0_0_100px_rgba(59,130,246,0.3)] transition-colors duration-300 transform hover:scale-[1.01] transition-transform duration-700`}>
+            <div className={`${isDark ? 'bg-gray-900/80' : 'bg-white/90'} backdrop-blur-md rounded-xl border ${isDark ? 'border-blue-500/20' : 'border-blue-400/30'} p-6 sm:p-8 md:p-10 shadow-[0_0_100px_rgba(59,130,246,0.3)] transition-colors duration-300 transform hover:scale-[1.01] transition-transform duration-700`}>
               {/* Mobile-scaled techno corners */}
               <div className="absolute top-0 left-0 w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 group-hover:w-16 sm:group-hover:w-20 md:group-hover:w-24 group-hover:h-16 sm:group-hover:h-20 md:group-hover:h-24 transition-all duration-300">
-                <div className={`absolute top-0 left-0 w-full h-0.5 sm:h-1 ${darkMode ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
-                <div className={`absolute top-0 left-0 w-0.5 sm:w-1 h-full ${darkMode ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
+                <div className={`absolute top-0 left-0 w-full h-0.5 sm:h-1 ${isDark ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
+                <div className={`absolute top-0 left-0 w-0.5 sm:w-1 h-full ${isDark ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
               </div>
               <div className="absolute bottom-0 right-0 w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 group-hover:w-16 sm:group-hover:w-20 md:group-hover:w-24 group-hover:h-16 sm:group-hover:h-20 md:group-hover:h-24 transition-all duration-300">
-                <div className={`absolute bottom-0 right-0 w-full h-0.5 sm:h-1 ${darkMode ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
-                <div className={`absolute bottom-0 right-0 w-0.5 sm:w-1 h-full ${darkMode ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
+                <div className={`absolute bottom-0 right-0 w-full h-0.5 sm:h-1 ${isDark ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
+                <div className={`absolute bottom-0 right-0 w-0.5 sm:w-1 h-full ${isDark ? 'bg-blue-500' : 'bg-blue-400'} transition-colors duration-300`}></div>
               </div>
               
               {/* Mobile-friendly gaming achievement badge */}
               <div className="flex justify-center mb-4 sm:mb-6">
                 <div 
-                  className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 ${darkMode ? 'bg-blue-600/20 border-blue-500/50' : 'bg-blue-500/10 border-blue-400/50'} border rounded-lg flex items-center gap-2 hover:scale-110 transition-transform duration-300 cursor-pointer`}
+                  className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 ${isDark ? 'bg-blue-600/20 border-blue-500/50' : 'bg-blue-500/10 border-blue-400/50'} border rounded-lg flex items-center gap-2 hover:scale-110 transition-transform duration-300 cursor-pointer`}
                   onClick={() => alert('Achievement unlocked: Ready to build your game!')}
                 >
-                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${darkMode ? 'bg-blue-400' : 'bg-blue-500'} animate-pulse transition-colors duration-300`}></div>
-                  <span className={`text-xs sm:text-sm font-semibold ${darkMode ? 'text-blue-300' : 'text-blue-600'} uppercase tracking-wider transition-colors duration-300`}>Ready Player One</span>
+                  <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${isDark ? 'bg-blue-400' : 'bg-blue-500'} animate-pulse transition-colors duration-300`}></div>
+                  <span className={`text-xs sm:text-sm font-semibold ${isDark ? 'text-blue-300' : 'text-blue-600'} uppercase tracking-wider transition-colors duration-300`}>Ready Player One</span>
                 </div>
               </div>
               
               {/* Mobile-responsive main heading */}
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-center tracking-tight">
                 <span className="relative inline-block">
-                  <span className={`${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>START YOUR</span> 
+                  <span className={`${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}>START YOUR</span> 
                   <span className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500"></span>
                 </span>
                 <span className="block mt-2 sm:mt-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-blue-300">GAME DEVELOPMENT QUEST</span>
               </h2>
               
               {/* Mobile-friendly description */}
-              <p className={`text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 text-center max-w-3xl mx-auto ${darkMode ? 'text-blue-100/90' : 'text-gray-700'} transition-colors duration-300 px-2`}>
+              <p className={`text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 text-center max-w-3xl mx-auto ${isDark ? 'text-blue-100/90' : 'text-gray-700'} transition-colors duration-300 px-2`}>
                 Join forces with our elite game development team to transform your vision into an epic gaming experience that players will never forget
               </p>
               
               {/* Mobile-first responsive button layout */}
               <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 items-center">
                 <button 
-                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 md:py-5 bg-gradient-to-r ${darkMode ? 'from-blue-600 to-indigo-600' : 'from-blue-500 to-indigo-500'} rounded-md font-bold text-base sm:text-lg text-white flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center overflow-hidden shadow-[0_0_20px_rgba(37,99,235,0.5)] hover:shadow-[0_0_30px_rgba(37,99,235,0.7)] transition-all transform hover:scale-105 active:scale-95 min-h-[48px] touch-manipulation`}
+                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 md:py-5 bg-gradient-to-r ${isDark ? 'from-blue-600 to-indigo-600' : 'from-blue-500 to-indigo-500'} rounded-md font-bold text-base sm:text-lg text-white flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center overflow-hidden shadow-[0_0_20px_rgba(37,99,235,0.5)] hover:shadow-[0_0_30px_rgba(37,99,235,0.7)] transition-all transform hover:scale-105 active:scale-95 min-h-[48px] touch-manipulation`}
                   onClick={() => alert('Starting your game development journey!')}
                 >
                   <Gamepad className="w-4 h-4 sm:w-5 sm:h-5 relative z-10 group-hover:animate-bounce" />
@@ -1368,7 +1403,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                 </button>
                 
                 <button 
-                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 md:py-5 backdrop-blur-sm bg-transparent border-2 ${darkMode ? 'border-blue-500/30 hover:border-blue-400' : 'border-blue-400/40 hover:border-blue-500'} rounded-md font-bold text-base sm:text-lg flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 active:translate-y-0 min-h-[48px] touch-manipulation`}
+                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 md:py-5 backdrop-blur-sm bg-transparent border-2 ${isDark ? 'border-blue-500/30 hover:border-blue-400' : 'border-blue-400/40 hover:border-blue-500'} rounded-md font-bold text-base sm:text-lg flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-center transition-all hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 active:translate-y-0 min-h-[48px] touch-manipulation`}
                   onClick={() => window.open('https://example.com/gameplay-demo', '_blank')}
                 >
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300">VIEW GAMEPLAY</span>
@@ -1379,11 +1414,11 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
               {/* Mobile-optimized interactive progress bar */}
               <div className="mt-8 sm:mt-10 md:mt-12 max-w-xs sm:max-w-md mx-auto">
                 <div className="flex justify-between text-xs mb-2">
-                  <span className={`${darkMode ? 'text-blue-400' : 'text-blue-600'} transition-colors duration-300`}>PROJECT PROGRESS</span>
-                  <span className={`${darkMode ? 'text-blue-300' : 'text-blue-500'} transition-colors duration-300`}>READY TO LAUNCH</span>
+                  <span className={`${isDark ? 'text-blue-400' : 'text-blue-600'} transition-colors duration-300`}>PROJECT PROGRESS</span>
+                  <span className={`${isDark ? 'text-blue-300' : 'text-blue-500'} transition-colors duration-300`}>READY TO LAUNCH</span>
                 </div>
                 <div 
-                  className={`relative h-1.5 w-full ${darkMode ? 'bg-gray-800' : 'bg-gray-200'} rounded-full overflow-hidden transition-colors duration-300 cursor-pointer`}
+                  className={`relative h-1.5 w-full ${isDark ? 'bg-gray-800' : 'bg-gray-200'} rounded-full overflow-hidden transition-colors duration-300 cursor-pointer`}
                   id="progressBar"
                   onClick={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
@@ -1399,7 +1434,7 @@ const GamingDevServices = ({ theme, toggleTheme }) => {
                   ></div>
                   <span 
                     id="progressValue" 
-                    className={`absolute bottom-3 sm:bottom-4 left-1/2 transform -translate-x-1/2 text-xs font-bold ${darkMode ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}
+                    className={`absolute bottom-3 sm:bottom-4 left-1/2 transform -translate-x-1/2 text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'} transition-colors duration-300`}
                   >
                     100%
                   </span>

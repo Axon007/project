@@ -49,7 +49,7 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
   // Platform data structure
   const platforms = {
     iphone: {
-      name: "iOS", color: "#007AFF", secondaryColor: "#34AADC", icon: <Phone className="w-5 h-5" />, borderRadius: "70px",
+      name: "iOS", color: "#007AFF", secondaryColor: "#34AADC", icon: <Phone className="w-5 h-5" />, borderRadius: "rounded-[70px]",
       features: [
         { id: "overview", name: "Overview", content: "Deliver exceptional iOS experiences with Swift and SwiftUI. Our iOS development leverages Apple's Human Interface Guidelines to create beautiful, intuitive applications that feel right at home on iPhone.", icon: <Layers className="w-5 h-5" /> },
         { id: "design", name: "Beautiful UI", content: "Create stunning interfaces with Apple's design system. Modern controls, fluid animations, and rich haptics provide a truly native experience that users expect from premium iOS apps.", icon: <Star className="w-5 h-5" /> },
@@ -64,7 +64,7 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
       }
     },
     android: {
-      name: "Android", color: "#3DDC84", secondaryColor: "#32DE84", icon: <Smartphone className="w-5 h-5" />, borderRadius: "40px",
+      name: "Android", color: "#3DDC84", secondaryColor: "#32DE84", icon: <Smartphone className="w-5 h-5" />, borderRadius: "rounded-[40px]",
       features: [
         { id: "overview", name: "Overview", content: "Build powerful Android applications with Kotlin and Jetpack Compose. Our Android development focuses on material design, performance optimization, and support for the diverse Android device ecosystem.", icon: <Layers className="w-5 h-5" /> },
         { id: "material", name: "Material Design", content: "Create beautiful interfaces with Google's Material Design system. Consistent UI patterns, responsive layouts, and adaptive components ensure your app looks great on any Android device.", icon: <Star className="w-5 h-5" /> },
@@ -81,12 +81,11 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
   };
 
   const currentPlatform = platforms[activeTab];
-  const isDark = theme === 'dark';
 
-  // Consolidated style classes
-  const glassStyle = `backdrop-blur-xl border shadow-lg ${isDark ? 'bg-white/5 border-white/10 shadow-black/20' : 'bg-white/30 border-white/30 shadow-black/5'}`;
-  const textStyle = isDark ? 'text-white' : 'text-slate-800';
-  const mutedTextStyle = isDark ? 'text-white/70' : 'text-slate-600/80';
+  // Consolidated style classes using CSS variables for proper theme switching
+  const glassStyle = "backdrop-blur-xl border shadow-lg bg-white/5 dark:bg-white/5 border-white/10 dark:border-white/10 shadow-black/5 dark:shadow-black/20";
+  const textStyle = "text-slate-800 dark:text-white";
+  const mutedTextStyle = "text-slate-600/80 dark:text-white/70";
 
   // Animated components
   const FloatingOrb = () => (
@@ -110,11 +109,9 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
 
   const DeviceFrame = ({ children, isIphone }) => (
     <div 
-      className={`relative overflow-hidden transition-all duration-500 group ${isDark ? 'border-zinc-800/20' : 'border-slate-200/70'}`}
+      className={`relative overflow-hidden transition-all duration-500 group border-slate-200/70 dark:border-zinc-800/20 border-[3px] border-black/80 ${currentPlatform.borderRadius}`}
       style={{ 
-        borderRadius: currentPlatform.borderRadius,
-        boxShadow: `0 25px 60px -12px ${currentPlatform.color}${isDark ? '60' : '40'}`,
-        border: '3px solid rgba(0, 0, 0, 0.8)'
+        boxShadow: `0 25px 60px -12px ${currentPlatform.color}40`
       }}
     >
       {/* Background effects */}
@@ -125,8 +122,7 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
       <motion.div
         animate={{ opacity: [0, 0.07, 0], x: ["-100%", "100%"] }}
         transition={{ duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut", delay: 1 }}
-        className="absolute inset-0 z-20 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"
-        style={{ borderRadius: currentPlatform.borderRadius }}
+        className={`absolute inset-0 z-20 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 ${currentPlatform.borderRadius}`}
       />
       
       {children}
@@ -157,7 +153,7 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
   );
 
   return (
-    <div className={`relative w-full py-16 px-4 transition-colors duration-300 overflow-hidden ${isDark ? 'bg-gradient-to-b from-background to-background/95 text-white' : 'bg-gradient-to-br from-background via-white to-background/95 text-foreground'}`}>
+    <div className="relative w-full py-16 px-4 transition-colors duration-300 overflow-hidden bg-gradient-to-b from-background to-background/95 text-foreground">
       
       {/* Background elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5 -z-10" />
@@ -687,11 +683,11 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
 
               {/* Tab Navigation */}
               <div className={`relative rounded-2xl overflow-hidden ${glassStyle}`}>
-                <div className="absolute inset-0 opacity-20" style={{ background: `linear-gradient(90deg, transparent, ${currentPlatform.color}20, transparent)` }} />
-                <div className="relative flex gap-0">
+                <div className="absolute inset-0 opacity-20 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+                <div className="relative flex">
                   <motion.div
-                    className="absolute bottom-0 h-[2px] z-10"
-                    style={{ background: `linear-gradient(to right, ${currentPlatform.color}, #3B82F6, #8B5CF6)`, left: activeTab === "iphone" ? "0" : "50%", width: "50%" }}
+                    className="absolute bottom-0 h-[2px] z-10 bg-gradient-to-r from-primary via-blue-500 to-purple-500"
+                    style={{ left: activeTab === "iphone" ? "0%" : "50%", width: "50%" }}
                     transition={{ type: "spring", bounce: 0.1, duration: 0.4 }}
                     layoutId="activeTabIndicator"
                   />
@@ -700,27 +696,27 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
                     <button
                       key={id}
                       onClick={() => { setActiveTab(id); setActivePlatformFeature("overview"); }}
-                      className={`relative z-10 px-4 py-2 text-sm transition-all duration-300 flex items-center gap-2 justify-center flex-1 group ${
+                      className={`relative z-10 px-6 py-3 text-sm font-medium transition-all duration-300 flex items-center gap-2 justify-center flex-1 group hover:bg-white/10 dark:hover:bg-white/5 ${
                         activeTab === id 
-                          ? `font-semibold backdrop-blur-sm ${isDark ? 'text-white bg-white/10' : 'text-slate-800 bg-white/40'}`
-                          : `${isDark ? 'text-white/70 hover:text-white/90 hover:bg-white/5' : 'text-slate-600 hover:text-slate-800 hover:bg-white/20'}`
+                          ? 'text-foreground bg-white/10 dark:bg-white/10 backdrop-blur-sm'
+                          : 'text-muted-foreground hover:text-foreground'
                       }`}
                     >
                       <motion.span 
                         className="transition-all duration-300"
-                        animate={{ color: activeTab === id ? currentPlatform.color : 'inherit', scale: activeTab === id ? 1.1 : 1 }}
+                        animate={{ scale: activeTab === id ? 1.05 : 1 }}
+                        style={{ color: activeTab === id ? currentPlatform.color : 'inherit' }}
                       >
                         {platform.icon}
                       </motion.span>
-                      <span className={`font-medium tracking-tight ${activeTab === id ? 'font-semibold' : ''}`}>
+                      <span className="tracking-tight">
                         {platform.name}
                       </span>
                       {activeTab === id && (
                         <motion.div
-                          className="absolute inset-0 -z-10 opacity-20"
+                          className="absolute inset-0 -z-10 opacity-10 bg-gradient-to-r from-primary/20 via-blue-500/20 to-purple-500/20"
                           initial={{ opacity: 0 }}
-                          animate={{ opacity: 0.2 }}
-                          style={{ background: `radial-gradient(circle at center, ${currentPlatform.color}40 0%, transparent 70%)` }}
+                          animate={{ opacity: 0.1 }}
                         />
                       )}
                     </button>
@@ -736,12 +732,12 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
               </div>
               
               <Tabs defaultValue={currentPlatform.features[0].id} onValueChange={setActivePlatformFeature} value={activePlatformFeature}>
-                <TabsList className={`w-full justify-start mb-2 ${glassStyle}`}>
+                <TabsList className={`w-full justify-start mb-2 ${glassStyle} bg-secondary/5 dark:bg-secondary/5`}>
                   {currentPlatform.features.map((feature) => (                      
                     <TabsTrigger 
                       key={feature.id} 
                       value={feature.id}
-                      className={`backdrop-blur-sm ${isDark ? 'data-[state=active]:bg-white/10 data-[state=active]:text-white hover:bg-white/5' : 'data-[state=active]:bg-white/40 data-[state=active]:text-slate-800 hover:bg-white/20'}`}
+                      className="backdrop-blur-sm data-[state=active]:bg-white/10 dark:data-[state=active]:bg-white/10 data-[state=active]:text-foreground hover:bg-white/5 dark:hover:bg-white/5"
                     >
                       <div className="flex items-center gap-2">
                         {feature.icon}
@@ -773,7 +769,7 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3 }}
-                          className={`text-sm leading-relaxed flex-1 ${isDark ? 'text-white/80' : 'text-slate-700/90'}`}
+                          className="text-sm leading-relaxed flex-1 text-slate-700/90 dark:text-white/80"
                         >
                           {feature.content}
                         </motion.p>
@@ -781,25 +777,25 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
                         <div className="grid grid-cols-2 gap-2 mt-4 min-h-[60px]">
                           {(feature.id === 'ecosystem' || feature.id === 'security') && (
                             <>
-                              <div className={`p-2 rounded-lg backdrop-blur-sm ${isDark ? 'bg-white/10 border border-white/20' : 'bg-white/40 border border-white/30'}`}>
-                                <div className="flex items-center gap-1">
-                                  {feature.id === 'ecosystem' ? <CheckCircle2 className="w-3 h-3 text-green-500" /> : <Shield className="w-3 h-3 text-blue-500" />}
-                                  <span className="text-xs font-medium">{feature.id === 'ecosystem' ? 'Seamless Integration' : 'Advanced Encryption'}</span>
-                                </div>
+                                                          <div className="p-2 rounded-lg backdrop-blur-sm bg-white/10 dark:bg-white/10 border border-white/20 dark:border-white/20">
+                              <div className="flex items-center gap-1">
+                                {feature.id === 'ecosystem' ? <CheckCircle2 className="w-3 h-3 text-green-500" /> : <Shield className="w-3 h-3 text-blue-500" />}
+                                <span className="text-xs font-medium">{feature.id === 'ecosystem' ? 'Seamless Integration' : 'Advanced Encryption'}</span>
                               </div>
-                              <div className={`p-2 rounded-lg backdrop-blur-sm ${isDark ? 'bg-white/10 border border-white/20' : 'bg-white/40 border border-white/30'}`}>
-                                <div className="flex items-center gap-1">
-                                  {feature.id === 'ecosystem' ? <CheckCircle2 className="w-3 h-3 text-green-500" /> : <Shield className="w-3 h-3 text-blue-500" />}
-                                  <span className="text-xs font-medium">{feature.id === 'ecosystem' ? 'Cross-device Sync' : 'Secure Authentication'}</span>
-                                </div>
+                            </div>
+                            <div className="p-2 rounded-lg backdrop-blur-sm bg-white/10 dark:bg-white/10 border border-white/20 dark:border-white/20">
+                              <div className="flex items-center gap-1">
+                                {feature.id === 'ecosystem' ? <CheckCircle2 className="w-3 h-3 text-green-500" /> : <Shield className="w-3 h-3 text-blue-500" />}
+                                <span className="text-xs font-medium">{feature.id === 'ecosystem' ? 'Cross-device Sync' : 'Secure Authentication'}</span>
                               </div>
+                            </div>
                             </>
                           )}
                         </div>
                       </CardContent>
                       
                       <CardFooter className="flex justify-between relative z-10 pt-2">
-                        <button className={`px-3 py-1 text-xs rounded-full transition-all duration-300 flex items-center gap-1 backdrop-blur-sm border ${isDark ? 'bg-white/10 text-white border-white/20 hover:bg-white/20' : 'bg-white/40 text-slate-700 border-white/30 hover:bg-white/60'}`}>
+                        <button className="px-3 py-1 text-xs rounded-full transition-all duration-300 flex items-center gap-1 backdrop-blur-sm border bg-white/10 dark:bg-white/10 text-slate-700 dark:text-white border-white/20 dark:border-white/20 hover:bg-white/20 dark:hover:bg-white/20">
                           <Code className="w-3 h-3" /> Documentation
                         </button>
                       </CardFooter>
@@ -812,11 +808,7 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
         </div>
         
                   <div className="mt-12">
-              <div className={`relative flex flex-col md:flex-row items-center justify-between p-8 backdrop-blur-xl rounded-2xl border shadow-lg overflow-hidden ${
-                theme === 'dark' 
-                  ? 'bg-white/5 border-white/10 shadow-black/20' 
-                  : 'bg-white/30 border-white/30 shadow-black/5'
-              }`}>
+              <div className="relative flex flex-col md:flex-row items-center justify-between p-8 backdrop-blur-xl rounded-2xl border shadow-lg overflow-hidden bg-white/5 dark:bg-white/5 border-white/10 dark:border-white/10 shadow-black/5 dark:shadow-black/20">
                 {/* Animated gradient background */}
                 <div 
                   className="absolute inset-0 opacity-30 pointer-events-none"
@@ -850,22 +842,14 @@ const DevicePlatformShowcase = ({ theme, toggleTheme }) => {
                 </div>
                 
                 <div className="mb-6 md:mb-0 md:mr-10 relative z-10">
-                  <h3 className={`text-2xl font-bold mb-3 ${
-                    theme === 'dark' ? 'text-white' : 'text-slate-800'
-                  }`}>See It In Action</h3>
-                  <p className={`max-w-md ${
-                    theme === 'dark' ? 'text-white/70' : 'text-slate-600/80'
-                  }`}>
+                  <h3 className={`text-2xl font-bold mb-3 ${textStyle}`}>See It In Action</h3>
+                  <p className={`max-w-md ${mutedTextStyle}`}>
                     Experience the power of our interactive features with a live demonstration of our latest projects.
                   </p>
                 </div>
                 <a 
                   href="#demo" 
-                  className={`relative z-10 px-8 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 group backdrop-blur-sm border ${
-                    theme === 'dark'
-                      ? 'bg-white/10 text-white border-white/20 hover:bg-white/20 hover:shadow-lg hover:shadow-white/10'
-                      : 'bg-white/40 text-slate-800 border-white/30 hover:bg-white/60 hover:shadow-lg hover:shadow-black/10'
-                  }`}
+                  className="relative z-10 px-8 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 group backdrop-blur-sm border bg-white/10 dark:bg-white/10 text-slate-800 dark:text-white border-white/20 dark:border-white/20 hover:bg-white/20 dark:hover:bg-white/20 hover:shadow-lg"
                 >
                   Watch Demo
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 group-hover:translate-x-1 transition-transform"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
