@@ -29,10 +29,12 @@ const DeviceShowcase = () => {
     <div className="w-full">
       {/* Tab Selector */}
       <div className="flex justify-center mb-8">
-        <div className="bg-secondary/10 p-1 rounded-xl backdrop-blur-sm flex items-center">
+        <div className="bg-card/80 backdrop-blur-md border border-border p-1 rounded-xl flex items-center shadow-lg">
           <button 
-            className={`px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-              activeTab === "iphone" ? "bg-primary text-white shadow-md" : "hover:bg-secondary/20"
+            className={`px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-200 ${
+              activeTab === "iphone" 
+                ? "bg-primary text-primary-foreground shadow-md" 
+                : "text-foreground hover:bg-secondary/30"
             }`}
             onClick={() => setActiveTab("iphone")}
           >
@@ -40,8 +42,10 @@ const DeviceShowcase = () => {
             iPhone
           </button>
           <button 
-            className={`px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-              activeTab === "android" ? "bg-primary text-white shadow-md" : "hover:bg-secondary/20"
+            className={`px-5 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-200 ${
+              activeTab === "android" 
+                ? "bg-primary text-primary-foreground shadow-md" 
+                : "text-foreground hover:bg-secondary/30"
             }`}
             onClick={() => setActiveTab("android")}
           >
@@ -69,7 +73,7 @@ const DeviceShowcase = () => {
             {/* Light effects behind iPhone */}
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-blue-500/10 to-purple-500/20 rounded-full blur-2xl opacity-70 animate-pulse"></div>
             
-            <div className="relative border-[3px] border-black rounded-[40px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(99,102,241,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
+            <div className="relative border-[3px] border-foreground/20 rounded-[40px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(99,102,241,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
               <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-black/0 z-10 rounded-[40px]"></div>
               
               {/* Subtle reflection effect */}
@@ -99,22 +103,22 @@ const DeviceShowcase = () => {
             {/* iPhone features */}
             <div className="absolute -right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
               <motion.div
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
-                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-card/80 backdrop-blur-sm rounded-lg border border-border hover:bg-primary/10 transition-colors"
               >
-                <span className="text-xs font-medium">Face ID</span>
+                <span className="text-xs font-medium text-foreground">Face ID</span>
               </motion.div>
               <motion.div
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
-                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-card/80 backdrop-blur-sm rounded-lg border border-border hover:bg-primary/10 transition-colors"
               >
-                <span className="text-xs font-medium">App Clips</span>
+                <span className="text-xs font-medium text-foreground">App Clips</span>
               </motion.div>
               <motion.div
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
-                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-card/80 backdrop-blur-sm rounded-lg border border-border hover:bg-primary/10 transition-colors"
               >
-                <span className="text-xs font-medium">ARKit</span>
+                <span className="text-xs font-medium text-foreground">ARKit</span>
               </motion.div>
             </div>
           </motion.div>
@@ -132,7 +136,7 @@ const DeviceShowcase = () => {
             {/* Light effects behind Android */}
             <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-blue-500/10 to-purple-500/20 rounded-full blur-2xl opacity-70 animate-pulse"></div>
             
-            <div className="relative border-[3px] border-black rounded-[40px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(99,102,241,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
+            <div className="relative border-[3px] border-foreground/20 rounded-[40px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(99,102,241,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
               <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-black/0 z-10 rounded-[40px]"></div>
               
               {/* Subtle reflection effect */}
@@ -162,29 +166,29 @@ const DeviceShowcase = () => {
             {/* Android features */}
             <div className="absolute -right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
               <motion.div
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
-                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-card/80 backdrop-blur-sm rounded-lg border border-border hover:bg-primary/10 transition-colors"
               >
-                <span className="text-xs font-medium">Material Design</span>
+                <span className="text-xs font-medium text-foreground">Material Design</span>
               </motion.div>
               <motion.div
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
-                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-card/80 backdrop-blur-sm rounded-lg border border-border hover:bg-primary/10 transition-colors"
               >
-                <span className="text-xs font-medium">Widgets</span>
+                <span className="text-xs font-medium text-foreground">Widgets</span>
               </motion.div>
               <motion.div
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(99,102,241,0.15)" }}
-                className="p-3 bg-secondary/10 backdrop-blur-sm rounded-lg border border-secondary/20"
+                whileHover={{ scale: 1.05 }}
+                className="p-3 bg-card/80 backdrop-blur-sm rounded-lg border border-border hover:bg-primary/10 transition-colors"
               >
-                <span className="text-xs font-medium">Jetpack</span>
+                <span className="text-xs font-medium text-foreground">Jetpack</span>
               </motion.div>
             </div>
           </motion.div>
         )}
         
         {/* Platform stats */}
-        <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-secondary/10 backdrop-blur-md border border-secondary/20 rounded-xl p-4 flex items-center gap-8">
+        <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-card/80 backdrop-blur-md border border-border rounded-xl p-4 flex items-center gap-8 shadow-lg">
           <div className="text-center">
             <p className="text-xs text-foreground/60">App Stores</p>
             <p className="font-semibold">2</p>
@@ -210,7 +214,7 @@ export function HeroScrollDemo() {
       <ContainerScroll
         titleComponent={
           <>
-            <h1 className="text-4xl font-semibold text-black dark:text-white">
+            <h1 className="text-4xl font-semibold text-foreground">
               Unleash the power of <br />
               <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
                 Scroll Animations
@@ -250,22 +254,29 @@ const FeatureCard = ({ icon, title, description }) => {
 
 // Service card component
 const ServiceCard = ({ icon, title, description, features, index }) => {
-  // Unified gradient style for all service cards
-  const gradientClass = "from-primary/70 via-blue-600/70 to-purple-600/70";
+  // Aesthetic gradient styles that complement both light and dark themes
+  const gradients = [
+    "from-slate-600 via-slate-700 to-slate-800 dark:from-slate-700 dark:via-slate-800 dark:to-slate-900",
+    "from-blue-600 via-blue-700 to-blue-800 dark:from-blue-700 dark:via-blue-800 dark:to-blue-900", 
+    "from-purple-600 via-purple-700 to-purple-800 dark:from-purple-700 dark:via-purple-800 dark:to-purple-900",
+    "from-indigo-600 via-indigo-700 to-indigo-800 dark:from-indigo-700 dark:via-indigo-800 dark:to-indigo-900",
+    "from-gray-600 via-gray-700 to-gray-800 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900"
+  ];
+  const gradientClass = gradients[index % gradients.length];
   
-  return (
+    return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="relative bg-background rounded-3xl overflow-hidden border border-secondary/10 shadow-md h-[400px] group"
+      className="relative rounded-3xl overflow-hidden border border-white/10 shadow-md h-[400px] group"
     >
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-90`}></div>
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass}`}></div>
       <div className="relative h-full p-8 flex flex-col justify-between text-white">
         <div>
           <div className="p-3 bg-white/20 rounded-xl inline-flex mb-6">
             {icon}
           </div>
           <h3 className="text-2xl font-bold mb-3">{title}</h3>
-          <p className="text-white/80">{description}</p>
+          <p className="text-white/90">{description}</p>
         </div>
         <div className="mt-4 pt-4 border-t border-white/20">
           <ul className="space-y-2">
@@ -287,7 +298,7 @@ const PriceCard = ({ title, price, description, features, popular }) => {
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className={`p-8 rounded-2xl ${popular ? 'bg-gradient-to-br from-primary via-blue-500 to-purple-500 text-white' : 'bg-secondary/5'} backdrop-blur-sm border ${popular ? 'border-primary/50' : 'border-secondary/20'} transition-all relative`}
+      className={`p-8 rounded-2xl ${popular ? 'bg-gradient-to-br from-primary via-blue-500 to-purple-500 text-primary-foreground' : 'bg-secondary/5'} backdrop-blur-sm border ${popular ? 'border-primary/50' : 'border-secondary/20'} transition-all relative`}
     >
       {popular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary px-4 py-1 rounded-full text-sm font-medium">
@@ -297,21 +308,21 @@ const PriceCard = ({ title, price, description, features, popular }) => {
       <h3 className="text-2xl font-bold mb-3">{title}</h3>
       <div className="mb-4">
         <span className="text-4xl font-bold">${price}</span>
-        <span className={`${popular ? 'text-white/70' : 'text-foreground/70'}`}>/month</span>
+        <span className={`${popular ? 'text-primary-foreground/70' : 'text-foreground/70'}`}>/month</span>
       </div>
-      <p className={`mb-6 ${popular ? 'text-white/70' : 'text-foreground/70'}`}>{description}</p>
+              <p className={`mb-6 ${popular ? 'text-primary-foreground/70' : 'text-foreground/70'}`}>{description}</p>
       <ul className="space-y-3 mb-8">
         {features.map((feature, index) => (
           <li key={index} className="flex items-center gap-2">
             <Star className="w-4 h-4 flex-shrink-0" />
-            <span className={popular ? 'text-white/90' : 'text-foreground/90'}>{feature}</span>
+            <span className={popular ? 'text-primary-foreground/90' : 'text-foreground/90'}>{feature}</span>
           </li>
         ))}
       </ul>
       <button className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
         popular 
-          ? 'bg-white text-primary hover:bg-white/90' 
-          : 'bg-primary text-white hover:bg-primary/90'
+          ? 'bg-background text-primary hover:bg-background/90' 
+          : 'bg-primary text-primary-foreground hover:bg-primary/90'
       }`}>
         Get Started <ArrowUpRight className="w-4 h-4" />
       </button>
@@ -460,7 +471,7 @@ function AppDevelopment() {
 
   {/* Top Half - Header Content with Glassmorphism */}
   <div className="container mx-auto px-4 md:px-6 z-10 pt-20 flex-1 flex items-center justify-center">
-    <div className="text-center max-w-4xl backdrop-blur-md bg-white/5 dark:bg-gray-900/10 border border-white/10 dark:border-gray-700/10 rounded-3xl p-8 shadow-xl">
+    <div className="text-center max-w-4xl backdrop-blur-md bg-background/80 border border-border rounded-3xl p-8 shadow-xl">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -483,7 +494,7 @@ function AppDevelopment() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-        >          <h1 className="text-5xl font-bold tracking-tight text-balance text-light-800 dark:text-white sm:text-7xl mb-8 relative leading-tight">
+        >          <h1 className="text-5xl font-bold tracking-tight text-balance text-foreground sm:text-7xl mb-8 relative leading-tight">
             <span className="inline-block">Transforming Ideas Into</span>{" "}
             <span className="inline-block relative">
               <span className="relative z-10 inline-block">
@@ -519,11 +530,11 @@ function AppDevelopment() {
   initial={{ opacity: 0, y: 20 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, delay: 0.7 }}
-  className="flex flex-wrap gap-4 justify-center"
+  className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center items-center"
 >
 <a 
   href="#contact" 
-  className="px-8 py-4 bg-white/90 backdrop-blur-md text-black dark:text-black rounded-xl font-medium hover:bg-white transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group border border-white/20"
+  className="px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2 group border border-primary/20"
 >
   Start Your Project
   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -532,7 +543,7 @@ function AppDevelopment() {
   
   <a 
     href="#portfolio" 
-    className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-foreground rounded-xl font-medium hover:bg-white/20 transition-all flex items-center justify-center gap-2 group shadow-lg"
+    className="px-8 py-4 bg-secondary/20 backdrop-blur-md border border-border text-foreground rounded-xl font-medium hover:bg-secondary/30 transition-all flex items-center justify-center gap-2 group shadow-lg"
   >
     View Our Work
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
@@ -551,7 +562,7 @@ function AppDevelopment() {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1.2, delay: 0.2 }}
-      className="absolute inset-0 flex items-center justify-center overflow-hidden backdrop-blur-sm bg-white/5 dark:bg-gray-900/10 border-t border-white/10 dark:border-gray-700/10"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden backdrop-blur-sm bg-background/60 border-t border-border"
       style={{ zIndex: 1 }}
     >
       {/* Main dashboard background */}
@@ -578,7 +589,7 @@ function AppDevelopment() {
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="absolute -left-20 top-1/4 w-60 bg-secondary/10 backdrop-blur-lg border border-white/10 p-4 rounded-lg shadow-xl rotate-[-6deg]"
+          className="absolute -left-20 top-1/4 w-60 bg-card/80 backdrop-blur-lg border border-border p-4 rounded-lg shadow-xl rotate-[-6deg]"
         >
           <div className="h-3 w-3/4 bg-primary/30 rounded-full mb-2"></div>
           <div className="h-3 w-1/2 bg-primary/20 rounded-full mb-2"></div>
@@ -590,7 +601,7 @@ function AppDevelopment() {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 1 }}
-          className="absolute -right-16 bottom-1/4 w-56 bg-secondary/10 backdrop-blur-lg border border-white/10 p-4 rounded-lg shadow-xl rotate-[8deg]"
+          className="absolute -right-16 bottom-1/4 w-56 bg-card/80 backdrop-blur-lg border border-border p-4 rounded-lg shadow-xl rotate-[8deg]"
         >
           <div className="h-3 w-1/2 bg-blue-500/30 rounded-full mb-2"></div>
           <div className="h-3 w-3/4 bg-blue-500/20 rounded-full mb-2"></div>
@@ -658,33 +669,33 @@ function AppDevelopment() {
         className="drop-shadow-2xl filter relative"
       >
         {/* Interactive buttons overlay */}
-        <div className="absolute -right-12 top-1/4 z-10 flex flex-col gap-6">
+        <div className="absolute -right-8 lg:-right-12 top-1/4 z-10 flex flex-col gap-4 lg:gap-6">
           <motion.div 
-            whileHover={{ scale: 1.1, backgroundColor: 'rgba(var(--primary), 0.3)' }} 
+            whileHover={{ scale: 1.1 }} 
             whileTap={{ scale: 0.95 }}
-            className="w-10 h-10 bg-primary/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-white/20 shadow-lg"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
-          </motion.div>
+            className="w-8 h-8 lg:w-10 lg:h-10 bg-primary/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-border shadow-lg hover:bg-primary/30 transition-colors"
+                      >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground lg:w-5 lg:h-5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+            </motion.div>
           
           <motion.div 
-            whileHover={{ scale: 1.1, backgroundColor: 'rgba(59, 130, 246, 0.3)' }} 
+            whileHover={{ scale: 1.1 }} 
             whileTap={{ scale: 0.95 }}
-            className="w-10 h-10 bg-blue-500/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-white/20 shadow-lg"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><circle cx="12" cy="12" r="10"></circle><path d="m16 12-4-4v8z"></path></svg>
-          </motion.div>
+            className="w-8 h-8 lg:w-10 lg:h-10 bg-blue-500/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-border shadow-lg hover:bg-blue-500/30 transition-colors"
+                      >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground lg:w-5 lg:h-5"><circle cx="12" cy="12" r="10"></circle><path d="m16 12-4-4v8z"></path></svg>
+            </motion.div>
           
           <motion.div 
-            whileHover={{ scale: 1.1, backgroundColor: 'rgba(139, 92, 246, 0.3)' }} 
+            whileHover={{ scale: 1.1 }} 
             whileTap={{ scale: 0.95 }}
-            className="w-10 h-10 bg-violet-500/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-white/20 shadow-lg"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect width="7" height="5" x="7" y="7" rx="1"></rect><rect width="7" height="5" x="10" y="12" rx="1"></rect></svg>
-          </motion.div>
+            className="w-8 h-8 lg:w-10 lg:h-10 bg-violet-500/20 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer border border-border shadow-lg hover:bg-violet-500/30 transition-colors"
+                      >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground lg:w-5 lg:h-5"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect width="7" height="5" x="7" y="7" rx="1"></rect><rect width="7" height="5" x="10" y="12" rx="1"></rect></svg>
+            </motion.div>
         </div>
 
-        <div className="relative border-[3px] border-black rounded-[70px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(99,102,241,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
+        <div className="relative border-[3px] border-foreground/20 rounded-[70px] overflow-hidden shadow-[0_0_35px_rgba(0,0,0,0.25),inset_0_0_10px_rgba(0,0,0,0.1)] group hover:shadow-[0_0_50px_rgba(99,102,241,0.3),inset_0_0_15px_rgba(0,0,0,0.2)] transition-all duration-500">
           <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-black/0 z-10 rounded-[70px]"></div>
           
           {/* Subtle reflection effect */}
@@ -714,11 +725,10 @@ function AppDevelopment() {
         {/* Enhanced interactive elements around iPhone */}
 
       <motion.div 
-        className="absolute -bottom-8 -right-8 w-16 h-16 bg-gradient-to-tr from-blue-500/30 to-violet-500/30 rounded-full cursor-pointer"
+        className="absolute -bottom-6 -right-6 lg:-bottom-8 lg:-right-8 w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-tr from-blue-500/30 to-violet-500/30 rounded-full cursor-pointer"
         animate={{ 
           scale: [1, 1.3, 1],
-          opacity: [0.7, 1, 0.7],
-          boxShadow: ["0 0 0px rgba(59,130,246,0.2)", "0 0 25px rgba(59,130,246,0.4)", "0 0 0px rgba(59,130,246,0.2)"]
+          opacity: [0.7, 1, 0.7]
         }}
         transition={{ 
           duration: 4,
@@ -728,17 +738,15 @@ function AppDevelopment() {
         }}
         whileHover={{ 
           scale: 1.4, 
-          opacity: 0.9,
-          background: "radial-gradient(circle, rgba(59,130,246,0.4) 0%, rgba(139,92,246,0.3) 100%)"
+          opacity: 0.9
         }}
       />
       
       <motion.div 
-        className="absolute top-1/3 -left-10 w-8 h-8 bg-gradient-to-bl from-purple-500/30 to-pink-500/30 rounded-full cursor-pointer"
+        className="absolute top-1/3 -left-6 lg:-left-10 w-6 h-6 lg:w-8 lg:h-8 bg-gradient-to-bl from-purple-500/30 to-pink-500/30 rounded-full cursor-pointer"
         animate={{ 
           scale: [1, 1.5, 1],
-          opacity: [0.6, 0.9, 0.6],
-          boxShadow: ["0 0 0px rgba(139,92,246,0.2)", "0 0 15px rgba(139,92,246,0.4)", "0 0 0px rgba(139,92,246,0.2)"]
+          opacity: [0.6, 0.9, 0.6]
         }}
         transition={{ 
           duration: 2.5,
@@ -748,17 +756,15 @@ function AppDevelopment() {
         }}
         whileHover={{ 
           scale: 1.6, 
-          opacity: 0.9,
-          background: "radial-gradient(circle, rgba(139,92,246,0.4) 0%, rgba(244,114,182,0.3) 100%)"
+          opacity: 0.9
         }}
       />
       
       <motion.div 
-        className="absolute top-2/3 -right-12 w-10 h-10 bg-gradient-to-tl from-green-500/30 to-emerald-500/30 rounded-full cursor-pointer"
+        className="absolute top-2/3 -right-8 lg:-right-12 w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-tl from-green-500/30 to-emerald-500/30 rounded-full cursor-pointer"
         animate={{ 
           scale: [1, 1.4, 1],
-          opacity: [0.7, 1, 0.7],
-          boxShadow: ["0 0 0px rgba(34,197,94,0.2)", "0 0 20px rgba(34,197,94,0.4)", "0 0 0px rgba(34,197,94,0.2)"]
+          opacity: [0.7, 1, 0.7]
         }}
         transition={{ 
           duration: 3.5,
@@ -768,8 +774,7 @@ function AppDevelopment() {
         }}
         whileHover={{ 
           scale: 1.5, 
-          opacity: 0.9,
-          background: "radial-gradient(circle, rgba(34,197,94,0.4) 0%, rgba(16,185,129,0.3) 100%)"
+          opacity: 0.9
         }}
       />
       
@@ -778,30 +783,30 @@ function AppDevelopment() {
         initial={{ opacity: 0, scale: 0.8, x: 20 }}
         whileInView={{ opacity: 1, scale: 1, x: 0 }}
         transition={{ delay: 0.7, duration: 0.5 }}
-        className="absolute -right-32 bottom-[-120px] hidden md:block w-[30rem] z-10" // Reduced width from 70rem to 30rem and positioned lower
+        className="absolute -right-32 bottom-[-120px] hidden lg:block w-[28rem] xl:w-[30rem] z-10" // Better responsive sizing
       >
 
 {/* Content container */}
-  <div className="p-6 md:p-8 rounded-2xl bg-secondary/5 border border-gray-300 backdrop-blur-sm shadow-xl"> {/* Reduced padding */}
-    <div className="flex flex-col md:flex-row items-center justify-between gap-6"> {/* Reduced gap */}
-      <div className="max-w-xs"> {/* Reduced text container width */}
+  <div className="p-6 md:p-8 rounded-2xl bg-card/80 border border-border backdrop-blur-sm shadow-xl"> {/* Reduced padding */}
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-6"> {/* Better responsive layout */}
+          <div className="max-w-xs lg:max-w-sm"> {/* Better responsive text container */}
         <h3 className="text-xl font-bold mb-2">Transform Your App Experience</h3> {/* Reduced heading size */}
         <p className="text-foreground/70 mb-4 text-sm"> {/* Smaller text and margin */}
           Our micro-interaction design system adds polish to your application, creating memorable experiences users love.
         </p>
         <div className="flex flex-wrap gap-2"> {/* Reduced gap between tags */}
-          <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs border border-gray-200">
+          <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs border border-border">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             Improved Engagement
           </div>
-          <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs border border-gray-200">
+          <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs border border-border">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             Higher Retention
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl overflow-hidden shadow-lg border border-gray-300 w-36"> {/* Reduced video container size */}
+              <div className="rounded-xl overflow-hidden shadow-lg border border-border w-32 lg:w-36"> {/* Better responsive video container */}
         <video 
           width="144" 
           height="108" 
@@ -841,53 +846,54 @@ function AppDevelopment() {
 
 
 
-            {/* Services Section */}
-        <section id="services" className="py-24 px-4 relative bg-background">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(var(--primary),0.08),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(var(--primary),0.08),transparent_40%)] -z-10"></div>
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
-                <Smartphone className="w-4 h-4 mr-2" /> App Development
-              </span>              <h2 className="text-4xl font-semibold tracking-tight text-balance sm:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
-                Our Services
-              </h2>
-              <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-                Comprehensive mobile app development solutions for your business needs
-              </p>
-            </div>              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-              {services.map((service, index) => (
-                <ServiceCard key={index} {...service} index={index} />
-              ))}
-            </div>
-            
-            {/* CTA inside the Services section */}
-            <div className="mt-16">
-              <div className="flex justify-center">
-                <motion.div
-                  whileHover={{ y: -5 }}
-                  className="flex items-center gap-3 p-6 bg-background/70 backdrop-blur-sm rounded-2xl shadow-lg border border-primary/20 group max-w-2xl"
-                >
-                  <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                    <Smartphone className="w-6 h-6" />
+      {/* Services Section */}
+      <section id="services" className="py-24 px-4 relative bg-background">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(var(--primary),0.08),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(var(--primary),0.08),transparent_40%)] -z-10"></div>
+                <div className="max-w-7xl mx-auto">
+                  <div className="text-center mb-16">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+                      <Smartphone className="w-4 h-4 mr-2" /> App Development
+                    </span>              <h2 className="text-4xl font-semibold tracking-tight text-balance sm:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
+                      Our Services
+                    </h2>
+                    <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+                      Comprehensive mobile app development solutions for your business needs
+                    </p>
+                  </div>              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+                    {services.map((service, index) => (
+                      <ServiceCard key={index} {...service} index={index} />
+                    ))}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg mb-1">Need a custom app development solution?</h3>
-                    <p className="text-sm text-foreground/70">Contact our team for a personalized consultation</p>
+                  
+                  {/* CTA inside the Services section */}
+                  <div className="mt-16">
+                    <div className="flex justify-center">
+                      <motion.div
+                        whileHover={{ y: -5 }}
+                        className="flex items-center gap-3 p-6 bg-card/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border group max-w-2xl hover:border-primary/30 transition-colors"
+                      >
+                        <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                          <Smartphone className="w-6 h-6" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Need a custom app development solution?</h3>
+                          <p className="text-sm text-foreground/70">Contact our team for a personalized consultation</p>
+                        </div>
+                        <div>
+                          <a 
+                            href="#contact" 
+                            className="px-5 py-2 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-all flex items-center justify-center gap-2 text-sm"
+                          >
+                            Get in Touch
+                            <ArrowRight className="w-4 h-4" />
+                          </a>
+                        </div>
+                      </motion.div>
+                    </div>
                   </div>
-                  <div>
-                    <a 
-                      href="#contact" 
-                      className="px-5 py-2 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all flex items-center justify-center gap-2 text-sm"
-                    >
-                      Get in Touch
-                      <ArrowRight className="w-4 h-4" />
-                    </a>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </div>        
-        </section>
+                </div>        
+      </section>
+
 
 </section>
 
@@ -955,13 +961,13 @@ function AppDevelopment() {
           <div className="relative z-10 h-full flex flex-col justify-between">
             <div>
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 group-hover:bg-white/20 flex items-center justify-center mb-4 transition-all duration-300">
-                <div className="text-primary group-hover:text-white transition-colors duration-300">
+                <div className="text-primary group-hover:text-primary-foreground transition-colors duration-300">
                   {feature.icon}
                 </div>
               </div>
               
-              <h3 className="text-xl font-semibold mb-3 group-hover:text-white transition-colors duration-300">{feature.title}</h3>
-              <p className="text-foreground/70 group-hover:text-white/80 transition-colors duration-300">{feature.description}</p>
+              <h3 className="text-xl font-semibold mb-3 group-hover:text-primary-foreground transition-colors duration-300">{feature.title}</h3>
+              <p className="text-foreground/70 group-hover:text-primary-foreground/80 transition-colors duration-300">{feature.description}</p>
             </div>
             
 
@@ -1022,7 +1028,7 @@ function AppDevelopment() {
             <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-2xl flex items-center justify-center text-primary">
               {feature.icon}
             </div>
-            <div className="absolute -top-2 -right-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
+            <div className="absolute -top-2 -right-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xs font-bold">
               +
             </div>
           </div>
@@ -1168,6 +1174,42 @@ function AppDevelopment() {
   </div>
 </section>
 
+
+        {/* ASO Stats Section */}
+        <section className="py-16 px-4 relative bg-secondary/5">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
+                <TrendingUp className="w-4 h-4 mr-2" /> Impact Metrics
+              </span>
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl mb-4">
+                App Success by the Numbers
+              </h2>
+            </div>
+              {/* ASO Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+              {[
+                { value: "65%", label: "of all app downloads come directly from app store searches" },
+                { value: "70%", label: "increase in visibility with optimized keywords" },
+                { value: "36%", label: "higher conversion rate with optimized listings" },
+                { value: "50%", label: "more organic downloads with ASO strategy" }
+              ].map((stat, index) => (
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-secondary/5 backdrop-blur-sm rounded-2xl p-6 border border-secondary/10 text-center hover:border-primary/20 transition-all"
+                >
+                  <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-500 mb-2">{stat.value}</div>
+                  <p className="text-foreground/70">{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
 {/* FAQ Section */}
 <section className="py-20 px-4 relative bg-secondary/5">
   <div className="max-w-4xl mx-auto">
@@ -1225,145 +1267,8 @@ function AppDevelopment() {
 
           </div>
         </section>
-        
+ 
 
-        
-
-
-
-        {/* App Design Features Section */}
-        <section className="py-24 overflow-hidden relative">
-          {/* Background elements */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/50 to-background -z-10"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(var(--primary),0.08),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(var(--primary),0.08),transparent_40%)] -z-10"></div>
-          
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="max-w-3xl mx-auto text-center mb-16"
-            >
-              {/* Section badge */}
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
-                <Layout className="w-4 h-4 mr-2" /> Design Features
-              </span>                <h2 className="text-4xl font-semibold tracking-tight text-balance sm:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
-                Powerful Design Tools
-              </h2>
-              
-              <p className="text-lg text-foreground/70">
-                Our comprehensive suite of design tools makes app creation simple and efficient, 
-                delivering beautiful results without complex coding.
-              </p>
-            </motion.div>
-
-            {/* App Features Section */}
-            <div className="mt-16">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {[
-                  {
-                    icon: <Layout className="w-6 h-6" />,
-                    title: "Intuitive Design System",
-                    description: "Drag-and-drop interface elements with pixel-perfect alignment and responsive layouts for all device sizes.",
-                    color: "primary"
-                  },
-                  {
-                    icon: <Zap className="w-6 h-6" />,
-                    title: "Performance Optimized",
-                    description: "Lightweight, fast-loading apps with optimized code and assets for smooth experiences on any device.",
-                    color: "primary"
-                  },
-                  {
-                    icon: <Code className="w-6 h-6" />,
-                    title: "No Coding Required",
-                    description: "Create complex functionality using our visual logic builder without writing a single line of code.",
-                    color: "primary"
-                  }
-                ].map((feature, index) => (                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 + 0.3 }}
-                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                    className="bg-secondary/5 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-secondary/10 group"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                      {feature.icon}
-                    </div>
-                    
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                      {feature.title}
-                    </h3>
-                    
-                    <p className="text-foreground/70">
-                      {feature.description}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-            
-
-          </div>
-        </section>
-
-        {/* Features Grid - Why Choose Us */}
-        <section className="py-20 px-4 relative">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">              <h2 className="text-4xl font-semibold tracking-tight text-balance sm:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
-                Why Choose Us
-              </h2>
-              <p className="text-lg text-foreground/70">
-                We deliver cutting-edge mobile solutions with a focus on quality and innovation
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-              {features.map((feature, index) => (
-                <FeatureCard key={index} {...feature} />
-              ))}
-            </div>
-          </div>
-        </section>    
-        
-
-
-        {/* ASO Stats Section */}
-        <section className="py-16 px-4 relative bg-secondary/5">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6">
-                <TrendingUp className="w-4 h-4 mr-2" /> Impact Metrics
-              </span>
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl mb-4">
-                App Success by the Numbers
-              </h2>
-            </div>
-              {/* ASO Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
-              {[
-                { value: "65%", label: "of all app downloads come directly from app store searches" },
-                { value: "70%", label: "increase in visibility with optimized keywords" },
-                { value: "36%", label: "higher conversion rate with optimized listings" },
-                { value: "50%", label: "more organic downloads with ASO strategy" }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-secondary/5 backdrop-blur-sm rounded-2xl p-6 border border-secondary/10 text-center hover:border-primary/20 transition-all"
-                >
-                  <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-purple-500 mb-2">{stat.value}</div>
-                  <p className="text-foreground/70">{stat.label}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* CTA Section */}
         <section className="py-20 px-4 relative">
@@ -1371,7 +1276,8 @@ function AppDevelopment() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}              className="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-blue-500/5 to-purple-500/5 border border-primary/10 text-center"
+              viewport={{ once: true }}
+              className="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-primary/10 via-blue-500/5 to-purple-500/5 border border-border text-center"
             >
               <h2 className="text-4xl font-semibold tracking-tight text-balance sm:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-primary">
                 Ready to Build Your App?
@@ -1381,7 +1287,7 @@ function AppDevelopment() {
               </p>
               <a 
                 href="#contact" 
-                className="inline-flex items-center px-8 py-4 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-all gap-2 group"
+                className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-all gap-2 group"
               >
                 Get Started
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
