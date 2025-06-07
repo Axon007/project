@@ -662,6 +662,9 @@ function AppDevelopment() {
           rotateZ: [0, 1, 0, -1, 0],
         }}
         transition={{ 
+
+
+          
           y: {
             duration: 4, 
             repeat: Infinity, 
