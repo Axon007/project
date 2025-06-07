@@ -256,12 +256,12 @@ const DevicePlatformShowcase = () => {
         />
       ))}
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative">
-          <FloatingOrb />
-          
-          {/* Device Display Column */}
-          <div className="lg:col-span-5 flex justify-center items-center">
+              <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 relative">
+            <FloatingOrb />
+            
+            {/* Device Display Column */}
+            <div className="lg:col-span-5 flex justify-center items-center order-2 lg:order-1">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -272,7 +272,7 @@ const DevicePlatformShowcase = () => {
                 className="relative"
               >
                 <DeviceFrame isIphone={activeTab === "iphone"}>
-                  <div className="w-[300px] h-[600px] overflow-hidden relative">
+                  <div className="w-[280px] sm:w-[300px] h-[560px] sm:h-[600px] overflow-hidden relative">
                     {/* Interactive App Content */}
                     {activeTab === "iphone" && activePlatformFeature === "overview" && (
                       <motion.div 
@@ -484,7 +484,7 @@ const DevicePlatformShowcase = () => {
           </div>
 
           {/* Enhanced Content Column */}
-          <div className="lg:col-span-7 space-y-10">
+          <div className="lg:col-span-7 space-y-6 lg:space-y-10 order-1 lg:order-2">
             {/* Header Section */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 lg:gap-8">
               {/* Platform Header */}
@@ -702,10 +702,10 @@ const DevicePlatformShowcase = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-center space-y-6"
+              className="text-center space-y-4 lg:space-y-6"
             >
               <motion.button
-                className={`px-8 py-4 rounded-2xl font-semibold text-white shadow-2xl transition-all duration-300 hover:shadow-3xl hover:scale-105 ${glassStyle}`}
+                className="px-6 lg:px-8 py-3 lg:py-4 rounded-2xl font-semibold text-white shadow-2xl transition-all duration-300 hover:shadow-3xl hover:scale-105"
                 style={{ 
                   background: `linear-gradient(135deg, ${currentPlatform.color}, ${currentPlatform.secondaryColor})`,
                   boxShadow: `0 20px 40px -10px ${currentPlatform.color}60`
@@ -713,9 +713,9 @@ const DevicePlatformShowcase = () => {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Start Building with {currentPlatform.name}
+                <span className="text-sm lg:text-base">Start Building with {currentPlatform.name}</span>
               </motion.button>
-              <p className={`text-sm ${mutedTextStyle}`}>
+              <p className={`text-xs lg:text-sm ${mutedTextStyle}`}>
                 Ready to create amazing {currentPlatform.name.toLowerCase()} experiences? Let's get started.
               </p>
             </motion.div>
