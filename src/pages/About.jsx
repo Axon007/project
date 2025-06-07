@@ -4,6 +4,7 @@ import { ArrowRight, Star, CheckCircle, TrendingUp, Clock, DollarSign, Users, Ta
 import Footer from '../components/Footer';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { useThemeContext } from '../components/ThemeProvider';
+import { NumberTicker } from '../components/ui/number-ticker';
 
 const About = () => {
   const { theme } = useThemeContext();
@@ -108,20 +109,26 @@ const About = () => {
             <motion.div variants={fadeInUp} className={`text-center p-6 rounded-2xl ${
               isDark ? 'bg-gray-800/70 text-white border-gray-700' : 'bg-white/70 text-gray-900 border-gray-200'
             } backdrop-blur-sm border`}>
-              <div className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>160+</div>
+              <div className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                <NumberTicker value={160} className={isDark ? 'text-white' : 'text-gray-900'} />+
+              </div>
               <div className={isDark ? 'text-gray-300' : 'text-gray-600'}>Development approaches created</div>
               <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'} mt-1`}>To facilitate better integration and improved user experience during development</div>
             </motion.div>
             <motion.div variants={fadeInUp} className={`text-center p-6 rounded-2xl ${
               isDark ? 'bg-gray-800/70 text-white border-gray-700' : 'bg-white/70 text-gray-900 border-gray-200'
             } backdrop-blur-sm border`}>
-              <div className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>1.8M</div>
+              <div className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                <NumberTicker value={1.8} decimalPlaces={1} className={isDark ? 'text-white' : 'text-gray-900'} />M
+              </div>
               <div className={isDark ? 'text-gray-300' : 'text-gray-600'}>Lines of code written</div>
             </motion.div>
             <motion.div variants={fadeInUp} className={`text-center p-6 rounded-2xl ${
               isDark ? 'bg-gray-800/70 text-white border-gray-700' : 'bg-white/70 text-gray-900 border-gray-200'
             } backdrop-blur-sm border`}>
-              <div className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>196+</div>
+              <div className={`text-4xl md:text-5xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                <NumberTicker value={196} className={isDark ? 'text-white' : 'text-gray-900'} />+
+              </div>
               <div className={isDark ? 'text-gray-300' : 'text-gray-600'}>Projects completed</div>
             </motion.div>
           </motion.div>
@@ -176,7 +183,9 @@ const About = () => {
                 </div>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>$18,124</span>
+                    <span className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      $<NumberTicker value={18124} className={isDark ? 'text-white' : 'text-gray-900'} />
+                    </span>
                     <span className={`px-3 py-1 ${
                       isDark ? 'bg-purple-900/50 text-purple-300' : 'bg-purple-100 text-purple-600'
                     } rounded-full text-sm font-medium`}>Shop</span>
@@ -188,7 +197,9 @@ const About = () => {
                       <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=32&h=32&fit=crop&crop=face" alt="User" className={`w-8 h-8 rounded-full border-2 ${isDark ? 'border-gray-800' : 'border-white'}`} />
                       <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" alt="User" className={`w-8 h-8 rounded-full border-2 ${isDark ? 'border-gray-800' : 'border-white'}`} />
                     </div>
-                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>+12 more</span>
+                    <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                      +<NumberTicker value={12} className={isDark ? 'text-gray-400' : 'text-gray-500'} /> more
+                    </span>
                   </div>
                 </div>
               </div>
@@ -294,7 +305,9 @@ const About = () => {
               <div className={`${
                 isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-100'
               } rounded-3xl p-8 border`}>
-                <div className={`text-4xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>45 hours</div>
+                <div className={`text-4xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                  <NumberTicker value={45} className={isDark ? 'text-white' : 'text-gray-900'} /> hours
+                </div>
                 <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
                   Average response time to client requests, ensuring that your projects never lose momentum and stay on track.
                 </p>
@@ -308,7 +321,9 @@ const About = () => {
                   alt="Team working" 
                   className="w-full h-40 object-cover rounded-2xl mb-4"
                 />
-                <div className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>75% Faster</div>
+                <div className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                  <NumberTicker value={75} className={isDark ? 'text-white' : 'text-gray-900'} />% Faster
+                </div>
                 <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
                   Development speed compared to industry average, thanks to our streamlined processes and experienced team.
                 </p>
@@ -325,7 +340,9 @@ const About = () => {
               <div className={`${
                 isDark ? 'bg-gradient-to-br from-purple-700 to-purple-900' : 'bg-gradient-to-br from-purple-600 to-purple-800'
               } rounded-3xl p-8 text-white`}>
-                <div className="text-4xl font-bold mb-4">$500K+</div>
+                <div className="text-4xl font-bold mb-4">
+                  $<NumberTicker value={500} className="text-white" />K+
+                </div>
                 <div className="text-xl font-semibold mb-2">Saved</div>
                 <p className={isDark ? 'text-purple-200' : 'text-purple-100'}>
                   Total cost savings delivered to our clients through efficient development practices and innovative solutions that reduce operational overhead.

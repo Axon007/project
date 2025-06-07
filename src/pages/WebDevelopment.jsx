@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { Terminal, TypingAnimation, AnimatedSpan } from "../components/magicui/terminal";
 import { AnimatePresence } from "framer-motion";
 import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
+import { NumberTicker } from '../components/ui/number-ticker';
 
 // Add the LineShadowText component
 const LineShadowText = ({ children, shadowColor = "#8B5CF6", className = "", as = "span", ...props }) => {
@@ -1074,15 +1075,21 @@ function WebDevelopmentServices() {
               <div className="mt-10 flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 bg-secondary/10 rounded-full px-4 py-1.5">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-sm font-medium">98.7% Uptime</span>
+                  <span className="text-sm font-medium">
+              <NumberTicker value={98.7} decimalPlaces={1} />% Uptime
+            </span>
                 </div>
                 <div className="flex items-center gap-2 bg-secondary/10 rounded-full px-4 py-1.5">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm font-medium">2.3s Average Load Time</span>
+                  <span className="text-sm font-medium">
+              <NumberTicker value={2.3} decimalPlaces={1} />s Average Load Time
+            </span>
                 </div>
                 <div className="flex items-center gap-2 bg-secondary/10 rounded-full px-4 py-1.5">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <span className="text-sm font-medium">42% Conversion Rate</span>
+                  <span className="text-sm font-medium">
+              <NumberTicker value={42} />% Conversion Rate
+            </span>
                 </div>
               </div>
             </div>
@@ -1109,17 +1116,23 @@ function WebDevelopmentServices() {
                   <div className="grid grid-cols-3 gap-4 mt-6">
                     <div className="bg-background p-4 rounded-lg">
                       <div className="text-xs text-foreground/60 mb-1">Active Users</div>
-                      <div className="text-2xl font-bold">24.8K</div>
+                      <div className="text-2xl font-bold">
+              <NumberTicker value={24.8} decimalPlaces={1} />K
+            </div>
                       <div className="text-xs text-green-500 mt-1">↑ 12% vs last week</div>
                     </div>
                     <div className="bg-background p-4 rounded-lg">
                       <div className="text-xs text-foreground/60 mb-1">Retention</div>
-                      <div className="text-2xl font-bold">76%</div>
+                      <div className="text-2xl font-bold">
+              <NumberTicker value={76} />%
+            </div>
                       <div className="text-xs text-green-500 mt-1">↑ 5% vs last week</div>
                     </div>
                     <div className="bg-background p-4 rounded-lg">
                       <div className="text-xs text-foreground/60 mb-1">Session Time</div>
-                      <div className="text-2xl font-bold">4:32</div>
+                      <div className="text-2xl font-bold">
+              <NumberTicker value={4} />:<NumberTicker value={32} />
+            </div>
                       <div className="text-xs text-green-500 mt-1">↑ 18% vs last week</div>
                     </div>
                   </div>

@@ -4,6 +4,7 @@ import { ArrowRight, Check, Instagram, Facebook, Twitter, Linkedin, TrendingUp, 
 import PageTransition from '../components/PageTransition';
 import { useThemeContext } from '../components/ThemeProvider';
 import ThemeToggle from '../components/ThemeToggle';
+import { NumberTicker } from '../components/ui/number-ticker';
 
 // Enhanced theme accent colors with better contrast
 const THEME_ACCENT = {
@@ -82,7 +83,9 @@ const SocialHeroSection = () => {
         >
           <div className="relative w-14 h-14 rounded-xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 flex items-center justify-center -rotate-6 transition-colors duration-300">
             <Music className="w-5 h-5 text-violet-500 dark:text-violet-400" />
-            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-violet-500 dark:bg-violet-400 border-2 border-white dark:border-gray-800 flex items-center justify-center text-[8px] text-white font-bold transition-colors duration-300">3</div>
+            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-violet-500 dark:bg-violet-400 border-2 border-white dark:border-gray-800 flex items-center justify-center text-[8px] text-white font-bold transition-colors duration-300">
+              <NumberTicker value={3} />
+            </div>
           </div>
         </motion.div>
         <motion.div 
@@ -115,7 +118,9 @@ const SocialHeroSection = () => {
           style={{ transform: calculateTransform(-30) }}
         >
           <div className="px-3 py-1.5 rounded-full bg-white/95 dark:bg-gray-800/95 shadow-lg backdrop-blur-sm border border-violet-200 dark:border-violet-700/50 transition-colors duration-300">
-            <span className="text-xs font-medium bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent">+42.8% Growth</span>
+            <span className="text-xs font-medium bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent">
+              +<NumberTicker value={42.8} decimalPlaces={1} />% Growth
+            </span>
           </div>
         </motion.div>
       </div>
@@ -197,7 +202,7 @@ const SocialHeroSection = () => {
                   </div>
                 ))}
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-violet-100 dark:bg-violet-800 border-2 border-white dark:border-gray-900 flex items-center justify-center text-xs font-bold text-violet-700 dark:text-violet-300 transition-colors duration-300">
-                  +5K
+                  +<NumberTicker value={5} />K
                 </div>
               </div>
               
@@ -206,10 +211,14 @@ const SocialHeroSection = () => {
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star key={star} size={12} className="text-yellow-400 fill-yellow-400 sm:w-3.5 sm:h-3.5" />
                   ))}
-                  <span className="ml-1 text-xs sm:ml-1.5 sm:text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">4.9/5</span>
+                  <span className="ml-1 text-xs sm:ml-1.5 sm:text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">
+                <NumberTicker value={4.9} decimalPlaces={1} />/<NumberTicker value={5} />
+              </span>
                 </div>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                  From <span className="font-medium">200+</span> satisfied brands
+                  From <span className="font-medium">
+                  <NumberTicker value={200} />+
+                </span> satisfied brands
                 </p>
               </div>
             </div>
@@ -303,11 +312,15 @@ const SocialHeroSection = () => {
                         <div className="flex gap-5">
                           <div className="flex items-center gap-1">
                             <ThumbsUp size={16} className="text-gray-500 dark:text-gray-400 transition-colors duration-300" />
-                            <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">138K</span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                <NumberTicker value={138} />K
+              </span>
                           </div>
                           <div className="flex items-center gap-1">
                             <MessageCircle size={16} className="text-gray-500 dark:text-gray-400 transition-colors duration-300" />
-                            <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">4.2K</span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                <NumberTicker value={4.2} decimalPlaces={1} />K
+              </span>
                           </div>
                         </div>
                         
@@ -1749,11 +1762,15 @@ const AnalyticsDashboardSection = () => {
                     <div className="text-xs text-gray-500 dark:text-zinc-400 mb-2">Gender</div>
                     <div className="flex gap-4">
                       <div className="flex-1 bg-gray-100 dark:bg-gray-700/50 rounded-xl p-3 text-center transition-colors duration-300">
-                        <div className="text-lg font-bold text-gray-900 dark:text-white transition-colors duration-300">58%</div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white transition-colors duration-300">
+                <NumberTicker value={58} />%
+              </div>
                         <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">Female</div>
                       </div>
                       <div className="flex-1 bg-gray-100 dark:bg-gray-700/50 rounded-xl p-3 text-center transition-colors duration-300">
-                        <div className="text-lg font-bold text-gray-900 dark:text-white transition-colors duration-300">42%</div>
+                        <div className="text-lg font-bold text-gray-900 dark:text-white transition-colors duration-300">
+                <NumberTicker value={42} />%
+              </div>
                         <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">Male</div>
                       </div>
                     </div>

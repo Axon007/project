@@ -1578,7 +1578,9 @@ function ComputerVisionVisualization() {
           <div className="absolute -top-8 left-0 bg-purple-500 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2 shadow-lg">
             <Eye size={12} />
             Person
-            <span className="bg-white/20 px-1 rounded">98%</span>
+                          <span className="bg-white/20 px-1 rounded">
+                <NumberTicker value={98} />%
+              </span>
           </div>
           
           {/* Scanning effect */}
@@ -1642,7 +1644,9 @@ function ComputerVisionVisualization() {
           <div className="absolute -top-8 left-0 bg-green-500 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2 shadow-lg">
             <Table size={12} />
             Bench
-            <span className="bg-white/20 px-1 rounded">87%</span>
+                          <span className="bg-white/20 px-1 rounded">
+                <NumberTicker value={87} />%
+              </span>
           </div>
         </motion.div>
       </motion.div>
@@ -1665,7 +1669,9 @@ function ComputerVisionVisualization() {
           <div className="absolute -top-8 left-0 bg-blue-400 text-white text-xs px-3 py-1 rounded-md flex items-center gap-2 shadow-lg">
             <Camera size={12} />
             Truck or van
-            <span className="bg-white/20 px-1 rounded">93%</span>
+                          <span className="bg-white/20 px-1 rounded">
+                <NumberTicker value={93} />%
+              </span>
           </div>
         </motion.div>
       </motion.div>
@@ -1745,7 +1751,9 @@ function ComputerVisionVisualization() {
                 transition={{ duration: 1.2, delay: 0.2 }}
               />
             </motion.div>
-            <span className="text-xs text-primary">85%</span>
+            <span className="text-xs text-primary">
+              <NumberTicker value={85} />%
+            </span>
           </div>
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs text-white/80">Tracking:</span>
@@ -1760,7 +1768,9 @@ function ComputerVisionVisualization() {
                 transition={{ duration: 1.4, delay: 0.4 }}
               />
             </motion.div>
-            <span className="text-xs text-purple-500">92%</span>
+            <span className="text-xs text-purple-500">
+              <NumberTicker value={92} />%
+            </span>
           </div>
         </div>
       </div> */}

@@ -6,6 +6,7 @@ import {
   Globe, Briefcase, ArrowRight, Download, Users, Clock, Server,
   Monitor, Cloud, Zap, Shield, Award, HardDrive, Play, Pause, Volume2, VolumeX
 } from 'lucide-react';
+import { NumberTicker } from '../components/ui/number-ticker';
 
 // Animation keyframes - moved to CSS-in-JS for better theme integration
 const getAnimationStyles = (isDark) => `
@@ -41,10 +42,10 @@ const getAnimationStyles = (isDark) => `
 
 // Stats data - mobile optimized
 const STATS = [
-  { value: '50+', label: 'Games Shipped', icon: <Gamepad className="w-4 h-4 sm:w-5 sm:h-5" /> },
-  { value: '98%', label: 'Client Satisfaction', icon: <Star className="w-4 h-4 sm:w-5 sm:h-5" /> },
-  { value: '12+', label: 'Years Experience', icon: <Clock className="w-4 h-4 sm:w-5 sm:h-5" /> },
-  { value: '15M+', label: 'Players Reached', icon: <Users className="w-4 h-4 sm:w-5 sm:h-5" /> }
+  { value: '50+', label: 'Games Shipped', icon: <Gamepad className="w-4 h-4 sm:w-5 sm:h-5" />, numValue: 50, suffix: '+' },
+  { value: '98%', label: 'Client Satisfaction', icon: <Star className="w-4 h-4 sm:w-5 sm:h-5" />, numValue: 98, suffix: '%' },
+  { value: '12+', label: 'Years Experience', icon: <Clock className="w-4 h-4 sm:w-5 sm:h-5" />, numValue: 12, suffix: '+' },
+  { value: '15M+', label: 'Players Reached', icon: <Users className="w-4 h-4 sm:w-5 sm:h-5" />, numValue: 15, suffix: 'M+' }
 ];
 
 // Services data with mobile-optimized descriptions
@@ -105,6 +106,8 @@ const PROJECTS = [
     description: "Open-world fantasy RPG with advanced character progression and dynamic world events",
     image: "https://images.unsplash.com/photo-1642068052494-8325822f6d92?auto=format&fit=crop&w=500&q=80",
     downloads: "2.5M+",
+    downloadsNum: 2.5,
+    downloadsSuffix: "M+",
     platforms: ["iOS", "Android"],
     tech: ["Unity", "C#", "Firebase"],
     achievements: ["Editor's Choice", "Featured App"],
@@ -116,6 +119,8 @@ const PROJECTS = [
     description: "Procedurally generated space exploration game with resource management and alien civilizations",
     image: "https://images.unsplash.com/photo-1614728894747-a83421789f10?auto=format&fit=crop&w=500&q=80",
     downloads: "1.8M+",
+    downloadsNum: 1.8,
+    downloadsSuffix: "M+",
     platforms: ["Steam", "Epic"],
     tech: ["Unreal", "C++", "AWS"],
     achievements: ["Steam Top Seller", "Best Indie Game 2022"],
@@ -127,6 +132,8 @@ const PROJECTS = [
     description: "Mind-bending puzzle game with innovative mechanics and beautiful artistic style",
     image: "https://images.unsplash.com/photo-1612404730960-5c71577fca11?auto=format&fit=crop&w=500&q=80",
     downloads: "3.2M+",
+    downloadsNum: 3.2,
+    downloadsSuffix: "M+",
     platforms: ["PC", "Console", "Mobile"],
     tech: ["Unity", "C#", "PlayFab"],
     achievements: ["10/10 IGN Rating", "Game Awards Nominee"],
@@ -827,7 +834,10 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
                     {/* Downloads counter - mobile optimized */}
                     <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 flex items-center gap-1 sm:gap-2 z-20 px-1.5 sm:px-2 py-1 rounded-md bg-black/50 backdrop-blur-sm border border-gray-700/50">
                       <Download className={`w-2.5 h-2.5 sm:w-3 sm:h-3 text-${project.color}-400`} />
-                      <span className="text-xs font-medium text-white">{project.downloads}</span>
+                      <span className="text-xs font-medium text-white">
+                  <NumberTicker value={project.downloadsNum} decimalPlaces={1} className="text-white" />
+                  {project.downloadsSuffix}
+                </span>
                     </div>
                   </div>
                   

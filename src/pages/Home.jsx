@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { Meteors } from "../components/ui/meteor-effect";
 import * as THREE from "three";
+import { NumberTicker } from '../components/ui/number-ticker';
 import { 
   ArrowRight, Code, Users, Award, BarChart, 
   BadgeCheck, LineChart, Gamepad2, Palette, 
@@ -1714,12 +1715,21 @@ function Home({ theme, toggleTheme }) {
           >
             <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
               {[
-                { value: "150+", label: "Projects Completed" },
-                { value: "98%", label: "Client Satisfaction" },
-                { value: "5+", label: "Years Experience" },
+                  { value: "150+", label: "Projects Completed", numValue: 150, suffix: "+" },
+  { value: "98%", label: "Client Satisfaction", numValue: 98, suffix: "%" },
+  { value: "5+", label: "Years Experience", numValue: 5, suffix: "+" },
                 { value: "24/7", label: "Support" }              ].map((stat, index) => (
                 <div key={index} className="bg-background/40 backdrop-blur-md rounded-xl p-4 text-center border border-gray-300/5">
-                  <div className="text-2xl md:text-3xl font-bold text-primary">{stat.value}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-primary">
+                    {stat.numValue ? (
+                      <>
+                        <NumberTicker value={stat.numValue} className="text-primary" />
+                        {stat.suffix}
+                      </>
+                    ) : (
+                      stat.value
+                    )}
+                  </div>
                   <div className="text-sm text-foreground/70">{stat.label}</div>
                 </div>
               ))}

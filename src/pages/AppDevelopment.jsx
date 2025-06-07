@@ -5,6 +5,7 @@ import Iphone15Pro from "@/components/magicui/iphone-15-pro";
 import Android from "@/components/magicui/android";
 import { useState } from "react";
 import DevicePlatformShowcase from "../components/DevicePlatformShowcase";
+import { NumberTicker } from '../components/ui/number-ticker';
 
 
 import { 
@@ -191,15 +192,21 @@ const DeviceShowcase = () => {
         <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-card/80 backdrop-blur-md border border-border rounded-xl p-4 flex items-center gap-8 shadow-lg">
           <div className="text-center">
             <p className="text-xs text-foreground/60">App Stores</p>
-            <p className="font-semibold">2</p>
+            <p className="font-semibold">
+              <NumberTicker value={2} />
+            </p>
           </div>
           <div className="text-center">
             <p className="text-xs text-foreground/60">Market Share</p>
-            <p className="font-semibold">99.6%</p>
+            <p className="font-semibold">
+              <NumberTicker value={99.6} decimalPlaces={1} />%
+            </p>
           </div>
           <div className="text-center">
             <p className="text-xs text-foreground/60">Global Users</p>
-            <p className="font-semibold">6.92B</p>
+            <p className="font-semibold">
+              <NumberTicker value={6.92} decimalPlaces={2} />B
+            </p>
           </div>
         </div>
       </motion.div>
@@ -487,7 +494,9 @@ function AppDevelopment() {
             <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
           </span>
           <span className="text-sm font-medium text-primary">Next-Generation App Development</span>
-          <span className="px-2 py-0.5 bg-primary/20 text-xs font-semibold rounded-full text-primary ml-1">2025</span>
+                      <span className="px-2 py-0.5 bg-primary/20 text-xs font-semibold rounded-full text-primary ml-1">
+              <NumberTicker value={2025} />
+            </span>
         </motion.div>
 
         <motion.div
