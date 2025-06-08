@@ -409,153 +409,117 @@ const ProjectCard = ({ project }) => {
           <span className="text-sm text-foreground/60">
             {project.client}
           </span>
-            <Drawer>
+          
+          <Drawer>
             <DrawerTrigger asChild>
               <button className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors">
                 View Details
                 <ArrowRight className="w-4 h-4" />
               </button>
             </DrawerTrigger>
-            <DrawerContent className="max-w-6xl mx-auto max-h-[90vh] overflow-y-auto">
-              <DrawerHeader className="px-6 pt-6 pb-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <DrawerTitle className="text-2xl md:text-3xl font-bold mb-2">{project.title}</DrawerTitle>
-                    <DrawerDescription className="text-base md:text-lg text-foreground/70">
-                      {project.description}
-                    </DrawerDescription>
-                  </div>
-                  <DrawerClose asChild>
-                    <button className="ml-4 p-2 hover:bg-secondary/20 rounded-lg transition-colors">
-                      <X className="w-5 h-5" />
-                    </button>
-                  </DrawerClose>
-                </div>
+            <DrawerContent className="max-w-4xl mx-auto">
+              <DrawerHeader>
+                <DrawerTitle className="text-2xl font-bold">{project.title}</DrawerTitle>
+                <DrawerDescription className="text-base">
+                  {project.description}
+                </DrawerDescription>
               </DrawerHeader>
               
-              <div className="px-6 pb-6 space-y-8">
-                {/* Project Image */}
-                <div className="aspect-video overflow-hidden rounded-xl shadow-lg">
+              <div className="p-6 space-y-6">
+                <div className="aspect-video overflow-hidden rounded-lg">
                   <img 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 
-                {/* Main Content Grid */}
-                <div className="grid lg:grid-cols-3 gap-8">
-                  {/* Left Column - Project Details & Technologies */}
-                  <div className="lg:col-span-1 space-y-6">
-                    {/* Project Details */}
-                    <div className="p-6 rounded-xl bg-secondary/20 border border-border">
-                      <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-                        <Monitor className="w-5 h-5 text-primary" />
-                        Project Details
-                      </h4>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-foreground/60 font-medium">Category:</span>
-                          <span className="text-sm px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-                            {project.category}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-foreground/60 font-medium">Status:</span>
-                          <span className={`text-sm px-3 py-1 rounded-full font-medium ${
-                            project.status === 'Completed' 
-                              ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
-                              : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                          }`}>
-                            {project.status}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-foreground/60 font-medium">Client:</span>
-                          <span className="font-medium">{project.client}</span>
-                        </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-semibold mb-3">Project Details</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-foreground/60">Category:</span>
+                        <span>{project.category}</span>
                       </div>
-                    </div>
-                    
-                    {/* Technologies */}
-                    <div className="p-6 rounded-xl bg-secondary/20 border border-border">
-                      <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-                        <Code className="w-5 h-5 text-primary" />
-                        Technologies Used
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech, index) => (
-                          <span 
-                            key={index}
-                            className="text-sm px-3 py-2 bg-primary/10 text-primary rounded-lg font-medium border border-primary/20 hover:bg-primary/20 transition-colors"
-                          >
-                            {tech}
-                          </span>
-                        ))}
+                      <div className="flex justify-between">
+                        <span className="text-foreground/60">Status:</span>
+                        <span className={
+                          project.status === 'Completed' 
+                            ? 'text-green-600 dark:text-green-400' 
+                            : 'text-yellow-600 dark:text-yellow-400'
+                        }>
+                          {project.status}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-foreground/60">Client:</span>
+                        <span>{project.client}</span>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Right Column - Features & Actions */}
-                  <div className="lg:col-span-2 space-y-6">
-                    {/* Key Features */}
-                    <div className="p-6 rounded-xl bg-secondary/20 border border-border">
-                      <h4 className="font-bold text-lg mb-4 flex items-center gap-2">
-                        <Star className="w-5 h-5 text-primary" />
-                        Key Features
-                      </h4>
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        {project.features.map((feature, index) => (
-                          <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-background/50 border border-border/50 hover:border-primary/30 transition-colors">
-                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                            <span className="text-sm font-medium">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      {project.demo && (
-                        <a
-                          href={project.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 inline-flex items-center justify-center gap-3 px-6 py-4 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-all duration-300 font-semibold text-base shadow-lg hover:shadow-xl hover:shadow-primary/25 hover:-translate-y-0.5"
+                  <div>
+                    <h4 className="font-semibold mb-3">Technologies Used</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech, index) => (
+                        <span 
+                          key={index}
+                          className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full"
                         >
-                          <ExternalLink className="w-5 h-5" />
-                          View Live Demo
-                        </a>
-                      )}
-                      {project.github && (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 inline-flex items-center justify-center gap-3 px-6 py-4 border-2 border-border text-foreground rounded-xl hover:bg-secondary/30 hover:border-primary/50 transition-all duration-300 font-semibold text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                        >
-                          <Github className="w-5 h-5" />
-                          View Source Code
-                        </a>
-                      )}
+                          {tech}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
                 
-                {/* Additional Info Section */}
-                <div className="pt-6 border-t border-border">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div className="text-sm text-foreground/60">
-                      <p>Interested in a similar project? <a href="/contact" className="text-primary hover:text-primary/80 font-medium underline">Get in touch</a> to discuss your requirements.</p>
-                    </div>
-                    <div className="flex gap-3">
-                      <button className="px-4 py-2 text-sm border border-border rounded-lg hover:bg-secondary/20 transition-colors">
-                        Share Project
-                      </button>
-                    </div>
+                <div>
+                  <h4 className="font-semibold mb-3">Key Features</h4>
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {project.features.map((feature, index) => (
+                      <div key={index} className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
+                
+                <div className="flex gap-4 pt-4">
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Live Demo
+                    </a>
+                  )}
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 border border-border text-foreground rounded-lg hover:bg-secondary/20 transition-colors text-sm font-medium"
+                    >
+                      <Github className="w-4 h-4" />
+                      View Code
+                    </a>
+                  )}
+                </div>
               </div>
+              
+              <DrawerFooter>
+                <DrawerClose asChild>
+                  <button className="inline-flex items-center gap-2 px-4 py-2 border border-border text-foreground rounded-lg hover:bg-secondary/20 transition-colors text-sm font-medium">
+                    <X className="w-4 h-4" />
+                    Close
+                  </button>
+                </DrawerClose>
+              </DrawerFooter>
             </DrawerContent>
           </Drawer>
         </div>
