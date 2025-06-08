@@ -30,6 +30,11 @@ const getAnimationStyles = (isDark) => `
     to { width: 100%; }
   }
   
+  /* Theme transition class for smooth theme switching */
+  .theme-transition {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+  
   .cursor:after {
     content: '|';
     animation: blink 1s step-end infinite;
@@ -309,37 +314,37 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
     }
   };
 
-  // Comprehensive theme configuration
+  // Enhanced theme configuration using CSS custom properties and proper theme classes
   const themeConfig = {
-    // Main backgrounds
-    mainBg: isDark ? 'bg-gray-950' : 'bg-gray-50',
-    sectionBg: isDark ? 'bg-gray-900/50' : 'bg-white/80',
-    cardBg: isDark ? 'bg-gray-900/80' : 'bg-white/90',
+    // Main backgrounds - using theme-aware classes
+    mainBg: 'bg-background theme-transition',
+    sectionBg: isDark ? 'bg-card/50 backdrop-blur-sm' : 'bg-card/80 backdrop-blur-sm',
+    cardBg: isDark ? 'bg-card/80 backdrop-blur-md' : 'bg-card/90 backdrop-blur-md',
     
-    // Text colors
-    textPrimary: isDark ? 'text-white' : 'text-gray-900',
-    textSecondary: isDark ? 'text-gray-300' : 'text-gray-700',
-    textMuted: isDark ? 'text-gray-400' : 'text-gray-600',
+    // Text colors - using semantic color tokens
+    textPrimary: 'text-foreground theme-transition',
+    textSecondary: 'text-muted-foreground theme-transition',
+    textMuted: 'text-muted-foreground/70 theme-transition',
     
-    // Borders and dividers
-    border: isDark ? 'border-gray-800/50' : 'border-gray-200/50',
-    borderHover: isDark ? 'border-blue-500/50' : 'border-blue-400/50',
+    // Borders and dividers - using theme variables
+    border: 'border-border/50 theme-transition',
+    borderHover: isDark ? 'hover:border-blue-500/50' : 'hover:border-blue-400/50',
     
     // Interactive states
-    hover: isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-100/50',
+    hover: isDark ? 'hover:bg-accent/10' : 'hover:bg-accent/5',
     
-    // Accent colors
+    // Accent colors - theme-aware
     accent: isDark ? 'text-blue-400' : 'text-blue-600',
-    accentBg: isDark ? 'bg-blue-600/20' : 'bg-blue-500/10',
+    accentBg: isDark ? 'bg-blue-500/10 border-blue-500/20' : 'bg-blue-500/5 border-blue-500/15',
     accentBorder: isDark ? 'border-blue-500/30' : 'border-blue-400/30',
     
-    // Gradients
+    // Gradients - consistent across themes
     primaryGradient: isDark ? 'from-blue-600 to-indigo-600' : 'from-blue-500 to-indigo-500',
     textGradient: 'from-blue-400 via-purple-400 to-blue-300',
     
-    // Shadows
-    shadow: isDark ? 'shadow-blue-900/20' : 'shadow-blue-500/20',
-    glowShadow: isDark ? 'shadow-[0_0_30px_rgba(59,130,246,0.3)]' : 'shadow-[0_0_30px_rgba(59,130,246,0.2)]',
+    // Shadows - theme-aware
+    shadow: isDark ? 'shadow-lg shadow-black/20' : 'shadow-lg shadow-blue-500/10',
+    glowShadow: isDark ? 'shadow-[0_0_30px_rgba(59,130,246,0.3)]' : 'shadow-[0_0_30px_rgba(59,130,246,0.15)]',
   };
 
   // Interactive typewriter effect for welcome message
@@ -370,7 +375,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
   }, []);
 
   return (
-    <div className={`min-h-screen ${themeConfig.mainBg} ${themeConfig.textPrimary} transition-all duration-500 relative overflow-hidden`}>
+    <div className={`min-h-screen ${themeConfig.mainBg} ${themeConfig.textPrimary} relative overflow-hidden`}>
       {/* Dynamic Styles */}
       <style>{getAnimationStyles(isDark)}</style>
       
@@ -401,7 +406,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
             
             {/* Mobile interaction tooltip - positioned at bottom center */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30 sm:hidden">
-              <div className={`${isDark ? 'bg-black/70' : 'bg-white/70'} backdrop-blur-sm border ${themeConfig.accentBorder} rounded-full px-4 py-2 flex items-center gap-2 animate-pulse`}>
+              <div className={`${themeConfig.cardBg} border ${themeConfig.accentBorder} rounded-full px-4 py-2 flex items-center gap-2 animate-pulse`}>
                 <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-blue-400' : 'bg-blue-500'} animate-ping`}></div>
                 <span className={`${themeConfig.textPrimary} text-xs font-medium`}>Click and drag to interact with the 3D model</span>
               </div>
@@ -409,7 +414,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
             
             {/* Loading indicator - mobile optimized */}
             {!splineLoaded && (
-              <div className={`absolute inset-0 flex items-center justify-center z-50 px-4 ${isDark ? 'bg-gray-900/50' : 'bg-white/50'} backdrop-blur-sm`}>
+              <div className={`absolute inset-0 flex items-center justify-center z-50 px-4 ${themeConfig.cardBg} border ${themeConfig.border}`}>
                 <div className="flex flex-col items-center">
                   <div className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full border-4 border-t-transparent border-b-transparent ${isDark ? 'border-blue-400' : 'border-blue-500'} animate-spin`}></div>
                   <p className={`mt-4 ${themeConfig.textPrimary} text-sm sm:text-base text-center`}>Loading 3D Experience...</p>
@@ -426,10 +431,10 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className={`inline-flex items-center mb-4 sm:mb-8 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full backdrop-blur-md ${themeConfig.accentBg} border ${themeConfig.accentBorder} text-xs sm:text-sm`}
+                className={`inline-flex items-center mb-4 sm:mb-8 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full ${themeConfig.cardBg} border ${themeConfig.accentBorder} text-xs sm:text-sm backdrop-blur-md`}
               >
                 <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full animate-pulse ${isDark ? 'bg-blue-400' : 'bg-blue-500'} mr-2`}></span>
-                <p className={`font-medium ${themeConfig.textPrimary}`}>Interactive Game Development</p>
+                <p className={`font-medium ${themeConfig.accent}`}>Interactive Game Development</p>
               </motion.div>
               
               {/* Main headline - desktop only */}
@@ -452,7 +457,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
-                className={`mb-6 sm:mb-10 text-base sm:text-lg lg:text-xl leading-relaxed max-w-full sm:max-w-lg ${themeConfig.textSecondary} backdrop-blur-sm ${isDark ? 'bg-black/20' : 'bg-white/20'} rounded-xl py-2 sm:py-3 px-3 sm:px-5`}
+                className={`mb-6 sm:mb-10 text-base sm:text-lg lg:text-xl leading-relaxed max-w-full sm:max-w-lg ${themeConfig.textSecondary} ${themeConfig.cardBg} rounded-xl py-2 sm:py-3 px-3 sm:px-5 border ${themeConfig.border}`}
               >
                 Interact with our 3D model and experience the next level of gaming development. We create immersive experiences that push boundaries.
               </motion.p>
@@ -465,20 +470,20 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
                 className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-5 pointer-events-auto w-full sm:w-auto"
               >
                 <motion.button 
-                  whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.5)" }}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r ${themeConfig.primaryGradient} rounded-full font-medium text-base sm:text-lg ${themeConfig.shadow} text-white flex items-center justify-center gap-2 sm:gap-3 overflow-hidden w-full sm:w-auto min-h-[48px] touch-manipulation`}
+                  className={`group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r ${themeConfig.primaryGradient} rounded-full font-medium text-base sm:text-lg ${themeConfig.shadow} text-white flex items-center justify-center gap-2 sm:gap-3 overflow-hidden w-full sm:w-auto min-h-[48px] touch-manipulation transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25`}
                 >
                   <span className="relative z-10 text-sm sm:text-base">Start Your Game Project</span>
                   <ArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform w-4 h-4 sm:w-5 sm:h-5" />
-                  <div className={`absolute inset-0 bg-gradient-to-r ${isDark ? 'from-blue-500 to-indigo-500' : 'from-blue-400 to-indigo-400'} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
+                  <div className={`absolute inset-0 bg-gradient-to-r ${isDark ? 'from-blue-500 to-indigo-500' : 'from-blue-400 to-indigo-400'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
                 </motion.button>
                 
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => scrollToSection(servicesRef)}
-                  className={`flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-4 border rounded-full font-medium transition-colors ${themeConfig.accentBorder} ${themeConfig.hover} backdrop-blur-sm ${themeConfig.textPrimary} w-full sm:w-auto min-h-[48px] touch-manipulation text-sm sm:text-base`}
+                  className={`flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-4 border rounded-full font-medium ${themeConfig.accentBorder} ${themeConfig.hover} ${themeConfig.cardBg} ${themeConfig.textPrimary} w-full sm:w-auto min-h-[48px] touch-manipulation text-sm sm:text-base transition-all duration-300`}
                 >
                   <Gamepad className="w-4 h-4 sm:w-5 sm:h-5" />
                   Explore Our Services
@@ -517,7 +522,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
               {/* Secondary CTA for mobile */}
               <button 
                 onClick={() => scrollToSection(servicesRef)}
-                className={`w-full border ${themeConfig.accentBorder} ${isDark ? 'bg-black/50' : 'bg-white/50'} backdrop-blur-sm rounded-full py-3 px-6 font-medium ${themeConfig.textPrimary} flex items-center justify-center gap-2 min-h-[48px] touch-manipulation`}
+                className={`w-full border ${themeConfig.accentBorder} ${themeConfig.cardBg} rounded-full py-3 px-6 font-medium ${themeConfig.textPrimary} flex items-center justify-center gap-2 min-h-[48px] touch-manipulation transition-all duration-300 ${themeConfig.hover}`}
               >
                 <Gamepad className="w-4 h-4" />
                 <span>Explore Services</span>
@@ -527,7 +532,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
         </section>
 
         {/* Mobile-First Gaming-themed Key Features Section */}
-        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-gray-100/70'} transition-colors duration-500`} ref={servicesRef}>
+        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-muted/30'} ${themeConfig.mainBg}`} ref={servicesRef}>
           {/* Interactive background elements */}
           {isDark && (
             <div className="absolute inset-0 overflow-hidden">
@@ -663,7 +668,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
         </section>
 
         {/* Mobile-First Gaming-themed Services Section */}
-        <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative">
+        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${themeConfig.mainBg}`}>
           {/* Background element */}
           <div className="absolute inset-0 bg-gradient-to-b from-blue-900/5 via-purple-900/5 to-blue-900/5 z-0"></div>
           
@@ -697,7 +702,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
               {[...SERVICES, ...ADDITIONAL_SERVICES].map((service, index) => (
                 <div
                   key={index}
-                  className={`group relative overflow-hidden rounded-lg ${isDark ? `bg-gray-900/80 border-${service.color}-900/40` : `bg-white/90 border-${service.color}-200/40`} border p-4 sm:p-6 md:p-8 hover:border-${service.color}-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] backdrop-blur-sm transform hover:-translate-y-1 touch-manipulation`}
+                  className={`group relative overflow-hidden rounded-lg ${themeConfig.cardBg} border ${themeConfig.border} hover:border-${service.color}-500/50 p-4 sm:p-6 md:p-8 transition-all duration-500 ${themeConfig.glowShadow} transform hover:-translate-y-1 touch-manipulation ${themeConfig.hover}`}
                 >
                   {/* Futuristic corner accents - mobile scaled */}
                   <div className={`absolute top-0 left-0 w-6 sm:w-8 md:w-10 h-0.5 sm:h-1 bg-${service.color}-500`}></div>
@@ -752,7 +757,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
         </section>
 
         {/* Mobile-First Portfolio Section - Gaming Showcase */}
-        <section ref={projectsRef} className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-blue-50/50'} transition-colors duration-300`}>
+        <section ref={projectsRef} className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-muted/20'} ${themeConfig.mainBg}`}>
           {/* Gaming background overlay */}
           <div className="absolute inset-0 opacity-10 z-0">
             {/* Hex grid pattern */}
@@ -804,7 +809,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
               {PROJECTS.map((project, idx) => (
                 <div 
                   key={idx}
-                  className={`group relative rounded-2xl overflow-hidden ${isDark ? 'bg-gray-900/80 border-blue-900/40' : 'bg-white/90 border-blue-200/40'} border hover:border-blue-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] touch-manipulation`}
+                  className={`group relative rounded-2xl overflow-hidden ${themeConfig.cardBg} border ${themeConfig.border} hover:border-blue-500/50 transition-all duration-500 ${themeConfig.glowShadow} touch-manipulation ${themeConfig.hover}`}
                 >
                   {/* Cyberpunk corner accents - mobile scaled */}
                   <div className={`absolute top-0 left-0 w-6 sm:w-8 md:w-10 h-0.5 sm:h-1 bg-${project.color}-500 z-10`}></div>
@@ -886,7 +891,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
         </section>
 
         {/* Mobile-First Development Process - Gaming Quest Path */}
-        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-indigo-50/30'} transition-colors duration-300`}>
+        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative ${isDark ? '' : 'bg-muted/20'} ${themeConfig.mainBg}`}>
           {/* Tech background with lines */}
           <div className={`absolute inset-0 opacity-${isDark ? '5' : '10'} z-0 transition-opacity duration-300`}>
             <div className={`absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-${isDark ? 'blue-500' : 'blue-600'} to-transparent`}></div>
@@ -947,7 +952,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
                 {PROCESS_STEPS.map((step, idx) => (
                   <div 
                     key={idx}
-                    className={`group relative rounded-xl ${isDark ? 'bg-gray-900/80 border-gray-800' : 'bg-white/90 border-gray-200'} border hover:border-purple-500/40 p-4 sm:p-6 md:p-8 transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] backdrop-blur-sm transform hover:-translate-y-1 cursor-pointer touch-manipulation`}
+                    className={`group relative rounded-xl ${themeConfig.cardBg} border ${themeConfig.border} hover:border-purple-500/40 p-4 sm:p-6 md:p-8 transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transform hover:-translate-y-1 cursor-pointer touch-manipulation ${themeConfig.hover}`}
                     onClick={() => alert(`Step ${step.number}: ${step.title} - Click to learn more`)}
                   >
                     {/* Mobile-optimized step number */}
@@ -1214,7 +1219,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
         </section>
 
         {/* Mobile-First Testimonials section - Gaming Reviews */}
-        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden ${isDark ? '' : 'bg-indigo-50/50'} transition-colors duration-300`}>
+        <section className={`py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden ${isDark ? '' : 'bg-muted/20'} ${themeConfig.mainBg}`}>
           {/* Gaming-themed background pattern */}
           <div className="absolute inset-0 opacity-5 z-0">
             <div className="w-full h-full" style={{
@@ -1274,7 +1279,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
               {TESTIMONIALS.map((testimonial, index) => (
                 <div
                   key={index}
-                  className={`group relative overflow-hidden rounded-lg ${isDark ? 'bg-gray-900/80 border-indigo-900/40' : 'bg-white/90 border-indigo-200/60'} border p-4 sm:p-6 md:p-8 hover:border-indigo-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] backdrop-blur-sm transform hover:-translate-y-1 cursor-pointer touch-manipulation`}
+                  className={`group relative overflow-hidden rounded-lg ${themeConfig.cardBg} border ${themeConfig.border} hover:border-indigo-500/50 p-4 sm:p-6 md:p-8 transition-all duration-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] transform hover:-translate-y-1 cursor-pointer touch-manipulation ${themeConfig.hover}`}
                   onClick={() => alert(`${testimonial.name} from ${testimonial.company} - View full review`)}
                 >
                   {/* Interactive ripple effect on click */}
@@ -1327,7 +1332,7 @@ const GamingDevServices = ({ theme = 'dark', toggleTheme }) => {
         </section>
 
         {/* Mobile-First Gaming-themed CTA Section */}
-        <section className={`py-16 sm:py-20 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden ${isDark ? '' : 'bg-gradient-to-b from-blue-50 to-indigo-100/70'} transition-all duration-500`}>
+        <section className={`py-16 sm:py-20 md:py-32 px-4 sm:px-6 md:px-8 relative overflow-hidden ${isDark ? '' : 'bg-gradient-to-b from-muted/30 to-muted/50'} ${themeConfig.mainBg}`}>
           {/* Animated background */}
           <div className={`absolute inset-0 bg-gradient-to-b ${isDark ? 'from-blue-900/10 to-purple-900/20' : 'from-blue-400/5 to-purple-400/10'} z-0 transition-colors duration-300`}></div>
           
