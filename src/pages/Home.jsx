@@ -1,885 +1,2456 @@
-import { motion } from "framer-motion";
-import { AuroraBackground } from '../components/AuroraBackground';
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect, memo, useMemo, useCallback } from "react";
 import PageTransition from '../components/PageTransition';
-import { NumberTicker } from '../components/ui/number-ticker';
-import { Globe } from '../components/magicui/globe';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { 
-  ArrowRight, Code, Palette, Gamepad2, VideoIcon, 
-  Smartphone, Monitor, Star, Users, Trophy, 
-  CheckCircle, Brain, Globe as GlobeIcon, Sparkles,
-  TrendingUp, Clock, Shield, Share2, BookOpen, Eye,
-  ExternalLink, Github, X
-} from "lucide-react";
 
-// Hero services data
+
+import { AuroraBackground } from "../components/ui/aurora-background";
+import { GlowingEffect} from '../components/ui/glowing-effect'
+import { Globe } from "@/components/magicui/globe";
+import { 
+  ArrowRight, Code, Users, Award, BarChart, 
+  BadgeCheck, LineChart, Gamepad2, Palette, 
+  VideoIcon, Brush, Lightbulb, ArrowLeft,ArrowDown,  MessageSquare, CheckCircle, Phone, Mail, MessageCircle,Smartphone, Database 
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+/* THEME AND UI CONFIGURATION */
+const THEME = {
+  primary: {
+    DEFAULT: "#0070F3",
+    light: "#3291FF",
+  },
+  secondary: {
+    DEFAULT: "#7928CA",
+  },
+  background: {
+    DEFAULT: "#FCFCFC",
+    muted: "#F5F5F5",
+  },
+  foreground: {
+    DEFAULT: "#18181B",
+  },
+  accent: {
+    blue: "#2563EB",
+    cyan: "#06B6D4",
+    green: "#10B981", 
+    yellow: "#FBBF24",
+    orange: "#F97316",
+  }
+};
+
+const UI = {
+  // Card patterns - unified
+  card: {
+    base: "rounded-2xl overflow-hidden border border-secondary/20 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 bg-background/50 backdrop-blur-sm",
+    padding: "p-6 md:p-8",
+    iconContainer: "mb-6 bg-primary/10 w-16 h-16 rounded-xl flex items-center justify-center",
+    hover: {
+      transform: "hover:-translate-y-1",
+      glow: "group-hover:opacity-100 opacity-0 transition-opacity duration-300"
+    }
+  },
+  
+  // Typography system - unified
+  text: {
+    heading: {
+      h1: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight",
+      h2: "text-2xl sm:text-3xl md:text-4xl font-bold",
+      h3: "text-xl md:text-2xl font-bold",
+      h4: "text-lg font-semibold",
+      section: "text-4xl md:text-5xl font-bold mt-4 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
+    },
+    body: {
+      default: "text-foreground/70",
+      sm: "text-sm text-foreground/70",
+      lg: "text-lg text-foreground/70"
+    },
+    accent: "text-primary"
+  },
+  
+  // Gradient patterns - unified
+  gradients: {
+    primary: "bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary",
+    hover: "bg-gradient-to-r from-primary/10 to-secondary/10",
+    card: "bg-gradient-to-r from-primary/5 to-secondary/5",
+    glow: "bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 blur-sm"
+  },
+  
+  // Button styles - unified
+  button: {
+    base: "flex items-center gap-2 font-medium transition-all",
+    sizes: {
+      sm: "px-3 py-1.5 text-sm",
+      md: "px-5 py-2.5 text-sm", 
+      lg: "px-6 py-3 text-base"
+    },
+    variants: {
+      primary: "bg-primary hover:bg-primary/90 text-white", 
+      secondary: "bg-primary/10 hover:bg-primary/20 text-primary",
+      outline: "border-2 border-primary/30 hover:bg-primary/10 text-primary"
+    },
+    pill: "rounded-full",
+    icon: "group-hover:translate-x-1 transition-transform duration-300"
+  },
+  
+  // Section & spacing - unified
+  section: {
+    padding: "py-16 md:py-24",
+    container: "max-w-7xl mx-auto relative z-10",
+    eyebrow: "text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block"
+  },
+  
+  // Effects - unified
+  effects: {
+    glow: "absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300",
+    hoverLift: "transition-transform duration-300 hover:-translate-y-1"
+  }
+};
+
+/* ANIMATIONS */
+const animations = {
+  fadeIn: {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.5 }
+  },
+  fadeInUp: {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 }
+  }
+};
+
+const createMotionProps = (type, delay = 0) => {
+  const base = animations[type];
+  return {
+    ...base,
+    viewport: { once: true },
+    transition: { 
+      ...base.transition, 
+      delay: delay 
+    }
+  };
+};
+
+/* REUSABLE COMPONENTS */
+const Section = ({ children, dark = false, pattern = false, className = "", id = null }) => (
+  <section 
+    id={id}
+    className={`py-24 px-4 ${
+      dark ? 'bg-background' : 
+      'bg-background'
+    } ${className}`}
+    aria-labelledby={id}
+  >
+    {pattern && (
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+    )}
+    <div className="max-w-7xl mx-auto relative z-10">
+      {children}
+    </div>
+  </section>
+);
+
+
+// Update the ServiceCard component for better interactivity and visual appeal
+const ServiceCard = ({ service, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <Link to={service.href} tabIndex={0} className="block focus:outline-none" key={index}>
+      <div
+        className={`${UI.card.base} group relative overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        tabIndex={-1}
+        role="button"
+        aria-label={service.title}
+      >
+        {/* Service glow effect */}
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-secondary/0 opacity-0 group-hover:opacity-100 rounded-2xl blur-sm transition-opacity duration-300"></div>
+        
+        <div className={`${UI.card.padding} relative z-10 bg-background/95 rounded-2xl h-full flex flex-col`}>
+          {/* Icon with enhanced animation */}
+          <div className={`${UI.card.iconContainer} relative transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/20`}>
+            <motion.div 
+      
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+              className="absolute inset-0 bg-primary/10 rounded-xl" />
+            <div className="relative z-10">
+              {service.icon}
+            </div>
+          </div>
+          
+          {/* Content with better spacing */}
+          <h3 className={`text-lg md:text-xl ${UI.text.heading} mb-2 md:mb-3 group-hover:text-primary transition-colors`}>
+            {service.title}
+          </h3>
+          
+          <p className={`${UI.text.body} text-sm mb-4 md:mb-6`}>
+            {service.description}
+          </p>
+          
+          {/* Features list with improved bullets */}
+          <div className="flex-grow">
+            <h4 className="text-sm font-medium text-primary/80 mb-3">Features:</h4>
+            <ul className="space-y-2">
+              {service.features.map((feature, i) => (
+                <li key={i} className="flex items-center text-sm text-foreground/70">
+                  <span className="mr-2 h-1.5 w-1.5 rounded-full bg-primary/70"></span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Bottom CTA with animation */}
+          <div className="mt-6 pt-4 border-t border-secondary/10">
+            <motion.div 
+              className="flex items-center justify-between text-primary font-medium"
+              animate={{ x: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.9 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="text-sm">Learn more</span>
+              <ArrowRight size={16} className="ml-2 group-hover:translate-x-1.5 transition-transform" />
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+// Add this new component for mobile services carousel
+const MobileServiceCarousel = ({ services }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const carouselRef = useRef(null);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!carouselRef.current) return;
+      
+      const scrollPosition = carouselRef.current.scrollLeft;
+      const itemWidth = carouselRef.current.offsetWidth;
+      const newIndex = Math.round(scrollPosition / itemWidth);
+      
+      if (newIndex !== activeIndex) {
+        setActiveIndex(newIndex);
+      }
+    };
+    
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.addEventListener('scroll', handleScroll);
+      return () => carousel.removeEventListener('scroll', handleScroll);
+    }
+  }, [activeIndex]);
+  
+  return (
+    <>
+      <div 
+        ref={carouselRef}
+        className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar -mx-4 px-4 pb-6"
+      >
+        {services.map((service, index) => (
+          <div 
+            key={index} 
+            className="w-full flex-shrink-0 snap-center px-2 first:pl-4 last:pr-4"
+          >
+            <ServiceCard service={service} index={index} />
+          </div>
+        ))}
+      </div>
+      
+      <div className="flex justify-center gap-1.5 mt-4">
+        {services.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              if (carouselRef.current) {
+                carouselRef.current.scrollLeft = index * carouselRef.current.offsetWidth;
+              }
+            }}
+            aria-label={`Go to slide ${index + 1}`}
+            className={`w-2.5 h-2.5 rounded-full transition-colors ${
+              activeIndex === index 
+                ? 'bg-primary' 
+                : 'bg-primary/30'
+            }`}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
+
+const ServicesSection = () => (
+  <section className="py-24 px-4" id="services">
+    <div className="max-w-7xl mx-auto">
+      <div className="text-center mb-16">
+        <span className="px-4 py-1.5 bg-primary/5 text-primary rounded-full text-sm font-medium">
+          Our Expertise
+        </span>
+        <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6">
+          Comprehensive Digital Services
+        </h2>
+        <p className="text-xl text-foreground/70 max-w-3xl mx-auto">
+          From concept to deployment, we offer end-to-end digital solutions tailored to your business needs
+        </p>
+      </div>
+
+      {/* Featured Services - 2 columns */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        {[
+          {
+            title: "Web Development",
+            description: "Custom websites and web applications built with modern technologies and best practices for optimal performance and user experience. Our expert team delivers responsive, SEO-friendly solutions.",
+            icon: <Code className="w-10 h-10 text-primary" />,
+            features: ["Responsive Design", "SEO Optimization", "Performance Tuning", "Custom CMS", "E-commerce Solutions"],
+            gradient: "from-primary/5 to-violet-500/5",
+            featured: true,
+            href: "/web-development"
+          },
+          {
+            title: "Computer Vision",
+            description: "Advanced image recognition and processing solutions to automate visual data analysis with cutting-edge AI technology. Transform how your business interprets and leverages visual information.",
+            icon: <Globe className="w-10 h-10 text-primary" />,
+            features: ["Object Detection", "Facial Recognition", "Image Classification", "Real-time Processing", "Custom AI Models"],
+            gradient: "from-violet-500/5 to-purple-500/5",
+            featured: true,
+            href: "/services/computer-vision"
+          },
+        ].map((service, index) => (
+          <Link 
+            to={service.href}
+            key={index}
+            className={`group relative overflow-hidden rounded-3xl p-6 hover:bg-primary/5 transition-all duration-300 border border-transparent hover:border-primary/20 bg-gradient-to-br ${service.gradient} cursor-pointer h-[360px]`}
+          >
+            {/* Ripple effect animation */}
+            <span className="absolute inset-0 w-full h-full">
+              <span className="ripple-effect absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-primary/10 opacity-0 group-hover:animate-ripple pointer-events-none"></span>
+            </span>
+            
+            <div className="absolute top-0 left-0 w-full h-full bg-secondary/5 dark:bg-gray-900/95 opacity-90 group-hover:opacity-95 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-6 p-3 rounded-xl bg-primary/5 w-fit backdrop-blur-sm">
+                {service.icon}
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{service.title}</h3>
+              <p className="text-foreground/70 mb-6">{service.description}</p>
+              <ul className="space-y-2 mb-8">
+                {service.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-sm text-foreground/60">
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              
+              {/* Learn more button that appears on hover */}
+              <div className="absolute bottom-8 right-8 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary font-medium">
+                  Learn more
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Regular Services - 3 columns */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[
+          {
+            title: "Game Development",
+            description: "Engaging and immersive gaming experiences across multiple platforms using cutting-edge game engines",
+            icon: <Gamepad2 className="w-8 h-8 text-primary" />,
+            features: ["Unity & Unreal Engine", "Mobile Games", "Cross-platform"],
+            gradient: "from-purple-500/5 to-blue-500/5",
+            href: "/game-development"
+          },
+          {
+            title: "Mobile App Development",
+            description: "Native and cross-platform mobile applications that deliver seamless user experiences across devices",
+            icon: <Smartphone className="w-8 h-8 text-primary" />,
+            features: ["iOS & Android", "React Native", "Flutter"],
+            gradient: "from-indigo-500/5 to-cyan-500/5",
+            href: "/mobile-app-development"
+          },
+          {
+            title: "UI/UX Design",
+            description: "User-centered design solutions that create intuitive, engaging, and effective digital experiences",
+            icon: <Brush className="w-8 h-8 text-primary" />,
+            features: ["User Research", "Wireframing", "Prototype Testing"],
+            gradient: "from-blue-500/5 to-teal-500/5",
+            href: "/ui-ux-design"
+          },
+          {
+            title: "Logo Design",
+            description: "Professional branding solutions with unique and memorable logo designs that capture your brand essence",
+            icon: <Palette className="w-8 h-8 text-primary" />,
+            features: ["Brand Identity", "Vector Graphics", "Color Theory"],
+            gradient: "from-green-500/5 to-emerald-500/5",
+            href: "/logo-design"
+          },
+          {
+            title: "Video Editing",
+            description: "Professional video editing services that transform raw footage into compelling visual stories",
+            icon: <VideoIcon className="w-8 h-8 text-primary" />,
+            features: ["Color Grading", "Motion Graphics", "Audio Mixing"],
+            gradient: "from-orange-500/5 to-pink-500/5",
+            href: "/video-editing"
+          },
+          {
+            title: "Marketing & Social Media",
+            description: "Comprehensive digital marketing and social media management services to boost your brand presence",
+            icon: <Database className="w-8 h-8 text-primary" />,
+            features: ["Content Strategy", "Campaign Management", "Analytics & Insights"],
+            gradient: "from-pink-500/5 to-rose-500/5",
+            href: "/services/marketing-social-media"
+          },
+        ].map((service, index) => (
+          <Link 
+            to={service.href}
+            key={index}
+            className={`group relative overflow-hidden rounded-3xl p-8 hover:bg-primary/5 transition-all duration-300 border border-transparent hover:border-primary/20 bg-gradient-to-br ${service.gradient} cursor-pointer`}
+          >
+            {/* Ripple effect animation */}
+            <span className="absolute inset-0 w-full h-full">
+              <span className="ripple-effect absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-primary/10 opacity-0 group-hover:animate-ripple pointer-events-none"></span>
+            </span>
+            
+            <div className="absolute top-0 left-0 w-full h-full bg-secondary/5 dark:bg-gray-900/95 opacity-90 group-hover:opacity-95 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-6 p-3 rounded-xl bg-primary/5 w-fit backdrop-blur-sm">
+                {service.icon}
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{service.title}</h3>
+              <p className="text-foreground/70 mb-6">{service.description}</p>
+              <ul className="space-y-2 mb-8">
+                {service.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-sm text-foreground/60">
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              
+              {/* Learn more button that appears on hover */}
+              <div className="absolute bottom-8 right-8 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary font-medium">
+                  Learn more
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+/* SECTION COMPONENTS */
+const SectionHeading = ({ eyebrow, title, center = false, description = null }) => (
+  <div className={`mb-16 ${center ? 'text-center' : ''}`}>
+    {/* Enhanced eyebrow with subtle glow effect */}
+    <motion.div
+      {...createMotionProps('fadeIn')}
+      className="flex items-center justify-center gap-2"
+    >
+      <span className="h-0.5 w-6 bg-gradient-to-r from-primary/30 to-primary hidden sm:block"></span>
+      <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1.5 rounded-full inline-block border border-primary/20 shadow-sm shadow-primary/5">
+        {eyebrow}
+      </span>
+      <span className="h-0.5 w-6 bg-gradient-to-r from-primary to-primary/30 hidden sm:block"></span>
+    </motion.div>
+    
+    {/* Enhanced title with stronger gradient effect and highlight */}
+    <motion.div 
+      {...createMotionProps('fadeInUp', 0.1)}
+      className="relative max-w-3xl mx-auto mt-5"
+    >
+      <div className="absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 blur-xl opacity-30 -z-10 rounded-full"></div>
+      <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-blue-500 leading-tight">
+        {title}
+      </h2>
+    </motion.div>
+    
+    {/* Enhanced description with better readability */}
+    {description && (
+      <motion.p
+        {...createMotionProps('fadeInUp', 0.2)}
+        className={`text-lg text-foreground/70 max-w-2xl ${center ? 'mx-auto mt-5' : 'mt-5'} leading-relaxed`}
+      >
+        {description}
+      </motion.p>
+    )}
+    
+    {/* Enhanced visual divider for centered headers */}
+    {center && (
+      <motion.div
+        {...createMotionProps('fadeInUp', 0.3)}
+        className="relative flex justify-center mt-8"
+      >
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-64 border-t border-secondary/20"></div>
+        </div>
+        <div className="relative bg-background px-4">
+          <div className="h-2 w-2 rounded-full bg-primary"></div>
+        </div>
+      </motion.div>
+    )}
+  </div>
+);
+
+const CTAButton = ({ primary = true, children, className = "", small = false, onClick = null }) => (
+  <button className={`group relative overflow-hidden rounded-full border-2 ${primary ? 'border-primary' : 'border-primary/70'} ${primary ? 'bg-primary' : 'bg-transparent'} 
+    ${small ? 'px-4 py-2 text-sm' : 'px-8 py-4 text-lg'} font-semibold transition-all hover:scale-95 w-full sm:w-auto ${className}`} onClick={onClick}>
+    <span className={`relative z-10 transition-colors ${primary ? 'text-background group-hover:text-primary' : 'text-primary group-hover:text-background'} flex items-center justify-center gap-2`}>
+      {children}
+    </span>
+    <div className={`absolute inset-0 z-0 ${primary ? 'bg-background' : 'bg-primary'} translate-y-full transition-transform duration-300 group-hover:translate-y-0`} />
+  </button>
+);
+
+// Universal Button component
+const Button = ({ 
+  children, 
+  variant = "primary", 
+  size = "md", 
+  pill = true,
+  href = null,
+  className = "",
+  onClick = null
+}) => {
+  const buttonClasses = `
+    ${UI.button.base}
+    ${UI.button.variants[variant]}
+    ${UI.button.sizes[size]}
+    ${pill ? UI.button.pill : "rounded-lg"}
+    ${className}
+  `;
+  
+  const content = (
+    <span className="flex items-center justify-center gap-2 group">
+      {children}
+    </span>
+  );
+  
+  if (href) {
+    return (
+      <a href={href} className={buttonClasses}>
+        {content}
+      </a>
+    );
+  }
+  
+  return (
+    <button onClick={onClick} className={buttonClasses}>
+      {content}
+    </button>
+  );
+};
+
+/* CONSTANTS AND DATA */
+const COMPANY_LOGOS = [
+  'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg',
+  'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg'
+];
+
+const SERVICES = [
+  {
+    title: "Web Development",
+    description: "Custom websites and web applications built with modern technologies and best practices for optimal performance",
+    icon: <Code className="w-10 h-10 text-primary" />,
+    features: ["Responsive Design", "SEO Optimization", "Performance Tuning", "Custom Solutions"],
+    href: "/web-development",
+    delay: 0
+  },
+  {
+    title: "Game Development",
+    description: "Engaging and immersive gaming experiences across multiple platforms using cutting-edge game engines",
+    icon: <Gamepad2 className="w-10 h-10 text-primary" />,
+    features: ["Unity & Unreal Engine", "Mobile Games", "Cross-platform", "3D/2D Games"],
+    href: "/game-development",
+    delay: 0.2
+  },
+  {
+    title: "Logo Design",
+    description: "Professional branding solutions with unique and memorable logo designs that capture your brand essence",
+    icon: <Palette className="w-10 h-10 text-primary" />,
+    features: ["Brand Identity", "Vector Graphics", "Color Theory", "Scalable Designs"],
+    href: "/logo-design",
+    delay: 0.4
+  },
+  {
+    title: "Video Editing",
+    description: "Professional video editing services that transform raw footage into compelling visual stories",
+    icon: <VideoIcon className="w-10 h-10 text-primary" />,
+    features: ["Color Grading", "Motion Graphics", "Audio Mixing", "Post-Production"],
+    href: "/video-editing",
+    delay: 0.6
+  },
+  {
+    title: "UI/UX Design",
+    description: "User-centered design solutions that create intuitive, engaging, and effective digital experiences",
+    icon: <Brush className="w-10 h-10 text-primary" />,
+    features: ["User Research", "Wireframing", "Prototype Testing", "Interaction Design"],
+    href: "/ui-ux-design",
+    delay: 0.8
+  },
+  {
+    title: "Mobile App Development",
+    description: "Native and cross-platform mobile applications that deliver seamless user experiences across devices",
+    icon: <Smartphone className="w-10 h-10 text-primary" />,
+    features: ["iOS & Android", "React Native", "Flutter", "App Store Optimization"],
+    href: "/mobile-app-development",
+    delay: 1.0
+  }
+];
+
+const PROJECTS = [
+  {
+    title: "E-commerce Platform",
+    description: "A full-featured online shopping platform with advanced product filtering and secure checkout",
+    category: "Web Development",
+    image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
+    featured: true,
+    color: THEME.accent.blue
+  },
+  {
+    title: "Corporate Rebrand",
+    description: "Complete visual identity overhaul for a Fortune 500 financial services company",
+    category: "Logo Design",
+    image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
+
+    color: THEME.accent.orange
+  },
+  {
+    title: "Mobile RPG Game",
+    description: "Fantasy role-playing game with immersive 3D environments and strategic combat",
+    category: "Game Development",
+    image: "https://images.unsplash.com/photo-1614294148960-9aa740632a87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
+    featured: true,
+    color: THEME.accent.green
+  },
+  {
+    title: "Promotional Video Series",
+    description: "Award-winning product launch videos featuring cinematic visuals and compelling storytelling",
+    category: "Video Editing",
+    image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
+    stats: "2M+ views",
+    color: THEME.accent.cyan
+  },
+  {
+    title: "Banking App Redesign",
+    description: "User experience transformation resulting in 40% increase in mobile transactions",
+    category: "UI/UX Design",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
+    stats: "85% user satisfaction",
+    color: THEME.secondary.DEFAULT
+  }
+];
+
+const TESTIMONIALS = [
+  {
+    quote: "Jason Tech Solutions transformed our operations with their cloud migration strategy. Our infrastructure costs decreased by 40% while performance improved significantly.",
+    author: "Sarah Johnson",
+    position: "CTO, Global Retail Inc.",
+    image: "/api/placeholder/64/64",
+    delay: 0
+  },
+  {
+    quote: "The AI solution implemented by the team has revolutionized how we analyze customer data. We're now able to predict trends and make proactive decisions.",
+    author: "Michael Chen",
+    position: "Data Director, FinTech Solutions",
+    image: "/api/placeholder/64/64",
+    delay: 0.2
+  },
+  {
+    quote: "After experiencing a security breach, we hired Jason Tech to overhaul our cybersecurity. Their comprehensive approach has given us peace of mind and protected our reputation.",
+    author: "Emma Rodriguez",
+    position: "CISO, Healthcare Systems",
+    image: "/api/placeholder/64/64",
+    delay: 0.4
+  }
+];
+
+
 const HERO_SERVICES = [
   { title: "Web Development", icon: <Code className="w-4 h-4" /> },
   { title: "Game Development", icon: <Gamepad2 className="w-4 h-4" /> },
   { title: "Logo Design", icon: <Palette className="w-4 h-4" /> },
   { title: "Video Editing", icon: <VideoIcon className="w-4 h-4" /> },
-  { title: "App Development", icon: <Smartphone className="w-4 h-4" /> },
-  { title: "Computer Vision", icon: <Brain className="w-4 h-4" /> },
-  { title: "Social Media", icon: <Share2 className="w-4 h-4" /> },
-  { title: "AR Solutions", icon: <Eye className="w-4 h-4" /> },
+  { title: "UI/UX Design", icon: <Brush className="w-4 h-4" /> },
+  { title: "Mobile App Development", icon: <Smartphone className="w-4 h-4" /> },
 ];
 
-// Main services data
-const SERVICES = [
-  {
-    title: "Web Development",
-    description: "Custom websites and web applications built with cutting-edge technologies for optimal performance and user experience.",
-    icon: <Code className="w-8 h-8" />,
-    href: "/web-development",
-    gradient: "from-blue-500/20 to-cyan-500/20"
-  },
-  {
-    title: "Mobile Apps",
-    description: "Native and cross-platform mobile applications that deliver seamless experiences across iOS and Android devices.",
-    icon: <Smartphone className="w-8 h-8" />,
-    href: "/app-development",
-    gradient: "from-purple-500/20 to-pink-500/20"
-  },
-  {
-    title: "Game Development",
-    description: "Immersive gaming experiences with stunning graphics, engaging gameplay, and cross-platform compatibility.",
-    icon: <Gamepad2 className="w-8 h-8" />,
-    href: "/game-development",
-    gradient: "from-green-500/20 to-emerald-500/20"
-  },
-  {
-    title: "Computer Vision",
-    description: "Advanced AR/VR solutions and artificial intelligence applications that transform how users interact with technology.",
-    icon: <Brain className="w-8 h-8" />,
-    href: "/computer-vision",
-    gradient: "from-orange-500/20 to-red-500/20"
-  },
-  {
-    title: "Logo Design",
-    description: "Professional branding and visual identity design that captures your brand's essence and resonates with your audience.",
-    icon: <Palette className="w-8 h-8" />,
-    href: "/logo-design",
-    gradient: "from-violet-500/20 to-purple-500/20"
-  },
-  {
-    title: "Video Editing",
-    description: "Professional video editing and post-production services for compelling visual storytelling and brand content.",
-    icon: <VideoIcon className="w-8 h-8" />,
-    href: "/video-editing",
-    gradient: "from-rose-500/20 to-pink-500/20"
-  },
-  {
-    title: "Social Media",
-    description: "Strategic social media management and content creation to boost your online presence and engagement.",
-    icon: <Share2 className="w-8 h-8" />,
-    href: "/social",
-    gradient: "from-indigo-500/20 to-blue-500/20"
-  },
-  {
-    title: "AR Solutions",
-    description: "Cutting-edge augmented reality applications that blend digital innovation with real-world experiences.",
-    icon: <Eye className="w-8 h-8" />,
-    href: "/ar",
-    gradient: "from-teal-500/20 to-green-500/20"
-  },
-  {
-    title: "About Us",
-    description: "Learn more about our team, mission, and the passion that drives us to deliver exceptional digital solutions.",
-    icon: <BookOpen className="w-8 h-8" />,
-    href: "/about",
-    gradient: "from-amber-500/20 to-orange-500/20"
-  }
-];
-
-// Stats data
-const STATS = [
-  { number: 500, label: "Projects Completed", suffix: "+" },
-  { number: 150, label: "Happy Clients", suffix: "+" },
-  { number: 5, label: "Years Experience", suffix: "+" },
-];
-
-// Features data
-const FEATURES = [
-  {
-    icon: <TrendingUp className="w-6 h-6" />,
-    title: "Performance Focused",
-    description: "Optimized solutions that deliver lightning-fast performance and exceptional user experiences."
-  },
-  {
-    icon: <Clock className="w-6 h-6" />,
-    title: "On-Time Delivery",
-    description: "We respect deadlines and deliver quality projects within the agreed timeline, every time."
-  },
-  {
-    icon: <Shield className="w-6 h-6" />,
-    title: "Secure & Reliable",
-    description: "Built with security best practices and reliable infrastructure for peace of mind."
-  },  {
-    icon: <Users className="w-6 h-6" />,
-    title: "24/7 Support",
-    description: "Round-the-clock technical support and maintenance to keep your projects running smoothly."
-  },
-];
-
-// Projects data
-const PROJECTS = [
-  {
-    id: 1,
-    title: "E-Commerce Platform",
-    category: "Web Development",
-    description: "A full-featured e-commerce platform with real-time inventory management, payment processing, and admin dashboard.",
-    image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-    features: [
-      "Real-time inventory management",
-      "Secure payment processing",
-      "Admin dashboard",
-      "Order tracking system",
-      "Mobile responsive design"
-    ],
-    demo: "https://demo.example.com",
-    github: "https://github.com/example/project",
-    status: "Completed",
-    client: "Tech Retail Co."
-  },
-  {
-    id: 2,
-    title: "Fantasy RPG Game",
-    category: "Game Development",
-    description: "Immersive fantasy RPG with stunning visuals, engaging storyline, and cross-platform multiplayer functionality.",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    technologies: ["Unity", "C#", "Photon", "AWS"],
-    features: [
-      "Cross-platform multiplayer",
-      "Real-time combat system",
-      "Character progression",
-      "Guild system",
-      "In-game marketplace"
-    ],
-    demo: "https://demo.example.com",
-    github: "https://github.com/example/project",
-    status: "In Development",
-    client: "Indie Game Studio"
-  },
-  {
-    id: 3,
-    title: "AI Content Platform",
-    category: "Web Development",
-    description: "Content management system powered by AI for automated content generation and optimization.",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    technologies: ["Next.js", "OpenAI", "PostgreSQL", "AWS"],
-    features: [
-      "AI-powered content generation",
-      "Real-time collaboration",
-      "SEO optimization",
-      "Analytics dashboard",
-      "Multi-language support"
-    ],
-    demo: "https://demo.example.com",
-    github: "https://github.com/example/project",
-    status: "Completed",
-    client: "Digital Marketing Agency"
-  },
-  {
-    id: 4,
-    title: "Fitness Mobile App",
-    category: "Mobile Development",
-    description: "Comprehensive fitness tracking app with personalized workout plans and nutrition guidance.",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    technologies: ["React Native", "Firebase", "HealthKit", "Google Fit"],
-    features: [
-      "Personalized workout plans",
-      "Nutrition tracking",
-      "Progress analytics",
-      "Social sharing",
-      "Wearable device integration"
-    ],
-    demo: "https://demo.example.com",
-    github: "https://github.com/example/project",
-    status: "Completed",
-    client: "Wellness Startup"
-  },
-  {
-    id: 5,
-    title: "Corporate Brand Identity",
-    category: "Logo Design",
-    description: "Complete visual identity overhaul for a Fortune 500 financial services company.",
-    image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    technologies: ["Adobe Illustrator", "Photoshop", "Figma", "InDesign"],
-    features: [
-      "Logo design and variants",
-      "Brand guidelines",
-      "Marketing materials",
-      "Digital assets",
-      "Brand implementation"
-    ],
-    demo: "https://demo.example.com",
-    github: null,
-    status: "Completed",
-    client: "Financial Corp"
-  },
-  {
-    id: 6,
-    title: "AR Shopping Experience",
-    category: "AR/VR Development",
-    description: "Augmented reality shopping app that lets customers try products virtually before purchasing.",
-    image: "https://images.unsplash.com/photo-1592478411213-6153e4ebc696?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80",
-    technologies: ["ARKit", "ARCore", "Unity", "React Native"],
-    features: [
-      "3D product visualization",
-      "Virtual try-on",
-      "Real-time rendering",
-      "Social sharing",
-      "Purchase integration"
-    ],
-    demo: "https://demo.example.com",
-    github: "https://github.com/example/project",
-    status: "In Development",
-    client: "Fashion Retailer"
-  }
-];
-
-// Service Card Component
-const ServiceCard = ({ service, index }) => {
-  const handleClick = () => {
-    window.location.href = service.href;
-  };
-
+/* HERO SECTION */
+const HeroSection = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -5 }}
-      className="group relative cursor-pointer"
-      onClick={handleClick}
-    >
-      <div className="relative p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300 h-full">
-        {/* Background gradient on hover */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-        
-        <div className="relative z-10">
-          <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
-            {service.icon}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16 md:pb-24" aria-labelledby="hero-heading">
+
+
+      {/* Improved globe with better positioning and effects 
+     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <motion.div
+
+          className="w-[min(110vw,110vh)] h-[min(110vw,110vh)] md:w-[800px] md:h-[800px]"
+        >
+          <Globe />
+        </motion.div>
+      </div>*/}
+
+      {/* Main content with improved layout */}
+      <div className="relative z-20 container mx-auto px-4 md:px-6 py-8">
+        <div className="max-w-4xl mx-auto text-center space-y-8 md:space-y-10">
+          {/* Enhanced label with improved design */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm shadow-lg shadow-primary/5"
+          >
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+            </span>
+            <span className="text-sm font-semibold text-primary">Enterprise Technology Solutions</span>
+          </motion.div>
+          
+          {/* Improved heading with better typography */}
+          <div className="space-y-4">
+            <motion.h1 
+              id="hero-heading"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
+            >
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-600 to-violet-700 drop-shadow[0_1px_2px_rgba(0,0,0,0.15)]-sm">
+                Jason Tech Solutions
+              </span>
+            </motion.h1>
+            
+            {/* Static typing effect replaced here */}
+            <div className="h-14 flex items-center justify-center">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-foreground/80">
+                We help companies <span className="text-primary relative">transform businesses</span>
+              </h2>
+            </div>
           </div>
           
-          <h3 className="text-xl font-semibold mb-4 group-hover:text-foreground transition-colors">
-            {service.title}
-          </h3>
-          
-          <p className="text-foreground/70 mb-6 leading-relaxed group-hover:text-foreground/80 transition-colors">
-            {service.description}
-          </p>
-          
+          {/* Service tags - hover effect removed */}
           <motion.div
-            className="inline-flex items-center text-primary font-medium group-hover:text-primary transition-colors"
-            whileHover={{ x: 5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="flex flex-wrap justify-center gap-2.5 md:gap-3 px-2 mx-auto max-w-3xl"
           >
-            Learn More
-            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+            {HERO_SERVICES.map((service, i) => (
+              <motion.div
+                key={i}
+                className="
+              px-3.5 py-2 rounded-full border border-primary/20 
+    bg-primary/5 backdrop-blur-md flex items-center gap-2.5 shadow-sm cursor-default
+    dark:bg-neutral-900/80 dark:border-primary/40 dark:backdrop-blur-xl
+  "
+              >
+                <span className="text-primary p-1 bg-primary/10 rounded-full">{service.icon}</span>
+                <span className="text-sm font-medium text-foreground/90 dark:text-foreground/90">{service.title}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+          
+          {/* Improved CTA buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-5 sm:gap-6 justify-center pt-4"
+          >
+            <CTAButton 
+              primary
+              className="group shadow-xl shadow-primary/20 hover:shadow-primary/40 border-primary backdrop-blur-md"
+            >
+              Get Started
+              {/* Keep button hover effect for CTA */}
+              <ArrowRight className="group-hover:translate-x-1.5 transition-transform duration-300" size={18} />
+            </CTAButton>
+            
+            <CTAButton 
+              primary={false}
+              className="group backdrop-blur-md"
+              onClick={() => {
+                const section = document.getElementById('our-services-section');
+                if (section) section.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Our Services
+              <ArrowDown className="ml-1 group-hover:translate-x-1 transition-transform duration-300" size={18} />
+            </CTAButton>
+          </motion.div>
+          
+          {/* Improved stats with enhanced visuals */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-wrap gap-12 justify-center pt-6 mt-6 border-t border-secondary/10 py-5 px-8 backdrop-blur-sm bg-white/5 rounded-2xl"
+          >
+            {[
+              { label: "Projects Delivered", value: "500+", icon: <Award className="w-5 h-5" /> },
+              { label: "Client Satisfaction", value: "99%", icon: <BadgeCheck className="w-5 h-5" /> },
+              { label: "Team Experts", value: "50+", icon: <Users className="w-5 h-5" /> }
+            ].map((stat, i) => (
+              <motion.div 
+                key={i} 
+                className="text-center"
+                // Removed whileHover for stats
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <div className="flex items-center justify-center mb-2">
+                  <div className="p-2 rounded-full bg-primary/10 text-primary mr-2">
+                    {stat.icon}
+                  </div>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">{stat.value}</div>
+                </div>
+                <div className="text-sm text-foreground/70 font-medium dark:text-foreground/80">{stat.label}</div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
-    </motion.div>
+    </section>
   );
 };
 
-// Feature Card Component
-const FeatureCard = ({ feature, index }) => {
+/* PROJECTS SECTION OPTIMIZATION */
+// Optimized Project Card Component
+const ProjectCard = memo(({ project, isHovered, onHoverChange }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="text-center"
+    <div
+      className="group relative overflow-hidden rounded-2xl border border-secondary/20 hover:border-primary/50 transition-all duration-300"
+      style={{ height: '470px' }} // Unified height for all cards
+      onMouseEnter={() => onHoverChange(project.title)}
+      onMouseLeave={() => onHoverChange(null)}
     >
-      <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mx-auto mb-4">
-        {feature.icon}
-      </div>
-      <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-      <p className="text-foreground/70 text-sm">{feature.description}</p>
-    </motion.div>
-  );
-};
-
-// Stat Card Component
-const StatCard = ({ stat, index }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -5 }}
-      className="group relative"
-    >
-      <div className="relative p-6 md:p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300 text-center h-full">
-        {/* Subtle gradient background on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="relative w-full h-full overflow-hidden">
+        {/* Background gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent z-10"></div>
         
-        <div className="relative z-10">
-          {/* Number with enhanced styling */}
-          <div className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">
-            <span className="bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent">
-              <NumberTicker value={stat.number} />
-              {stat.suffix}
-            </span>
+        {/* Project image with CSS transforms instead of motion */}
+        <div
+          className="absolute inset-0 w-full h-full transition-transform"
+          style={{ 
+            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+            transition: 'transform 0.8s cubic-bezier(0.33, 1, 0.68, 1)',
+            willChange: 'transform'
+          }}
+        >
+          <img 
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            width="600"
+            height="400"
+          />
+        </div>
+        
+        {/* Content container - static positioning with CSS transitions */}
+        <div className="absolute z-20 bottom-0 w-full p-6 transition-all duration-500">
+          <div className="space-y-2 mb-4">
+            <div className="flex flex-wrap gap-2 items-center justify-between">
+              <span 
+                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm shadow-lg shadow-black/20"
+                style={{ backgroundColor: `${project.color}70` }}
+              >
+                {project.category.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
+              </span>
+              
+              {project.featured && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/50 text-white backdrop-blur-sm shadow-lg">
+                  <BadgeCheck className="w-3 h-3 mr-1" />
+                  Featured
+                </span>
+              )}
+            </div>
           </div>
           
-          {/* Label with subtle styling */}
-          <p className="text-foreground/70 font-medium text-sm md:text-base group-hover:text-foreground/80 transition-colors">
-            {stat.label}
-          </p>
-          
-          {/* Minimal decorative element */}
-          <div className="w-8 h-0.5 bg-gradient-to-r from-primary/30 to-transparent rounded-full mx-auto mt-3 group-hover:from-primary/50 transition-all duration-300" />
+          <div className="transform transition-all duration-500">
+            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 group-hover:text-primary/90 transition-colors">
+              <span className="relative inline-block">
+                {project.title.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
+                <span 
+                  className="absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300"
+                  style={{ width: isHovered ? '100%' : '0%' }}
+                />
+              </span>
+            </h3>
+            
+            <p 
+              className="text-white/80 mb-6 max-w-lg line-clamp-2 transition-all duration-300"
+              style={{ 
+                opacity: isHovered ? 1 : 0.8,
+                transform: `translateY(${isHovered ? 0 : 5}px)`
+              }}
+            >
+              {project.description}
+            </p>
+            
+            <div className="flex flex-wrap gap-2 mb-6">
+              {['React', 'TypeScript', 'Node.js', 'Tailwind', 'Next.js'].slice(0, 3 + Math.floor(Math.random() * 2)).map((tech, i) => (
+                <span 
+                  key={i} 
+                  className="px-2 py-1 bg-white/10 backdrop-blur-sm border border-white/10 rounded-md text-xs text-white/90 transition-all duration-300"
+                  style={{ 
+                    opacity: isHovered ? 1 : 0.6,
+                    transform: `translateY(${isHovered ? 0 : 5}px)`,
+                    transitionDelay: `${0.1 + (i * 0.05)}s`
+                  }}
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+            
+            <div 
+              className="flex items-center justify-between transition-all duration-300"
+              style={{ 
+                opacity: isHovered ? 1 : 0.8,
+                transform: `translateY(${isHovered ? 0 : 5}px)`
+              }}
+            >
+              {project.stats && (
+                <div className="flex items-center text-primary/90 text-sm bg-black/40 px-4 py-2 rounded-full backdrop-blur-sm border border-white/5">
+                  <BarChart className="w-4 h-4 mr-2" />
+                  {project.stats}
+                </div>
+              )}
+              
+              <button className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-full font-medium transition-all flex items-center group/btn">
+                View Project
+                <ArrowRight size={16} className="ml-2 group-hover/btn:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </motion.div>  );
-};
-
-// Project Card Component for Drawer
-const ProjectCard = ({ project }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="group relative overflow-hidden rounded-xl bg-card border border-border hover:border-primary/30 transition-all duration-300"
-    >
-      <div className="aspect-video overflow-hidden">
-        <img 
-          src={project.image} 
-          alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        
+        <div 
+          className="absolute top-0 right-0 w-32 h-32 opacity-60 rounded-bl-full z-10 transition-opacity duration-300 group-hover:opacity-80"
+          style={{ background: `radial-gradient(circle at top right, ${project.color}, transparent 70%)` }}
         />
       </div>
+    </div>
+  );
+});
+
+const ProjectsSection = memo(() => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [hoveredProject, setHoveredProject] = useState(null);
+  
+  // Memoize these values to prevent unnecessary rerenders
+  const categories = useMemo(() => ['All', 'Web Development', 'Logo Design', 'Game Development', 'Video Editing', 'UI/UX Design'], []);
+  
+  // Use useMemo to optimize filtering
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === 'All') {
+      return PROJECTS;
+    }
+    return PROJECTS.filter(project => project.category === activeFilter);
+  }, [activeFilter]);
+
+  // Use useCallback for event handlers
+  const handleHoverChange = useCallback((projectTitle) => {
+    setHoveredProject(projectTitle);
+  }, []);
+
+  // return (
+  //   <Section id="projects">
+  //     <SectionHeading 
+  //       eyebrow="Our Portfolio" 
+  //       title="Featured Projects" 
+  //       description="Explore our award-winning work delivered for clients across industries"
+  //       center={true} 
+  //     />
       
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-            {project.category}
-          </span>
-          <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-            project.status === 'Completed' 
-              ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
-              : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-          }`}>
-            {project.status}
-          </span>
-        </div>
+  //     {/* Static filter tabs with CSS transitions */}
+  //     <div className="relative mb-16">
+  //       <div className="flex flex-wrap justify-center gap-2 mb-2">
+  //         {categories.map((category, index) => {
+  //           const isActive = activeFilter === category;
+  //           return (
+  //             <button
+  //               key={index}
+  //               onClick={() => setActiveFilter(category)}
+  //               className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+  //                 isActive 
+  //                   ? 'text-white bg-primary' 
+  //                   : 'text-foreground/70 hover:text-foreground'
+  //               }`}
+  //             >
+  //               <span className="relative z-10">{category}</span>
+  //             </button>
+  //           );
+  //         })}
+  //       </div>
         
-        <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-          {project.title}
-        </h3>
-        
-        <p className="text-foreground/70 text-sm mb-4 line-clamp-2">
-          {project.description}
-        </p>
-        
-        <div className="flex flex-wrap gap-2 mb-4">
-          {project.technologies.slice(0, 3).map((tech, index) => (
-            <span 
-              key={index}
-              className="text-xs px-2 py-1 bg-secondary/20 text-foreground/60 rounded"
+  //       {/* Removed showing results text */}
+  //       {/* <p className="text-center text-sm text-foreground/50 mt-2">
+  //         Showing {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
+  //         {activeFilter !== 'All' ? ` in ${activeFilter}` : ''}
+  //       </p> */}
+  //     </div>
+      
+  //     {/* Optimized grid without AnimatePresence */}
+  //     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+  //       {filteredProjects.map((project, index) => (
+  //         <ProjectCard 
+  //           key={project.title}
+  //           project={project} 
+  //           isHovered={hoveredProject === project.title}
+  //           onHoverChange={handleHoverChange}
+  //         />
+  //       ))}
+  //     </div>
+      
+  //     {/* Empty state without animations */}
+  //     {filteredProjects.length === 0 && (
+  //       <div className="bg-secondary/5 backdrop-blur-sm border border-secondary/20 rounded-2xl p-12 text-center my-8">
+  //         <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
+  //           <LineChart className="w-10 h-10 text-primary/60" />
+  //         </div>
+  //         <p className="text-xl font-medium mb-4">No projects found</p>
+  //         <p className="text-foreground/60 mb-8 max-w-md mx-auto">
+  //           We couldn't find any projects in the {activeFilter} category. Try selecting a different category or check back later.
+  //         </p>
+
+  //       </div>
+  //     )}
+
+  //   </Section>
+  // );
+});
+
+/* DESIGNS SECTION */
+const DesignsSection = memo(() => {
+  const [activeTab, setActiveTab] = useState('ui-ux');
+  const [selectedDesign, setSelectedDesign] = useState(null);
+  
+  // Design categories with consistent structure
+  const designCategories = {
+    'ui-ux': {
+      title: 'UI/UX Design',
+      description: 'Modern interfaces that enhance user experience and drive engagement',
+      designs: [
+        {
+          id: 'ui-1',
+          title: 'Banking Dashboard',
+          preview: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.blue,
+          tools: ['Figma', 'Adobe XD', 'Sketch'],
+          description: 'Reimagined financial management interface with intuitive analytics and transaction tracking'
+        },
+        {
+          id: 'ui-2',
+          title: 'Health App',
+          preview: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.green,
+          tools: ['Figma', 'Protopie', 'Illustrator'],
+          description: 'Wellness tracking application with personalized insights and progress visualization'
+        },
+        {
+          id: 'ui-3',
+          title: 'E-commerce Store',
+          preview: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.orange,
+          tools: ['Figma', 'Adobe XD', 'After Effects'],
+          description: 'High-conversion shopping platform with seamless checkout and personalized recommendations'
+        }
+      ]
+    },
+    'brand': {
+      title: 'Brand Identity',
+      description: 'Cohesive visual systems that communicate brand values and resonate with audiences',
+      designs: [
+        {
+          id: 'brand-1',
+          title: 'Eco Wellness',
+          preview: 'https://images.unsplash.com/photo-1542744094-24638eff58bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.cyan,
+          tools: ['Illustrator', 'Photoshop', 'InDesign'],
+          description: 'Complete visual identity for sustainable wellness brand including logo system and packaging'
+        },
+        {
+          id: 'brand-2',
+          title: 'Tech Startup',
+          preview: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.primary.DEFAULT,
+          tools: ['Illustrator', 'Figma', 'After Effects'],
+          description: 'Dynamic brand system for AI technology company with adaptable visual elements'
+        },
+        {
+          id: 'brand-3',
+          title: 'Urban Cafe',
+          preview: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.yellow,
+          tools: ['Illustrator', 'Photoshop', 'Procreate'],
+          description: 'Artisanal coffee shop branding with hand-drawn elements and signature typography'
+        }
+      ]
+    },
+    'print': {
+      title: 'Print Design',
+      description: 'Tangible brand experiences through thoughtfully crafted physical materials',
+      designs: [
+        {
+          id: 'print-1',
+          title: 'Annual Report',
+          preview: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.secondary.DEFAULT,
+          tools: ['InDesign', 'Illustrator', 'Photoshop'],
+          description: 'Award-winning financial report design with data visualization and editorial layout'
+        },
+        {
+          id: 'print-2',
+          title: 'Event Materials',
+          preview: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.blue,
+          tools: ['InDesign', 'Illustrator', 'Photoshop'],
+          description: 'Comprehensive conference collateral including invitations, programs, and signage'
+        },
+        {
+          id: 'print-3',
+          title: 'Packaging',
+          preview: 'https://images.unsplash.com/photo-1636622433525-127afdf3662d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          color: THEME.accent.green,
+          tools: ['Illustrator', 'Photoshop', 'Dimension'],
+          description: 'Sustainable product packaging with innovative structural design and eco-friendly materials'
+        }
+      ]
+    }
+  };
+
+  // Get current designs based on active tab
+  const currentDesigns = designCategories[activeTab]?.designs || [];
+  
+  // Design detail modal
+  const DesignDetailModal = ({ design, onClose }) => {
+    if (!design) return null;
+    
+    return (
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        onClick={onClose}
+      >
+        <motion.div 
+          initial={{ scale: 0.9, y: 20 }}
+          animate={{ scale: 1, y: 0 }}
+          exit={{ scale: 0.9, y: 20 }}
+          className="bg-background max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="relative">
+            <div className="h-[300px] md:h-[400px] w-full overflow-hidden">
+              <img
+                src={design.preview}
+                alt={design.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            <button 
+              onClick={onClose}
+              className="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-sm transition-colors"
+              aria-label="Close modal"
             >
-              {tech}
-            </span>
-          ))}
-          {project.technologies.length > 3 && (
-            <span className="text-xs px-2 py-1 bg-secondary/20 text-foreground/60 rounded">
-              +{project.technologies.length - 3} more
-            </span>
-          )}
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-foreground/60">
-            {project.client}
-          </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
           
-          <Drawer>
-            <DrawerTrigger asChild>
-              <button className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors">
-                View Details
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </DrawerTrigger>
-            <DrawerContent className="max-w-4xl mx-auto">
-              <DrawerHeader>
-                <DrawerTitle className="text-2xl font-bold">{project.title}</DrawerTitle>
-                <DrawerDescription className="text-base">
-                  {project.description}
-                </DrawerDescription>
-              </DrawerHeader>
-              
-              <div className="p-6 space-y-6">
-                <div className="aspect-video overflow-hidden rounded-lg">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold mb-3">Project Details</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">Category:</span>
-                        <span>{project.category}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">Status:</span>
-                        <span className={
-                          project.status === 'Completed' 
-                            ? 'text-green-600 dark:text-green-400' 
-                            : 'text-yellow-600 dark:text-yellow-400'
-                        }>
-                          {project.status}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-foreground/60">Client:</span>
-                        <span>{project.client}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-semibold mb-3">Technologies Used</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech, index) => (
-                        <span 
-                          key={index}
-                          className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-3">Key Features</h4>
-                  <div className="grid sm:grid-cols-2 gap-2">
-                    {project.features.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                        <span>{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex gap-4 pt-4">
-                  {project.demo && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Live Demo
-                    </a>
-                  )}
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 border border-border text-foreground rounded-lg hover:bg-secondary/20 transition-colors text-sm font-medium"
-                    >
-                      <Github className="w-4 h-4" />
-                      View Code
-                    </a>
-                  )}
-                </div>
+          <div className="p-6 md:p-8">
+            <div 
+              className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
+              style={{ backgroundColor: `${design.color}20`, color: design.color }}
+            >
+              {designCategories[activeTab].title}
+            </div>
+            
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">{design.title}</h3>
+            <p className="text-foreground/70 mb-6 text-lg">{design.description}</p>
+            
+            <div className="mb-8">
+              <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-3">Design Tools</h4>
+              <div className="flex gap-2 flex-wrap">
+                {design.tools.map((tool, idx) => (
+                  <span key={idx} className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-6 mb-8">
+              <div>
+                <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-3">Project Scope</h4>
+                <ul className="space-y-2">
+                  {['Research', 'Wireframing', 'Visual Design', 'Prototyping'].map((item, idx) => (
+                    <li key={idx} className="flex items-center text-foreground/80">
+                      <CheckCircle className="w-4 h-4 text-primary mr-2" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
               
-              <DrawerFooter>
-                <DrawerClose asChild>
-                  <button className="inline-flex items-center gap-2 px-4 py-2 border border-border text-foreground rounded-lg hover:bg-secondary/20 transition-colors text-sm font-medium">
-                    <X className="w-4 h-4" />
-                    Close
-                  </button>
-                </DrawerClose>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
+              <div>
+                <h4 className="text-sm uppercase tracking-wider text-foreground/50 mb-3">Deliverables</h4>
+                <ul className="space-y-2">
+                  {['Design System', 'Interactive Prototype', 'Source Files', 'Documentation'].map((item, idx) => (
+                    <li key={idx} className="flex items-center text-foreground/80">
+                      <CheckCircle className="w-4 h-4 text-primary mr-2" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            
+            <div className="flex justify-end">
+              <Button variant="primary" size="lg">
+                Request Similar Design
+                <ArrowRight className="ml-1 w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
+  };
+
+  const DesignCard = ({ design }) => {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="group cursor-pointer"
+        onClick={() => setSelectedDesign(design)}
+      >
+        <div className="relative overflow-hidden rounded-xl aspect-[4/3] mb-4">
+          {/* Overlay with gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div>
+              <p className="text-white font-medium">{design.title}</p>
+              <div className="flex mt-2 gap-2">
+                {design.tools.slice(0, 2).map((tool, idx) => (
+                  <span key={idx} className="text-xs bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full text-white">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* Image */}
+          <img 
+            src={design.preview} 
+            alt={design.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+          />
+          
+          {/* Color accent */}
+          <div 
+            className="absolute top-0 right-0 w-24 h-24 opacity-60 rounded-bl-full"
+            style={{ background: `radial-gradient(circle at top right, ${design.color}, transparent 70%)` }}
+          />
+        </div>
+        
+        <h3 className="font-medium text-lg group-hover:text-primary transition-colors">
+          {design.title}
+        </h3>
+        <p className="text-sm text-foreground/60 line-clamp-1">{design.description}</p>
+      </motion.div>
+    );
+  };
+
+  return (
+    <Section id="designs" pattern={true}>
+      <SectionHeading
+        eyebrow="Design Showcase" 
+        title="Creative Design Solutions" 
+        description="Explore our design work across various mediums and industries"
+        center={true}
+      />
+      
+      {/* Category tabs */}
+      <div className="flex justify-center mb-12">
+        <div className="inline-flex bg-secondary/10 p-1 rounded-xl">
+          {Object.entries(designCategories).map(([key, category]) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === key
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'text-foreground/70 hover:text-foreground hover:bg-secondary/5'
+              }`}
+            >
+              {category.title}
+            </button>
+          ))}
         </div>
       </div>
-    </motion.div>
-  );
-};
+      
+      {/* Description of current category */}
+      <div className="text-center mb-12">
+        <p className="text-lg text-foreground/70 max-w-xl mx-auto">
+          {designCategories[activeTab]?.description}
+        </p>
+      </div>
+      
+      {/* Design grid with exit animations */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {currentDesigns.map((design) => (
+            <DesignCard key={design.id} design={design} />
+          ))}
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Design detail modal */}
+      <AnimatePresence>
+        {selectedDesign && (
+          <DesignDetailModal 
+            design={selectedDesign} 
+            onClose={() => setSelectedDesign(null)} 
+          />
+        )}
+      </AnimatePresence>
+      
 
+    </Section>
+  );
+});
+
+
+/* INTERACTIVE PROCESS TIMELINE */
+const ProcessTimeline = memo(() => {
+  const [activeStep, setActiveStep] = useState(1);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const timelineRef = useRef(null);
+  
+  const processSteps = [
+    {
+      step: 1,
+      title: "Discovery & Research",
+      description: "We dive deep into your business needs, market landscape, and user expectations to establish clear project goals.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>,
+      color: THEME.accent.blue,
+      benefits: [
+        "Comprehensive market analysis",
+        "User research & persona development",
+        "Competitive landscape assessment"
+      ]
+    },
+    {
+      step: 2,
+      title: "Strategic Planning",
+      description: "We develop a tailored roadmap that aligns with your business objectives and addresses user needs.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 17 12 22l10-5"/><path d="m2 12 10 5 10-5"/><path d="M12 2 2 7l10 5 10-5-10-5Z"/></svg>,
+      color: THEME.accent.green,
+      benefits: [
+        "Technology stack recommendations",
+        "Feature prioritization framework",
+        "Implementation timeline & milestones"
+      ]
+    },
+    {
+      step: 3,
+      title: "Design & Prototype",
+      description: "We create intuitive, engaging designs and interactive prototypes that bring your vision to life.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="m17 20.66-1-1.73"/><path d="M11 10.27 7 3.34"/><path d="m20.66 17-1.73-1"/><path d="m3.34 7 1.73 1"/><path d="M14 12h8"/><path d="M2 12h2"/><path d="m20.66 7-1.73 1"/><path d="m3.34 17 1.73-1"/><path d="m17 3.34-1 1.73"/><path d="m11 13.73-4 6.93"/></svg>,
+      color: THEME.accent.cyan,
+      benefits: [
+        "User-centered design approach",
+        "Interactive wireframes & mockups",
+        "Usability testing & refinement"
+      ]
+    },
+    {
+      step: 4,
+      title: "Development & Testing",
+      description: "Our engineering team builds your solution using modern technologies and best practices.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>,
+      color: THEME.accent.orange,
+      benefits: [
+        "Agile development methodology",
+        "Comprehensive quality assurance",
+        "Regular progress demonstrations"
+      ]
+    },
+    {
+      step: 5,
+      title: "Deployment & Support",
+      description: "We ensure a smooth launch and provide ongoing support to keep your solution performing optimally.",
+      icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>,
+      color: THEME.accent.yellow,
+      benefits: [
+        "Seamless deployment process",
+        "Performance monitoring & optimization",
+        "Ongoing maintenance & updates"
+      ]
+    }
+  ];
+  
+  // Handle scroll-based timeline navigation
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!timelineRef.current || isScrolling) return;
+      
+      const timelineRect = timelineRef.current.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const timelinePosition = timelineRect.top;
+      const timelineHeight = timelineRect.height;
+      
+      // Only activate scroll detection when timeline is in view
+      if (timelinePosition < viewportCenter && timelinePosition + timelineHeight > 0) {
+        // Calculate which step should be active based on scroll position
+        const scrollProgress = (viewportCenter - timelinePosition) / timelineHeight;
+        const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+        const stepIndex = Math.ceil(clampedProgress * processSteps.length);
+        
+        if (stepIndex !== activeStep && stepIndex >= 1 && stepIndex <= processSteps.length) {
+          setActiveStep(stepIndex);
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [activeStep, isScrolling, processSteps.length]);
+  
+  const handleStepClick = (step) => {
+    setIsScrolling(true);
+    setActiveStep(step);
+    
+    // Reset isScrolling after animation completes
+    setTimeout(() => {
+      setIsScrolling(false);
+    }, 1000);
+  };
+  
+  return (
+    <Section id="our-process" pattern={true} className="py-20 bg-background dark:bg-gray-900">
+      <SectionHeading 
+        eyebrow="Our Process" 
+        title="How We Deliver Excellence" 
+        description="A systematic approach that ensures consistent results and exceptional quality across all projects"
+        center={true}
+      />
+      
+      <div className="mt-16 relative max-w-6xl mx-auto" ref={timelineRef}>
+        {/* Timeline line */}
+        <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-secondary/20 dark:bg-gray-700 transform -translate-x-1/2"></div>
+        
+        {/* Progress line animating based on active step */}
+        <div 
+          className="absolute top-0 left-1/2 w-0.5 bg-primary transform -translate-x-1/2 transition-all duration-1000 ease-out"
+          style={{ 
+            height: `${(activeStep / processSteps.length) * 100}%`,
+            maxHeight: '100%'
+          }}
+        ></div>
+        
+        {/* Timeline steps */}
+        {processSteps.map((process, index) => {
+          const isActive = activeStep >= process.step;
+          const isPast = activeStep > process.step;
+          const isExactlyActive = activeStep === process.step;
+          
+          return (
+            <div key={index} className="relative mb-20 last:mb-0">
+              {/* Timeline marker */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
+                <div 
+                  className={`
+                    h-14 w-14 rounded-full flex items-center justify-center z-10 
+                    ${isActive 
+                      ? 'bg-primary text-white border-4 border-white dark:border-gray-900 shadow-lg shadow-primary/30' 
+                      : 'bg-white dark:bg-gray-800 border-4 border-secondary/20 dark:border-gray-700 text-secondary/40 dark:text-gray-400'
+                    }
+                    transition-all duration-500
+                  `}
+                  style={{
+                    transform: isExactlyActive ? 'scale(1.2)' : 'scale(1)'
+                  }}
+                >
+                  <span className="text-lg font-bold">{process.step}</span>
+                </div>
+                
+                {/* Pulsing effect for active step */}
+                {isExactlyActive && (
+                  <div className="absolute inset-0 -z-10">
+                    <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping opacity-75"></div>
+                    <div className="absolute inset-[-8px] rounded-full border-2 border-primary/30"></div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Content card with alternating layout */}
+              <div className={`relative max-w-lg mx-auto md:mx-0 ${
+                index % 2 === 0 
+                  ? 'md:ml-auto md:mr-[calc(50%+2rem)]' 
+                  : 'md:mr-auto md:ml-[calc(50%+2rem)]'
+              }`}>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.5 }}
+                  className={`
+                    rounded-xl p-6 border shadow-lg transform transition-all duration-500 cursor-pointer
+                    ${isActive 
+                      ? 'bg-background dark:bg-gray-800 border-primary/20 dark:border-primary/30 shadow-primary/5' 
+                      : 'bg-secondary/5 dark:bg-gray-800/50 border-secondary/20 dark:border-gray-700'
+                    }
+                    hover:shadow-xl
+                  `}
+                  onClick={() => handleStepClick(process.step)}
+                >
+                  <div className="flex items-start gap-4">
+                    <div 
+                      className={`p-3 rounded-lg ${
+                        isActive 
+                          ? 'text-white' 
+                          : 'text-secondary/60 dark:text-gray-400 bg-secondary/10 dark:bg-gray-700/50'
+                      } transition-colors duration-500`}
+                      style={{ 
+                        backgroundColor: isActive ? process.color : undefined 
+                      }}
+                    >
+                      {process.icon}
+                    </div>
+                    
+                    <div>
+                      <h3 className={`text-xl font-bold mb-2 transition-colors duration-500 ${
+                        isActive ? 'text-foreground dark:text-white' : 'text-foreground/60 dark:text-gray-400'
+                      }`}>
+                        {process.title}
+                      </h3>
+                      <p className="text-foreground/70 dark:text-gray-300 mb-4">{process.description}</p>
+                      
+                      {/* Benefits list with reveal animation */}
+                      <AnimatePresence>
+                        {isExactlyActive && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="mt-4 pt-4 border-t border-secondary/10 dark:border-gray-700"
+                          >
+                            <h4 className="font-medium mb-2 text-sm uppercase tracking-wider text-foreground/60 dark:text-gray-400">Key Benefits</h4>
+                            <ul className="space-y-2">
+                              {process.benefits.map((benefit, idx) => (
+                                <motion.li 
+                                  key={idx}
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: idx * 0.1 }}
+                                  className="flex items-center gap-2 dark:text-gray-300"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                  </svg>
+                                  <span>{benefit}</span>
+                                </motion.li>
+                              ))}
+                            </ul>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      
+      {/* Navigation controls for mobile */}
+      <div className="mt-12 flex justify-center gap-2 md:hidden">
+        {processSteps.map((step, index) => (
+          <button 
+            key={index}
+            onClick={() => handleStepClick(step.step)}
+            className={`w-3 h-3 rounded-full transition-colors ${
+              activeStep === step.step 
+                ? 'bg-primary' 
+                : 'bg-secondary/30 dark:bg-gray-700'
+            }`}
+            aria-label={`Go to step ${step.step}: ${step.title}`}
+          />
+        ))}
+      </div>
+    </Section>
+  );
+});
+
+/* INTERACTIVE SOLUTION FINDER */
+const SolutionFinder = memo(() => {
+  const [activeCategory, setActiveCategory] = useState('business');
+  const [showResults, setShowResults] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const cardRef = useRef(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  // Card tilt effect
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const moveX = (e.clientX - centerX) / (rect.width / 2);
+    const moveY = (e.clientY - centerY) / (rect.height / 2);
+    setMousePosition({ x: moveX * 5, y: moveY * -5 });
+  };
+  
+  const resetMousePosition = () => {
+    setMousePosition({ x: 0, y: 0 });
+  };
+  
+  // Solution finder categories and options
+  const categories = {
+    business: {
+      title: "Business Solutions",
+      icon: <BarChart className="w-5 h-5" />,
+      description: "Find the perfect digital solution tailored to your business needs",
+      color: THEME.accent.blue,
+      options: [
+        {
+          question: "What's your primary business goal?",
+          choices: [
+            { id: "conversion", label: "Increase conversion rates" },
+            { id: "visibility", label: "Improve online visibility" },
+            { id: "automation", label: "Automate business processes" },
+            { id: "analytics", label: "Better data insights" }
+          ]
+        },
+        {
+          question: "What's your timeline?",
+          choices: [
+            { id: "immediate", label: "Immediate (1-2 months)" },
+            { id: "quarter", label: "This quarter (3-6 months)" },
+            { id: "year", label: "This year (6-12 months)" }
+          ]
+        }
+      ]
+    },
+    creative: {
+      title: "Creative Solutions",
+      icon: <Palette className="w-5 h-5" />,
+      description: "Discover creative services to bring your brand vision to life",
+      color: THEME.accent.green,
+      options: [
+        {
+          question: "What's your creative priority?",
+          choices: [
+            { id: "branding", label: "Brand identity & design" },
+            { id: "content", label: "Content creation" },
+            { id: "experience", label: "User experience" },
+            { id: "innovation", label: "Creative innovation" }
+          ]
+        },
+        {
+          question: "What's your brand style?",
+          choices: [
+            { id: "modern", label: "Modern & minimal" },
+            { id: "bold", label: "Bold & vibrant" },
+            { id: "traditional", label: "Traditional & established" },
+            { id: "playful", label: "Playful & approachable" }
+          ]
+        }
+      ]
+    },
+    technical: {
+      title: "Technical Solutions",
+      icon: <Code className="w-5 h-5" />,
+      description: "Explore technical solutions to power your digital infrastructure",
+      color: THEME.accent.orange,
+      options: [
+        {
+          question: "What technical challenge are you facing?",
+          choices: [
+            { id: "performance", label: "Performance optimization" },
+            { id: "scaling", label: "Scaling infrastructure" },
+            { id: "security", label: "Security enhancements" },
+            { id: "integration", label: "System integration" }
+          ]
+        },
+        {
+          question: "What's your technical environment?",
+          choices: [
+            { id: "cloud", label: "Cloud-based" },
+            { id: "onprem", label: "On-premises" },
+            { id: "hybrid", label: "Hybrid infrastructure" }
+          ]
+        }
+      ]
+    }
+  };
+  
+  // Handle option selection
+  const handleOptionSelect = (questionIndex, optionId) => {
+    setSelectedOptions({
+      ...selectedOptions,
+      [questionIndex]: optionId
+    });
+    
+    // If this is the last question, show results
+    if (questionIndex === categories[activeCategory].options.length - 1) {
+      setTimeout(() => {
+        setShowResults(true);
+      }, 500);
+    }
+  };
+  
+  // Reset selections when changing category
+  useEffect(() => {
+    setSelectedOptions({});
+    setShowResults(false);
+  }, [activeCategory]);
+  
+  // Get recommended solutions based on selections
+  const getRecommendedSolutions = () => {
+    const solutions = {
+      business: [
+        {
+          title: "Enterprise Dashboard",
+          description: "Real-time analytics and reporting for business intelligence",
+          icon: <BarChart className="w-6 h-6" />,
+          link: "/services/enterprise-dashboard"
+        },
+        {
+          title: "Marketing Automation",
+          description: "Streamline your marketing efforts with intelligent automation",
+          icon: <MessageSquare className="w-6 h-6" />,
+          link: "/services/marketing-automation"
+        }
+      ],
+      creative: [
+        {
+          title: "Brand Identity Package",
+          description: "Complete visual identity system with logo, colors, and guidelines",
+          icon: <Palette className="w-6 h-6" />,
+          link: "/services/brand-identity"
+        },
+        {
+          title: "UX Design Sprint",
+          description: "Rapid prototyping and user testing to validate your ideas",
+          icon: <Smartphone className="w-6 h-6" />,
+          link: "/services/ux-design"
+        }
+      ],
+      technical: [
+        {
+          title: "Cloud Migration",
+          description: "Seamlessly transition your infrastructure to the cloud",
+          icon: <Code className="w-6 h-6" />,
+          link: "/services/cloud-migration"
+        },
+        {
+          title: "Security Audit",
+          description: "Comprehensive assessment of your digital security posture",
+          icon: <BadgeCheck className="w-6 h-6" />,
+          link: "/services/security-audit"
+        }
+      ]
+    };
+    
+    return solutions[activeCategory];
+  };
+  
+  return (
+    <section className="relative py-20 px-4 overflow-hidden">
+      {/* Background blur elements */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
+            Interactive Solution Finder
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4">
+            Find Your Perfect <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">Solution</span>
+          </h2>
+          <p className="text-foreground/70 max-w-2xl mx-auto">
+            Answer a few quick questions and discover the ideal services tailored to your specific needs
+          </p>
+        </motion.div>
+        
+        {/* Interactive card with glassmorphism effect */}
+        <motion.div
+          ref={cardRef}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="relative max-w-4xl mx-auto"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={resetMousePosition}
+        >
+          <motion.div
+            style={{
+              transform: `perspective(1000px) rotateX(${mousePosition.y}deg) rotateY(${mousePosition.x}deg)`,
+              transition: "transform 0.1s ease"
+            }}
+            className="bg-white/60 backdrop-blur-lg border border-white/20 rounded-2xl shadow-xl overflow-hidden"
+          >
+            {/* Card inner content */}
+            <div className="p-6 md:p-8">
+              {/* Category tabs */}
+              <div className="flex flex-wrap gap-3 mb-8 justify-center">
+                {Object.entries(categories).map(([key, category]) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveCategory(key)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      activeCategory === key
+                        ? 'bg-primary text-white shadow-md' 
+                        : 'bg-secondary/5 hover:bg-secondary/10 text-foreground/70'
+                    }`}
+                  >
+                    <div className="p-1 rounded-full bg-white/20">
+                      {category.icon}
+                    </div>
+                    {category.title}
+                  </button>
+                ))}
+              </div>
+              
+              {/* Description */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCategory}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-center mb-8"
+                >
+                  <p className="text-foreground/80">
+                    {categories[activeCategory].description}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+              
+              {/* Questions and options */}
+              {!showResults ? (
+                <div className="space-y-10 mb-4">
+                  {categories[activeCategory].options.map((option, questionIndex) => (
+                    <div key={questionIndex}>
+                      <h3 className="text-lg font-semibold mb-4">
+                        {option.question}
+                      </h3>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {option.choices.map((choice) => (
+                          <motion.button
+                            key={choice.id}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleOptionSelect(questionIndex, choice.id)}
+                            className={`p-4 rounded-xl border text-left transition-all ${
+                              selectedOptions[questionIndex] === choice.id 
+                                ? `border-2 border-${categories[activeCategory].color} bg-${categories[activeCategory].color}/10 shadow-md`
+                                : 'border-secondary/20 hover:border-primary/30 bg-white/40'
+                            }`}
+                            style={{
+                              borderColor: selectedOptions[questionIndex] === choice.id 
+                                ? categories[activeCategory].color 
+                                : undefined,
+                              backgroundColor: selectedOptions[questionIndex] === choice.id 
+                                ? `${categories[activeCategory].color}10` 
+                                : undefined
+                            }}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span>{choice.label}</span>
+                              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                selectedOptions[questionIndex] === choice.id
+                                  ? `border-${categories[activeCategory].color} bg-${categories[activeCategory].color}`
+                                  : 'border-secondary/40'
+                              }`}
+                              style={{
+                                borderColor: selectedOptions[questionIndex] === choice.id 
+                                  ? categories[activeCategory].color 
+                                  : undefined,
+                                backgroundColor: selectedOptions[questionIndex] === choice.id 
+                                  ? categories[activeCategory].color 
+                                  : undefined
+                              }}
+                              >
+                                {selectedOptions[questionIndex] === choice.id && (
+                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                              </div>
+                            </div>
+                          </motion.button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-4"
+                >
+                  <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+                      <CheckCircle className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Your Recommended Solutions</h3>
+                    <p className="text-foreground/70">Based on your selections, here are our tailored recommendations</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    {getRecommendedSolutions().map((solution, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.2 }}
+                        className="p-6 rounded-xl border border-primary/20 bg-white/60 backdrop-blur-sm hover:shadow-lg hover:border-primary/40 transition-all"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                            {solution.icon}
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-lg mb-1">{solution.title}</h4>
+                            <p className="text-sm text-foreground/70">{solution.description}</p>
+                          </div>
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-secondary/10">
+                          <a 
+                            href={solution.link}
+                            className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline"
+                          >
+                            Learn more about this solution
+                            <ArrowRight size={16} />
+                          </a>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => {
+                        setSelectedOptions({});
+                        setShowResults(false);
+                      }}
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 font-medium"
+                    >
+                      <ArrowLeft size={16} />
+                      Start over
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+              
+              {/* Progress indicator (only shown before results) */}
+              {!showResults && (
+                <div className="mt-8 pt-6 border-t border-secondary/10">
+                  <div className="flex items-center justify-between text-sm text-foreground/60">
+                    <span>Progress</span>
+                    <span>
+                      {Object.keys(selectedOptions).length} of {categories[activeCategory].options.length} answered
+                    </span>
+                  </div>
+                  <div className="mt-2 bg-secondary/10 rounded-full h-2">
+                    <div 
+                      className="h-full rounded-full transition-all duration-500 ease-out"
+                      style={{ 
+                        width: `${(Object.keys(selectedOptions).length / categories[activeCategory].options.length) * 100}%`,
+                        backgroundColor: categories[activeCategory].color
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Card border glow effect */}
+            <div 
+              className="absolute inset-0 -z-10 opacity-40"
+              style={{
+                background: `radial-gradient(circle at 50% 50%, ${categories[activeCategory].color}40, transparent 70%)`,
+                borderRadius: "inherit"
+              }}
+            ></div>
+          </motion.div>
+          
+          {/* Card shadow */}
+          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 -z-20 blur-xl opacity-30"></div>
+        </motion.div>
+        
+        {/* Quick options */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="mt-12 text-center"
+        >
+          <p className="text-foreground/70 mb-6">Looking for something specific?</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { label: "Schedule a consultation", href: "/contact", icon: <Phone className="w-4 h-4" /> },
+              { label: "View all services", href: "/services", icon: <BarChart className="w-4 h-4" /> },
+              { label: "Chat with an expert", href: "/chat", icon: <MessageCircle className="w-4 h-4" /> }
+            ].map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/5 hover:bg-secondary/10 text-foreground/80 hover:text-foreground transition-colors"
+              >
+                {item.icon}
+                <span className="text-sm font-medium">{item.label}</span>
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+});
+
+/* UPCOMING PROJECTS SHOWCASE WITH 3D EFFECT */
+const UpcomingProjectsShowcase = memo(() => {
+  const [activeProject, setActiveProject] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - card.left) / card.width - 0.5;  // -0.5 to 0.5
+    const y = (e.clientY - card.top) / card.height - 0.5;  // -0.5 to 0.5
+    setMousePosition({ x, y });
+  };
+  
+  const upcomingProjects = [
+    {
+      title: "AI-Powered Customer Analytics",
+      description: "Launching soon: Our revolutionary platform that uses machine learning to transform customer data into actionable insights",
+      image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      color: THEME.accent.blue,
+      tags: ["AI", "Analytics", "Machine Learning"],
+      date: "June 2025",
+      status: "Beta phase"
+    },
+    {
+      title: "Immersive VR Training Platform",
+      description: "Experience professional training in virtual environments with real-time feedback and adaptive learning paths",
+      image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      color: THEME.accent.green,
+      tags: ["VR", "Training", "Education"],
+      date: "August 2025",
+      status: "In development"
+    }
+  ];
+  
+  return (
+    <Section id="upcoming-projects" className="py-16 overflow-hidden dark:bg-gray-900"> 
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading 
+          eyebrow="Coming Soon" 
+          title="Upcoming Projects" 
+          description="Get a sneak peek of our innovative solutions currently in development"
+          center={true}
+        />
+        
+        <div className="mt-10 md:mt-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Left side - 3D interactive card */}
+            <div className="relative h-[450px] w-full">
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={activeProject}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0"
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={() => setMousePosition({ x: 0, y: 0 })}
+                >
+                  <div 
+                    className="h-full w-full rounded-2xl overflow-hidden relative group shadow-2xl shadow-black/20"
+                    style={{ 
+                      perspective: '1500px',
+                      transformStyle: 'preserve-3d',
+                    }}
+                  >
+                    <motion.div
+                      className="h-full w-full relative"
+                      style={{ 
+                        transformStyle: 'preserve-3d',
+                        transform: `
+                          rotateY(${mousePosition.x * 20}deg) 
+                          rotateX(${-mousePosition.y * 20}deg)
+                          scale(1.05)
+                        `,
+                        transition: 'transform 0.5s ease-out'
+                      }}
+                    >
+                      {/* Main image */}
+                      <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10">
+                        <div 
+                          className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-primary/30 opacity-70 mix-blend-overlay z-10"
+                        ></div>
+                        <img 
+                          src={upcomingProjects[activeProject].image} 
+                          alt={upcomingProjects[activeProject].title} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      
+                      {/* Glowing edges */}
+                      <div 
+                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
+                        style={{
+                          background: `linear-gradient(45deg, ${upcomingProjects[activeProject].color}00, ${upcomingProjects[activeProject].color}40, ${upcomingProjects[activeProject].color}00)`,
+                          backgroundSize: '200% 200%',
+                          animation: 'gradient-animation 3s ease infinite',
+                          border: `1px solid ${upcomingProjects[activeProject].color}60`,
+                          boxShadow: `0 0 40px ${upcomingProjects[activeProject].color}40`
+                        }}
+                      ></div>
+                      
+                      {/* Project status banner */}
+                      <div 
+                        className="absolute top-5 right-5 z-30 px-4 py-2 rounded-full backdrop-blur-md"
+                        style={{ 
+                          backgroundColor: `${upcomingProjects[activeProject].color}30`,
+                          border: `1px solid ${upcomingProjects[activeProject].color}50`
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" 
+                              style={{ backgroundColor: upcomingProjects[activeProject].color }}></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3" 
+                              style={{ backgroundColor: upcomingProjects[activeProject].color }}></span>
+                          </span>
+                          <span className="text-white text-sm font-medium">{upcomingProjects[activeProject].status}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Content overlay */}
+                      <div 
+                        className="absolute inset-x-0 bottom-0 p-8 text-white z-20"
+                        style={{ transform: 'translateZ(50px)' }}
+                      >
+                        <div className="mb-2">
+                          <span className="text-white/80 text-sm font-medium">
+                            Launching: {upcomingProjects[activeProject].date}
+                          </span>
+                        </div>
+                        
+                        <div className="flex gap-2 mb-4">
+                          {upcomingProjects[activeProject].tags.map((tag, index) => (
+                            <span 
+                              key={index} 
+                              className="px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
+                              style={{ 
+                                backgroundColor: `${upcomingProjects[activeProject].color}40`,
+                                border: `1px solid ${upcomingProjects[activeProject].color}80`
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        <h3 className="text-2xl md:text-3xl font-bold mb-2">{upcomingProjects[activeProject].title}</h3>
+                        <p className="text-white/80 max-w-md">{upcomingProjects[activeProject].description}</p>
+                        
+                        <div className="mt-6">
+                          <button 
+                            className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-sm font-medium flex items-center gap-2 transition-all"
+                          >
+                            Request Early Access
+                            <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {/* Floating geometric elements */}
+                      <div 
+                        className="absolute top-8 left-8 w-16 h-16 border border-white/20 rounded-lg opacity-50"
+                        style={{ 
+                          transform: 'translateZ(30px) rotateZ(10deg)',
+                          boxShadow: `0 0 20px ${upcomingProjects[activeProject].color}30`
+                        }}
+                      ></div>
+                      
+                      <div 
+                        className="absolute bottom-32 right-16 w-10 h-10 rounded-full opacity-60"
+                        style={{ 
+                          background: `linear-gradient(45deg, ${upcomingProjects[activeProject].color}60, transparent)`,
+                          transform: 'translateZ(40px)'
+                        }}
+                      ></div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            
+            {/* Right side - Project details & navigation */}
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <span className="text-primary text-sm font-medium uppercase tracking-wider bg-primary/10 dark:bg-primary/20 px-4 py-1 rounded-full inline-block border border-primary/20 dark:border-primary/40">
+                  Innovation Pipeline
+                </span>
+                
+                <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4">
+                  Tomorrow's <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-500">solutions, today</span>
+                </h2>
+                
+                <p className="text-foreground/70 dark:text-gray-300">
+                  We're constantly innovating and developing new projects to address emerging challenges and opportunities. 
+                  Here's an exclusive preview of what we're working on behind the scenes.
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <h4 className="text-lg font-medium dark:text-white">Upcoming Launches</h4>
+                
+                <div className="space-y-3">
+                  {upcomingProjects.map((project, index) => (
+                    <div 
+                      key={index}
+                      className={`p-4 rounded-xl cursor-pointer transition-all duration-300 flex items-center gap-4 ${
+                        activeProject === index 
+                          ? 'bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/40' 
+                          : 'hover:bg-secondary/5 dark:hover:bg-gray-800'
+                      }`}
+                      onClick={() => setActiveProject(index)}
+                    >
+                      <div 
+                        className="w-12 h-12 rounded-lg overflow-hidden shrink-0"
+                        style={{ 
+                          boxShadow: activeProject === index ? `0 0 0 2px ${project.color}` : 'none',
+                          transition: 'box-shadow 0.3s ease'
+                        }}
+                      >
+                        <img 
+                          src={project.image} 
+                          alt={project.title} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <h5 className={`font-medium transition-colors ${
+                            activeProject === index ? 'text-primary' : 'text-foreground dark:text-white'
+                          }`}>
+                            {project.title}
+                          </h5>
+                          <span className="text-xs text-foreground/60 dark:text-gray-400">
+                            {project.date}
+                          </span>
+                        </div>
+                        <p className="text-sm text-foreground/60 dark:text-gray-400 line-clamp-1">
+                          {project.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <style jsx="true" global="true">{`
+        @keyframes gradient-animation {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
+    </Section>
+  );
+});
+
+/* MAIN COMPONENT */
 function Home() {
   return (
     <PageTransition>
-      <div className="min-h-screen">        {/* Hero Section with Aurora Background */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-          <AuroraBackground 
-            className="absolute inset-0 z-0" 
-            showRadialGradient={true}
-            intensity={0.9}
-          />
-          
-          {/* Enhanced background elements */}
-          <div className="absolute inset-0 z-5">
-            {/* Floating orbs for additional visual interest */}
-            <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/30 rounded-full animate-pulse" />
-            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400/40 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
-            <div className="absolute bottom-1/3 left-1/5 w-1.5 h-1.5 bg-purple-400/30 rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
-            <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-primary/40 rounded-full animate-ping" style={{ animationDelay: '3s' }} />
-            
-            {/* Subtle grid pattern overlay */}
-            <div 
-              className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(59,130,246,0.1) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(59,130,246,0.1) 1px, transparent 1px)
-                `,
-                backgroundSize: '50px 50px'
-              }}
-            />
+      <div className="min-h-screen">
+        <div className="relative bg-gradient-to-b from-background to-background/95">
+          <div className="absolute inset-0 w-full h-full">
           </div>
           
-          {/* Globe behind the content */}
-          <div className="absolute inset-0 flex items-center justify-center pt-20 opacity-20 dark:opacity-25 pointer-events-none z-10">
-            <Globe 
-              className="w-[700px] h-[700px] max-w-[85vw] max-h-[85vh]"
-              config={{
-                width: 900,
-                height: 900,
-                onRender: () => {},
-                devicePixelRatio: 2,
-                phi: 0,
-                theta: 0.3,
-                dark: 0.2,
-                diffuse: 0.6,
-                mapSamples: 24000,
-                mapBrightness: 1.5,
-                baseColor: [0.08, 0.15, 0.35], // Deep blue base color
-                markerColor: [0.2, 0.6, 1.0], // Bright blue markers
-                glowColor: [0.15, 0.4, 0.8], // Blue glow
-                opacity: 0.8,
-                markers: [
-                  // Enhanced marker set with more detail
-                  { location: [37.7749, -122.4194], size: 0.12 }, // San Francisco
-                  { location: [40.7128, -74.006], size: 0.12 }, // New York
-                  { location: [51.5074, -0.1278], size: 0.1 }, // London
-                  { location: [35.6762, 139.6503], size: 0.1 }, // Tokyo
-                  { location: [19.076, 72.8777], size: 0.1 }, // Mumbai
-                  { location: [39.9042, 116.4074], size: 0.1 }, // Beijing
-                  { location: [-23.5505, -46.6333], size: 0.1 }, // São Paulo
-                  { location: [52.52, 13.405], size: 0.08 }, // Berlin
-                  { location: [48.8566, 2.3522], size: 0.08 }, // Paris
-                  { location: [55.7558, 37.6176], size: 0.08 }, // Moscow
-                  { location: [1.3521, 103.8198], size: 0.08 }, // Singapore
-                  { location: [25.2048, 55.2708], size: 0.07 }, // Dubai
-                  { location: [43.6532, -79.3832], size: 0.07 }, // Toronto
-                  { location: [37.5665, 126.978], size: 0.07 }, // Seoul
-                  { location: [-33.8688, 151.2093], size: 0.07 }, // Sydney
-                  { location: [59.3293, 18.0686], size: 0.06 }, // Stockholm
-                  { location: [47.3769, 8.5417], size: 0.06 }, // Zurich
-                  { location: [60.1699, 24.9384], size: 0.05 }, // Helsinki
-                  { location: [14.5995, 120.9842], size: 0.05 }, // Manila
-                  { location: [23.8103, 90.4125], size: 0.05 }, // Dhaka
-                  { location: [30.0444, 31.2357], size: 0.05 }, // Cairo
-                  { location: [19.4326, -99.1332], size: 0.05 }, // Mexico City
-                  { location: [41.0082, 28.9784], size: 0.05 }, // Istanbul
-                  { location: [-34.6037, -58.3816], size: 0.05 }, // Buenos Aires
-                  { location: [12.9716, 77.5946], size: 0.05 }, // Bangalore
-                ],
-              }}
-            />
-          </div>          <div className="relative z-20 max-w-5xl mx-auto px-3 sm:px-4 lg:px-6 text-center">
-            
-            {/* Status Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mb-8 relative z-10"
-            >
-              <span className="inline-flex items-center px-5 py-3 rounded-full bg-primary/15 dark:bg-primary/10 border border-primary/30 dark:border-primary/20 text-primary text-sm font-medium backdrop-blur-sm shadow-lg shadow-primary/10">
-                <span className="relative flex h-2 w-2 mr-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                </span>
-                Now Available for New Projects
-              </span>
-            </motion.div>
 
-            {/* Main Heading with enhanced effects */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mb-8 relative z-10"
-            >
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 relative">
-                {/* Text shadow for better readability */}
-                <span className="absolute inset-0 bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent blur-sm opacity-50"></span>
-                <span className="relative bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent drop-shadow-sm">
-                  Jason Tech Solutions
-                </span>
-              </h1>
-                <div className="relative">
-                <p className="relative text-lg md:text-xl text-foreground/80 dark:text-foreground/70 max-w-3xl mx-auto leading-relaxed font-medium">
-                  We craft exceptional digital experiences through innovative web development, 
-                  mobile apps, games, and cutting-edge technology solutions that drive success.
-                </p>
-              </div>
-            </motion.div>
+          <HeroSection />
 
-            {/* Enhanced Service Tags */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap justify-center gap-3 mb-12 max-w-4xl mx-auto relative z-10"
-            >
-              {HERO_SERVICES.map((service, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  className="px-4 py-3 rounded-full border border-primary/30 dark:border-primary/20 bg-primary/10 dark:bg-primary/5 backdrop-blur-sm flex items-center gap-2 text-sm font-medium hover:bg-primary/15 dark:hover:bg-primary/10 transition-all duration-300 cursor-default shadow-lg shadow-primary/5"
-                >
-                  <span className="text-primary">{service.icon}</span>
-                  <span className="text-foreground/90 dark:text-foreground/80">{service.title}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Enhanced CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center relative z-10"
-            >
-              <motion.a
-                href="/contact"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="group px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all hover:shadow-xl hover:shadow-primary/30 flex items-center gap-2 min-w-[200px] justify-center"
+          {/* PARTNERSHIPS SECTION */}
+          <section className="relative py-12 px-4">
+            <div className="relative z-10 max-w-7xl mx-auto">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-center mb-8"
               >
-                Start Your Project
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.a>
+                <h2 id="partnerships-heading" className="text-primary/80 text-sm font-medium uppercase tracking-wider bg-primary/10 px-4 py-1 rounded-full inline-block">
+                  TRUSTED BY INDUSTRY LEADERS
+                </h2>
+              </motion.div>
               
-              <motion.a
-                href="/about"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-secondary/30 dark:bg-secondary/20 backdrop-blur-sm border border-border hover:border-primary/30 text-foreground rounded-xl font-semibold hover:bg-secondary/40 dark:hover:bg-secondary/30 transition-all flex items-center gap-2 min-w-[200px] justify-center shadow-lg"
-              >
-                Learn More
-                <GlobeIcon className="w-5 h-5" />
-              </motion.a>
-            </motion.div>            {/* Stats Section - moved inside hero for better integration */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-16 relative z-10"
-            >
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                {STATS.map((stat, index) => (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
+                {COMPANY_LOGOS.map((logo, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
-                    whileHover={{ y: -5, scale: 1.05 }}
-                    className="text-center group cursor-default"
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.4 }}
+                    className="flex items-center justify-center"
                   >
-                    <div className="relative p-4 rounded-2xl bg-background/10 dark:bg-background/5 backdrop-blur-sm border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
-                      <div className="text-2xl md:text-3xl font-bold mb-2">
-                        <span className="bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                          <NumberTicker value={stat.number} />
-                          {stat.suffix}
-                        </span>
-                      </div>
-                      <p className="text-foreground/70 dark:text-foreground/60 font-medium text-sm group-hover:text-foreground/80 dark:group-hover:text-foreground/70 transition-colors">
-                        {stat.label}
-                      </p>
+                    <div className="p-4 w-full flex justify-center">
+                      <img 
+                        src={logo} 
+                        alt={`Partner company ${index + 1}`} 
+                        className="h-12 opacity-80" 
+                      />
                     </div>
                   </motion.div>
-                ))}              </div>
-            </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
 
-          </div>
+        <UpcomingProjectsShowcase />
+        <ServicesSection />
+        <ProcessTimeline />
+        <ProjectsSection />
+
+        {/* TESTIMONIALS SECTION */}
+        <Section>
+          <SectionHeading 
+            eyebrow="Testimonials" 
+            title="What Our Clients Say" 
+            description="Don't just take our word for it. Here's what our clients have to say about their experience working with us."
+            center={true} 
+          />
           
-        </section>
-
-
-
-        {/* Services Section */}
-        <section className="py-28 px-4">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                Our Services
-              </span>
-              
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                Comprehensive Digital Solutions
-              </h2>
-              
-              <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-                From concept to deployment, we deliver end-to-end solutions that transform 
-                your business and create meaningful connections with your audience.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {SERVICES.map((service, index) => (
-                <ServiceCard key={index} service={service} index={index} />
-              ))}
-            </div>
-          </div>
-        </section>        {/* Features Section */}
-        <section className="py-28 px-4 bg-secondary/5">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                Why Choose Us
-              </span>
-              
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                Built for Excellence
-              </h2>
-              
-              <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-                We combine technical expertise with creative vision to deliver solutions 
-                that exceed expectations and drive measurable results.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {FEATURES.map((feature, index) => (
-                <FeatureCard key={index} feature={feature} index={index} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Projects Section */}
-        <section className="py-28 px-4">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                Our Portfolio
-              </span>
-              
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                Featured Projects
-              </h2>
-              
-              <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-                Explore our recent work and see how we've helped clients achieve their goals 
-                through innovative design and cutting-edge technology solutions.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {PROJECTS.map((project, index) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-28 px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="relative p-12 rounded-3xl bg-gradient-to-br from-primary/10 via-blue-500/5 to-purple-500/10 border border-primary/20 backdrop-blur-sm overflow-hidden">
-                {/* Decorative elements */}
-                <div className="absolute top-6 right-6 w-20 h-20 bg-primary/10 rounded-full blur-xl" />
-                <div className="absolute bottom-6 left-6 w-16 h-16 bg-blue-500/10 rounded-full blur-xl" />
-                
-                <div className="relative z-10">
-                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
-                    <Sparkles className="w-8 h-8 text-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {TESTIMONIALS.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: testimonial.delay * 0.5 }}
+                className="p-8 rounded-2xl bg-background/50 backdrop-blur border border-secondary/20 relative group hover:border-primary/30 transition-all hover:shadow-lg hover:shadow-primary/10"
+              >
+                <div className="absolute -top-5 left-8 text-5xl text-primary/20" aria-hidden="true">"</div>
+                <p className="text-foreground/80 mb-6 relative z-10">{testimonial.quote}</p>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                    <img 
+                      src={testimonial.image} 
+                      alt={testimonial.author}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                  
-                  <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                    Ready to Start Your Project?
-                  </h2>
-                  
-                  <p className="text-lg text-foreground/70 mb-8 max-w-2xl mx-auto">
-                    Let's discuss your ideas and create something amazing together. 
-                    Get in touch for a free consultation and project quote.
-                  </p>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a
-                      href="/contact"
-                      className="group px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all hover:shadow-lg hover:shadow-primary/25 flex items-center justify-center gap-2"
-                    >
-                      Get Started Today
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                    
-                    <a
-                      href="/about"
-                      className="px-8 py-4 border border-border text-foreground rounded-xl font-semibold hover:bg-secondary/20 transition-all flex items-center justify-center gap-2"
-                    >
-                      View Our Work
-                      <Trophy className="w-5 h-5" />
-                    </a>
+                  <div>
+                    <h4 className="font-semibold">{testimonial.author}</h4>
+                    <p className="text-sm text-foreground/60">{testimonial.position}</p>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
-        </section>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-8 text-center"
+          >
+            <a href="#" className="inline-flex items-center text-primary font-medium hover:underline">
+              Read more testimonials
+              <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </motion.div>
+        </Section>
+
+        <DesignsSection />
+        <SolutionFinder />
       </div>
+      
+      <style jsx="true" global="true">{`
+        @keyframes ripple {
+          0% {
+            width: 0;
+            height: 0;
+            opacity: 0.5;
+          }
+          100% {
+            width: 300px;
+            height: 300px;
+            opacity: 0;
+          }
+        }
+        
+        .animate-ripple {
+          animation: ripple 0.6s ease-out;
+        }
+      `}</style>
     </PageTransition>
   );
 }
