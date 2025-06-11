@@ -138,5 +138,7 @@ export function Globe({
           e.touches[0] && updateMovement(e.touches[0].clientX)
         } />
     </div>)
+    
   );
 }
+

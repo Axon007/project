@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 /* THEME AND UI CONFIGURATION */
 const THEME = {
   primary: {
+    
     DEFAULT: "#0070F3",
     light: "#3291FF",
   },
